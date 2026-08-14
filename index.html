@@ -265,6 +265,7 @@ let currentSubcat = 'all';
 let cart = [];
 let currentProduct = null;
 let currentImgIndex = 0;
+let imagenesActuales = [];
 let selectedSize = null;
 let selectedColor = 'Blanco';
 let precioActual = PRECIO;
@@ -359,7 +360,11 @@ function renderCatalog() {
   }
 
   catalog.innerHTML = prods.map(p => {
-    const imgPrincipal = (p.imagenes && p.imagenes[0]) || null;
+    let imgPrincipal = (p.imagenes && p.imagenes[0]) || null;
+    if (!imgPrincipal && p.mockups) {
+      const primero = Object.values(p.mockups)[0];
+      imgPrincipal = Array.isArray(primero) ? primero[0] : primero || null;
+    }
     const precio = p.precio || PRECIO;
     const enOferta = p.enDescuento && p.precioDescuento;
     const precioMostrar = enOferta ? p.precioDescuento : precio;
@@ -405,6 +410,9 @@ function openModal(id) {
   const disponibles = currentProduct.colores || COLORES.map(c => c.name);
   selectedColor = disponibles[0] || 'Blanco';
 
+  const fotosIniciales = fotosDeColor(currentProduct, selectedColor);
+  imagenesActuales = fotosIniciales || (currentProduct.imagenes || []);
+  currentImgIndex = 0;
   renderModalImg();
 
   document.getElementById('sizeGrid').innerHTML = SIZES.map(s =>
@@ -422,9 +430,17 @@ function openModal(id) {
   document.body.style.overflow = 'hidden';
 }
 
+function fotosDeColor(producto, color) {
+  var m = producto.mockups && producto.mockups[color];
+  if (!m) return null;
+  if (typeof m === 'string') return [m];
+  if (m.length) return m;
+  return null;
+}
+
 function renderModalImg() {
-  const imgs = currentProduct.imagenes || [];
-  const imgEl = document.getElementById('modalImg');
+  var imgs = imagenesActuales || [];
+  var imgEl = document.getElementById('modalImg');
   imgEl.innerHTML = imgs.length
     ? `<img src="${imgs[currentImgIndex]}" alt="${currentProduct.nombre}">`
     : '<span class="placeholder">👕</span>';
@@ -454,13 +470,11 @@ function selectColor(el, color) {
   document.querySelectorAll('.color-opt').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   selectedColor = color;
-  
-  // Si hay mockup para este color, cambia a ese mockup
-  if (currentProduct.mockups && currentProduct.mockups[color]) {
-    document.getElementById('modalImg').innerHTML = 
-      `<img src="${currentProduct.mockups[color]}" alt="${currentProduct.nombre} - ${color}">`;
-    document.getElementById('modalThumbs').innerHTML = ''; // Oculta los thumbs cuando está viendo el mockup
-  }
+
+  const fotos = fotosDeColor(currentProduct, color);
+  imagenesActuales = fotos || (currentProduct.imagenes || []);
+  currentImgIndex = 0;
+  renderModalImg();
 }
 
 function closeModal() {
