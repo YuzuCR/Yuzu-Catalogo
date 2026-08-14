@@ -75,8 +75,9 @@
   .card-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .card-sub { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
   .card-footer { display: flex; align-items: center; justify-content: space-between; }
-  .card-price { font-size: 15px; font-weight: 600; color: var(--accent); }
-  .card-price.old { color: var(--muted); text-decoration: line-through; font-size: 12px; font-weight: 400; margin-right: 6px; }
+  .card-price { font-size: 15px; font-weight: 600; color: var(--accent); display: flex; align-items: baseline; gap: 6px; }
+  .card-price .old { color: var(--muted); text-decoration: line-through; font-size: 12px; font-weight: 400; }
+  .card-price span:last-child { font-size: 15px; font-weight: 600; color: var(--accent); }
   .badge-oferta {
     position: absolute; top: 8px; right: 8px; background: #ff5555; color: #fff; border-radius: 20px;
     padding: 2px 8px; font-size: 10px; font-weight: 700; font-family: var(--mono); text-transform: uppercase;
@@ -373,7 +374,7 @@ function renderCatalog() {
         <div class="card-name">${p.nombre}</div>
         <div class="card-sub">${p.subcategoria || ''}</div>
         <div class="card-footer">
-          <span class="card-price">${enOferta ? `<span class="old">₡${precio.toLocaleString('es-CR')}</span>` : ''}₡${precioMostrar.toLocaleString('es-CR')}</span>
+          <div class="card-price">${enOferta ? `<span class="old">₡${precio.toLocaleString('es-CR')}</span>` : ''}<span>₡${precioMostrar.toLocaleString('es-CR')}</span></div>
           <button class="add-btn" onclick="event.stopPropagation(); openModal(${p.id})">+</button>
         </div>
       </div>
