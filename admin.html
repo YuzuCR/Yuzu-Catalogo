@@ -105,12 +105,19 @@
   <div class="card" id="formCard" style="display:none;">
     <h2>Nuevo producto</h2>
 
-    <label>Fotos del diseño (podés subir varias — ej: espalda y frente)</label>
+    <label>Fotos del diseño — galería (espalda, frente, lateral, etc.)</label>
     <div class="file-drop" id="fileDrop" onclick="document.getElementById('fileInput').click()">
       Tocá para elegir fotos
     </div>
     <input type="file" id="fileInput" accept="image/*" multiple>
     <div class="preview-grid" id="previewGrid"></div>
+
+    <label style="margin-top:20px;">Mockups por color (1 por cada color disponible — etiquetá con el nombre del color: Blanco, Negro, etc.)</label>
+    <div class="file-drop" id="fileDrop2" onclick="document.getElementById('fileInput2').click()">
+      Tocá para elegir mockups
+    </div>
+    <input type="file" id="fileInput2" accept="image/*" multiple>
+    <div class="preview-grid" id="previewGrid2"></div>
 
     <label>Nombre del diseño</label>
     <input type="text" id="nombreProducto" placeholder="ej: Eren Yeager">
@@ -151,7 +158,8 @@
 
 <script>
 let CATEGORIAS = {};
-let archivos = []; // { base64, ext, preview }
+let imagenes = []; // { base64, ext, preview, nombre }
+let mockups = []; // { base64, ext, preview, nombre, color }
 const COLORES = [
   { name: 'Blanco', hex: '#ffffff' },
   { name: 'Negro', hex: '#1a1a1a' },
@@ -162,7 +170,15 @@ const COLORES = [
   { name: 'Verde musgo', hex: '#4a6741' }
 ];
 
-function renderColorChecks() {
+function detectarColor(nombre) {
+  const nombreLower = nombre.toLowerCase();
+  for (let c of COLORES) {
+    if (nombreLower.includes(c.name.toLowerCase().replace(/ /g, ''))) {
+      return c.name;
+    }
+  }
+  return null;
+}
   const grid = document.getElementById('colorCheckGrid');
   grid.innerHTML = COLORES.map(c => `
     <label class="color-check">
@@ -322,10 +338,11 @@ document.getElementById('fileInput').addEventListener('change', (e) => {
   files.forEach(file => {
     const reader = new FileReader();
     reader.onload = () => {
-      archivos.push({
+      imagenes.push({
         base64: reader.result.split(',')[1],
         ext: file.name.split('.').pop().toLowerCase(),
-        preview: reader.result
+        preview: reader.result,
+        nombre: file.name
       });
       renderPreviews();
     };
@@ -334,15 +351,68 @@ document.getElementById('fileInput').addEventListener('change', (e) => {
   e.target.value = '';
 });
 
+document.getElementById('fileInput2').addEventListener('change', (e) => {
+  const files = Array.from(e.target.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const color = detectarColor(file.name);
+      mockups.push({
+        base64: reader.result.split(',')[1],
+        ext: file.name.split('.').pop().toLowerCase(),
+        preview: reader.result,
+        nombre: file.name,
+        color: null
+      });
+      renderPreviews2();
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+});
+
 function renderPreviews() {
   const grid = document.getElementById('previewGrid');
-  grid.innerHTML = archivos.map((a, i) => `
+  grid.innerHTML = imagenes.map((a, i) => `
     <div class="preview-item">
       <img src="${a.preview}">
-      <span class="tag">${i === 0 ? 'principal' : 'foto ' + (i+1)}</span>
-      <button class="rm" onclick="quitarFoto(${i})">✕</button>
+      <span class="tag">foto ${i+1}</span>
+      <button class="rm" onclick="quitarImagen(${i})">✕</button>
     </div>
   `).join('');
+}
+
+function quitarImagen(i) {
+  imagenes.splice(i, 1);
+  renderPreviews();
+}
+
+function renderPreviews2() {
+  const grid = document.getElementById('previewGrid2');
+  grid.innerHTML = mockups.map((m, i) => {
+    const colorDetectado = detectarColor(m.nombre) || 'Sin asignar';
+    return `
+    <div class="preview-item">
+      <img src="${m.preview}">
+      <span class="tag">${colorDetectado}</span>
+      <button class="rm" onclick="quitarMockup(${i})">✕</button>
+      <select class="color-select" onchange="cambiarColorMockup(${i}, this.value)" style="position:absolute; bottom:22px; left:2px; width:calc(100% - 4px); font-size:8px; background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:3px; padding:1px;">
+        <option value="">— sin asignar —</option>
+        ${COLORES.map(c => `<option value="${c.name}" ${(m.color || detectarColor(m.nombre)) === c.name ? 'selected' : ''}>${c.name}</option>`).join('')}
+      </select>
+    </div>
+  `;
+  }).join('');
+}
+
+function quitarMockup(i) {
+  mockups.splice(i, 1);
+  renderPreviews2();
+}
+
+function cambiarColorMockup(i, color) {
+  mockups[i].color = color || null;
+  renderPreviews2();
 }
 
 function quitarFoto(i) {
@@ -379,6 +449,9 @@ async function subirProducto() {
   const colores = Array.from(document.querySelectorAll('#colorCheckGrid input:checked')).map(i => i.value);
   if (colores.length === 0) { alert('Marcá al menos un color disponible.'); return; }
 
+  if (imagenes.length === 0) { alert('Subí al menos una imagen en la galería.'); return; }
+  if (mockups.length === 0) { alert('Subí al menos un mockup (uno por cada color disponible).'); return; }
+
   const precio = parseInt(document.getElementById('precioInput').value.replace(/\D/g, ''), 10);
   if (!precio || precio <= 0) { alert('Poné un precio válido.'); return; }
 
@@ -396,12 +469,22 @@ async function subirProducto() {
   btn.disabled = true;
 
   try {
-    mostrarStatus('loading', `Subiendo ${archivos.length} foto(s)...`);
+    mostrarStatus('loading', `Subiendo ${imagenes.length} imagen(es) de galería...`);
     const rutasImagenes = [];
-    for (let i = 0; i < archivos.length; i++) {
-      const path = `images/${slugify(nombre)}-${Date.now()}-${i}.${archivos[i].ext}`;
-      await ghPutImage(path, archivos[i].base64, `Sube imagen ${i+1}: ${nombre}`);
+    for (let i = 0; i < imagenes.length; i++) {
+      const path = `images/${slugify(nombre)}-gal-${Date.now()}-${i}.${imagenes[i].ext}`;
+      await ghPutImage(path, imagenes[i].base64, `Sube imagen galería ${i+1}: ${nombre}`);
       rutasImagenes.push(path);
+    }
+
+    mostrarStatus('loading', `Subiendo ${mockups.length} mockup(s)...`);
+    const mockupsMap = {};
+    for (let i = 0; i < mockups.length; i++) {
+      const color = mockups[i].color || detectarColor(mockups[i].nombre);
+      if (!color) { throw new Error(`Mockup ${i+1} no tiene color asignado`); }
+      const path = `images/${slugify(nombre)}-mock-${color.toLowerCase()}-${Date.now()}.${mockups[i].ext}`;
+      await ghPutImage(path, mockups[i].base64, `Sube mockup ${color}: ${nombre}`);
+      mockupsMap[color] = path;
     }
 
     mostrarStatus('loading', 'Actualizando categorías...');
@@ -420,6 +503,7 @@ async function subirProducto() {
       categoria: categoria,
       subcategoria: subcategoria || null,
       imagenes: rutasImagenes,
+      mockups: mockupsMap,
       colores: colores,
       precio: precio,
       enDescuento: enDescuento,
@@ -427,14 +511,16 @@ async function subirProducto() {
     });
     await ghPut('data/products.json', prodActual.content, prodActual.sha, `Nuevo producto: ${nombre}`);
 
-    mostrarStatus('ok', `✓ "${nombre}" subido con ${archivos.length} foto(s). Puede tardar 1-2 min en verse en la tienda.`);
+    mostrarStatus('ok', `✓ "${nombre}" subido con ${imagenes.length} imagen(es) y ${mockups.length} mockup(s). Puede tardar 1-2 min en verse en la tienda.`);
     document.getElementById('nombreProducto').value = '';
     document.getElementById('precioInput').value = '19500';
     document.getElementById('descuentoCheck').checked = false;
     document.getElementById('precioDescuentoInput').value = '';
     toggleDescuento();
-    archivos = [];
+    imagenes = [];
+    mockups = [];
     renderPreviews();
+    renderPreviews2();
     renderColorChecks();
     await cargarCategorias();
   } catch (e) {
