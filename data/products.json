@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "id": 1786732146911,
+    "nombre": "Eren 001",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [
+      "images/eren-001-gal-1786732146911-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/eren-001-blanco-1786732146911-0.jpg",
+        "images/eren-001-blanco-1786732146911-1.jpg",
+        "images/eren-001-blanco-1786732146911-2.jpg"
+      ],
+      "Negro": [
+        "images/eren-001-negro-1786732146911-3.jpg",
+        "images/eren-001-negro-1786732146911-4.jpg",
+        "images/eren-001-negro-1786732146911-5.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 15500
+  }
+]
