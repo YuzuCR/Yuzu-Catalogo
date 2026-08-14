@@ -26,5 +26,45 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500
+  },
+  {
+    "id": 1786732630773,
+    "nombre": "Eren 002",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [
+      "images/eren-002-gal-1786732630773-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/eren-002-blanco-1786732630773-0.jpg",
+        "images/eren-002-blanco-1786732630773-1.jpg",
+        "images/eren-002-blanco-1786732630773-2.jpg"
+      ],
+      "Crema": [
+        "images/eren-002-crema-1786732630773-3.jpg",
+        "images/eren-002-crema-1786732630773-4.jpg",
+        "images/eren-002-crema-1786732630773-5.jpg"
+      ],
+      "Negro": [
+        "images/eren-002-negro-1786732630773-6.jpg",
+        "images/eren-002-negro-1786732630773-7.jpg",
+        "images/eren-002-negro-1786732630773-8.jpg"
+      ],
+      "Verde musgo": [
+        "images/eren-002-verde-musgo-1786732630773-9.jpg",
+        "images/eren-002-verde-musgo-1786732630773-10.jpg",
+        "images/eren-002-verde-musgo-1786732630773-11.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Verde musgo"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 16500
   }
 ]
