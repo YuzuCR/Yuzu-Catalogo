@@ -260,5 +260,26 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500
+  },
+  {
+    "id": 1786737206558,
+    "nombre": "Itadori 001",
+    "categoria": "Anime",
+    "subcategoria": "Jujutsu Kaisen",
+    "imagenes": [
+      "images/itadori-001-gal-1786737206558-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/itadori-001-negro-1786737206558-0.jpg",
+        "images/itadori-001-negro-1786737206558-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 15500
   }
 ]
