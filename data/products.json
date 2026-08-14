@@ -106,5 +106,41 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15550
+  },
+  {
+    "id": 1786734303457,
+    "nombre": "Okarun 002",
+    "categoria": "Anime",
+    "subcategoria": "DanDaDan",
+    "imagenes": [
+      "images/okarun-002-gal-1786734303457-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/okarun-002-negro-1786734303457-0.jpg",
+        "images/okarun-002-negro-1786734303457-1.jpg"
+      ],
+      "Crema": [
+        "images/okarun-002-crema-1786734303457-2.jpg",
+        "images/okarun-002-crema-1786734303457-3.jpg"
+      ],
+      "Blanco": [
+        "images/okarun-002-blanco-1786734303457-4.jpg",
+        "images/okarun-002-blanco-1786734303457-5.jpg"
+      ],
+      "Verde musgo": [
+        "images/okarun-002-verde-musgo-1786734303457-6.jpg",
+        "images/okarun-002-verde-musgo-1786734303457-7.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Verde musgo"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 15500
   }
 ]
