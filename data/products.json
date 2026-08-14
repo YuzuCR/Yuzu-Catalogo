@@ -412,5 +412,26 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786751398002,
+    "nombre": "Tobey Maguire",
+    "categoria": "Cultura Pop",
+    "subcategoria": "Web Collection",
+    "imagenes": [
+      "images/tobey-maguire-gal-1786751398002-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/tobey-maguire-negro-1786751398002-0.jpg",
+        "images/tobey-maguire-negro-1786751398002-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
