@@ -173,5 +173,40 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 17500
+  },
+  {
+    "id": 1786735084350,
+    "nombre": "Dorohedoro 001",
+    "categoria": "Anime",
+    "subcategoria": "Dorohedoro",
+    "imagenes": [
+      "images/dorohedoro-001-gal-1786735084350-0.jpg"
+    ],
+    "mockups": {
+      "Verde musgo": [
+        "images/dorohedoro-001-verde-musgo-1786735084350-0.jpg",
+        "images/dorohedoro-001-verde-musgo-1786735084350-1.jpg"
+      ],
+      "Crema": [
+        "images/dorohedoro-001-crema-1786735084350-2.jpg",
+        "images/dorohedoro-001-crema-1786735084350-3.jpg"
+      ],
+      "Blanco": [
+        "images/dorohedoro-001-blanco-1786735084350-4.jpg",
+        "images/dorohedoro-001-blanco-1786735084350-5.jpg"
+      ],
+      "Negro": [
+        "images/dorohedoro-001-negro-1786735084350-6.jpg",
+        "images/dorohedoro-001-negro-1786735084350-7.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Verde musgo"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 15500
   }
 ]
