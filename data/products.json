@@ -349,5 +349,26 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500
+  },
+  {
+    "id": 1786742911223,
+    "nombre": "Ace 001",
+    "categoria": "Anime",
+    "subcategoria": "One Piece",
+    "imagenes": [
+      "images/ace-001-gal-1786742911223-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/ace-001-blanco-1786742911223-0.jpg",
+        "images/ace-001-blanco-1786742911223-1.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 15500
   }
 ]
