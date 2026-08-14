@@ -370,5 +370,26 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500
+  },
+  {
+    "id": 1786750837481,
+    "nombre": "Spidey",
+    "categoria": "Cultura Pop",
+    "subcategoria": "Web Collection",
+    "imagenes": [
+      "images/spidey-gal-1786750837481-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/spidey-negro-1786750837481-0.jpg",
+        "images/spidey-negro-1786750837481-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
