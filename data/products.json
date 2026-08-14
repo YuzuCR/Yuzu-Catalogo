@@ -433,5 +433,28 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786751522848,
+    "nombre": "Spiderman",
+    "categoria": "Cultura Pop",
+    "subcategoria": "Web Collection",
+    "imagenes": [
+      "images/spiderman-gal-1786751522848-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/spiderman-negro-1786751522848-0.jpg",
+        "images/spiderman-negro-1786751522848-1.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Azul marino"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
