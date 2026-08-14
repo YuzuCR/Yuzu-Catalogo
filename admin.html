@@ -132,6 +132,18 @@
     <label>Colores disponibles</label>
     <div class="color-check-grid" id="colorCheckGrid"></div>
 
+    <label>Precio</label>
+    <input type="text" id="precioInput" value="19500" inputmode="numeric">
+
+    <label style="display:flex; align-items:center; gap:8px; margin-top:16px; cursor:pointer;">
+      <input type="checkbox" id="descuentoCheck" style="width:auto;" onchange="toggleDescuento()">
+      <span style="color:var(--text); font-size:13px;">Está en descuento</span>
+    </label>
+    <div id="descuentoRow" style="display:none;">
+      <label>Precio con descuento</label>
+      <input type="text" id="precioDescuentoInput" inputmode="numeric" placeholder="ej: 15000">
+    </div>
+
     <button class="btn" id="subirBtn" onclick="subirProducto()">Subir producto</button>
     <div class="status" id="status"></div>
   </div>
@@ -338,6 +350,11 @@ function quitarFoto(i) {
   renderPreviews();
 }
 
+function toggleDescuento() {
+  document.getElementById('descuentoRow').style.display =
+    document.getElementById('descuentoCheck').checked ? 'block' : 'none';
+}
+
 function mostrarStatus(tipo, msg) {
   const el = document.getElementById('status');
   el.className = `status show ${tipo}`;
@@ -361,6 +378,19 @@ async function subirProducto() {
 
   const colores = Array.from(document.querySelectorAll('#colorCheckGrid input:checked')).map(i => i.value);
   if (colores.length === 0) { alert('Marcá al menos un color disponible.'); return; }
+
+  const precio = parseInt(document.getElementById('precioInput').value.replace(/\D/g, ''), 10);
+  if (!precio || precio <= 0) { alert('Poné un precio válido.'); return; }
+
+  const enDescuento = document.getElementById('descuentoCheck').checked;
+  let precioDescuento = null;
+  if (enDescuento) {
+    precioDescuento = parseInt(document.getElementById('precioDescuentoInput').value.replace(/\D/g, ''), 10);
+    if (!precioDescuento || precioDescuento <= 0 || precioDescuento >= precio) {
+      alert('El precio con descuento tiene que ser menor al precio normal.');
+      return;
+    }
+  }
 
   const btn = document.getElementById('subirBtn');
   btn.disabled = true;
@@ -390,12 +420,19 @@ async function subirProducto() {
       categoria: categoria,
       subcategoria: subcategoria || null,
       imagenes: rutasImagenes,
-      colores: colores
+      colores: colores,
+      precio: precio,
+      enDescuento: enDescuento,
+      precioDescuento: precioDescuento
     });
     await ghPut('data/products.json', prodActual.content, prodActual.sha, `Nuevo producto: ${nombre}`);
 
     mostrarStatus('ok', `✓ "${nombre}" subido con ${archivos.length} foto(s). Puede tardar 1-2 min en verse en la tienda.`);
     document.getElementById('nombreProducto').value = '';
+    document.getElementById('precioInput').value = '19500';
+    document.getElementById('descuentoCheck').checked = false;
+    document.getElementById('precioDescuentoInput').value = '';
+    toggleDescuento();
     archivos = [];
     renderPreviews();
     renderColorChecks();
