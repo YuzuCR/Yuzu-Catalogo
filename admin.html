@@ -236,12 +236,22 @@ function mostrarEstadoConfig() {
 
 /* ---------- GITHUB API ---------- */
 
+function errorDeRespuesta(res, contexto) {
+  return res.json().catch(function () { return {}; }).then(function (err) {
+    var detalle = err.message || '';
+    if (err.errors && err.errors.length && err.errors[0].message) {
+      detalle += ' — ' + err.errors[0].message;
+    }
+    throw new Error(contexto + ' (' + res.status + ') ' + detalle);
+  });
+}
+
 function ghGet(path) {
   var cfg = getConfig();
   return fetch('https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + path, {
     headers: { Authorization: 'token ' + cfg.token }
   }).then(function (res) {
-    if (!res.ok) throw new Error('No pude leer ' + path + ' (' + res.status + ')');
+    if (!res.ok) return errorDeRespuesta(res, 'No pude leer ' + path);
     return res.json();
   }).then(function (data) {
     var texto = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
@@ -259,7 +269,7 @@ function ghPut(path, obj, sha, message) {
     headers: { Authorization: 'token ' + cfg.token, 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   }).then(function (res) {
-    if (!res.ok) throw new Error('Error guardando ' + path + ' (' + res.status + ')');
+    if (!res.ok) return errorDeRespuesta(res, 'Error guardando ' + path);
     return res.json();
   });
 }
@@ -271,7 +281,7 @@ function ghPutImage(path, base64, message) {
     headers: { Authorization: 'token ' + cfg.token, 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: message, content: base64 })
   }).then(function (res) {
-    if (!res.ok) throw new Error('Error subiendo imagen (' + res.status + ')');
+    if (!res.ok) return errorDeRespuesta(res, 'Error subiendo ' + path);
     return res.json();
   });
 }
@@ -364,24 +374,64 @@ function coloresMarcados() {
 
 /* ---------- ARCHIVOS ---------- */
 
+var MAX_LADO = 1400;
+var CALIDAD = 0.88;
+
+function comprimirImagen(file, callback) {
+  var reader = new FileReader();
+  reader.onload = function () {
+    var img = new Image();
+    img.onload = function () {
+      var w = img.width;
+      var h = img.height;
+      if (w > MAX_LADO || h > MAX_LADO) {
+        if (w >= h) {
+          h = Math.round(h * MAX_LADO / w);
+          w = MAX_LADO;
+        } else {
+          w = Math.round(w * MAX_LADO / h);
+          h = MAX_LADO;
+        }
+      }
+      var canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, 0, 0, w, h);
+      var dataUrl = canvas.toDataURL('image/jpeg', CALIDAD);
+      var base64 = dataUrl.split(',')[1];
+      callback({
+        base64: base64,
+        ext: 'jpg',
+        preview: dataUrl,
+        nombre: file.name,
+        color: detectarColor(file.name),
+        peso: Math.round(base64.length * 0.75 / 1024)
+      });
+    };
+    img.onerror = function () { callback(null); };
+    img.src = reader.result;
+  };
+  reader.onerror = function () { callback(null); };
+  reader.readAsDataURL(file);
+}
+
 function leerArchivos(fileList, destino, callback) {
   var files = Array.prototype.slice.call(fileList);
   var pendientes = files.length;
   if (pendientes === 0) return;
+  mostrarStatus('loading', 'Optimizando ' + pendientes + ' imagen(es)...');
   files.forEach(function (file) {
-    var reader = new FileReader();
-    reader.onload = function () {
-      destino.push({
-        base64: reader.result.split(',')[1],
-        ext: file.name.split('.').pop().toLowerCase(),
-        preview: reader.result,
-        nombre: file.name,
-        color: detectarColor(file.name)
-      });
+    comprimirImagen(file, function (item) {
+      if (item) destino.push(item);
       pendientes--;
-      if (pendientes === 0) callback();
-    };
-    reader.readAsDataURL(file);
+      if (pendientes === 0) {
+        callback();
+        $('status').className = 'status';
+      }
+    });
   });
 }
 
@@ -391,7 +441,7 @@ function renderGaleria() {
     html += '<div class="preview-item">';
     html += '<img class="thumb" src="' + galeria[i].preview + '">';
     html += '<button class="rm" data-tipo="galeria" data-i="' + i + '">✕</button>';
-    html += '<span class="tag">' + (i === 0 ? 'principal' : 'foto ' + (i + 1)) + '</span>';
+    html += '<span class="tag">' + (i === 0 ? 'principal' : 'foto ' + (i + 1)) + ' · ' + galeria[i].peso + 'kb</span>';
     html += '</div>';
   }
   $('gridGaleria').innerHTML = html;
@@ -426,7 +476,7 @@ function subirProducto() {
   if (!nombre) { alert('Ponele nombre al diseño.'); return; }
   if (!categoria || categoria === '__nueva__') { alert('Elegí o creá una categoría.'); return; }
   if (subcategoria === '__nueva__') { alert('Confirmá la subcategoría nueva o elegí — ninguna —.'); return; }
-  if (galeria.length === 0) { alert('Subí al menos una foto a la galería.'); return; }
+  if (galeria.length === 0 && mockups.length === 0) { alert('Subí al menos una foto (galería o mockups).'); return; }
 
   var colores = coloresMarcados();
   if (colores.length === 0) { alert('Marcá al menos un color disponible.'); return; }
@@ -469,10 +519,11 @@ function subirProducto() {
 
   mockups.forEach(function (mk, idx) {
     cadena = cadena.then(function () {
-      mostrarStatus('loading', 'Subiendo mockup ' + (idx + 1) + '...');
-      var path = 'images/' + slugify(nombre) + '-mock-' + slugify(mk.color) + '-' + stamp + '.' + mk.ext;
+      mostrarStatus('loading', 'Subiendo mockup ' + (idx + 1) + ' de ' + mockups.length + '...');
+      var path = 'images/' + slugify(nombre) + '-' + slugify(mk.color) + '-' + stamp + '-' + idx + '.' + mk.ext;
       return ghPutImage(path, mk.base64, 'Mockup ' + mk.color + ': ' + nombre).then(function () {
-        mapaMockups[mk.color] = path;
+        if (!mapaMockups[mk.color]) mapaMockups[mk.color] = [];
+        mapaMockups[mk.color].push(path);
       });
     });
   });
