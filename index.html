@@ -123,6 +123,11 @@
     font-size: 9px; color: var(--muted); white-space: nowrap; opacity: 0; transition: opacity 0.15s;
   }
   .color-opt:hover::after, .color-opt.selected::after { opacity: 1; }
+  .color-opt.disabled { opacity: 0.2; cursor: not-allowed; pointer-events: none; }
+  .color-opt.disabled::before {
+    content: ''; position: absolute; top: 50%; left: -4px; right: -4px; height: 1px;
+    background: #ff5555; transform: rotate(45deg);
+  }
 
   .modal-actions { display: flex; gap: 10px; }
   .btn-add-cart {
@@ -217,15 +222,7 @@
       <div class="size-grid" id="sizeGrid"></div>
 
       <label class="field-label">Color</label>
-      <div class="color-grid" id="colorGrid">
-        <div class="color-opt selected" style="background:#ffffff; box-shadow: inset 0 0 0 1px #444;" data-name="Blanco" onclick="selectColor(this, 'Blanco')"></div>
-        <div class="color-opt" style="background:#1a1a1a;" data-name="Negro" onclick="selectColor(this, 'Negro')"></div>
-        <div class="color-opt" style="background:#f0e6d2;" data-name="Crema" onclick="selectColor(this, 'Crema')"></div>
-        <div class="color-opt" style="background:#6b4a35;" data-name="Café" onclick="selectColor(this, 'Café')"></div>
-        <div class="color-opt" style="background:#4a4a4a;" data-name="Gris grafito" onclick="selectColor(this, 'Gris grafito')"></div>
-        <div class="color-opt" style="background:#1b3a5c;" data-name="Azul marino" onclick="selectColor(this, 'Azul marino')"></div>
-        <div class="color-opt" style="background:#4a6741;" data-name="Verde musgo" onclick="selectColor(this, 'Verde musgo')"></div>
-      </div>
+      <div class="color-grid" id="colorGrid"></div>
 
       <div class="modal-actions">
         <button class="btn-close-modal" onclick="closeModal()">Cancelar</button>
@@ -264,6 +261,15 @@ let currentProduct = null;
 let currentImgIndex = 0;
 let selectedSize = null;
 let selectedColor = 'Blanco';
+const COLORES = [
+  { name: 'Blanco', hex: '#ffffff' },
+  { name: 'Negro', hex: '#1a1a1a' },
+  { name: 'Crema', hex: '#f0e6d2' },
+  { name: 'Café', hex: '#6b4a35' },
+  { name: 'Gris grafito', hex: '#4a4a4a' },
+  { name: 'Azul marino', hex: '#1b3a5c' },
+  { name: 'Verde musgo', hex: '#4a6741' }
+];
 
 async function cargarDatos() {
   try {
@@ -384,8 +390,14 @@ function openModal(id) {
     `<button class="size-btn" onclick="selectSize(this, '${s}')">${s}</button>`
   ).join('');
 
-  document.querySelectorAll('.color-opt').forEach(o => o.classList.remove('selected'));
-  document.querySelector('.color-opt').classList.add('selected');
+  const disponibles = currentProduct.colores || COLORES.map(c => c.name);
+  selectedColor = disponibles[0] || 'Blanco';
+  document.getElementById('colorGrid').innerHTML = COLORES.map(c => {
+    const disp = disponibles.includes(c.name);
+    return `<div class="color-opt${disp ? '' : ' disabled'}${c.name === selectedColor ? ' selected' : ''}"
+      style="background:${c.hex}; box-shadow: ${c.name === 'Blanco' ? 'inset 0 0 0 1px #444' : 'none'};"
+      data-name="${c.name}" ${disp ? `onclick="selectColor(this, '${c.name}')"` : ''}></div>`;
+  }).join('');
 
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
