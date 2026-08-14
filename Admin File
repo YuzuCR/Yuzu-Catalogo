@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yuzu — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0e0e0e; --surface: #161616; --surface2: #1f1f1f; --border: #2a2a2a;
+    --text: #f0f0f0; --muted: #888; --accent: #c8f135; --accent-dark: #9db82a;
+    --radius: 10px; --font: 'Space Grotesk', sans-serif; --mono: 'Space Mono', monospace;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; padding: 24px 16px; }
+  .wrap { max-width: 480px; margin: 0 auto; }
+  .logo { font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+  .card h2 { font-size: 14px; font-weight: 600; margin-bottom: 14px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; margin-top: 14px; }
+  label:first-of-type { margin-top: 0; }
+  input[type="text"], input[type="password"], select {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 12px; font-family: var(--font); font-size: 14px; outline: none;
+  }
+  input:focus, select:focus { border-color: var(--accent); }
+  select { cursor: pointer; }
+
+  .file-drop {
+    border: 2px dashed var(--border); border-radius: 10px; padding: 24px; text-align: center;
+    cursor: pointer; transition: border-color 0.15s; color: var(--muted); font-size: 13px;
+  }
+  .file-drop:hover { border-color: var(--accent); }
+  .file-drop img { max-width: 100%; max-height: 200px; border-radius: 8px; }
+  #fileInput { display: none; }
+
+  .btn {
+    width: 100%; background: var(--accent); color: #0e0e0e; border: none; border-radius: var(--radius);
+    padding: 14px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: background 0.15s; margin-top: 18px;
+  }
+  .btn:hover { background: var(--accent-dark); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--surface2); border-color: var(--accent); }
+
+  .status { font-size: 13px; margin-top: 12px; padding: 10px 12px; border-radius: 8px; display: none; }
+  .status.show { display: block; }
+  .status.ok { background: rgba(200,241,53,0.1); color: var(--accent); border: 1px solid var(--accent); }
+  .status.err { background: rgba(255,85,85,0.1); color: #ff5555; border: 1px solid #ff5555; }
+  .status.loading { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+
+  .new-cat-row { display: flex; gap: 8px; margin-top: 8px; }
+  .new-cat-row input { flex: 1; }
+  .new-cat-row button { flex-shrink: 0; }
+
+  .token-ok { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--accent); }
+  .token-ok button { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: 12px; margin-left: auto; }
+
+  a.help-link { color: var(--accent); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">YUZU · ADMIN</div>
+  <div class="subtitle">Subir productos al catálogo</div>
+
+  <!-- CONFIGURACIÓN (solo la primera vez) -->
+  <div class="card" id="setupCard">
+    <h2>Configuración (una sola vez)</h2>
+    <label>Tu usuario de GitHub</label>
+    <input type="text" id="repoOwner" placeholder="ej: yuzucr">
+    <label>Nombre del repositorio</label>
+    <input type="text" id="repoName" placeholder="ej: Yuzu-Catalogo">
+    <label>Token de acceso de GitHub</label>
+    <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx">
+    <p style="font-size:11px; color:var(--muted); margin-top:8px; line-height:1.6;">
+      ¿No tenés token? Andá a github.com → foto de perfil → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new. Dale acceso de "Contents: Read and write" solo a este repositorio, y pegá el token acá.
+    </p>
+    <button class="btn" onclick="guardarConfig()">Guardar configuración</button>
+  </div>
+
+  <div class="card" id="configOk" style="display:none;">
+    <div class="token-ok">
+      ✓ Configuración guardada en este navegador
+      <button onclick="borrarConfig()">cambiar</button>
+    </div>
+  </div>
+
+  <!-- FORMULARIO PRODUCTO -->
+  <div class="card" id="formCard" style="display:none;">
+    <h2>Nuevo producto</h2>
+
+    <label>Foto del diseño</label>
+    <div class="file-drop" id="fileDrop" onclick="document.getElementById('fileInput').click()">
+      <span id="fileDropText">Tocá para elegir una foto</span>
+      <img id="preview" style="display:none;">
+    </div>
+    <input type="file" id="fileInput" accept="image/*">
+
+    <label>Nombre del diseño</label>
+    <input type="text" id="nombreProducto" placeholder="ej: Kenpachi — Locura">
+
+    <label>Categoría</label>
+    <select id="categoriaSelect"></select>
+    <div class="new-cat-row" id="newCatRow" style="display:none;">
+      <input type="text" id="newCatInput" placeholder="Nombre de la nueva categoría">
+      <button class="btn btn-secondary" style="margin:0; width:auto; padding:12px 16px;" onclick="confirmarNuevaCategoria()">Crear</button>
+    </div>
+
+    <button class="btn" id="subirBtn" onclick="subirProducto()">Subir producto</button>
+    <div class="status" id="status"></div>
+  </div>
+</div>
+
+<script>
+let CATEGORIAS = [];
+let PRODUCTOS = [];
+let PRODUCTOS_SHA = null;
+let CATEGORIAS_SHA = null;
+let imagenBase64 = null;
+let imagenNombre = null;
+
+function getConfig() {
+  return {
+    owner: localStorage.getItem('yuzu_owner'),
+    repo: localStorage.getItem('yuzu_repo'),
+    token: localStorage.getItem('yuzu_token')
+  };
+}
+
+function guardarConfig() {
+  const owner = document.getElementById('repoOwner').value.trim();
+  const repo = document.getElementById('repoName').value.trim();
+  const token = document.getElementById('ghToken').value.trim();
+  if (!owner || !repo || !token) { alert('Completá los 3 campos.'); return; }
+  localStorage.setItem('yuzu_owner', owner);
+  localStorage.setItem('yuzu_repo', repo);
+  localStorage.setItem('yuzu_token', token);
+  mostrarEstadoConfig();
+}
+
+function borrarConfig() {
+  localStorage.removeItem('yuzu_owner');
+  localStorage.removeItem('yuzu_repo');
+  localStorage.removeItem('yuzu_token');
+  mostrarEstadoConfig();
+}
+
+function mostrarEstadoConfig() {
+  const cfg = getConfig();
+  if (cfg.owner && cfg.repo && cfg.token) {
+    document.getElementById('setupCard').style.display = 'none';
+    document.getElementById('configOk').style.display = 'block';
+    document.getElementById('formCard').style.display = 'block';
+    cargarCategorias();
+  } else {
+    document.getElementById('setupCard').style.display = 'block';
+    document.getElementById('configOk').style.display = 'none';
+    document.getElementById('formCard').style.display = 'none';
+  }
+}
+
+async function ghGet(path) {
+  const cfg = getConfig();
+  const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}`, {
+    headers: { Authorization: `token ${cfg.token}` }
+  });
+  if (!res.ok) throw new Error(`No pude leer ${path} (${res.status})`);
+  const data = await res.json();
+  const content = decodeURIComponent(escape(atob(data.content)));
+  return { content: JSON.parse(content), sha: data.sha };
+}
+
+async function ghPut(path, contentObj, sha, message) {
+  const cfg = getConfig();
+  const contentStr = JSON.stringify(contentObj, null, 2);
+  const encoded = btoa(unescape(encodeURIComponent(contentStr)));
+  const body = { message, content: encoded };
+  if (sha) body.sha = sha;
+  const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}`, {
+    method: 'PUT',
+    headers: { Authorization: `token ${cfg.token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Error guardando ${path} (${res.status})`);
+  }
+  return await res.json();
+}
+
+async function ghPutImage(path, base64Data, message) {
+  const cfg = getConfig();
+  const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}`, {
+    method: 'PUT',
+    headers: { Authorization: `token ${cfg.token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, content: base64Data })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Error subiendo imagen (${res.status})`);
+  }
+  return await res.json();
+}
+
+async function cargarCategorias() {
+  try {
+    const { content, sha } = await ghGet('data/categorias.json');
+    CATEGORIAS = content;
+    CATEGORIAS_SHA = sha;
+    renderCategorias();
+  } catch (e) {
+    mostrarStatus('err', 'No pude cargar las categorías: ' + e.message);
+  }
+}
+
+function renderCategorias() {
+  const sel = document.getElementById('categoriaSelect');
+  sel.innerHTML = CATEGORIAS.map(c => `<option value="${c}">${c}</option>`).join('') +
+    '<option value="__nueva__">+ Crear nueva categoría</option>';
+  sel.onchange = () => {
+    document.getElementById('newCatRow').style.display = sel.value === '__nueva__' ? 'flex' : 'none';
+  };
+}
+
+function confirmarNuevaCategoria() {
+  const nueva = document.getElementById('newCatInput').value.trim();
+  if (!nueva) return;
+  if (!CATEGORIAS.includes(nueva)) CATEGORIAS.push(nueva);
+  renderCategorias();
+  document.getElementById('categoriaSelect').value = nueva;
+  document.getElementById('newCatRow').style.display = 'none';
+  document.getElementById('newCatInput').value = '';
+}
+
+document.getElementById('fileInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    imagenBase64 = reader.result.split(',')[1];
+    const ext = file.name.split('.').pop().toLowerCase();
+    imagenNombre = `img_${Date.now()}.${ext}`;
+    document.getElementById('preview').src = reader.result;
+    document.getElementById('preview').style.display = 'block';
+    document.getElementById('fileDropText').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+function mostrarStatus(tipo, msg) {
+  const el = document.getElementById('status');
+  el.className = `status show ${tipo}`;
+  el.textContent = msg;
+}
+
+function slugify(str) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+async function subirProducto() {
+  const nombre = document.getElementById('nombreProducto').value.trim();
+  const categoria = document.getElementById('categoriaSelect').value;
+
+  if (!nombre) { alert('Ponele nombre al diseño.'); return; }
+  if (!categoria || categoria === '__nueva__') { alert('Elegí o creá una categoría.'); return; }
+  if (!imagenBase64) { alert('Subí una foto.'); return; }
+
+  const btn = document.getElementById('subirBtn');
+  btn.disabled = true;
+
+  try {
+    mostrarStatus('loading', 'Subiendo foto...');
+    const imgPath = `images/${slugify(nombre)}-${imagenNombre}`;
+    await ghPutImage(imgPath, imagenBase64, `Sube imagen: ${nombre}`);
+
+    mostrarStatus('loading', 'Actualizando categorías...');
+    const catActual = await ghGet('data/categorias.json');
+    if (!catActual.content.includes(categoria)) {
+      catActual.content.push(categoria);
+    }
+    await ghPut('data/categorias.json', catActual.content, catActual.sha, `Nueva categoría: ${categoria}`);
+
+    mostrarStatus('loading', 'Guardando producto...');
+    const prodActual = await ghGet('data/products.json');
+    const nuevoProducto = {
+      id: Date.now(),
+      nombre: nombre,
+      categoria: categoria,
+      imagen: imgPath
+    };
+    prodActual.content.push(nuevoProducto);
+    await ghPut('data/products.json', prodActual.content, prodActual.sha, `Nuevo producto: ${nombre}`);
+
+    mostrarStatus('ok', `✓ "${nombre}" subido. Puede tardar 1-2 min en verse en la tienda.`);
+    document.getElementById('nombreProducto').value = '';
+    document.getElementById('preview').style.display = 'none';
+    document.getElementById('fileDropText').style.display = 'block';
+    document.getElementById('fileInput').value = '';
+    imagenBase64 = null;
+    await cargarCategorias();
+  } catch (e) {
+    mostrarStatus('err', 'Error: ' + e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+mostrarEstadoConfig();
+</script>
+</body>
+</html>
