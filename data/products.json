@@ -302,5 +302,31 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500
+  },
+  {
+    "id": 1786738917043,
+    "nombre": "Akatsuki 001",
+    "categoria": "Anime",
+    "subcategoria": "Naruto",
+    "imagenes": [
+      "images/akatsuki-001-gal-1786738917043-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/akatsuki-001-blanco-1786738917043-0.jpg",
+        "images/akatsuki-001-blanco-1786738917043-1.jpg"
+      ],
+      "Negro": [
+        "images/akatsuki-001-negro-1786738917043-2.jpg",
+        "images/akatsuki-001-negro-1786738917043-3.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 15500
   }
 ]
