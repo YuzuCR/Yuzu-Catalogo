@@ -391,5 +391,26 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786751182367,
+    "nombre": "Miles Morales",
+    "categoria": "Cultura Pop",
+    "subcategoria": "Web Collection",
+    "imagenes": [
+      "images/miles-morales-gal-1786751182367-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/miles-morales-negro-1786751182367-0.jpg",
+        "images/miles-morales-negro-1786751182367-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
