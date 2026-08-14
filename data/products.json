@@ -328,5 +328,26 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500
+  },
+  {
+    "id": 1786741796897,
+    "nombre": "Sharingan 001",
+    "categoria": "Anime",
+    "subcategoria": "Naruto",
+    "imagenes": [
+      "images/sharingan-001-gal-1786741796897-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/sharingan-001-negro-1786741796897-0.jpg",
+        "images/sharingan-001-negro-1786741796897-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 15500
   }
 ]
