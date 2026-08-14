@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "id": 1786687470769,
+    "nombre": "Eren 001",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [
+      "images/eren-001-1786687464325-0.png",
+      "images/eren-001-1786687466441-1.png",
+      "images/eren-001-1786687468344-2.png"
+    ]
+  }
+]
