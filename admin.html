@@ -30,12 +30,23 @@
   select { cursor: pointer; }
 
   .file-drop {
-    border: 2px dashed var(--border); border-radius: 10px; padding: 24px; text-align: center;
+    border: 2px dashed var(--border); border-radius: 10px; padding: 20px; text-align: center;
     cursor: pointer; transition: border-color 0.15s; color: var(--muted); font-size: 13px;
   }
   .file-drop:hover { border-color: var(--accent); }
-  .file-drop img { max-width: 100%; max-height: 200px; border-radius: 8px; }
   #fileInput { display: none; }
+
+  .preview-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .preview-item { position: relative; width: 90px; height: 90px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+  .preview-item .rm {
+    position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff;
+    border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; line-height: 1;
+  }
+  .preview-item .tag {
+    position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.75);
+    font-size: 9px; text-align: center; padding: 2px 0; color: var(--accent);
+  }
 
   .btn {
     width: 100%; background: var(--accent); color: #0e0e0e; border: none; border-radius: var(--radius);
@@ -59,8 +70,6 @@
 
   .token-ok { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--accent); }
   .token-ok button { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: 12px; margin-left: auto; }
-
-  a.help-link { color: var(--accent); font-size: 12px; }
 </style>
 </head>
 <body>
@@ -68,18 +77,14 @@
   <div class="logo">YUZU · ADMIN</div>
   <div class="subtitle">Subir productos al catálogo</div>
 
-  <!-- CONFIGURACIÓN (solo la primera vez) -->
   <div class="card" id="setupCard">
     <h2>Configuración (una sola vez)</h2>
     <label>Tu usuario de GitHub</label>
-    <input type="text" id="repoOwner" placeholder="ej: yuzucr">
+    <input type="text" id="repoOwner" placeholder="ej: YuzuCR">
     <label>Nombre del repositorio</label>
     <input type="text" id="repoName" placeholder="ej: Yuzu-Catalogo">
     <label>Token de acceso de GitHub</label>
-    <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx">
-    <p style="font-size:11px; color:var(--muted); margin-top:8px; line-height:1.6;">
-      ¿No tenés token? Andá a github.com → foto de perfil → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new. Dale acceso de "Contents: Read and write" solo a este repositorio, y pegá el token acá.
-    </p>
+    <input type="password" id="ghToken" placeholder="github_pat_xxxxx">
     <button class="btn" onclick="guardarConfig()">Guardar configuración</button>
   </div>
 
@@ -90,19 +95,18 @@
     </div>
   </div>
 
-  <!-- FORMULARIO PRODUCTO -->
   <div class="card" id="formCard" style="display:none;">
     <h2>Nuevo producto</h2>
 
-    <label>Foto del diseño</label>
+    <label>Fotos del diseño (podés subir varias — ej: espalda y frente)</label>
     <div class="file-drop" id="fileDrop" onclick="document.getElementById('fileInput').click()">
-      <span id="fileDropText">Tocá para elegir una foto</span>
-      <img id="preview" style="display:none;">
+      Tocá para elegir fotos
     </div>
-    <input type="file" id="fileInput" accept="image/*">
+    <input type="file" id="fileInput" accept="image/*" multiple>
+    <div class="preview-grid" id="previewGrid"></div>
 
     <label>Nombre del diseño</label>
-    <input type="text" id="nombreProducto" placeholder="ej: Kenpachi — Locura">
+    <input type="text" id="nombreProducto" placeholder="ej: Eren Yeager">
 
     <label>Categoría</label>
     <select id="categoriaSelect"></select>
@@ -111,18 +115,21 @@
       <button class="btn btn-secondary" style="margin:0; width:auto; padding:12px 16px;" onclick="confirmarNuevaCategoria()">Crear</button>
     </div>
 
+    <label>Subcategoría (ej: la serie de anime) — opcional</label>
+    <select id="subcategoriaSelect"></select>
+    <div class="new-cat-row" id="newSubcatRow" style="display:none;">
+      <input type="text" id="newSubcatInput" placeholder="ej: Attack on Titan">
+      <button class="btn btn-secondary" style="margin:0; width:auto; padding:12px 16px;" onclick="confirmarNuevaSubcategoria()">Crear</button>
+    </div>
+
     <button class="btn" id="subirBtn" onclick="subirProducto()">Subir producto</button>
     <div class="status" id="status"></div>
   </div>
 </div>
 
 <script>
-let CATEGORIAS = [];
-let PRODUCTOS = [];
-let PRODUCTOS_SHA = null;
-let CATEGORIAS_SHA = null;
-let imagenBase64 = null;
-let imagenNombre = null;
+let CATEGORIAS = {};
+let archivos = []; // { base64, ext, preview }
 
 function getConfig() {
   return {
@@ -209,9 +216,8 @@ async function ghPutImage(path, base64Data, message) {
 
 async function cargarCategorias() {
   try {
-    const { content, sha } = await ghGet('data/categorias.json');
+    const { content } = await ghGet('data/categorias.json');
     CATEGORIAS = content;
-    CATEGORIAS_SHA = sha;
     renderCategorias();
   } catch (e) {
     mostrarStatus('err', 'No pude cargar las categorías: ' + e.message);
@@ -220,37 +226,86 @@ async function cargarCategorias() {
 
 function renderCategorias() {
   const sel = document.getElementById('categoriaSelect');
-  sel.innerHTML = CATEGORIAS.map(c => `<option value="${c}">${c}</option>`).join('') +
+  const cats = Object.keys(CATEGORIAS);
+  sel.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join('') +
     '<option value="__nueva__">+ Crear nueva categoría</option>';
   sel.onchange = () => {
     document.getElementById('newCatRow').style.display = sel.value === '__nueva__' ? 'flex' : 'none';
+    renderSubcategorias();
+  };
+  renderSubcategorias();
+}
+
+function renderSubcategorias() {
+  const cat = document.getElementById('categoriaSelect').value;
+  const sel = document.getElementById('subcategoriaSelect');
+  if (cat === '__nueva__' || !CATEGORIAS[cat]) {
+    sel.innerHTML = '<option value="">— ninguna —</option>';
+    return;
+  }
+  const subs = CATEGORIAS[cat] || [];
+  sel.innerHTML = '<option value="">— ninguna —</option>' +
+    subs.map(s => `<option value="${s}">${s}</option>`).join('') +
+    '<option value="__nueva__">+ Crear nueva subcategoría</option>';
+  sel.onchange = () => {
+    document.getElementById('newSubcatRow').style.display = sel.value === '__nueva__' ? 'flex' : 'none';
   };
 }
 
 function confirmarNuevaCategoria() {
   const nueva = document.getElementById('newCatInput').value.trim();
   if (!nueva) return;
-  if (!CATEGORIAS.includes(nueva)) CATEGORIAS.push(nueva);
+  if (!CATEGORIAS[nueva]) CATEGORIAS[nueva] = [];
   renderCategorias();
   document.getElementById('categoriaSelect').value = nueva;
   document.getElementById('newCatRow').style.display = 'none';
   document.getElementById('newCatInput').value = '';
+  renderSubcategorias();
+}
+
+function confirmarNuevaSubcategoria() {
+  const nueva = document.getElementById('newSubcatInput').value.trim();
+  if (!nueva) return;
+  const cat = document.getElementById('categoriaSelect').value;
+  if (!CATEGORIAS[cat].includes(nueva)) CATEGORIAS[cat].push(nueva);
+  renderSubcategorias();
+  document.getElementById('subcategoriaSelect').value = nueva;
+  document.getElementById('newSubcatRow').style.display = 'none';
+  document.getElementById('newSubcatInput').value = '';
 }
 
 document.getElementById('fileInput').addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    imagenBase64 = reader.result.split(',')[1];
-    const ext = file.name.split('.').pop().toLowerCase();
-    imagenNombre = `img_${Date.now()}.${ext}`;
-    document.getElementById('preview').src = reader.result;
-    document.getElementById('preview').style.display = 'block';
-    document.getElementById('fileDropText').style.display = 'none';
-  };
-  reader.readAsDataURL(file);
+  const files = Array.from(e.target.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      archivos.push({
+        base64: reader.result.split(',')[1],
+        ext: file.name.split('.').pop().toLowerCase(),
+        preview: reader.result
+      });
+      renderPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
 });
+
+function renderPreviews() {
+  const grid = document.getElementById('previewGrid');
+  grid.innerHTML = archivos.map((a, i) => `
+    <div class="preview-item">
+      <img src="${a.preview}">
+      <span class="tag">${i === 0 ? 'principal' : 'foto ' + (i+1)}</span>
+      <button class="rm" onclick="quitarFoto(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function quitarFoto(i) {
+  archivos.splice(i, 1);
+  renderPreviews();
+}
 
 function mostrarStatus(tipo, msg) {
   const el = document.getElementById('status');
@@ -266,43 +321,48 @@ function slugify(str) {
 async function subirProducto() {
   const nombre = document.getElementById('nombreProducto').value.trim();
   const categoria = document.getElementById('categoriaSelect').value;
+  const subcategoria = document.getElementById('subcategoriaSelect').value;
 
   if (!nombre) { alert('Ponele nombre al diseño.'); return; }
   if (!categoria || categoria === '__nueva__') { alert('Elegí o creá una categoría.'); return; }
-  if (!imagenBase64) { alert('Subí una foto.'); return; }
+  if (subcategoria === '__nueva__') { alert('Confirmá o cancelá la subcategoría nueva.'); return; }
+  if (archivos.length === 0) { alert('Subí al menos una foto.'); return; }
 
   const btn = document.getElementById('subirBtn');
   btn.disabled = true;
 
   try {
-    mostrarStatus('loading', 'Subiendo foto...');
-    const imgPath = `images/${slugify(nombre)}-${imagenNombre}`;
-    await ghPutImage(imgPath, imagenBase64, `Sube imagen: ${nombre}`);
+    mostrarStatus('loading', `Subiendo ${archivos.length} foto(s)...`);
+    const rutasImagenes = [];
+    for (let i = 0; i < archivos.length; i++) {
+      const path = `images/${slugify(nombre)}-${Date.now()}-${i}.${archivos[i].ext}`;
+      await ghPutImage(path, archivos[i].base64, `Sube imagen ${i+1}: ${nombre}`);
+      rutasImagenes.push(path);
+    }
 
     mostrarStatus('loading', 'Actualizando categorías...');
     const catActual = await ghGet('data/categorias.json');
-    if (!catActual.content.includes(categoria)) {
-      catActual.content.push(categoria);
+    if (!catActual.content[categoria]) catActual.content[categoria] = [];
+    if (subcategoria && !catActual.content[categoria].includes(subcategoria)) {
+      catActual.content[categoria].push(subcategoria);
     }
-    await ghPut('data/categorias.json', catActual.content, catActual.sha, `Nueva categoría: ${categoria}`);
+    await ghPut('data/categorias.json', catActual.content, catActual.sha, `Actualiza categorías: ${categoria}`);
 
     mostrarStatus('loading', 'Guardando producto...');
     const prodActual = await ghGet('data/products.json');
-    const nuevoProducto = {
+    prodActual.content.push({
       id: Date.now(),
       nombre: nombre,
       categoria: categoria,
-      imagen: imgPath
-    };
-    prodActual.content.push(nuevoProducto);
+      subcategoria: subcategoria || null,
+      imagenes: rutasImagenes
+    });
     await ghPut('data/products.json', prodActual.content, prodActual.sha, `Nuevo producto: ${nombre}`);
 
-    mostrarStatus('ok', `✓ "${nombre}" subido. Puede tardar 1-2 min en verse en la tienda.`);
+    mostrarStatus('ok', `✓ "${nombre}" subido con ${archivos.length} foto(s). Puede tardar 1-2 min en verse en la tienda.`);
     document.getElementById('nombreProducto').value = '';
-    document.getElementById('preview').style.display = 'none';
-    document.getElementById('fileDropText').style.display = 'block';
-    document.getElementById('fileInput').value = '';
-    imagenBase64 = null;
+    archivos = [];
+    renderPreviews();
     await cargarCategorias();
   } catch (e) {
     mostrarStatus('err', 'Error: ' + e.message);
