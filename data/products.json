@@ -281,5 +281,26 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500
+  },
+  {
+    "id": 1786738261684,
+    "nombre": "Maomao 001",
+    "categoria": "Anime",
+    "subcategoria": "Los diarios de la boticaria",
+    "imagenes": [
+      "images/maomao-001-gal-1786738261684-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/maomao-001-negro-1786738261684-0.jpg",
+        "images/maomao-001-negro-1786738261684-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 15500
   }
 ]
