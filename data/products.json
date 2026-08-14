@@ -142,5 +142,36 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500
+  },
+  {
+    "id": 1786734852270,
+    "nombre": "Vegeta",
+    "categoria": "Anime",
+    "subcategoria": "Dragon Ball",
+    "imagenes": [
+      "images/vegeta-gal-1786734852270-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/vegeta-negro-1786734852270-0.jpg",
+        "images/vegeta-negro-1786734852270-1.jpg"
+      ],
+      "Verde musgo": [
+        "images/vegeta-verde-musgo-1786734852270-2.jpg",
+        "images/vegeta-verde-musgo-1786734852270-3.jpg"
+      ],
+      "Crema": [
+        "images/vegeta-crema-1786734852270-4.jpg",
+        "images/vegeta-crema-1786734852270-5.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Verde musgo"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 17500
   }
 ]
