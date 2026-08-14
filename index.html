@@ -76,6 +76,11 @@
   .card-sub { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
   .card-footer { display: flex; align-items: center; justify-content: space-between; }
   .card-price { font-size: 15px; font-weight: 600; color: var(--accent); }
+  .card-price.old { color: var(--muted); text-decoration: line-through; font-size: 12px; font-weight: 400; margin-right: 6px; }
+  .badge-oferta {
+    position: absolute; top: 8px; right: 8px; background: #ff5555; color: #fff; border-radius: 20px;
+    padding: 2px 8px; font-size: 10px; font-weight: 700; font-family: var(--mono); text-transform: uppercase;
+  }
   .add-btn {
     background: var(--accent); color: #0e0e0e; border: none; border-radius: 6px; width: 32px; height: 32px;
     font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;
@@ -104,6 +109,7 @@
   .modal-title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
   .modal-cat { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
   .modal-price { font-size: 18px; font-weight: 700; color: var(--accent); margin-bottom: 20px; }
+  .modal-price .old { color: var(--muted); text-decoration: line-through; font-size: 14px; font-weight: 400; margin-right: 8px; }
 
   .field-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); margin-bottom: 8px; display: block; }
 
@@ -216,7 +222,7 @@
     <div class="modal-body">
       <div class="modal-title" id="modalTitle"></div>
       <div class="modal-cat" id="modalCat"></div>
-      <div class="modal-price">₡19,500</div>
+      <div class="modal-price" id="modalPrice"></div>
 
       <label class="field-label">Talla</label>
       <div class="size-grid" id="sizeGrid"></div>
@@ -261,6 +267,7 @@ let currentProduct = null;
 let currentImgIndex = 0;
 let selectedSize = null;
 let selectedColor = 'Blanco';
+let precioActual = PRECIO;
 const COLORES = [
   { name: 'Blanco', hex: '#ffffff' },
   { name: 'Negro', hex: '#1a1a1a' },
@@ -353,17 +360,21 @@ function renderCatalog() {
 
   catalog.innerHTML = prods.map(p => {
     const img = (p.imagenes && p.imagenes[0]) || null;
+    const precio = p.precio || PRECIO;
+    const enOferta = p.enDescuento && p.precioDescuento;
+    const precioMostrar = enOferta ? p.precioDescuento : precio;
     return `
     <div class="card" onclick="openModal(${p.id})">
       <div class="card-img">
         ${img ? `<img src="${img}" alt="${p.nombre}" loading="lazy">` : '<span class="placeholder">👕</span>'}
         <span class="card-cat-badge">${p.categoria}</span>
+        ${enOferta ? '<span class="badge-oferta">Oferta</span>' : ''}
       </div>
       <div class="card-body">
         <div class="card-name">${p.nombre}</div>
         <div class="card-sub">${p.subcategoria || ''}</div>
         <div class="card-footer">
-          <span class="card-price">₡19,500</span>
+          <span class="card-price">${enOferta ? `<span class="old">₡${precio.toLocaleString('es-CR')}</span>` : ''}₡${precioMostrar.toLocaleString('es-CR')}</span>
           <button class="add-btn" onclick="event.stopPropagation(); openModal(${p.id})">+</button>
         </div>
       </div>
@@ -383,6 +394,13 @@ function openModal(id) {
   document.getElementById('modalCat').textContent = currentProduct.subcategoria
     ? `${currentProduct.categoria} · ${currentProduct.subcategoria}`
     : currentProduct.categoria;
+
+  precioActual = currentProduct.precio || PRECIO;
+  const enOferta = currentProduct.enDescuento && currentProduct.precioDescuento;
+  if (enOferta) precioActual = currentProduct.precioDescuento;
+  document.getElementById('modalPrice').innerHTML = enOferta
+    ? `<span class="old">₡${(currentProduct.precio || PRECIO).toLocaleString('es-CR')}</span>₡${precioActual.toLocaleString('es-CR')}`
+    : `₡${precioActual.toLocaleString('es-CR')}`;
 
   renderModalImg();
 
@@ -448,7 +466,7 @@ function closeModalOutside(e) {
 
 function addToCart() {
   if (!selectedSize) { alert('Por favor elegí una talla.'); return; }
-  cart.push({ id: Date.now(), nombre: currentProduct.nombre, talla: selectedSize, color: selectedColor, precio: PRECIO });
+  cart.push({ id: Date.now(), nombre: currentProduct.nombre, talla: selectedSize, color: selectedColor, precio: precioActual });
   updateCart();
   closeModal();
   openCart();
