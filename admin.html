@@ -444,13 +444,12 @@ async function subirProducto() {
   if (!nombre) { alert('Ponele nombre al diseño.'); return; }
   if (!categoria || categoria === '__nueva__') { alert('Elegí o creá una categoría.'); return; }
   if (subcategoria === '__nueva__') { alert('Confirmá o cancelá la subcategoría nueva.'); return; }
-  if (archivos.length === 0) { alert('Subí al menos una foto.'); return; }
+  
+  if (imagenes.length === 0) { alert('Subí al menos una imagen en la galería.'); return; }
+  if (mockups.length === 0) { alert('Subí al menos un mockup (uno por cada color disponible).'); return; }
 
   const colores = Array.from(document.querySelectorAll('#colorCheckGrid input:checked')).map(i => i.value);
   if (colores.length === 0) { alert('Marcá al menos un color disponible.'); return; }
-
-  if (imagenes.length === 0) { alert('Subí al menos una imagen en la galería.'); return; }
-  if (mockups.length === 0) { alert('Subí al menos un mockup (uno por cada color disponible).'); return; }
 
   const precio = parseInt(document.getElementById('precioInput').value.replace(/\D/g, ''), 10);
   if (!precio || precio <= 0) { alert('Poné un precio válido.'); return; }
