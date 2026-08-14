@@ -358,14 +358,14 @@ function renderCatalog() {
   }
 
   catalog.innerHTML = prods.map(p => {
-    const img = (p.imagenes && p.imagenes[0]) || null;
+    const imgPrincipal = (p.imagenes && p.imagenes[0]) || null;
     const precio = p.precio || PRECIO;
     const enOferta = p.enDescuento && p.precioDescuento;
     const precioMostrar = enOferta ? p.precioDescuento : precio;
     return `
     <div class="card" onclick="openModal(${p.id})">
       <div class="card-img">
-        ${img ? `<img src="${img}" alt="${p.nombre}" loading="lazy">` : '<span class="placeholder">👕</span>'}
+        ${imgPrincipal ? `<img src="${imgPrincipal}" alt="${p.nombre}" loading="lazy">` : '<span class="placeholder">👕</span>'}
         <span class="card-cat-badge">${p.categoria}</span>
         ${enOferta ? '<span class="badge-oferta">Oferta</span>' : ''}
       </div>
@@ -401,14 +401,15 @@ function openModal(id) {
     ? `<span class="old">₡${(currentProduct.precio || PRECIO).toLocaleString('es-CR')}</span>₡${precioActual.toLocaleString('es-CR')}`
     : `₡${precioActual.toLocaleString('es-CR')}`;
 
+  const disponibles = currentProduct.colores || COLORES.map(c => c.name);
+  selectedColor = disponibles[0] || 'Blanco';
+
   renderModalImg();
 
   document.getElementById('sizeGrid').innerHTML = SIZES.map(s =>
     `<button class="size-btn" onclick="selectSize(this, '${s}')">${s}</button>`
   ).join('');
 
-  const disponibles = currentProduct.colores || COLORES.map(c => c.name);
-  selectedColor = disponibles[0] || 'Blanco';
   document.getElementById('colorGrid').innerHTML = COLORES.map(c => {
     const disp = disponibles.includes(c.name);
     return `<div class="color-opt${disp ? '' : ' disabled'}${c.name === selectedColor ? ' selected' : ''}"
@@ -430,14 +431,14 @@ function renderModalImg() {
   const thumbsEl = document.getElementById('modalThumbs');
   if (imgs.length > 1) {
     thumbsEl.innerHTML = imgs.map((im, i) =>
-      `<div class="modal-thumb${i === currentImgIndex ? ' active' : ''}" onclick="cambiarImg(${i})"><img src="${im}"></div>`
+      `<div class="modal-thumb${i === currentImgIndex ? ' active' : ''}" onclick="cambiarImgGaleria(${i})"><img src="${im}"></div>`
     ).join('');
   } else {
     thumbsEl.innerHTML = '';
   }
 }
 
-function cambiarImg(i) {
+function cambiarImgGaleria(i) {
   currentImgIndex = i;
   renderModalImg();
 }
@@ -452,6 +453,13 @@ function selectColor(el, color) {
   document.querySelectorAll('.color-opt').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   selectedColor = color;
+  
+  // Si hay mockup para este color, cambia a ese mockup
+  if (currentProduct.mockups && currentProduct.mockups[color]) {
+    document.getElementById('modalImg').innerHTML = 
+      `<img src="${currentProduct.mockups[color]}" alt="${currentProduct.nombre} - ${color}">`;
+    document.getElementById('modalThumbs').innerHTML = ''; // Oculta los thumbs cuando está viendo el mockup
+  }
 }
 
 function closeModal() {
