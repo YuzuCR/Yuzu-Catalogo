@@ -76,6 +76,24 @@
   .check-row { display: flex; align-items: center; gap: 8px; margin-top: 18px; cursor: pointer; }
   .check-row input { width: auto; }
   .check-row span { font-size: 13px; color: var(--text); }
+
+  .prod-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .prod-thumb { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; background: var(--surface2); flex-shrink: 0; }
+  .prod-info { flex: 1; min-width: 0; }
+  .prod-nombre { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .prod-meta { font-size: 11px; color: var(--muted); }
+  .prod-meta .tachado { text-decoration: line-through; margin-right: 5px; }
+  .prod-meta .vigente { color: var(--accent); }
+  .prod-btn {
+    background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 6px; width: 32px; height: 32px; cursor: pointer; font-size: 14px; flex-shrink: 0;
+  }
+  .prod-btn:hover { border-color: var(--accent); color: var(--text); }
+  .prod-btn.del:hover { border-color: #ff5555; color: #ff5555; }
+  .prod-edit { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin: 8px 0 14px; }
+  .prod-edit label { margin-top: 12px; }
+  .prod-edit label:first-child { margin-top: 0; }
+  .prod-edit .btn { margin-top: 14px; }
 </style>
 </head>
 <body>
@@ -148,6 +166,16 @@
 
     <button class="btn" id="btnSubir">Subir producto</button>
     <div class="status" id="status"></div>
+  </div>
+
+  <div class="card" id="editCard" style="display:none;">
+    <h2>Editar productos</h2>
+    <div class="row" style="margin-top:0;">
+      <button class="btn btn-secondary" id="btnRecargar" style="margin-top:0;">Recargar lista</button>
+      <button class="btn btn-secondary" id="btnQuitarDesc" style="margin-top:0;">Quitar todos los descuentos</button>
+    </div>
+    <div id="listaProductos" style="margin-top:16px;"></div>
+    <div class="status" id="statusEdit"></div>
   </div>
 </div>
 
@@ -225,12 +253,14 @@ function mostrarEstadoConfig() {
     $('setupCard').style.display = 'none';
     $('configOk').style.display = 'block';
     $('formCard').style.display = 'block';
+    $('editCard').style.display = 'block';
     renderColorChecks();
-    cargarCategorias();
+    cargarCategorias().then(cargarProductos);
   } else {
     $('setupCard').style.display = 'block';
     $('configOk').style.display = 'none';
     $('formCard').style.display = 'none';
+    $('editCard').style.display = 'none';
   }
 }
 
@@ -566,11 +596,180 @@ function subirProducto() {
     renderGaleria();
     renderMockups();
     renderColorChecks();
-    return cargarCategorias();
+    return cargarCategorias().then(cargarProductos);
   }).catch(function (e) {
     mostrarStatus('err', 'Error: ' + e.message);
   }).then(function () {
     btn.disabled = false;
+  });
+}
+
+/* ---------- EDITAR PRODUCTOS ---------- */
+
+var PRODUCTOS = [];
+
+function statusEdit(tipo, msg) {
+  var el = $('statusEdit');
+  el.className = 'status show ' + tipo;
+  el.textContent = msg;
+}
+
+function cargarProductos() {
+  statusEdit('loading', 'Cargando productos...');
+  return ghGet('data/products.json').then(function (r) {
+    PRODUCTOS = r.content;
+    renderLista();
+    $('statusEdit').className = 'status';
+  }).catch(function (e) {
+    statusEdit('err', e.message);
+  });
+}
+
+function portadaDe(p) {
+  if (p.imagenes && p.imagenes.length) return p.imagenes[0];
+  if (p.mockups) {
+    var claves = Object.keys(p.mockups);
+    if (claves.length) {
+      var primero = p.mockups[claves[0]];
+      return (typeof primero === 'string') ? primero : primero[0];
+    }
+  }
+  return '';
+}
+
+function plata(n) {
+  return '₡' + Number(n).toLocaleString('es-CR');
+}
+
+function renderLista() {
+  if (!PRODUCTOS.length) {
+    $('listaProductos').innerHTML = '<div style="color:var(--muted);font-size:13px;">No hay productos todavía.</div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < PRODUCTOS.length; i++) {
+    var p = PRODUCTOS[i];
+    var precio = p.precio || 19500;
+    var meta;
+    if (p.enDescuento && p.precioDescuento) {
+      meta = '<span class="tachado">' + plata(precio) + '</span><span class="vigente">' + plata(p.precioDescuento) + '</span>';
+    } else {
+      meta = '<span class="vigente">' + plata(precio) + '</span>';
+    }
+    html += '<div class="prod-row">';
+    html += '<img class="prod-thumb" src="' + portadaDe(p) + '">';
+    html += '<div class="prod-info"><div class="prod-nombre">' + p.nombre + '</div>';
+    html += '<div class="prod-meta">' + meta + '</div></div>';
+    html += '<button class="prod-btn" data-accion="editar" data-i="' + i + '">✎</button>';
+    html += '<button class="prod-btn del" data-accion="borrar" data-i="' + i + '">✕</button>';
+    html += '</div>';
+    html += '<div class="prod-edit" id="edit-' + i + '" style="display:none;"></div>';
+  }
+  $('listaProductos').innerHTML = html;
+}
+
+function abrirEdicion(i) {
+  var caja = $('edit-' + i);
+  if (caja.style.display === 'block') { caja.style.display = 'none'; return; }
+
+  var p = PRODUCTOS[i];
+  var precio = p.precio || 19500;
+  var colores = p.colores || [];
+  var cats = Object.keys(CATEGORIAS);
+
+  var html = '<label>Nombre</label>';
+  html += '<input type="text" id="e-nombre-' + i + '" value="' + p.nombre + '">';
+
+  html += '<label>Categoría</label><select id="e-cat-' + i + '">';
+  for (var c = 0; c < cats.length; c++) {
+    html += '<option value="' + cats[c] + '"' + (p.categoria === cats[c] ? ' selected' : '') + '>' + cats[c] + '</option>';
+  }
+  html += '</select>';
+
+  html += '<label>Subcategoría</label>';
+  html += '<input type="text" id="e-sub-' + i + '" value="' + (p.subcategoria || '') + '" placeholder="dejá vacío para ninguna">';
+
+  html += '<label>Colores disponibles</label><div class="color-check-grid">';
+  for (var k = 0; k < COLORES.length; k++) {
+    var marcado = colores.indexOf(COLORES[k].name) !== -1 ? ' checked' : '';
+    var sombra = COLORES[k].name === 'Blanco' ? 'inset 0 0 0 1px #444' : 'none';
+    html += '<label class="color-check">';
+    html += '<input type="checkbox" class="e-color-' + i + '" value="' + COLORES[k].name + '"' + marcado + '>';
+    html += '<span class="swatch" style="background:' + COLORES[k].hex + ';box-shadow:' + sombra + ';"></span>';
+    html += '<span class="lbl">' + COLORES[k].name + '</span></label>';
+  }
+  html += '</div>';
+
+  html += '<label>Precio</label>';
+  html += '<input type="text" id="e-precio-' + i + '" value="' + precio + '" inputmode="numeric">';
+
+  html += '<label class="check-row"><input type="checkbox" id="e-desc-' + i + '"' + (p.enDescuento ? ' checked' : '') + '>';
+  html += '<span>Está en descuento</span></label>';
+  html += '<label>Precio con descuento</label>';
+  html += '<input type="text" id="e-precdesc-' + i + '" value="' + (p.precioDescuento || '') + '" inputmode="numeric">';
+
+  html += '<button class="btn" data-accion="guardar" data-i="' + i + '">Guardar cambios</button>';
+
+  caja.innerHTML = html;
+  caja.style.display = 'block';
+}
+
+function guardarEdicion(i) {
+  var p = PRODUCTOS[i];
+  var nombre = $('e-nombre-' + i).value.trim();
+  if (!nombre) { alert('El nombre no puede quedar vacío.'); return; }
+
+  var precio = parseInt($('e-precio-' + i).value.replace(/\D/g, ''), 10);
+  if (!precio || precio <= 0) { alert('Poné un precio válido.'); return; }
+
+  var enDescuento = $('e-desc-' + i).checked;
+  var precioDescuento = parseInt($('e-precdesc-' + i).value.replace(/\D/g, ''), 10) || null;
+  if (enDescuento && (!precioDescuento || precioDescuento >= precio)) {
+    alert('El precio con descuento tiene que ser menor al precio normal.');
+    return;
+  }
+
+  var marcados = document.querySelectorAll('.e-color-' + i + ':checked');
+  var colores = [];
+  for (var m = 0; m < marcados.length; m++) colores.push(marcados[m].value);
+  if (!colores.length) { alert('Marcá al menos un color.'); return; }
+
+  p.nombre = nombre;
+  p.categoria = $('e-cat-' + i).value;
+  p.subcategoria = $('e-sub-' + i).value.trim() || null;
+  p.colores = colores;
+  p.precio = precio;
+  p.enDescuento = enDescuento;
+  p.precioDescuento = enDescuento ? precioDescuento : null;
+
+  guardarProductos('Edita: ' + nombre);
+}
+
+function borrarProducto(i) {
+  var p = PRODUCTOS[i];
+  if (!confirm('¿Borrar "' + p.nombre + '" del catálogo?')) return;
+  PRODUCTOS.splice(i, 1);
+  guardarProductos('Borra: ' + p.nombre);
+}
+
+function quitarTodosLosDescuentos() {
+  if (!confirm('¿Quitar el descuento a los ' + PRODUCTOS.length + ' productos?')) return;
+  for (var i = 0; i < PRODUCTOS.length; i++) {
+    PRODUCTOS[i].enDescuento = false;
+    PRODUCTOS[i].precioDescuento = null;
+  }
+  guardarProductos('Quita todos los descuentos');
+}
+
+function guardarProductos(mensaje) {
+  statusEdit('loading', 'Guardando...');
+  ghGet('data/products.json').then(function (r) {
+    return ghPut('data/products.json', PRODUCTOS, r.sha, mensaje);
+  }).then(function () {
+    statusEdit('ok', '✓ Guardado. Puede tardar 1-2 min en verse en la tienda.');
+    renderLista();
+  }).catch(function (e) {
+    statusEdit('err', e.message);
   });
 }
 
@@ -626,6 +825,19 @@ $('gridMockups').addEventListener('change', function (e) {
   if (e.target.classList.contains('mockup-color')) {
     mockups[parseInt(e.target.getAttribute('data-i'), 10)].color = e.target.value || null;
   }
+});
+
+$('btnRecargar').addEventListener('click', cargarProductos);
+$('btnQuitarDesc').addEventListener('click', quitarTodosLosDescuentos);
+
+$('listaProductos').addEventListener('click', function (e) {
+  var btn = e.target.closest('[data-accion]');
+  if (!btn) return;
+  var i = parseInt(btn.getAttribute('data-i'), 10);
+  var accion = btn.getAttribute('data-accion');
+  if (accion === 'editar') abrirEdicion(i);
+  else if (accion === 'borrar') borrarProducto(i);
+  else if (accion === 'guardar') guardarEdicion(i);
 });
 
 mostrarEstadoConfig();
