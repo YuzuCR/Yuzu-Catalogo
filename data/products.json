@@ -208,5 +208,36 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500
+  },
+  {
+    "id": 1786735470244,
+    "nombre": "Gravity Falls 001",
+    "categoria": "Cultura Pop",
+    "subcategoria": "Gravity Falls",
+    "imagenes": [
+      "images/gravity-falls-001-gal-1786735470244-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/gravity-falls-001-negro-1786735470244-0.jpg",
+        "images/gravity-falls-001-negro-1786735470244-1.jpg"
+      ],
+      "Crema": [
+        "images/gravity-falls-001-crema-1786735470244-2.jpg",
+        "images/gravity-falls-001-crema-1786735470244-3.jpg"
+      ],
+      "Verde musgo": [
+        "images/gravity-falls-001-verde-musgo-1786735470244-4.jpg",
+        "images/gravity-falls-001-verde-musgo-1786735470244-5.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Verde musgo"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 16500
   }
 ]
