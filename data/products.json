@@ -239,5 +239,26 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 16500
+  },
+  {
+    "id": 1786735775932,
+    "nombre": "Jack 001",
+    "categoria": "Cultura Pop",
+    "subcategoria": "Gravity Falls",
+    "imagenes": [
+      "images/jack-001-gal-1786735775932-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/jack-001-negro-1786735775932-0.jpg",
+        "images/jack-001-negro-1786735775932-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": true,
+    "precioDescuento": 15500
   }
 ]
