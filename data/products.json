@@ -496,5 +496,25 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786753922376,
+    "nombre": "Kushina",
+    "categoria": "Colecciones",
+    "subcategoria": "Mom Series",
+    "imagenes": [
+      "images/kushina-gal-1786753922376-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/kushina-negro-1786753922376-0.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
