@@ -576,5 +576,49 @@
     "precio": 18600,
     "enDescuento": true,
     "precioDescuento": 15900
+  },
+  {
+    "id": 1786831106586,
+    "nombre": "Mikasa 001",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [
+      "images/mikasa-001-gal-1786831106586-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/mikasa-001-blanco-1786831106586-0.jpg"
+      ],
+      "Café": [
+        "images/mikasa-001-cafe-1786831106586-1.jpg"
+      ],
+      "Azul marino": [
+        "images/mikasa-001-azul-marino-1786831106586-2.jpg"
+      ],
+      "Gris grafito": [
+        "images/mikasa-001-gris-grafito-1786831106586-3.jpg"
+      ],
+      "Negro": [
+        "images/mikasa-001-negro-1786831106586-4.jpg"
+      ],
+      "Verde musgo": [
+        "images/mikasa-001-verde-musgo-1786831106586-5.jpg"
+      ],
+      "Crema": [
+        "images/mikasa-001-crema-1786831106586-6.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
