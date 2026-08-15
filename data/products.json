@@ -516,5 +516,25 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786754007333,
+    "nombre": "Bell-Mére",
+    "categoria": "Colecciones",
+    "subcategoria": "Mom Series",
+    "imagenes": [
+      "images/bell-mere-gal-1786754007333-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/bell-mere-blanco-1786754007333-0.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
