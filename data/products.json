@@ -620,5 +620,49 @@
     "precio": 16500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786831205702,
+    "nombre": "Armin 001",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [
+      "images/armin-001-gal-1786831205702-0.jpg"
+    ],
+    "mockups": {
+      "Azul marino": [
+        "images/armin-001-azul-marino-1786831205702-0.jpg"
+      ],
+      "Negro": [
+        "images/armin-001-negro-1786831205702-1.jpg"
+      ],
+      "Verde musgo": [
+        "images/armin-001-verde-musgo-1786831205702-2.jpg"
+      ],
+      "Blanco": [
+        "images/armin-001-blanco-1786831205702-3.jpg"
+      ],
+      "Café": [
+        "images/armin-001-cafe-1786831205702-4.jpg"
+      ],
+      "Gris grafito": [
+        "images/armin-001-gris-grafito-1786831205702-5.jpg"
+      ],
+      "Crema": [
+        "images/armin-001-crema-1786831205702-6.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
