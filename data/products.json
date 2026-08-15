@@ -476,5 +476,25 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786753886466,
+    "nombre": "Florinda",
+    "categoria": "Colecciones",
+    "subcategoria": "Mom Series",
+    "imagenes": [
+      "images/florinda-gal-1786753886466-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/florinda-blanco-1786753886466-0.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
