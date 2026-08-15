@@ -536,5 +536,25 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786760142535,
+    "nombre": "I always Feel like",
+    "categoria": "Originales",
+    "subcategoria": "Paranoia",
+    "imagenes": [
+      "images/i-always-feel-like-gal-1786760142535-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/i-always-feel-like-negro-1786760142535-0.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 18000,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
