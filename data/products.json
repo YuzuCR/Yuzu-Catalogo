@@ -556,5 +556,25 @@
     "precio": 18000,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786760507181,
+    "nombre": "Not Punk",
+    "categoria": "Originales",
+    "subcategoria": "Paranoia",
+    "imagenes": [
+      "images/not-punk-gal-1786760507181-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/not-punk-negro-1786760507181-0.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 18600,
+    "enDescuento": true,
+    "precioDescuento": 15900
   }
 ]
