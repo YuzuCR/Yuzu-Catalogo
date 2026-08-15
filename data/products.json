@@ -456,5 +456,25 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786753819497,
+    "nombre": "Dororo",
+    "categoria": "Colecciones",
+    "subcategoria": "Mom Series",
+    "imagenes": [
+      "images/dororo-gal-1786753819497-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/dororo-negro-1786753819497-0.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
