@@ -663,5 +663,56 @@
     "precio": 16500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1786831750225,
+    "nombre": "Berserk 001",
+    "categoria": "Anime",
+    "subcategoria": "Berserk",
+    "imagenes": [
+      "images/berserk-001-gal-1786831750225-0.jpg"
+    ],
+    "mockups": {
+      "Azul marino": [
+        "images/berserk-001-azul-marino-1786831750225-0.jpg",
+        "images/berserk-001-azul-marino-1786831750225-10.jpg"
+      ],
+      "Blanco": [
+        "images/berserk-001-blanco-1786831750225-1.jpg",
+        "images/berserk-001-blanco-1786831750225-11.jpg"
+      ],
+      "Negro": [
+        "images/berserk-001-negro-1786831750225-2.jpg",
+        "images/berserk-001-negro-1786831750225-3.jpg"
+      ],
+      "Verde musgo": [
+        "images/berserk-001-verde-musgo-1786831750225-4.jpg",
+        "images/berserk-001-verde-musgo-1786831750225-8.jpg"
+      ],
+      "Crema": [
+        "images/berserk-001-crema-1786831750225-5.jpg",
+        "images/berserk-001-crema-1786831750225-12.jpg"
+      ],
+      "Gris grafito": [
+        "images/berserk-001-gris-grafito-1786831750225-6.jpg",
+        "images/berserk-001-gris-grafito-1786831750225-9.jpg"
+      ],
+      "Café": [
+        "images/berserk-001-cafe-1786831750225-7.jpg",
+        "images/berserk-001-cafe-1786831750225-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 18500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
