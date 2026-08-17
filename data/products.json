@@ -756,5 +756,25 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1787009402055,
+    "nombre": "Spider",
+    "categoria": "Originales",
+    "subcategoria": "Yuzu Selection",
+    "imagenes": [
+      "images/spider-gal-1787009402055-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/spider-negro-1787009402055-0.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
