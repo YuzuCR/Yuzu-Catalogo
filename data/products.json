@@ -735,5 +735,26 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1787008818021,
+    "nombre": "Zoro 001",
+    "categoria": "Anime",
+    "subcategoria": "One Piece",
+    "imagenes": [
+      "images/zoro-001-gal-1787008818021-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/zoro-001-negro-1787008818021-0.jpg",
+        "images/zoro-001-negro-1787008818021-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
