@@ -714,5 +714,26 @@
     "precio": 18500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1787004992361,
+    "nombre": "Milk",
+    "categoria": "Colecciones",
+    "subcategoria": "Mom Series",
+    "imagenes": [
+      "images/milk-gal-1787004992361-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/milk-negro-1787004992361-0.jpg",
+        "images/milk-negro-1787004992361-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 19500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
