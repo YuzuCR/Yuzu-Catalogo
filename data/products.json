@@ -776,5 +776,56 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1787012245252,
+    "nombre": "Aggretsuko 001",
+    "categoria": "Anime",
+    "subcategoria": "Aggretsuko",
+    "imagenes": [
+      "images/aggretsuko-001-gal-1787012245252-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aggretsuko-001-negro-1787012245252-0.jpg",
+        "images/aggretsuko-001-negro-1787012245252-13.jpg"
+      ],
+      "Azul marino": [
+        "images/aggretsuko-001-azul-marino-1787012245252-1.jpg",
+        "images/aggretsuko-001-azul-marino-1787012245252-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aggretsuko-001-gris-grafito-1787012245252-2.jpg",
+        "images/aggretsuko-001-gris-grafito-1787012245252-9.jpg"
+      ],
+      "Crema": [
+        "images/aggretsuko-001-crema-1787012245252-3.jpg",
+        "images/aggretsuko-001-crema-1787012245252-8.jpg"
+      ],
+      "Café": [
+        "images/aggretsuko-001-cafe-1787012245252-4.jpg",
+        "images/aggretsuko-001-cafe-1787012245252-7.jpg"
+      ],
+      "Blanco": [
+        "images/aggretsuko-001-blanco-1787012245252-6.jpg",
+        "images/aggretsuko-001-blanco-1787012245252-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aggretsuko-001-verde-musgo-1787012245252-10.jpg",
+        "images/aggretsuko-001-verde-musgo-1787012245252-12.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
