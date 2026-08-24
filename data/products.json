@@ -827,5 +827,56 @@
     "precio": 17500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1787607560948,
+    "nombre": "Gangsta",
+    "categoria": "Urbano",
+    "subcategoria": "Angels",
+    "imagenes": [
+      "images/gangsta-gal-1787607560948-0.jpg"
+    ],
+    "mockups": {
+      "Azul marino": [
+        "images/gangsta-azul-marino-1787607560948-0.jpg",
+        "images/gangsta-azul-marino-1787607560948-1.jpg"
+      ],
+      "Blanco": [
+        "images/gangsta-blanco-1787607560948-2.jpg",
+        "images/gangsta-blanco-1787607560948-9.jpg"
+      ],
+      "Café": [
+        "images/gangsta-cafe-1787607560948-3.jpg",
+        "images/gangsta-cafe-1787607560948-5.jpg"
+      ],
+      "Verde musgo": [
+        "images/gangsta-verde-musgo-1787607560948-4.jpg",
+        "images/gangsta-verde-musgo-1787607560948-12.jpg"
+      ],
+      "Gris grafito": [
+        "images/gangsta-gris-grafito-1787607560948-6.jpg",
+        "images/gangsta-gris-grafito-1787607560948-10.jpg"
+      ],
+      "Negro": [
+        "images/gangsta-negro-1787607560948-7.jpg",
+        "images/gangsta-negro-1787607560948-11.jpg"
+      ],
+      "Crema": [
+        "images/gangsta-crema-1787607560948-8.jpg",
+        "images/gangsta-crema-1787607560948-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
