@@ -878,5 +878,45 @@
     "precio": 17500,
     "enDescuento": false,
     "precioDescuento": null
+  },
+  {
+    "id": 1787607763579,
+    "nombre": "Blessed",
+    "categoria": "Religioso",
+    "subcategoria": "14500",
+    "imagenes": [
+      "images/blessed-gal-1787607763579-0.jpg"
+    ],
+    "mockups": {
+      "Azul marino": [
+        "images/blessed-azul-marino-1787607763579-0.jpg"
+      ],
+      "Café": [
+        "images/blessed-cafe-1787607763579-1.jpg"
+      ],
+      "Crema": [
+        "images/blessed-crema-1787607763579-2.jpg"
+      ],
+      "Gris grafito": [
+        "images/blessed-gris-grafito-1787607763579-3.jpg"
+      ],
+      "Negro": [
+        "images/blessed-negro-1787607763579-4.jpg"
+      ],
+      "Verde musgo": [
+        "images/blessed-verde-musgo-1787607763579-5.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 14500,
+    "enDescuento": false,
+    "precioDescuento": null
   }
 ]
