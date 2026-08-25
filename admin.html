@@ -167,6 +167,12 @@
     <label>Colores disponibles</label>
     <div class="color-check-grid" id="colorCheckGrid"></div>
 
+    <label>Tipo de impresión</label>
+    <select id="impresionSelect">
+      <option value="espalda">Espalda grande + pecho pequeño — ₡19.500</option>
+      <option value="pecho">Solo pecho — ₡14.500</option>
+    </select>
+
     <label>Precio</label>
     <input type="text" id="precioInput" value="19500" inputmode="numeric">
 
@@ -503,6 +509,10 @@ function subirProducto() {
   var precio = parseInt($('precioInput').value.replace(/\D/g, ''), 10);
   if (!precio || precio <= 0) { alert('Poné un precio válido.'); return; }
 
+  if (categoria === 'Manifiesto' && precio < 19500) {
+    if (!confirm('Las piezas de Manifiesto donan ₡5.555. Debajo de ₡19.500 casi no te queda margen. ¿Subirla igual?')) return;
+  }
+
   var enDescuento = $('descuentoCheck').checked, precioDescuento = null;
   if (enDescuento) {
     precioDescuento = parseInt($('precioDescuentoInput').value.replace(/\D/g, ''), 10);
@@ -549,6 +559,7 @@ function subirProducto() {
         id: stamp, nombre: nombre, categoria: categoria, subcategoria: subcategoria || null,
         imagenes: rutasGaleria, mockups: mapaMockups, colores: colores,
         precio: precio, enDescuento: enDescuento, precioDescuento: precioDescuento,
+        impresion: $('impresionSelect').value,
         destacado: $('nuevoDestacado').checked,
         agotado: $('nuevoAgotado').checked,
         oculto: $('nuevoOculto').checked
@@ -672,6 +683,10 @@ function abrirEdicion(i) {
   }
   html += '</div>';
 
+  var imp = p.impresion || 'espalda';
+  html += '<label>Tipo de impresión</label><select id="e-imp-' + i + '">';
+  html += '<option value="espalda"' + (imp === 'espalda' ? ' selected' : '') + '>Espalda grande + pecho pequeño</option>';
+  html += '<option value="pecho"' + (imp === 'pecho' ? ' selected' : '') + '>Solo pecho</option></select>';
   html += '<label>Precio</label><input type="text" id="e-precio-' + i + '" value="' + precio + '" inputmode="numeric">';
   html += '<label class="check-row"><input type="checkbox" id="e-desc-' + i + '"' + (p.enDescuento ? ' checked' : '') + '><span>Está en descuento</span></label>';
   html += '<label>Precio con descuento</label><input type="text" id="e-precdesc-' + i + '" value="' + (p.precioDescuento || '') + '" inputmode="numeric">';
@@ -726,6 +741,7 @@ function guardarEdicion(i) {
   p.categoria = $('e-cat-' + i).value;
   p.subcategoria = $('e-sub-' + i).value.trim() || null;
   p.colores = colores;
+  p.impresion = $('e-imp-' + i).value;
   p.precio = precio;
   p.enDescuento = enDescuento;
   p.precioDescuento = enDescuento ? precioDescuento : null;
@@ -853,6 +869,9 @@ $('subcategoriaSelect').addEventListener('change', function () {
 });
 $('descuentoCheck').addEventListener('change', function () {
   $('rowDescuento').style.display = this.checked ? 'block' : 'none';
+});
+$('impresionSelect').addEventListener('change', function () {
+  $('precioInput').value = this.value === 'pecho' ? '14500' : '19500';
 });
 
 $('gridGaleria').addEventListener('click', function (e) {
