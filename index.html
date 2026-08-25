@@ -31,7 +31,7 @@
 
   html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-x: clip; }
   @supports not (overflow-x: clip) { html, body { overflow-x: hidden; } }
-  body { background: var(--papel); color: var(--tinta); font-family: var(--texto); font-size: 15px; line-height: 1.55; min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: clip; width: 100%; }
+  body { background: var(--papel); color: var(--tinta); font-family: var(--texto); font-size: 15px; line-height: 1.55; min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: clip; width: 100vw; max-width: 100%; }
   img { display: block; }
   button { font: inherit; color: inherit; cursor: pointer; background: none; border: none; }
   a { color: inherit; }
@@ -74,7 +74,14 @@
   .ln:nth-child(3) > i { animation-delay: .41s }
   .ln:nth-child(4) > i { animation-delay: .49s }
   .hueca { -webkit-text-stroke: 1.3px var(--tinta); color: transparent; }
+  @media (max-width: 600px) {
+    .portada h1 { color: #fff; -webkit-text-stroke: 0; }
+    .portada h1 .hueca { color: #fff; -webkit-text-stroke: 1.3px #fff; }
+  }
   .lede { max-width: 40ch; font-size: 14px; color: var(--tinta-2); animation: surgir 1s var(--lento) .6s backwards; }
+  @media (max-width: 600px) {
+    .portada .lede { color: var(--tinta); }
+  }
   .lede strong { color: var(--tinta); font-weight: 500; }
 
   /* ========== EDITORIAL ========== */
@@ -134,8 +141,17 @@
   /* ========== ARCHIVO ========== */
   .rotulo { display: flex; justify-content: space-between; align-items: baseline; padding: 26px 18px 16px; }
   .rotulo h2 { font-family: var(--display); font-weight: 600; font-size: 17px; letter-spacing: 0.16em; text-transform: uppercase; }
-  .rejilla { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px 12px; padding: 0 18px 90px; transition: opacity .3s var(--suave); }
+  /* Celular: carrusel horizontal, un producto grande por vista */
+  .rejilla { display: flex; gap: 16px; padding: 4px 18px 40px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; transition: opacity .3s var(--suave); }
+  .rejilla::-webkit-scrollbar { display: none; }
   .rejilla.saliendo { opacity: 0; }
+  .rejilla .pieza { flex: 0 0 82%; scroll-snap-align: center; }
+  .rejilla .vacio { flex: 1 0 100%; }
+  .rejilla .hueco { flex: 0 0 82%; }
+  .carrusel-guia { display: flex; align-items: center; gap: 6px; padding: 0 18px 8px; }
+  .carrusel-guia .dato { color: var(--tinta-2); }
+  .carrusel-guia .flecha { animation: vaiven 1.6s ease-in-out infinite; }
+  @keyframes vaiven { 0%,100% { transform: translateX(0) } 50% { transform: translateX(4px) } }
 
   .pieza { cursor: pointer; }
   .pieza-media { position: relative; aspect-ratio: 4/5; background: var(--papel-2); overflow: hidden; margin-bottom: 11px; clip-path: inset(100% 0 0 0); transition: clip-path 1s var(--lento); }
@@ -277,7 +293,9 @@
     .seleccion.ver { grid-template-columns: 1fr 1fr; }
     .sel-media { aspect-ratio: auto; min-height: 74vh; }
     .sel-info { padding: 60px 46px; }
-    .rejilla { grid-template-columns: repeat(3, 1fr); gap: 62px 26px; padding-bottom: 130px; }
+    .rejilla { display: grid; grid-template-columns: repeat(3, 1fr); gap: 62px 26px; padding: 0 36px 130px; overflow: visible; }
+    .rejilla .pieza, .rejilla .hueco { flex: none; }
+    .carrusel-guia { display: none; }
     .detras { grid-template-columns: .85fr 1.15fr; gap: 50px; align-items: center; padding-top: 90px; padding-bottom: 90px; }
     .ficha { grid-template-columns: 1.1fr .9fr; }
     .ficha-media { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; }
@@ -323,6 +341,11 @@
   .bol-gracias.ver { display: block; }
   .bol-gracias .codigo { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 9vw, 46px); text-transform: uppercase; margin: 14px 0 10px; letter-spacing: .02em; }
 
+  /* ========== VOLVER ARRIBA ========== */
+  .arriba { position: fixed; right: 16px; bottom: 16px; z-index: 85; width: 44px; height: 44px; background: var(--tinta); color: var(--papel); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .4s var(--suave), transform .4s var(--lento), background .3s; }
+  .arriba.ver { opacity: 1; transform: none; pointer-events: all; }
+  .arriba:hover { background: var(--yuzu); }
+
   /* ========== COMPARTIR ========== */
   .compartir { display: inline-flex; align-items: center; gap: 7px; font-family: var(--dato); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--tinta-2); border-bottom: 1px solid var(--linea); padding-bottom: 3px; margin-bottom: 26px; transition: color .3s, border-color .3s; }
   .compartir:hover { color: var(--tinta); border-color: var(--tinta); }
@@ -355,10 +378,10 @@
 
 <section class="portada">
   <p class="dato eyebrow">Taller en San José · Costa Rica</p>
-  <h1>
-    <span class="ln"><i>Imprimimos</i></span>
-    <span class="ln"><i>cuando</i></span>
-    <span class="ln"><i class="hueca">lo pedís.</i></span>
+  <h1 style="text-align:center;">
+    <span class="ln"><i>Envío</i></span>
+    <span class="ln"><i>incluido</i></span>
+    <span class="ln"><i>A todo Costa Rica</i></span>
   </h1>
   <p class="lede">Algodón 190 g, corte oversized, impresión DTF que aguanta más de 100 lavadas. <strong>Producción los miércoles</strong> y en tus manos una semana después.</p>
 </section>
@@ -396,6 +419,10 @@
   <span class="dato" id="conteo">—</span>
 </div>
 
+<div class="carrusel-guia" id="carruselGuia">
+  <span class="dato">Deslizá para ver más</span>
+  <span class="dato flecha">&rarr;</span>
+</div>
 <main class="rejilla" id="rejilla">
   <div class="hueco"></div><div class="hueco"></div><div class="hueco"></div><div class="hueco"></div>
 </main>
@@ -435,6 +462,8 @@
   </div>
   <div class="pie-marca">Yuzu</div>
 </footer>
+
+<button class="arriba" id="btnArriba" aria-label="Volver arriba">&uarr;</button>
 
 <!-- FICHA -->
 <div class="ficha-fondo" id="fichaFondo">
@@ -578,6 +607,7 @@ var COLORES = [
 var PRODUCTOS = [], CATEGORIAS = {}, VISIBLES = [];
 var catActual = 'all', subActual = 'all';
 var bolsa = [], actual = null, fotos = [], iFoto = 0;
+try { var guardada = window.localStorage.getItem('yuzu-bolsa'); if (guardada) bolsa = JSON.parse(guardada); } catch (e) {}
 var talla = null, color = null, precioActual = PRECIO_BASE;
 
 function $(id) { return document.getElementById(id); }
@@ -868,6 +898,7 @@ function quitar(linea) {
 }
 
 function actualizarBolsa() {
+  try { window.localStorage.setItem('yuzu-bolsa', JSON.stringify(bolsa)); } catch (e) {}
   $('bolsaN').textContent = bolsa.length;
   var total = bolsa.reduce(function (s, i) { return s + i.precio; }, 0);
   var nMani = bolsa.filter(function (i) { return i.manifiesto; }).length;
@@ -963,11 +994,34 @@ $('seleccion').addEventListener('mouseenter', function () { clearInterval(relojS
 $('seleccion').addEventListener('mouseleave', function () { if (SEL.length > 1) arrancarReloj(); });
 
 document.addEventListener('keydown', function (e) {
-  if (e.key !== 'Escape') return;
-  if ($('bolVelo').classList.contains('abierto')) { cerrarBoletin(); return; }
-  if ($('bolsa').classList.contains('abierta')) cerrarBolsa();
-  else if ($('fichaFondo').classList.contains('abierta')) cerrarFicha();
+  if (e.key === 'Escape') {
+    if ($('bolVelo').classList.contains('abierto')) { cerrarBoletin(); return; }
+    if ($('bolsa').classList.contains('abierta')) { cerrarBolsa(); return; }
+    if ($('fichaFondo').classList.contains('abierta')) cerrarFicha();
+    return;
+  }
+  if ($('fichaFondo').classList.contains('abierta') && fotos.length > 1) {
+    if (e.key === 'ArrowRight') { iFoto = (iFoto + 1) % fotos.length; pintarFoto(); }
+    if (e.key === 'ArrowLeft') { iFoto = (iFoto - 1 + fotos.length) % fotos.length; pintarFoto(); }
+  }
 });
+
+/* Deslizar la foto grande en la ficha (celular) */
+(function () {
+  var x0 = null;
+  var g = $('fichaGrande');
+  g.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  g.addEventListener('touchend', function (e) {
+    if (x0 === null || fotos.length < 2) { x0 = null; return; }
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 45) {
+      if (dx < 0) iFoto = (iFoto + 1) % fotos.length;
+      else iFoto = (iFoto - 1 + fotos.length) % fotos.length;
+      pintarFoto();
+    }
+    x0 = null;
+  }, { passive: true });
+})();
 
 /* ---------- COMPARTIR UNA PIEZA ---------- */
 $('btnCompartir').addEventListener('click', function () {
@@ -1071,6 +1125,16 @@ $('bolEnviar').addEventListener('click', function () {
   setTimeout(function () { $('bolVelo').classList.remove('abierto'); }, 4200);
 });
 
+var btnArriba = $('btnArriba');
+window.addEventListener('scroll', function () {
+  if (window.pageYOffset > 700) btnArriba.classList.add('ver');
+  else btnArriba.classList.remove('ver');
+}, { passive: true });
+btnArriba.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+if (window.history.scrollRestoration) window.history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+actualizarBolsa();
 cargar();
 cargarBoletin();
 </script>
