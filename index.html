@@ -29,8 +29,9 @@
     --yuzu: #c3c24d; --invertir: 1;
   }
 
-  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-  body { background: var(--papel); color: var(--tinta); font-family: var(--texto); font-size: 15px; line-height: 1.55; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-x: clip; }
+  @supports not (overflow-x: clip) { html, body { overflow-x: hidden; } }
+  body { background: var(--papel); color: var(--tinta); font-family: var(--texto); font-size: 15px; line-height: 1.55; min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: clip; width: 100%; }
   img { display: block; }
   button { font: inherit; color: inherit; cursor: pointer; background: none; border: none; }
   a { color: inherit; }
@@ -235,7 +236,9 @@
   /* ========== BOLSA ========== */
   .velo { position: fixed; inset: 0; background: rgba(0,0,0,.42); z-index: 290; opacity: 0; pointer-events: none; transition: opacity .4s; }
   .velo.abierta { opacity: 1; pointer-events: all; }
-  .bolsa { position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 390px; z-index: 300; background: var(--papel); border-left: 1px solid var(--linea); display: flex; flex-direction: column; transform: translateX(101%); transition: transform .55s var(--lento); }
+  .bolsa { position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 100%; z-index: 300; background: var(--papel); display: flex; flex-direction: column; visibility: hidden; transform: translateX(100%); transition: transform .55s var(--lento), visibility 0s linear .55s; box-shadow: -1px 0 0 var(--linea) inset; }
+  .bolsa.abierta { visibility: visible; transition: transform .55s var(--lento), visibility 0s; }
+  @media (min-width: 440px) { .bolsa { max-width: 390px; } }
   .bolsa.abierta { transform: none; }
   .bolsa-top { display: flex; justify-content: space-between; align-items: center; padding: 20px 18px; border-bottom: 1px solid var(--linea); }
   .bolsa-lista { flex: 1; overflow-y: auto; padding: 4px 18px; }
@@ -289,7 +292,49 @@
     .pieza-media { clip-path: none !important; }
     .pieza-texto { opacity: 1 !important; transform: none !important; }
   }
+
+  /* ========== INTERRUPTOR DE TEMA ========== */
+  .tema-btn { width: 34px; height: 34px; border: 1px solid var(--linea); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: border-color .3s; }
+  .tema-btn:hover { border-color: var(--tinta); }
+  .tema-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; transition: transform .6s var(--lento), opacity .4s var(--suave); position: absolute; }
+  .tema-btn .luna { opacity: 0; transform: rotate(-70deg) scale(.4); }
+  [data-tema="onix"] .tema-btn .sol { opacity: 0; transform: rotate(70deg) scale(.4); }
+  [data-tema="onix"] .tema-btn .luna { opacity: 1; transform: none; }
+
+  /* ========== BOLETÍN ========== */
+  .bol-velo { position: fixed; inset: 0; z-index: 400; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .5s var(--suave); }
+  .bol-velo.abierto { opacity: 1; pointer-events: all; }
+  .bol { position: relative; width: 100%; max-width: 400px; max-height: 92vh; overflow-y: auto; background: var(--papel); border: 1px solid var(--linea); transform: translateY(18px); transition: transform .6s var(--lento); }
+  .bol-velo.abierto .bol { transform: none; }
+  .bol-x { position: absolute; top: 8px; right: 8px; z-index: 2; width: 32px; height: 32px; background: var(--papel); border: 1px solid var(--linea); display: flex; align-items: center; justify-content: center; font-size: 14px; transition: background .3s, color .3s; }
+  .bol-x:hover { background: var(--tinta); color: var(--papel); }
+  .bol-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; background: var(--papel-2); }
+  .bol-cuerpo { padding: 24px 22px 26px; }
+  .bol h3 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 8vw, 40px); line-height: .95; text-transform: uppercase; margin: 10px 0 12px; }
+  .bol-texto { font-size: 13px; color: var(--tinta-2); margin-bottom: 20px; }
+  .bol input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--linea); color: var(--tinta); font-family: var(--texto); font-size: 14px; padding: 11px 0; margin-bottom: 6px; transition: border-color .3s; }
+  .bol input:focus { outline: none; border-color: var(--tinta); }
+  .bol input::placeholder { color: var(--tinta-2); }
+  .bol-enviar { position: relative; overflow: hidden; z-index: 0; width: 100%; margin-top: 20px; background: var(--tinta); color: var(--papel); padding: 15px; font-family: var(--dato); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; }
+  .bol-enviar::before { content: ''; position: absolute; inset: 0; background: var(--yuzu); z-index: -1; transform: translateY(101%); transition: transform .5s var(--lento); }
+  .bol-enviar:hover::before { transform: none; }
+  .bol-legal { margin-top: 14px; line-height: 1.7; font-size: 9px; }
+  .bol-gracias { display: none; text-align: center; padding: 40px 22px 46px; }
+  .bol-gracias.ver { display: block; }
+  .bol-gracias .codigo { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 9vw, 46px); text-transform: uppercase; margin: 14px 0 10px; letter-spacing: .02em; }
+
+  /* ========== COMPARTIR ========== */
+  .compartir { display: inline-flex; align-items: center; gap: 7px; font-family: var(--dato); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--tinta-2); border-bottom: 1px solid var(--linea); padding-bottom: 3px; margin-bottom: 26px; transition: color .3s, border-color .3s; }
+  .compartir:hover { color: var(--tinta); border-color: var(--tinta); }
 </style>
+<script>
+  (function () {
+    var t = null;
+    try { t = window.localStorage.getItem('yuzu-tema'); } catch (e) {}
+    if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) t = 'onix';
+    if (t) document.documentElement.setAttribute('data-tema', t);
+  })();
+</script>
 </head>
 <body>
 
@@ -300,6 +345,10 @@
   </a>
   <div class="nav-der">
     <a class="nav-link" href="#detras">Detrás</a>
+    <button class="tema-btn" id="temaBtn" aria-label="Cambiar entre claro y oscuro" title="Claro / oscuro">
+      <svg class="sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+      <svg class="luna" viewBox="0 0 24 24"><path d="M20 14.5A8.2 8.2 0 0 1 9.5 4a8.3 8.3 0 1 0 10.5 10.5z"/></svg>
+    </button>
     <button class="bolsa-btn" onclick="abrirBolsa()">Bolsa <span class="bolsa-n" id="bolsaN">0</span></button>
   </div>
 </header>
@@ -405,6 +454,10 @@
       <p class="ficha-serie" id="fichaSerie"></p>
       <p class="ficha-precio" id="fichaPrecio"></p>
 
+      <button class="compartir" id="btnCompartir">
+        <span id="compartirTexto">Copiar enlace de esta pieza</span>
+      </button>
+
       <div class="ficha-manifiesto" id="fichaManifiesto">
         <span class="dato">Manifiesto</span>
         <p><strong>&#8353;5.555</strong> de esta pieza se giran a <strong>ECPAT International</strong>. Comprobante trimestral en @yuzucr.</p>
@@ -457,6 +510,31 @@
   </div>
 </div>
 
+<!-- BOLETÍN -->
+<div class="bol-velo" id="bolVelo">
+  <div class="bol" role="dialog" aria-modal="true" aria-labelledby="bolTitulo">
+    <button class="bol-x" id="bolX" aria-label="Cerrar">&#10005;</button>
+    <div id="bolContenido">
+      <img class="bol-img" id="bolImg" alt="" onerror="this.style.display='none'">
+      <div class="bol-cuerpo">
+        <span class="dato" id="bolEtiqueta">Lista del taller</span>
+        <h3 id="bolTitulo"></h3>
+        <p class="bol-texto" id="bolTexto"></p>
+        <input type="text" id="bolNombre" placeholder="Nombre" autocomplete="name">
+        <input type="email" id="bolCorreo" placeholder="Correo electrónico" autocomplete="email">
+        <input type="tel" id="bolTel" placeholder="Teléfono / WhatsApp" autocomplete="tel">
+        <button class="bol-enviar" id="bolEnviar">Quiero entrar</button>
+        <p class="dato bol-legal">Solo lo usamos para avisarte de cada tanda. Podés salirte cuando querás.</p>
+      </div>
+    </div>
+    <div class="bol-gracias" id="bolGracias">
+      <span class="dato">Listo</span>
+      <div class="codigo" id="bolCodigo"></div>
+      <p class="bol-texto" id="bolGraciasTexto" style="margin:0 auto;max-width:30ch"></p>
+    </div>
+  </div>
+</div>
+
 <!-- BOLSA -->
 <div class="velo" id="velo" onclick="cerrarBolsa()"></div>
 <aside class="bolsa" id="bolsa">
@@ -504,6 +582,20 @@ var bolsa = [], actual = null, fotos = [], iFoto = 0;
 var talla = null, color = null, precioActual = PRECIO_BASE;
 
 function $(id) { return document.getElementById(id); }
+
+/* Guarda cosas en el navegador sin reventar si está bloqueado */
+var almacen = {
+  leer: function (k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } },
+  guardar: function (k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
+};
+
+/* ---------- TEMA CLARO / OSCURO ---------- */
+$('temaBtn').addEventListener('click', function () {
+  var actual = document.documentElement.getAttribute('data-tema') === 'onix' ? 'onix' : 'hueso';
+  var nuevo = actual === 'onix' ? 'hueso' : 'onix';
+  document.documentElement.setAttribute('data-tema', nuevo);
+  almacen.guardar('yuzu-tema', nuevo);
+});
 function plata(n) { return '\u20A1' + Number(n).toLocaleString('es-CR'); }
 function ref(p) { return 'YZ-' + String(p.id).slice(-4); }
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -538,7 +630,7 @@ function cargar() {
       if (!!b.destacado !== !!a.destacado) return b.destacado ? 1 : -1;
       return b.id - a.id;
     });
-    pintarFiltros(); montarSeleccion(); pintarRejilla(false);
+    pintarFiltros(); montarSeleccion(); pintarRejilla(false); abrirDesdeEnlace();
   }).catch(function () {
     $('rejilla').innerHTML = '<p class="vacio">No se pudo cargar el catálogo. Recargá la página en un momento.</p>';
   });
@@ -873,11 +965,115 @@ $('seleccion').addEventListener('mouseleave', function () { if (SEL.length > 1) 
 
 document.addEventListener('keydown', function (e) {
   if (e.key !== 'Escape') return;
+  if ($('bolVelo').classList.contains('abierto')) { cerrarBoletin(); return; }
   if ($('bolsa').classList.contains('abierta')) cerrarBolsa();
   else if ($('fichaFondo').classList.contains('abierta')) cerrarFicha();
 });
 
+/* ---------- COMPARTIR UNA PIEZA ---------- */
+$('btnCompartir').addEventListener('click', function () {
+  if (!actual) return;
+  var url = location.origin + location.pathname + '#' + ref(actual);
+  var avisar = function () {
+    var t = $('compartirTexto'), antes = 'Copiar enlace de esta pieza';
+    t.textContent = 'Enlace copiado';
+    setTimeout(function () { t.textContent = antes; }, 2200);
+  };
+  if (navigator.share) {
+    navigator.share({ title: 'Yuzu · ' + actual.nombre, url: url }).catch(function () {});
+    return;
+  }
+  if (navigator.clipboard) { navigator.clipboard.writeText(url).then(avisar, function () {}); return; }
+  var caja = document.createElement('textarea');
+  caja.value = url; document.body.appendChild(caja); caja.select();
+  try { document.execCommand('copy'); avisar(); } catch (e) {}
+  document.body.removeChild(caja);
+});
+
+/* Si alguien llega con #YZ-1234, se le abre esa pieza */
+function abrirDesdeEnlace() {
+  var h = (location.hash || '').replace('#', '').toUpperCase();
+  if (!h) return;
+  for (var i = 0; i < PRODUCTOS.length; i++) {
+    if (ref(PRODUCTOS[i]).toUpperCase() === h) { abrirFicha(PRODUCTOS[i].id); return; }
+  }
+}
+
+/* ---------- BOLETÍN ---------- */
+var BOL = null;
+
+function cargarBoletin() {
+  fetch('data/boletines.json?t=' + Date.now())
+    .then(function (r) { return r.json(); })
+    .then(function (lista) {
+      if (!lista || !lista.length) return;
+      var activos = lista.filter(function (b) { return b.activo; });
+      if (!activos.length) return;
+      BOL = activos[0];
+      if (almacen.leer('yuzu-bol-' + BOL.id) === 'visto') return;
+      var espera = (parseInt(BOL.retraso, 10) || 6) * 1000;
+      setTimeout(mostrarBoletin, espera);
+    })
+    .catch(function () {});
+}
+
+function mostrarBoletin() {
+  if (!BOL) return;
+  if ($('fichaFondo').classList.contains('abierta')) return;
+  if ($('bolsa').classList.contains('abierta')) return;
+
+  $('bolEtiqueta').textContent = BOL.etiqueta || 'Lista del taller';
+  $('bolTitulo').textContent = BOL.titulo || '';
+  $('bolTexto').textContent = BOL.texto || '';
+  $('bolEnviar').textContent = BOL.boton || 'Quiero entrar';
+  if (BOL.imagen) { $('bolImg').src = BOL.imagen; $('bolImg').style.display = ''; }
+  else { $('bolImg').style.display = 'none'; }
+
+  $('bolVelo').classList.add('abierto');
+}
+
+function cerrarBoletin() {
+  $('bolVelo').classList.remove('abierto');
+  if (BOL) almacen.guardar('yuzu-bol-' + BOL.id, 'visto');
+}
+
+$('bolX').addEventListener('click', cerrarBoletin);
+$('bolVelo').addEventListener('click', function (e) { if (e.target === $('bolVelo')) cerrarBoletin(); });
+
+$('bolEnviar').addEventListener('click', function () {
+  var nombre = $('bolNombre').value.trim();
+  var correo = $('bolCorreo').value.trim();
+  var tel = $('bolTel').value.trim();
+
+  if (!nombre) { $('bolNombre').focus(); return; }
+  if (!correo || correo.indexOf('@') === -1) { $('bolCorreo').focus(); return; }
+  if (!tel) { $('bolTel').focus(); return; }
+
+  var datos = { nombre: nombre, correo: correo, telefono: tel, boletin: BOL.titulo || '', fecha: new Date().toISOString() };
+
+  if (BOL.formspree) {
+    fetch(BOL.formspree, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(datos)
+    }).catch(function () {});
+  } else {
+    var msg = 'Hola Yuzu, me quiero apuntar a la lista.\n\nNombre: ' + nombre + '\nCorreo: ' + correo + '\nTeléfono: ' + tel;
+    window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  almacen.guardar('yuzu-bol-' + BOL.id, 'visto');
+  almacen.guardar('yuzu-suscrito', '1');
+
+  $('bolContenido').style.display = 'none';
+  $('bolGracias').classList.add('ver');
+  $('bolCodigo').textContent = BOL.codigo || 'Gracias';
+  $('bolGraciasTexto').textContent = BOL.gracias || 'Mencioná este código cuando escribás por WhatsApp.';
+  setTimeout(function () { $('bolVelo').classList.remove('abierto'); }, 4200);
+});
+
 cargar();
+cargarBoletin();
 </script>
 </body>
 </html>
