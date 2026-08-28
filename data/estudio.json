@@ -20,16 +20,5 @@
       "q": "Negocios ayudados"
     }
   ],
-  "bloques": [
-    {
-      "tipo": "texto",
-      "titulo": "Nuevo bloque",
-      "etiqueta": "",
-      "descripcion": "",
-      "parrafos": [
-        "Escribí acá."
-      ],
-      "oficios": []
-    }
-  ]
+  "bloques": []
 }
