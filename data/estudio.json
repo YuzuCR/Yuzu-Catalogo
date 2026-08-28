@@ -30,7 +30,15 @@
         "Escribí acá."
       ],
       "oficios": [],
-      "proyectos": []
+      "proyectos": [
+        {
+          "titulo": "Veterinaria",
+          "descripcion": "Alcance Orgánico",
+          "enlace": "https://www.instagram.com/p/DYVdgYfsRCk/",
+          "imagen": "https://www.instagram.com/veterinariafedor/reel/DYVdgYfsRCk/",
+          "align": "left"
+        }
+      ]
     }
   ]
 }
