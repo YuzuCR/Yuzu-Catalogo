@@ -41,14 +41,15 @@
       ]
     },
     {
-      "tipo": "texto",
-      "titulo": "Nuevo bloque",
-      "etiqueta": "",
-      "descripcion": "",
+      "tipo": "proyectos",
+      "titulo": "Veterinaria Fedor",
+      "etiqueta": "Reel",
+      "descripcion": "Creación de Contenido",
       "parrafos": [
         "Escribí acá."
       ],
-      "oficios": []
+      "oficios": [],
+      "proyectos": []
     }
   ]
 }
