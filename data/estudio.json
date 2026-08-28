@@ -22,6 +22,16 @@
   ],
   "bloques": [
     {
+      "tipo": "texto",
+      "titulo": "Nuevo bloque",
+      "etiqueta": "",
+      "descripcion": "",
+      "parrafos": [
+        "Escribí acá."
+      ],
+      "oficios": []
+    },
+    {
       "tipo": "proyectos",
       "titulo": "Instagram Reels",
       "etiqueta": "",
@@ -39,16 +49,6 @@
           "align": "left"
         }
       ]
-    },
-    {
-      "tipo": "texto",
-      "titulo": "Nuevo bloque",
-      "etiqueta": "",
-      "descripcion": "",
-      "parrafos": [
-        "Escribí acá."
-      ],
-      "oficios": []
     }
   ]
 }
