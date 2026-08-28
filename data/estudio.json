@@ -3,10 +3,22 @@
   "subtitulo": "San José, Costa Rica",
   "descripcion": "Diseño gráfico, dirección de arte y contenido. Trabajo entre la ilustración, el video y la marca: lo que se ve, lo que se dice y lo que se vende son la misma decisión.",
   "cifras": [
-    { "n": "12", "q": "Años publicando" },
-    { "n": "80+", "q": "Videos en YouTube" },
-    { "n": "1M+", "q": "Reproducciones" },
-    { "n": "31", "q": "Diseños en catálogo" }
+    {
+      "n": "12",
+      "q": "Años publicando"
+    },
+    {
+      "n": "350+",
+      "q": "Videos editados"
+    },
+    {
+      "n": "50K+",
+      "q": "Alcance Orgánico"
+    },
+    {
+      "n": "20+",
+      "q": "Negocios ayudados"
+    }
   ],
   "bloques": []
 }
