@@ -22,14 +22,15 @@
   ],
   "bloques": [
     {
-      "tipo": "texto",
-      "titulo": "Nuevo bloque",
+      "tipo": "proyectos",
+      "titulo": "Instagram Reels",
       "etiqueta": "",
-      "descripcion": "",
+      "descripcion": "Clientes Satisfechos",
       "parrafos": [
         "Escribí acá."
       ],
-      "oficios": []
+      "oficios": [],
+      "proyectos": []
     }
   ]
 }
