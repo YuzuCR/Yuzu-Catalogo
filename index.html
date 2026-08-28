@@ -822,13 +822,13 @@ function observar() {
   }
   if (ojo) ojo.disconnect();
   ojo = new IntersectionObserver(function (ents) {
-    ents.forEach(function (e, i) {
+    ents.forEach(function (e, idx) {
       if (!e.isIntersecting) return;
       var el = e.target;
-      setTimeout(function () { el.classList.add('dentro'); }, i * 70);
+      setTimeout(function () { el.classList.add('dentro'); }, idx * 80);
       ojo.unobserve(el);
     });
-  }, { rootMargin: '0px 0px -50px 0px' });
+  }, { rootMargin: '0px 0px -40px 0px' });
   for (var k = 0; k < piezas.length; k++) ojo.observe(piezas[k]);
 }
 
