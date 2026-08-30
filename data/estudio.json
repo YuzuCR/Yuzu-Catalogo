@@ -28,6 +28,16 @@
       "descripcion": "",
       "parrafos": [],
       "oficios": []
+    },
+    {
+      "tipo": "texto",
+      "titulo": "Nuevo bloque",
+      "etiqueta": "",
+      "descripcion": "",
+      "parrafos": [
+        "Escribí acá."
+      ],
+      "oficios": []
     }
   ]
 }
