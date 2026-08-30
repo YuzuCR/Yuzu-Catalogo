@@ -30,14 +30,15 @@
       "oficios": []
     },
     {
-      "tipo": "texto",
-      "titulo": "Nuevo bloque",
-      "etiqueta": "",
-      "descripcion": "",
+      "tipo": "proyectos",
+      "titulo": "Veterinaria Fedor",
+      "etiqueta": "2026",
+      "descripcion": "Adobe Firefly - Photoshop - Gemini - Illustrator - Sony Vegas Pro",
       "parrafos": [
         "Escribí acá."
       ],
-      "oficios": []
+      "oficios": [],
+      "proyectos": []
     }
   ]
 }
