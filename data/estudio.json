@@ -23,12 +23,10 @@
   "bloques": [
     {
       "tipo": "texto",
-      "titulo": "Nuevo bloque",
+      "titulo": "Clientes Satisfechos",
       "etiqueta": "",
       "descripcion": "",
-      "parrafos": [
-        "Escribí acá."
-      ],
+      "parrafos": [],
       "oficios": []
     }
   ]
