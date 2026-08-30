@@ -22,6 +22,16 @@
   ],
   "bloques": [
     {
+      "tipo": "texto",
+      "titulo": "Nuevo bloque",
+      "etiqueta": "",
+      "descripcion": "",
+      "parrafos": [
+        "Escribí acá."
+      ],
+      "oficios": []
+    },
+    {
       "tipo": "proyectos",
       "titulo": "Veterinaria Fedor",
       "etiqueta": "Clientes Satisfechos",
@@ -46,16 +56,6 @@
           "align": "left"
         }
       ]
-    },
-    {
-      "tipo": "texto",
-      "titulo": "Nuevo bloque",
-      "etiqueta": "",
-      "descripcion": "",
-      "parrafos": [
-        "Escribí acá."
-      ],
-      "oficios": []
     }
   ]
 }
