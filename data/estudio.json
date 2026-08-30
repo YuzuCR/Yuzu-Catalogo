@@ -52,6 +52,13 @@
           "enlace": "https://www.youtube.com/shorts/y_vkKtCUmA0",
           "imagen": "https://raw.githubusercontent.com/YuzuCR/Yuzu-Catalogo/refs/heads/main/images/Screenshot%202026-08-27%20215355.png",
           "align": "left"
+        },
+        {
+          "titulo": "Portfolio",
+          "descripcion": "Más trabajos realizados para esta empresa",
+          "enlace": "https://www.behance.net/gallery/254987195/2026-VETERINARIA-FEDOR-AI",
+          "imagen": "https://raw.githubusercontent.com/YuzuCR/Yuzu-Catalogo/35b014d763255187d2dfe515e5ff2be7887ccd03/images/fedir%20serv-02.png",
+          "align": "left"
         }
       ]
     }
