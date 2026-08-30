@@ -38,7 +38,15 @@
         "Escribí acá."
       ],
       "oficios": [],
-      "proyectos": []
+      "proyectos": [
+        {
+          "titulo": "ALCANCE ORGÁNICO",
+          "descripcion": "17K Vistas al perfil",
+          "enlace": "https://www.instagram.com/p/DYVdgYfsRCk/",
+          "imagen": "https://raw.githubusercontent.com/YuzuCR/Yuzu-Catalogo/refs/heads/main/images/Screenshot%202026-04-27%20115814.png",
+          "align": "left"
+        }
+      ]
     }
   ]
 }
