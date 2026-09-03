@@ -408,9 +408,12 @@
       "Blanco"
     ],
     "precio": 19500,
-    "enDescuento": true,
-    "precioDescuento": 15500,
-    "oculto": false
+    "enDescuento": false,
+    "precioDescuento": null,
+    "oculto": false,
+    "impresion": "espalda",
+    "destacado": false,
+    "agotado": false
   },
   {
     "id": 1786750837481,
