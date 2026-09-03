@@ -11,8 +11,7 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ========== TEMA ==========
-     data-tema="hueso"  ·  data-tema="onix"   (en <html>, línea 2) */
+  /* ========== TEMA ========== */
   :root {
     --papel: #e9e4d9; --papel-2: #ded8ca; --tinta: #16130f; --tinta-2: #6d675c;
     --linea: rgba(22,19,15,0.16); --linea-fina: rgba(22,19,15,0.09);
@@ -46,6 +45,7 @@
   @keyframes sube { from { transform: translateY(105%) } to { transform: none } }
   @keyframes revelar { to { clip-path: inset(0 0 0 0) } }
   @keyframes latir { 0%,100% { opacity: .5 } 50% { opacity: .9 } }
+  @keyframes vaiven { 0%,100% { transform: translateX(0) } 50% { transform: translateX(4px) } }
 
   /* ========== CABECERA ========== */
   header { position: sticky; top: 0; z-index: 90; background: var(--papel); display: flex; align-items: center; justify-content: space-between; padding: 0 18px; height: 64px; }
@@ -62,6 +62,12 @@
   .bolsa-btn:hover { color: var(--papel); border-color: var(--tinta); }
   .bolsa-btn:hover::before { transform: none; }
   .bolsa-n { font-weight: 700; }
+  .tema-btn { width: 34px; height: 34px; border: 1px solid var(--linea); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: border-color .3s; background: transparent; }
+  .tema-btn:hover { border-color: var(--tinta); }
+  .tema-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; transition: transform .6s var(--lento), opacity .4s var(--suave); position: absolute; }
+  .tema-btn .luna { opacity: 0; transform: rotate(-70deg) scale(.4); }
+  [data-tema="onix"] .tema-btn .sol { opacity: 0; transform: rotate(70deg) scale(.4); }
+  [data-tema="onix"] .tema-btn .luna { opacity: 1; transform: none; }
 
   /* ========== PORTADA ========== */
   .portada { padding: 56px 18px 46px; border-bottom: 1px solid var(--linea); }
@@ -84,25 +90,12 @@
   }
   .lede strong { color: var(--tinta); font-weight: 500; }
 
-/* ========== ANIMACIONES AL SCROLL PARA EL CATÁLOGO ========== */
-.pieza { opacity: 0; transform: translateY(30px); transition: opacity .8s var(--suave), transform .8s var(--lento); }
-.pieza.dentro { opacity: 1; transform: none; }
-/* Mobile fix extra */
-@media (max-width: 600px) {
-  .portada h1 { font-size: clamp(32px, 12vw, 52px); }
-  .portada .lede { font-size: 13px; }
-  .rejilla { gap: 12px; padding: 4px 12px 30px; }
-  .pieza-media { border-radius: 4px; }
-  .pieza-nombre { font-size: 18px; }
-  .bolsa { max-width: 100%; }
-}
-
   /* ========== EDITORIAL ========== */
   .editorial { position: relative; border-bottom: 1px solid var(--linea); overflow: hidden; }
   .editorial img { width: 100%; height: 62vh; min-height: 320px; max-height: 640px; object-fit: cover; clip-path: inset(100% 0 0 0); animation: revelar 1.4s var(--lento) .7s forwards; }
   .editorial .pie-foto { position: absolute; left: 18px; bottom: 16px; color: #fff; text-shadow: 0 1px 14px rgba(0,0,0,.55); }
 
-  /* ========== SELECCIÓN (destacados) ========== */
+  /* ========== SELECCIÓN ========== */
   .seleccion { display: none; border-bottom: 1px solid var(--linea); }
   .seleccion.ver { display: grid; }
   .sel-media { position: relative; aspect-ratio: 4/5; background: var(--papel-2); overflow: hidden; }
@@ -154,8 +147,7 @@
   /* ========== ARCHIVO ========== */
   .rotulo { display: flex; justify-content: space-between; align-items: baseline; padding: 26px 18px 16px; }
   .rotulo h2 { font-family: var(--display); font-weight: 600; font-size: 17px; letter-spacing: 0.16em; text-transform: uppercase; }
-  /* Celular: carrusel horizontal, un producto grande por vista */
-  .rejilla { display: flex; gap: 16px; padding: 4px 18px 40px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; transition: opacity .3s var(--suave); }
+  .rejilla { display: flex; gap: 20px 16px; padding: 4px 18px 60px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; transition: opacity .3s var(--suave); }
   .rejilla::-webkit-scrollbar { display: none; }
   .rejilla.saliendo { opacity: 0; }
   .rejilla .pieza { flex: 0 0 82%; scroll-snap-align: center; }
@@ -164,33 +156,41 @@
   .carrusel-guia { display: flex; align-items: center; gap: 6px; padding: 0 18px 8px; }
   .carrusel-guia .dato { color: var(--tinta-2); }
   .carrusel-guia .flecha { animation: vaiven 1.6s ease-in-out infinite; }
-  @keyframes vaiven { 0%,100% { transform: translateX(0) } 50% { transform: translateX(4px) } }
 
-  .pieza { cursor: pointer; }
-  .pieza-media { position: relative; aspect-ratio: 4/5; background: var(--papel-2); overflow: hidden; margin-bottom: 11px; clip-path: inset(100% 0 0 0); transition: clip-path 1s var(--lento); }
+  .pieza { cursor: pointer; opacity: 0; transform: translateY(30px); transition: opacity .8s var(--suave), transform .8s var(--lento); }
+  .pieza.dentro { opacity: 1; transform: none; }
+  .pieza-media { position: relative; aspect-ratio: 3/4; background: var(--papel-2); overflow: hidden; margin-bottom: 0; clip-path: inset(100% 0 0 0); transition: clip-path 1s var(--lento); border-radius: 4px; }
   .pieza.dentro .pieza-media { clip-path: inset(0 0 0 0); }
-  .pieza-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .6s var(--suave), transform 1.6s var(--lento); }
+  .pieza-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .6s var(--suave), transform 1.2s var(--lento); }
   .pieza-media .alt { opacity: 0; }
   .pieza:hover .alt { opacity: 1; }
-  .pieza:hover .base, .pieza:hover .alt { transform: scale(1.045); }
+  .pieza:hover .base, .pieza:hover .alt { transform: scale(1.03); }
   .pieza-media.agotado img { filter: grayscale(1); opacity: 0.55; }
   .sello { position: absolute; left: 0; bottom: 0; background: var(--tinta); color: var(--papel); font-family: var(--dato); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; padding: 5px 9px; }
-  .pieza-texto { opacity: 0; transform: translateY(8px); transition: opacity .7s var(--suave) .18s, transform .7s var(--lento) .18s; }
+  .pieza-texto { opacity: 0; transform: translateY(10px); transition: opacity .7s var(--suave) .18s, transform .7s var(--lento) .18s; display: flex; flex-direction: column; gap: 4px; padding-top: 12px; }
   .pieza.dentro .pieza-texto { opacity: 1; transform: none; }
-  .placa { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--linea-fina); padding-top: 7px; margin-bottom: 5px; }
-  .pieza-nombre { position: relative; display: inline-block; font-family: var(--display); font-weight: 600; font-size: 21px; line-height: 1.05; text-transform: uppercase; }
+  .placa { display: flex; justify-content: space-between; gap: 10px; font-size: 9px; color: var(--tinta-2); opacity: 0.6; order: 3; }
+  .pieza-nombre { position: relative; display: inline-block; font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 1.05; text-transform: uppercase; letter-spacing: 0.02em; order: 1; }
   .pieza-nombre::after { content: ''; position: absolute; left: 0; right: 0; bottom: 1px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .55s var(--lento); }
   .pieza:hover .pieza-nombre::after { transform: scaleX(1); transform-origin: left; }
-  .pieza-pie { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-top: 2px; }
-  .serie { font-size: 12px; color: var(--tinta-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .precio { font-family: var(--dato); font-size: 12px; white-space: nowrap; }
-  .precio s { color: var(--tinta-2); margin-right: 6px; font-size: 11px; }
+  .pieza-pie { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-top: 0; order: 2; width: 100%; }
+  .serie { font-size: 11px; color: var(--tinta-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: 0.7; }
+  .precio { font-family: var(--dato); font-size: 13px; white-space: nowrap; font-weight: 400; color: var(--tinta-2); }
+  .precio s { color: var(--tinta-2); margin-right: 6px; font-size: 11px; opacity: 0.5; }
   .vacio { grid-column: 1/-1; padding: 70px 0; text-align: center; color: var(--tinta-2); font-size: 14px; }
-  .hueco { aspect-ratio: 4/5; background: var(--papel-2); animation: latir 1.6s ease-in-out infinite; }
+  .hueco { aspect-ratio: 3/4; background: var(--papel-2); animation: latir 1.6s ease-in-out infinite; border-radius: 4px; }
+
+  /* ===== BLOQUE EDITORIAL (quiet luxury) ===== */
+  .editorial-destacado { padding: 50px 18px; border-bottom: 1px solid var(--linea); }
+  .editorial-destacado .inner { max-width: 600px; margin: 0 auto; text-align: center; }
+  .editorial-destacado .inner h2 { font-family: var(--display); font-size: clamp(30px, 8vw, 64px); line-height: 0.92; text-transform: uppercase; margin: 16px 0; letter-spacing: -0.01em; }
+  .editorial-destacado .inner p { color: var(--tinta-2); max-width: 40ch; margin: 0 auto; font-size: 14px; }
+  .editorial-destacado .inner .link { display: inline-block; margin-top: 24px; font-family: var(--dato); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; border-bottom: 1px solid currentColor; padding-bottom: 5px; transition: opacity .3s; }
+  .editorial-destacado .inner .link:hover { opacity: 0.6; }
 
   /* ========== DETRÁS ========== */
   .detras { border-top: 1px solid var(--linea); padding: 60px 18px; display: grid; gap: 30px; }
-  .detras-foto { background: var(--papel-2); aspect-ratio: 4/5; overflow: hidden; }
+  .detras-foto { background: var(--papel-2); aspect-ratio: 4/5; overflow: hidden; border-radius: 4px; }
   .detras-foto img { width: 100%; height: 100%; object-fit: cover; transition: transform 2s var(--lento); }
   .detras-foto:hover img { transform: scale(1.04); }
   .detras h2 { font-family: var(--display); font-weight: 800; font-size: clamp(38px, 11vw, 74px); line-height: .9; text-transform: uppercase; margin: 14px 0 20px; }
@@ -296,42 +296,6 @@
   .pie-col a:hover { color: var(--tinta); }
   .pie-marca { font-family: var(--display); font-weight: 800; font-size: clamp(58px, 22vw, 190px); line-height: .8; text-transform: uppercase; letter-spacing: -0.02em; -webkit-text-stroke: 1.2px var(--tinta); color: transparent; }
 
-  /* ========== ESCRITORIO ========== */
-  @media (min-width: 760px) {
-    header, .portada, .barra, .barra-sub, .rotulo, .rejilla, .detras, footer { padding-left: 36px; padding-right: 36px; }
-    .aviso-manifiesto { margin-left: 36px; margin-right: 36px; padding: 30px; }
-    .portada { padding-top: 90px; padding-bottom: 74px; }
-    .editorial img { height: 78vh; max-height: 780px; }
-    .editorial .pie-foto { left: 36px; bottom: 26px; }
-    .seleccion.ver { grid-template-columns: 1fr 1fr; }
-    .sel-media { aspect-ratio: auto; min-height: 74vh; }
-    .sel-info { padding: 60px 46px; }
-    .rejilla { display: grid; grid-template-columns: repeat(3, 1fr); gap: 62px 26px; padding: 0 36px 130px; overflow: visible; }
-    .rejilla .pieza, .rejilla .hueco { flex: none; }
-    .carrusel-guia { display: none; }
-    .detras { grid-template-columns: .85fr 1.15fr; gap: 50px; align-items: center; padding-top: 90px; padding-bottom: 90px; }
-    .ficha { grid-template-columns: 1.1fr .9fr; }
-    .ficha-media { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; }
-    .ficha-grande { flex: 1; aspect-ratio: auto; }
-    .ficha-info { padding: 76px 46px 70px; }
-    .pie-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-  @media (min-width: 1280px) { .rejilla { grid-template-columns: repeat(4, 1fr); } }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-delay: 0s !important; }
-    .pieza-media { clip-path: none !important; }
-    .pieza-texto { opacity: 1 !important; transform: none !important; }
-  }
-
-  /* ========== INTERRUPTOR DE TEMA ========== */
-  .tema-btn { width: 34px; height: 34px; border: 1px solid var(--linea); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: border-color .3s; }
-  .tema-btn:hover { border-color: var(--tinta); }
-  .tema-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; transition: transform .6s var(--lento), opacity .4s var(--suave); position: absolute; }
-  .tema-btn .luna { opacity: 0; transform: rotate(-70deg) scale(.4); }
-  [data-tema="onix"] .tema-btn .sol { opacity: 0; transform: rotate(70deg) scale(.4); }
-  [data-tema="onix"] .tema-btn .luna { opacity: 1; transform: none; }
-
   /* ========== BOLETÍN ========== */
   .bol-velo { position: fixed; inset: 0; z-index: 400; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .5s var(--suave); }
   .bol-velo.abierto { opacity: 1; pointer-events: all; }
@@ -362,6 +326,47 @@
   /* ========== COMPARTIR ========== */
   .compartir { display: inline-flex; align-items: center; gap: 7px; font-family: var(--dato); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--tinta-2); border-bottom: 1px solid var(--linea); padding-bottom: 3px; margin-bottom: 26px; transition: color .3s, border-color .3s; }
   .compartir:hover { color: var(--tinta); border-color: var(--tinta); }
+
+  /* ========== ESCRITORIO ========== */
+  @media (min-width: 760px) {
+    header, .portada, .barra, .barra-sub, .rotulo, .rejilla, .detras, footer { padding-left: 36px; padding-right: 36px; }
+    .aviso-manifiesto { margin-left: 36px; margin-right: 36px; padding: 30px; }
+    .portada { padding-top: 90px; padding-bottom: 74px; }
+    .editorial img { height: 78vh; max-height: 780px; }
+    .editorial .pie-foto { left: 36px; bottom: 26px; }
+    .seleccion.ver { grid-template-columns: 1fr 1fr; }
+    .sel-media { aspect-ratio: auto; min-height: 74vh; }
+    .sel-info { padding: 60px 46px; }
+    .rejilla { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px 24px; padding: 0 36px 120px; overflow: visible; }
+    .rejilla .pieza, .rejilla .hueco { flex: none; }
+    .carrusel-guia { display: none; }
+    .detras { grid-template-columns: .85fr 1.15fr; gap: 50px; align-items: center; padding-top: 90px; padding-bottom: 90px; }
+    .ficha { grid-template-columns: 1.1fr .9fr; }
+    .ficha-media { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; }
+    .ficha-grande { flex: 1; aspect-ratio: auto; }
+    .ficha-info { padding: 76px 46px 70px; }
+    .pie-grid { grid-template-columns: repeat(3, 1fr); }
+    .editorial-destacado { padding: 70px 36px; }
+  }
+  @media (min-width: 1280px) { .rejilla { grid-template-columns: repeat(4, 1fr); gap: 60px 28px; } }
+
+  @media (max-width: 600px) {
+    .rejilla { gap: 16px; padding: 4px 14px 40px; scroll-snap-type: x mandatory; }
+    .rejilla .pieza, .rejilla .hueco { flex: none; scroll-snap-align: start; }
+    .rejilla .pieza { flex: 0 0 80%; }
+    .pieza-nombre { font-size: 19px; }
+    .precio { font-size: 13px; }
+    .serie { font-size: 10px; }
+    .editorial-destacado { padding: 40px 18px; }
+    .editorial-destacado .inner h2 { font-size: clamp(26px, 10vw, 40px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-delay: 0s !important; }
+    .pieza-media { clip-path: none !important; }
+    .pieza-texto { opacity: 1 !important; transform: none !important; }
+    .pieza { opacity: 1 !important; transform: none !important; }
+  }
 </style>
 <script>
   (function () {
@@ -414,6 +419,16 @@
     <p class="sel-precio" id="selPrecio"></p>
     <button class="sel-ver" id="selVer">Ver la pieza</button>
     <div class="sel-barras" id="selBarras"></div>
+  </div>
+</section>
+
+<!-- ===== BLOQUE EDITORIAL (quiet luxury) ===== -->
+<section class="editorial-destacado">
+  <div class="inner">
+    <span class="dato" style="color: var(--tinta-2);">Colección permanente</span>
+    <h2>Primero<br>estudias</h2>
+    <p>Cada diseño sale de una idea que primero funcionó como video, y cada video se sostiene solo, sin la camiseta.</p>
+    <a href="#rejilla" class="link">Ver todo →</a>
   </div>
 </section>
 
@@ -598,8 +613,6 @@ var PRECIO_BASE = 19500;
 var TALLAS = ['S', 'M', 'L', 'XL'];
 var MEDIDAS = { S: '50 × 66 cm', M: '55 × 71 cm', L: '60 × 73 cm', XL: '66 × 76 cm' };
 
-/* Línea Manifiesto. Si cambiás el monto o el destino aquí,
-   cambialo también en los dos bloques de texto del HTML. */
 var MANIFIESTO = { categoria: 'Manifiesto', monto: 5555, destino: 'ECPAT International' };
 
 var IMPRESION = {
@@ -625,13 +638,11 @@ var talla = null, color = null, precioActual = PRECIO_BASE;
 
 function $(id) { return document.getElementById(id); }
 
-/* Guarda cosas en el navegador sin reventar si está bloqueado */
 var almacen = {
   leer: function (k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } },
   guardar: function (k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
 };
 
-/* ---------- TEMA CLARO / OSCURO ---------- */
 $('temaBtn').addEventListener('click', function () {
   var actual = document.documentElement.getAttribute('data-tema') === 'onix' ? 'onix' : 'hueso';
   var nuevo = actual === 'onix' ? 'hueso' : 'onix';
@@ -661,7 +672,6 @@ function precioVigente(p) {
   return (p.enDescuento && p.precioDescuento) ? p.precioDescuento : (p.precio || PRECIO_BASE);
 }
 
-/* ---------- CARGA ---------- */
 function cargar() {
   Promise.all([
     fetch('data/products.json?t=' + Date.now()).then(function (r) { return r.json(); }),
@@ -678,7 +688,6 @@ function cargar() {
   });
 }
 
-/* ---------- SELECCIÓN (rota entre los destacados) ---------- */
 var SEL = [], iSel = 0, relojSel = null;
 var SEL_MS = 6000;
 
@@ -788,7 +797,7 @@ function pintarRejilla(conFundido) {
     return;
   }
 
-  rej.innerHTML = lista.map(function (p) {
+  rej.innerHTML = lista.map(function (p, idx) {
     var f = todasLasFotos(p);
     var base = f[0] || '', alt = f[1] || '';
     var nCol = (p.colores || []).length;
@@ -796,7 +805,10 @@ function pintarRejilla(conFundido) {
     var nota = esManifiesto(p)
       ? plata(MANIFIESTO.monto) + ' a ECPAT'
       : (nCol ? nCol + (nCol === 1 ? ' color' : ' colores') : '');
-    return '<article class="pieza" onclick="abrirFicha(' + p.id + ')">' +
+    // Camino B (opcional): destaca los índices 0, 4, 8...
+    var esDestacado = (idx === 0 || idx === 4 || idx === 8);
+    var claseExtra = esDestacado ? ' destacado' : '';
+    return '<article class="pieza' + claseExtra + '" onclick="abrirFicha(' + p.id + ')">' +
       '<div class="pieza-media' + (p.agotado ? ' agotado' : '') + '">' +
         (base ? '<img class="base" src="' + esc(base) + '" alt="' + esc(p.nombre) + '" loading="lazy">' : '') +
         (alt ? '<img class="alt" src="' + esc(alt) + '" alt="" loading="lazy">' : '') +
@@ -828,11 +840,10 @@ function observar() {
       setTimeout(function () { el.classList.add('dentro'); }, idx * 80);
       ojo.unobserve(el);
     });
-  }, { rootMargin: '0px 0px -40px 0px' });
+  }, { rootMargin: '0px 0px -50px 0px' });
   for (var k = 0; k < piezas.length; k++) ojo.observe(piezas[k]);
 }
 
-/* ---------- FICHA ---------- */
 function abrirFicha(id) {
   actual = PRODUCTOS.filter(function (p) { return p.id === id; })[0];
   if (!actual) return;
@@ -904,7 +915,6 @@ function agregar() {
   abrirBolsa();
 }
 
-/* ---------- BOLSA ---------- */
 function quitar(linea) {
   bolsa = bolsa.filter(function (i) { return i.linea !== linea; });
   actualizarBolsa();
@@ -955,7 +965,6 @@ function enviarWhatsApp() {
   window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
-/* ---------- EVENTOS ---------- */
 $('barra').addEventListener('click', function (e) {
   var b = e.target.closest('[data-cat]');
   if (b) filtrarCat(b.getAttribute('data-cat'), b);
@@ -1019,7 +1028,6 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-/* Deslizar la foto grande en la ficha (celular) */
 (function () {
   var x0 = null;
   var g = $('fichaGrande');
@@ -1036,7 +1044,6 @@ document.addEventListener('keydown', function (e) {
   }, { passive: true });
 })();
 
-/* ---------- COMPARTIR UNA PIEZA ---------- */
 $('btnCompartir').addEventListener('click', function () {
   if (!actual) return;
   var url = location.origin + location.pathname + '#' + ref(actual);
@@ -1056,7 +1063,6 @@ $('btnCompartir').addEventListener('click', function () {
   document.body.removeChild(caja);
 });
 
-/* Si alguien llega con #YZ-1234, se le abre esa pieza */
 function abrirDesdeEnlace() {
   var h = (location.hash || '').replace('#', '').toUpperCase();
   if (!h) return;
@@ -1065,7 +1071,6 @@ function abrirDesdeEnlace() {
   }
 }
 
-/* ---------- BOLETÍN ---------- */
 var BOL = null;
 
 function cargarBoletin() {
