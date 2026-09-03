@@ -650,9 +650,13 @@
     "colores": [
       "Negro"
     ],
-    "precio": 18600,
+    "precio": 18000,
     "enDescuento": true,
-    "precioDescuento": 15900
+    "precioDescuento": 15500,
+    "impresion": "espalda",
+    "destacado": false,
+    "agotado": false,
+    "oculto": false
   },
   {
     "id": 1786831106586,
