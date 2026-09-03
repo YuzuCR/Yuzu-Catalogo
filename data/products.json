@@ -183,8 +183,8 @@
     "precioDescuento": null,
     "impresion": "espalda",
     "destacado": false,
-    "agotado": false,
-    "oculto": true
+    "agotado": true,
+    "oculto": false
   },
   {
     "id": 1786735084350,
