@@ -850,7 +850,10 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false
+    "oculto": false,
+    "impresion": "espalda",
+    "destacado": true,
+    "agotado": false
   },
   {
     "id": 1787009402055,
