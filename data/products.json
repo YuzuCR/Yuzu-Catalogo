@@ -108,9 +108,12 @@
       "Verde musgo"
     ],
     "precio": 19500,
-    "enDescuento": true,
-    "precioDescuento": 15550,
-    "oculto": false
+    "enDescuento": false,
+    "precioDescuento": null,
+    "oculto": false,
+    "impresion": "espalda",
+    "destacado": false,
+    "agotado": true
   },
   {
     "id": 1786734303457,
@@ -181,7 +184,7 @@
     "impresion": "espalda",
     "destacado": false,
     "agotado": false,
-    "oculto": true
+    "oculto": false
   },
   {
     "id": 1786735084350,
@@ -217,7 +220,7 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500,
-    "oculto": true
+    "oculto": false
   },
   {
     "id": 1786735470244,
@@ -249,7 +252,7 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 16500,
-    "oculto": true
+    "oculto": false
   },
   {
     "id": 1786735775932,
