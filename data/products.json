@@ -429,7 +429,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": true
+    "oculto": false
   },
   {
     "id": 1786751398002,
@@ -451,7 +451,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": true
+    "oculto": false
   },
   {
     "id": 1786751522848,
@@ -496,7 +496,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": true
+    "oculto": false
   },
   {
     "id": 1786753886466,
