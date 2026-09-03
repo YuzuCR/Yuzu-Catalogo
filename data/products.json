@@ -147,7 +147,7 @@
   },
   {
     "id": 1786734852270,
-    "nombre": "Vegeta",
+    "nombre": "Vegeta 001",
     "categoria": "Anime",
     "subcategoria": "Dragon Ball",
     "imagenes": [
@@ -174,7 +174,11 @@
     ],
     "precio": 19500,
     "enDescuento": true,
-    "precioDescuento": 17500
+    "precioDescuento": 17500,
+    "impresion": "espalda",
+    "destacado": false,
+    "agotado": false,
+    "oculto": false
   },
   {
     "id": 1786735084350,
