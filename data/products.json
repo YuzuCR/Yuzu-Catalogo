@@ -303,9 +303,12 @@
       "Negro"
     ],
     "precio": 19500,
-    "enDescuento": true,
-    "precioDescuento": 15500,
-    "oculto": false
+    "enDescuento": false,
+    "precioDescuento": null,
+    "oculto": false,
+    "impresion": "espalda",
+    "destacado": false,
+    "agotado": true
   },
   {
     "id": 1786738261684,
