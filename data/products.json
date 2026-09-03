@@ -559,7 +559,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": true
+    "oculto": false
   },
   {
     "id": 1786760142535,
