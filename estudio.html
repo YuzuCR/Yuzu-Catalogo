@@ -52,6 +52,13 @@
   .marca .fallback { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1; display: none; }
   .volver { font-family: var(--dato); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; color: var(--tinta-2); transition: color .3s; }
   .volver:hover { color: var(--tinta); }
+  .nav-der { display: flex; align-items: center; gap: 16px; }
+  .tema-btn { width: 34px; height: 34px; border: 1px solid var(--linea); display: flex; align-items: center; justify-content: center; background: transparent; transition: border-color .3s; border-radius: 0; }
+  .tema-btn:hover { border-color: var(--tinta); }
+  .tema-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; transition: transform .6s var(--lento), opacity .4s var(--suave); position: absolute; }
+  .tema-btn .luna { opacity: 0; transform: rotate(-70deg) scale(.4); }
+  [data-tema="onix"] .tema-btn .sol { opacity: 0; transform: rotate(70deg) scale(.4); }
+  [data-tema="onix"] .tema-btn .luna { opacity: 1; transform: none; }
 
   /* ===== CIMA ===== */
   .cima { padding: 70px 18px 50px; border-bottom: 1px solid var(--linea); }
@@ -66,10 +73,10 @@
   .cima p strong { color: var(--tinta); font-weight: 500; }
 
   /* ===== CIFRAS ===== */
-  .cifras { display: grid; grid-template-columns: repeat(2, 1fr); border-bottom: 1px solid var(--linea); }
+  .cifras { display: grid; grid-template-columns: repeat(2, 1fr); border-bottom: 1px solid var(--linea); padding: 20px 0; }
   .cifra { padding: 26px 18px; border-top: 1px solid var(--linea-fina); }
   .cifra:nth-child(odd) { border-right: 1px solid var(--linea-fina); }
-  .cifra .n { font-family: var(--display); font-weight: 800; font-size: clamp(34px, 9vw, 58px); line-height: 1; }
+  .cifra .n { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 10vw, 70px); line-height: 1; letter-spacing: -0.02em; }
   .cifra .q { font-family: var(--dato); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-2); margin-top: 6px; }
 
   /* ===== BLOQUES ===== */
@@ -86,17 +93,21 @@
   .oficio p { font-size: 13px; margin: 0; max-width: 46ch; }
 
   /* ===== PROYECTOS ===== */
-  .proyectos-grid { display: grid; gap: 30px; margin-top: 10px; }
-  .proyecto { background: var(--papel-2); border-radius: 6px; overflow: hidden; transition: transform .4s var(--lento), box-shadow .4s var(--suave); }
-  .proyecto:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
-  .proyecto .img-wrap { aspect-ratio: 16/9; overflow: hidden; background: var(--tinta); }
+  .proyectos-grid { display: grid; gap: 36px; margin-top: 10px; }
+  .proyecto { background: var(--papel-2); border-radius: 8px; overflow: hidden; transition: transform .5s var(--lento), box-shadow .5s var(--suave); box-shadow: none; cursor: pointer; }
+  .proyecto:hover { transform: translateY(-8px); box-shadow: 0 12px 40px rgba(0,0,0,0.10); }
+  .proyecto .img-wrap { position: relative; aspect-ratio: 16/10; overflow: hidden; background: var(--tinta); }
   .proyecto .img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--lento); }
   .proyecto:hover .img-wrap img { transform: scale(1.04); }
-  .proyecto .info { padding: 18px 20px 24px; }
-  .proyecto .info h3 { font-family: var(--display); font-weight: 600; font-size: 24px; text-transform: uppercase; line-height: 1.05; margin-bottom: 6px; }
-  .proyecto .info p { font-size: 13px; color: var(--tinta-2); margin-bottom: 12px; }
-  .proyecto .enlace-ext { display: inline-block; font-family: var(--dato); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--tinta-2); border-bottom: 1px solid var(--linea); transition: color .3s, border-color .3s; }
-  .proyecto .enlace-ext:hover { color: var(--tinta); border-color: var(--tinta); }
+  .proyecto .badge-tipo { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.75); color: #fff; font-family: var(--dato); font-size: 8px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; letter-spacing: .1em; }
+  .proyecto .info { padding: 18px 20px 24px; display: flex; flex-direction: column; gap: 6px; }
+  .proyecto .info .titulo-linea { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .proyecto .info h3 { font-family: var(--display); font-weight: 600; font-size: 22px; text-transform: uppercase; line-height: 1.05; margin: 0; letter-spacing: 0.02em; }
+  .proyecto .info p { font-size: 13px; color: var(--tinta-2); margin: 0; }
+  .proyecto .info .estadistica { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .proyecto .info .estadistica img { max-height: 36px; width: auto; border-radius: 4px; }
+  .proyecto .info .enlace-ext { display: inline-block; font-family: var(--dato); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--tinta-2); border-bottom: 1px solid var(--linea); transition: color .3s, border-color .3s; margin-top: 4px; }
+  .proyecto .info .enlace-ext:hover { color: var(--tinta); border-color: var(--tinta); }
   .align-left { text-align: left; }
   .align-center { text-align: center; }
   .align-right { text-align: right; }
@@ -121,15 +132,6 @@
   .pie-marca { font-family: var(--display); font-weight: 800; font-size: clamp(46px, 17vw, 150px); line-height: .8; text-transform: uppercase; letter-spacing: -.02em; -webkit-text-stroke: 1.2px var(--tinta); color: transparent; }
   .pie-nota { margin-top: 16px; }
 
-  /* ===== TEMA TOGGLE (opcional) ===== */
-  .tema-btn { width: 34px; height: 34px; border: 1px solid var(--linea); display: flex; align-items: center; justify-content: center; background: transparent; transition: border-color .3s; border-radius: 0; }
-  .tema-btn:hover { border-color: var(--tinta); }
-  .tema-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; transition: transform .6s var(--lento), opacity .4s var(--suave); position: absolute; }
-  .tema-btn .luna { opacity: 0; transform: rotate(-70deg) scale(.4); }
-  [data-tema="onix"] .tema-btn .sol { opacity: 0; transform: rotate(70deg) scale(.4); }
-  [data-tema="onix"] .tema-btn .luna { opacity: 1; transform: none; }
-  .nav-der { display: flex; align-items: center; gap: 16px; }
-
   /* ===== RESPONSIVE ===== */
   @media (min-width: 760px) {
     header, .cima, .bloque, footer { padding-left: 44px; padding-right: 44px; }
@@ -139,15 +141,16 @@
     .cifra:last-child { border-right: none; }
     .bloque { padding-top: 84px; padding-bottom: 84px; }
     .oficios { grid-template-columns: 1fr 1fr; column-gap: 40px; }
-    .proyectos-grid { grid-template-columns: repeat(3, 1fr); }
+    .proyectos-grid { grid-template-columns: repeat(3, 1fr); gap: 40px; }
     .hito { grid-template-columns: 90px 1fr; gap: 26px; }
   }
   @media (max-width: 600px) {
     .cima h1 { font-size: clamp(38px, 12vw, 60px); }
     .cifras { grid-template-columns: 1fr 1fr; }
-    .proyectos-grid { grid-template-columns: 1fr; }
+    .proyectos-grid { grid-template-columns: 1fr; gap: 28px; }
     .hito { grid-template-columns: 1fr; gap: 4px; }
     .hito .anio { font-weight: 600; color: var(--tinta); padding-top: 0; }
+    .proyecto .info .titulo-linea { flex-direction: column; align-items: flex-start; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -173,7 +176,6 @@
 </header>
 
 <main id="contenido-estudio">
-  <!-- Aquí se renderiza todo dinámicamente -->
   <div style="padding:40px 18px;text-align:center;color:var(--tinta-2);">Cargando portafolio...</div>
 </main>
 
@@ -184,7 +186,7 @@
 
 <script>
   // ============================================================
-  // 1. TEMA CLARO/OSCURO
+  // 1. TEMA
   // ============================================================
   (function() {
     var t = null;
@@ -201,33 +203,31 @@
   });
 
   // ============================================================
-  // 2. ESCAPE HTML
+  // 2. ESCAPE
   // ============================================================
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
   // ============================================================
-  // 3. RENDERIZADO DEL ESTUDIO
+  // 3. RENDER
   // ============================================================
   var contenedor = document.getElementById('contenido-estudio');
 
   function renderizar(data) {
     var html = '';
 
-    // --- CIMA ---
+    // CIMA
     var tituloParts = (data.titulo || 'Arley Andre').split(' ');
     var last = tituloParts.pop() || '';
     html += '<section class="cima">';
     html += '<p class="dato">' + esc(data.subtitulo || 'San José, Costa Rica') + '</p>';
     html += '<h1>';
-    if (tituloParts.length) {
-      html += '<span class="ln"><i>' + esc(tituloParts.join(' ')) + '</i></span>';
-    }
+    if (tituloParts.length) html += '<span class="ln"><i>' + esc(tituloParts.join(' ')) + '</i></span>';
     html += '<span class="ln"><i class="hueca">' + esc(last) + '</i></span>';
     html += '</h1>';
     html += '<p>' + esc(data.descripcion || '') + '</p>';
     html += '</section>';
 
-    // --- CIFRAS ---
+    // CIFRAS
     if (data.cifras && data.cifras.length) {
       html += '<div class="cifras">';
       data.cifras.forEach(function(c) {
@@ -236,7 +236,7 @@
       html += '</div>';
     }
 
-    // --- BLOQUES (ordenados) ---
+    // BLOQUES
     var bloques = (data.bloques || []).sort(function(a,b) { return (a.orden || 0) - (b.orden || 0); });
     bloques.forEach(function(bloque) {
       var tipo = bloque.tipo || 'texto';
@@ -246,9 +246,7 @@
         if (bloque.etiqueta) html += '<span class="dato">' + esc(bloque.etiqueta) + '</span>';
         if (bloque.titulo) html += '<h2>' + esc(bloque.titulo) + '</h2>';
         if (bloque.parrafos && bloque.parrafos.length) {
-          bloque.parrafos.forEach(function(p) {
-            if (p) html += '<p>' + esc(p) + '</p>';
-          });
+          bloque.parrafos.forEach(function(p) { if (p) html += '<p>' + esc(p) + '</p>'; });
         }
         if (bloque.oficios && bloque.oficios.length) {
           html += '<div class="oficios">';
@@ -266,14 +264,38 @@
         html += '<div class="proyectos-grid">';
         (bloque.proyectos || []).forEach(function(proy) {
           var align = proy.align || 'left';
-          var img = proy.imagen ? '<div class="img-wrap"><img src="' + esc(proy.imagen) + '" alt="' + esc(proy.titulo) + '" loading="lazy"></div>' : '';
-          var enlace = proy.enlace ? '<a class="enlace-ext" href="' + esc(proy.enlace) + '" target="_blank" rel="noopener">Ver proyecto &rarr;</a>' : '';
-          html += '<div class="proyecto align-' + align + '">' +
+          var esVideo = proy.tipo === 'video' || (proy.enlace && /\.(mp4|webm|mov|ogg)$/i.test(proy.enlace));
+          var img = '';
+          if (proy.imagen) {
+            img = '<div class="img-wrap">';
+            if (esVideo) {
+              img += '<video src="' + esc(proy.enlace) + '" poster="' + esc(proy.imagen) + '" controls muted loop playsinline preload="metadata"></video>';
+            } else {
+              img += '<img src="' + esc(proy.imagen) + '" alt="' + esc(proy.titulo) + '" loading="lazy">';
+            }
+            img += '</div>';
+          }
+          var tipoPublicacion = proy.tipo || 'web';
+          var badge = '';
+          if (tipoPublicacion === 'instagram') badge = 'Instagram';
+          else if (tipoPublicacion === 'behance') badge = 'Behance';
+          else if (tipoPublicacion === 'youtube') badge = 'YouTube';
+          else if (tipoPublicacion === 'video') badge = 'Video';
+          else if (tipoPublicacion === 'web') badge = 'Web';
+          else badge = 'Proyecto';
+          var badgeHtml = badge ? '<span class="badge-tipo">' + badge + '</span>' : '';
+          var estadisticaHtml = proy.estadistica ? '<div class="estadistica"><img src="' + esc(proy.estadistica) + '" alt="Estadística de alcance"></div>' : '';
+          var enlaceHtml = proy.enlace ? '<a class="enlace-ext" href="' + esc(proy.enlace) + '" target="_blank" rel="noopener">Ver publicación &rarr;</a>' : '';
+          var clickUrl = (esVideo && proy.enlace && !proy.enlace.includes('youtube.com') && !proy.enlace.includes('instagram.com')) ? '' : proy.enlace;
+          var onclickAttr = clickUrl ? ' onclick="window.open(\'' + esc(clickUrl) + '\', \'_blank\')"' : '';
+
+          html += '<div class="proyecto align-' + align + '"' + onclickAttr + '>' +
             img +
+            badgeHtml +
             '<div class="info">' +
-            '<h3>' + esc(proy.titulo) + '</h3>' +
-            (proy.descripcion ? '<p>' + esc(proy.descripcion) + '</p>' : '') +
-            enlace +
+            '<div class="titulo-linea"><h3>' + esc(proy.titulo) + '</h3>' + (proy.descripcion ? '<p>' + esc(proy.descripcion) + '</p>' : '') + '</div>' +
+            estadisticaHtml +
+            enlaceHtml +
             '</div></div>';
         });
         html += '</div>';
@@ -306,7 +328,7 @@
 
     contenedor.innerHTML = html;
 
-    // --- Activar IntersectionObserver para los .rev ---
+    // IntersectionObserver
     if ('IntersectionObserver' in window) {
       var revs = document.querySelectorAll('.rev');
       var ojo = new IntersectionObserver(function(ents) {
@@ -324,10 +346,9 @@
   }
 
   // ============================================================
-  // 4. CARGA DE DATOS
+  // 4. CARGA
   // ============================================================
-  var CACHE_BUST = '?t=' + Date.now();
-  fetch('data/estudio.json' + CACHE_BUST)
+  fetch('data/estudio.json?t=' + Date.now())
     .then(function(r) { return r.json(); })
     .then(function(data) { renderizar(data); })
     .catch(function() {
