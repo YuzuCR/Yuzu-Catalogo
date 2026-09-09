@@ -69,7 +69,8 @@
     ],
     "precio": 19500,
     "enDescuento": true,
-    "precioDescuento": 16500
+    "precioDescuento": 16500,
+    "oculto": false
   },
   {
     "id": 1786733978428,
@@ -149,7 +150,8 @@
     ],
     "precio": 19500,
     "enDescuento": true,
-    "precioDescuento": 15500
+    "precioDescuento": 15500,
+    "oculto": false
   },
   {
     "id": 1786734852270,
@@ -977,7 +979,8 @@
     ],
     "precio": 17500,
     "enDescuento": false,
-    "precioDescuento": null
+    "precioDescuento": null,
+    "oculto": false
   },
   {
     "id": 1787607763579,
@@ -1017,6 +1020,7 @@
     ],
     "precio": 14500,
     "enDescuento": false,
-    "precioDescuento": null
+    "precioDescuento": null,
+    "oculto": false
   }
 ]
