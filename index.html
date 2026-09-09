@@ -359,11 +359,12 @@
   }
 
   @media (max-width: 600px) {
-    .rejilla { gap: 12px; padding: 4px 12px 30px; scroll-snap-type: x mandatory; }
-    .rejilla .pieza, .rejilla .hueco { flex: none; scroll-snap-align: start; }
-    .rejilla .pieza { flex: 0 0 70%; }
-    .pieza-nombre { font-size: 19px; }
-    .precio { font-size: 13px; }
+    .rejilla { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px; padding: 4px 12px 30px; overflow: visible; scroll-snap-type: none; }
+    .rejilla .pieza { flex: none; scroll-snap-align: none; }
+    .rejilla .hueco { display: none; }
+    .carrusel-guia { display: none; }
+    .pieza-nombre { font-size: 17px; }
+    .precio { font-size: 12px; }
     .serie { font-size: 10px; }
     .editorial-destacado { padding: 40px 18px; }
     .editorial-destacado .inner h2 { font-size: clamp(26px, 10vw, 40px); }
@@ -442,7 +443,16 @@
 
 <div class="rotulo">
   <h2 id="rotuloTit">Archivo</h2>
-  <span class="dato" id="conteo">—</span>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span class="dato" id="conteo">—</span>
+    <select id="ordenSelect" style="background:transparent;border:none;border-bottom:1px solid var(--linea);color:var(--tinta-2);font-family:var(--dato);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:2px 4px;cursor:pointer;outline:none;">
+      <option value="dest">Destacados</option>
+      <option value="az">A &#x2192; Z</option>
+      <option value="za">Z &#x2192; A</option>
+      <option value="precio-asc">Precio &#x2191;</option>
+      <option value="precio-desc">Precio &#x2193;</option>
+    </select>
+  </div>
 </div>
 
 <div class="carrusel-guia" id="carruselGuia">
@@ -633,7 +643,7 @@ var COLORES = [
 ];
 
 var PRODUCTOS = [], CATEGORIAS = {}, VISIBLES = [];
-var catActual = 'all', subActual = 'all';
+var catActual = 'all', subActual = 'all', ordenActual = 'dest';
 var bolsa = [], actual = null, fotos = [], iFoto = 0;
 try { var guardada = window.localStorage.getItem('yuzu-bolsa'); if (guardada) bolsa = JSON.parse(guardada); } catch (e) {}
 var talla = null, color = null, precioActual = PRECIO_BASE;
@@ -742,7 +752,7 @@ function pintarFiltros() {
   var usadas = {};
   VISIBLES.forEach(function (p) { usadas[p.categoria] = true; });
   var html = '<button class="f-btn on" data-cat="all">Todo</button>';
-  Object.keys(CATEGORIAS).forEach(function (c) {
+  Object.keys(CATEGORIAS).sort(function(a,b){ return a.localeCompare(b,'es'); }).forEach(function (c) {
     if (usadas[c]) html += '<button class="f-btn" data-cat="' + esc(c) + '">' + esc(c) + '</button>';
   });
   $('barra').innerHTML = html;
@@ -762,7 +772,7 @@ function filtrarCat(cat, btn) {
   if (cat !== 'all') {
     var usadas = {};
     VISIBLES.forEach(function (p) { if (p.categoria === cat && p.subcategoria) usadas[p.subcategoria] = true; });
-    subs = (CATEGORIAS[cat] || []).filter(function (s) { return usadas[s]; });
+    subs = (CATEGORIAS[cat] || []).filter(function (s) { return usadas[s]; }).sort(function(a,b){ return a.localeCompare(b,'es'); });
   }
   if (subs.length) {
     var html = '<button class="s-btn on" data-sub="all">Todas</button>';
@@ -794,6 +804,19 @@ function pintarRejilla(conFundido) {
   var lista = VISIBLES;
   if (catActual !== 'all') lista = lista.filter(function (p) { return p.categoria === catActual; });
   if (subActual !== 'all') lista = lista.filter(function (p) { return p.subcategoria === subActual; });
+
+  // Ordenamiento
+  lista = lista.slice();
+  if (ordenActual === 'az') {
+    lista.sort(function(a,b){ return a.nombre.localeCompare(b.nombre,'es'); });
+  } else if (ordenActual === 'za') {
+    lista.sort(function(a,b){ return b.nombre.localeCompare(a.nombre,'es'); });
+  } else if (ordenActual === 'precio-asc') {
+    lista.sort(function(a,b){ return precioVigente(a) - precioVigente(b); });
+  } else if (ordenActual === 'precio-desc') {
+    lista.sort(function(a,b){ return precioVigente(b) - precioVigente(a); });
+  }
+  // 'dest' ya viene ordenado desde VISIBLES (destacados primero, luego por fecha)
 
   $('conteo').textContent = lista.length + (lista.length === 1 ? ' pieza' : ' piezas');
 
@@ -968,6 +991,10 @@ function enviarWhatsApp() {
 $('barra').addEventListener('click', function (e) {
   var b = e.target.closest('[data-cat]');
   if (b) filtrarCat(b.getAttribute('data-cat'), b);
+});
+$('ordenSelect').addEventListener('change', function () {
+  ordenActual = this.value;
+  pintarRejilla(true);
 });
 $('barraSub').addEventListener('click', function (e) {
   var b = e.target.closest('[data-sub]');
