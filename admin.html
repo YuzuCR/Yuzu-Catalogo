@@ -104,7 +104,7 @@
   .check-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; cursor: pointer; }
   .check-row input { width: auto; }
   .check-row span { font-size: 13px; color: var(--tinta); }
-  .banderas { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 14px; }
+  .banderas { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 14px; }
   .banderas .check-row { margin-top: 0; font-size: 12px; }
   .banderas .check-row span { font-size: 12px; }
 
@@ -118,7 +118,6 @@
   .prod-meta .vigente { color: var(--yuzu); }
   .chip { font-family: var(--mono); font-size: 8px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--linea); border-radius: 20px; padding: 1px 6px; margin-left: 5px; color: var(--mudo); }
   .chip.dest { color: var(--yuzu); border-color: var(--yuzu); }
-  .chip.ago { color: var(--rojo); border-color: var(--rojo); }
   .prod-btn { background: var(--sup2); border: 1px solid var(--linea); color: var(--mudo); border-radius: 6px; width: 30px; height: 30px; cursor: pointer; font-size: 13px; flex-shrink: 0; }
   .prod-btn:hover { border-color: var(--yuzu); color: var(--tinta); }
   .prod-btn.del:hover { border-color: var(--rojo); color: var(--rojo); }
@@ -143,7 +142,7 @@
   .mock-head .sw { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--linea); }
   .subtit { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--mudo); margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--linea); }
 
-  /* ===== ESTUDIO (portafolio) ===== */
+  /* ===== ESTUDIO ===== */
   .bloque-editor { background: var(--sup2); border: 1px solid var(--linea); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
   .bloque-editor .cab { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
   .bloque-editor .cab .tipo-badge { font-family: var(--mono); font-size: 9px; text-transform: uppercase; color: var(--yuzu); border: 1px solid var(--yuzu); padding: 2px 8px; border-radius: 20px; }
@@ -160,6 +159,30 @@
   .inline-flex { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
   .orden-num { font-size: 11px; color: var(--mudo); font-family: var(--mono); }
   .badge-tipo { display: inline-block; font-size: 8px; text-transform: uppercase; background: var(--yuzu); color: #000; padding: 1px 8px; border-radius: 12px; margin-left: 6px; }
+
+  /* ===== MODAL VISIBILIDAD ===== */
+  .modal-fondo { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .modal-fondo.abierto { opacity: 1; pointer-events: all; }
+  .modal { background: var(--sup); border: 1px solid var(--linea); border-radius: 12px; width: 100%; max-width: 500px; max-height: 80vh; display: flex; flex-direction: column; }
+  .modal-cab { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--linea); }
+  .modal-cab h3 { font-size: 15px; font-weight: 600; }
+  .modal-cab button { background: none; border: none; color: var(--mudo); font-size: 18px; cursor: pointer; padding: 4px; line-height: 1; }
+  .modal-cab button:hover { color: var(--tinta); }
+  .modal-tools { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--linea); flex-wrap: wrap; }
+  .modal-tools button { background: var(--sup2); border: 1px solid var(--linea); color: var(--mudo); border-radius: 6px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-family: var(--font); }
+  .modal-tools button:hover { border-color: var(--yuzu); color: var(--tinta); }
+  .modal-lista { flex: 1; overflow-y: auto; padding: 8px 20px; }
+  .modal-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--linea); cursor: pointer; }
+  .modal-item:last-child { border-bottom: none; }
+  .modal-item:hover { opacity: .85; }
+  .modal-item img { width: 36px; height: 36px; object-fit: cover; border-radius: 4px; background: var(--sup2); flex-shrink: 0; }
+  .modal-item .m-nombre { flex: 1; font-size: 13px; font-weight: 500; }
+  .modal-item .m-estado { font-size: 10px; color: var(--mudo); font-family: var(--mono); }
+  .modal-item input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--yuzu); flex-shrink: 0; cursor: pointer; }
+  .modal-pie { padding: 16px 20px; border-top: 1px solid var(--linea); display: flex; gap: 8px; }
+  .modal-pie .btn { margin-top: 0; }
+  .modal-pie .btn-sec { flex: 1; }
+  .modal-pie .btn { flex: 2; }
 </style>
 </head>
 <body>
@@ -232,7 +255,6 @@
       </div>
       <div class="banderas">
         <label class="check-row"><input type="checkbox" id="nuevoDestacado"><span>Destacado</span></label>
-        <label class="check-row"><input type="checkbox" id="nuevoAgotado"><span>Agotado</span></label>
         <label class="check-row"><input type="checkbox" id="nuevoOculto"><span>Oculto</span></label>
       </div>
       <button class="btn" id="btnSubir">Subir producto</button>
@@ -240,13 +262,17 @@
     </div>
     <div class="card" id="editCard">
       <h2>Editar productos</h2>
-      <div class="row"><button class="btn btn-sec" id="btnRecargar">Recargar lista</button><button class="btn btn-sec" id="btnQuitarDesc">Quitar descuentos</button></div>
+      <div class="row">
+        <button class="btn btn-sec" id="btnRecargar">Recargar lista</button>
+        <button class="btn btn-sec" id="btnGestionarVis">Gestionar visibilidad</button>
+        <button class="btn btn-sec" id="btnQuitarDesc">Quitar descuentos</button>
+      </div>
       <div id="listaProductos" style="margin-top:14px;"></div>
       <div class="status" id="statusEdit"></div>
     </div>
   </div>
 
-  <!-- ==================== PANEL ESTUDIO (PORTAFOLIO) ==================== -->
+  <!-- ==================== PANEL ESTUDIO ==================== -->
   <div class="panel" id="panel-estudio">
     <div class="card">
       <h2>Editar portafolio</h2>
@@ -264,7 +290,6 @@
       <button class="btn" id="btnGuardarEstudio">Guardar portafolio</button>
       <div class="status" id="statusEstudio"></div>
     </div>
-
     <div class="card">
       <h2>Bloques del portafolio</h2>
       <p class="mini">Cada bloque es una sección. Podés subir/bajar, editar y borrar.</p>
@@ -318,6 +343,27 @@
       <div class="row"><button class="btn btn-sec" id="btnCsv">CSV</button><button class="btn btn-sec" id="btnRecargarVentas">Recargar</button></div>
     </div>
     <div class="card"><h2>Últimas ventas</h2><div id="listaVentas"></div></div>
+  </div>
+</div>
+
+<!-- MODAL VISIBILIDAD -->
+<div class="modal-fondo" id="modalFondo">
+  <div class="modal">
+    <div class="modal-cab">
+      <h3>Gestionar visibilidad</h3>
+      <button id="btnCerrarModal">✕</button>
+    </div>
+    <div class="modal-tools">
+      <button id="btnSelTodos">Marcar todos</button>
+      <button id="btnDeselTodos">Desmarcar todos</button>
+      <button id="btnSoloOcultos">Ver solo ocultos</button>
+      <button id="btnVerTodos">Ver todos</button>
+    </div>
+    <div class="modal-lista" id="modalLista"></div>
+    <div class="modal-pie">
+      <button class="btn btn-sec" id="btnCancelarModal">Cancelar</button>
+      <button class="btn" id="btnAplicarVis">Aplicar cambios</button>
+    </div>
   </div>
 </div>
 
@@ -617,7 +663,6 @@ function subirProducto() {
         precio: precio, enDescuento: enDescuento, precioDescuento: precioDescuento,
         impresion: $('impresionSelect').value,
         destacado: $('nuevoDestacado').checked,
-        agotado: $('nuevoAgotado').checked,
         oculto: $('nuevoOculto').checked
       });
       return ghPut('data/products.json', r.content, r.sha, 'Nuevo producto: ' + nombre);
@@ -630,7 +675,6 @@ function subirProducto() {
     $('precioDescuentoInput').value = '';
     $('rowDescuento').style.display = 'none';
     $('nuevoDestacado').checked = false;
-    $('nuevoAgotado').checked = false;
     $('nuevoOculto').checked = false;
     galeria = []; mockups = [];
     renderGaleria(); renderMockups(); renderColorChecks();
@@ -675,7 +719,6 @@ function renderLista(abrirIdx) {
       ? '<span class="tachado">' + plata(precio) + '</span><span class="vigente">' + plata(p.precioDescuento) + '</span>'
       : '<span class="vigente">' + plata(precio) + '</span>';
     if (p.destacado) meta += '<span class="chip dest">destacado</span>';
-    if (p.agotado) meta += '<span class="chip ago">agotado</span>';
     if (p.oculto) meta += '<span class="chip">oculto</span>';
 
     html += '<div class="prod-row' + (p.oculto ? ' off' : '') + '">' +
@@ -747,7 +790,6 @@ function abrirEdicion(i) {
 
   html += '<div class="banderas">' +
     '<label class="check-row"><input type="checkbox" id="e-dest-' + i + '"' + (p.destacado ? ' checked' : '') + '><span>Destacado</span></label>' +
-    '<label class="check-row"><input type="checkbox" id="e-ago-' + i + '"' + (p.agotado ? ' checked' : '') + '><span>Agotado</span></label>' +
     '<label class="check-row"><input type="checkbox" id="e-ocu-' + i + '"' + (p.oculto ? ' checked' : '') + '><span>Oculto</span></label>' +
     '</div>';
 
@@ -799,7 +841,6 @@ function guardarEdicion(i) {
   p.enDescuento = enDescuento;
   p.precioDescuento = enDescuento ? precioDescuento : null;
   p.destacado = $('e-dest-' + i).checked;
-  p.agotado = $('e-ago-' + i).checked;
   p.oculto = $('e-ocu-' + i).checked;
 
   guardarProductos('Edita: ' + nombre, i);
@@ -937,6 +978,73 @@ $('listaProductos').addEventListener('change', function (e) {
 $('btnRecargar').addEventListener('click', cargarProductos);
 $('btnQuitarDesc').addEventListener('click', quitarTodosLosDescuentos);
 
+// ========== MODAL GESTIONAR VISIBILIDAD ==========
+var modalFiltroOcultos = false;
+
+function abrirModalVis() {
+  modalFiltroOcultos = false;
+  renderModalLista();
+  $('modalFondo').classList.add('abierto');
+}
+function cerrarModalVis() {
+  $('modalFondo').classList.remove('abierto');
+}
+
+function renderModalLista() {
+  var lista = modalFiltroOcultos
+    ? PRODUCTOS.filter(function(p) { return p.oculto; })
+    : PRODUCTOS;
+
+  if (!lista.length) {
+    $('modalLista').innerHTML = '<p style="color:var(--mudo);font-size:13px;padding:20px 0;">' +
+      (modalFiltroOcultos ? 'No hay productos ocultos.' : 'No hay productos.') + '</p>';
+    return;
+  }
+
+  var html = lista.map(function(p) {
+    var idx = PRODUCTOS.indexOf(p);
+    return '<label class="modal-item">' +
+      '<img src="' + portadaDe(p) + '" alt="">' +
+      '<div class="m-nombre">' + esc(p.nombre) + '</div>' +
+      '<span class="m-estado">' + (p.oculto ? 'oculto' : 'visible') + '</span>' +
+      '<input type="checkbox" data-idx="' + idx + '"' + (p.oculto ? '' : ' checked') + '>' +
+      '</label>';
+  }).join('');
+  $('modalLista').innerHTML = html;
+}
+
+function aplicarVisibilidad() {
+  var checks = $('modalLista').querySelectorAll('input[type=checkbox]');
+  checks.forEach(function(cb) {
+    var idx = parseInt(cb.getAttribute('data-idx'), 10);
+    PRODUCTOS[idx].oculto = !cb.checked;
+  });
+  guardarProductos('Actualiza visibilidad en lote');
+  cerrarModalVis();
+}
+
+$('btnGestionarVis').addEventListener('click', abrirModalVis);
+$('btnCerrarModal').addEventListener('click', cerrarModalVis);
+$('btnCancelarModal').addEventListener('click', cerrarModalVis);
+$('btnAplicarVis').addEventListener('click', aplicarVisibilidad);
+$('modalFondo').addEventListener('click', function(e) {
+  if (e.target === $('modalFondo')) cerrarModalVis();
+});
+$('btnSelTodos').addEventListener('click', function() {
+  $('modalLista').querySelectorAll('input[type=checkbox]').forEach(function(cb) { cb.checked = true; });
+});
+$('btnDeselTodos').addEventListener('click', function() {
+  $('modalLista').querySelectorAll('input[type=checkbox]').forEach(function(cb) { cb.checked = false; });
+});
+$('btnSoloOcultos').addEventListener('click', function() {
+  modalFiltroOcultos = true;
+  renderModalLista();
+});
+$('btnVerTodos').addEventListener('click', function() {
+  modalFiltroOcultos = false;
+  renderModalLista();
+});
+
 // ========== DRAG & DROP ==========
 function setupDropZone(zoneId, fileInputId) {
   var zone = $(zoneId);
@@ -1019,7 +1127,7 @@ function guardarEstudio() {
   var cifrasRaw = $('estCifras').value.split('\n').filter(Boolean);
   var cifras = cifrasRaw.map(function(line) {
     var parts = line.split('|');
-    return { n: parts[0]?.trim() || '', q: parts[1]?.trim() || '' };
+    return { n: (parts[0] || '').trim(), q: (parts[1] || '').trim() };
   }).filter(function(c) { return c.n && c.q; });
 
   ESTUDIO_DATA.titulo = $('estTitulo').value.trim();
@@ -1120,9 +1228,10 @@ $('listaBloques').addEventListener('click', function(e) {
   var i = parseInt(target.getAttribute('data-bloque'), 10);
   var accion = target.getAttribute('data-accion') || '';
   var bloques = ESTUDIO_DATA.bloques || [];
+  var tmp;
 
-  if (accion === 'up' && i > 0) { var tmp=bloques[i]; bloques[i]=bloques[i-1]; bloques[i-1]=tmp; guardarEstudioBloques(); }
-  else if (accion === 'down' && i < bloques.length-1) { var tmp2=bloques[i]; bloques[i]=bloques[i+1]; bloques[i+1]=tmp2; guardarEstudioBloques(); }
+  if (accion === 'up' && i > 0) { tmp=bloques[i]; bloques[i]=bloques[i-1]; bloques[i-1]=tmp; guardarEstudioBloques(); }
+  else if (accion === 'down' && i < bloques.length-1) { tmp=bloques[i]; bloques[i]=bloques[i+1]; bloques[i+1]=tmp; guardarEstudioBloques(); }
   else if (accion === 'del') { if (confirm('¿Borrar este bloque?')) { bloques.splice(i,1); bloqueEditando=-1; guardarEstudioBloques(); } }
   else if (accion === 'edit') { bloqueEditando = (bloqueEditando === i) ? -1 : i; renderBloques(); }
   else if (accion === 'add-proy') { if (!bloques[i].proyectos) bloques[i].proyectos=[]; bloques[i].proyectos.push({titulo:'',descripcion:'',enlace:'',imagen:'',estadistica:'',tipo:'instagram',align:'left'}); renderBloques(); }
@@ -1146,10 +1255,9 @@ function guardarBloqueDesdeForm(i) {
   b.descripcion = container.querySelector('.bloque-desc').value.trim();
 
   if (b.tipo === 'texto') {
-    var parrafos = container.querySelector('.bloque-parrafos').value.split('\n').filter(Boolean);
-    b.parrafos = parrafos;
+    b.parrafos = container.querySelector('.bloque-parrafos').value.split('\n').filter(Boolean);
     var oficiosRaw = container.querySelector('.bloque-oficios').value.split('\n').filter(Boolean);
-    b.oficios = oficiosRaw.map(function(line) { var p=line.split('|'); return {titulo:p[0]?.trim()||'', texto:p[1]?.trim()||''}; }).filter(function(o){return o.titulo;});
+    b.oficios = oficiosRaw.map(function(line) { var p=line.split('|'); return {titulo:(p[0]||'').trim(), texto:(p[1]||'').trim()}; }).filter(function(o){return o.titulo;});
   }
   if (b.tipo === 'proyectos') {
     var proyItems = container.querySelectorAll('.proyecto-item');
@@ -1171,11 +1279,11 @@ function guardarBloqueDesdeForm(i) {
   }
   if (b.tipo === 'historia') {
     var hitosRaw = container.querySelector('.bloque-hitos').value.split('\n').filter(Boolean);
-    b.hitos = hitosRaw.map(function(line) { var p=line.split('|'); return {anio:p[0]?.trim()||'', titulo:p[1]?.trim()||'', texto:p[2]?.trim()||''}; }).filter(function(h){return h.anio && h.titulo;});
+    b.hitos = hitosRaw.map(function(line) { var p=line.split('|'); return {anio:(p[0]||'').trim(), titulo:(p[1]||'').trim(), texto:(p[2]||'').trim()}; }).filter(function(h){return h.anio && h.titulo;});
   }
   if (b.tipo === 'contacto') {
     var enlacesRaw = container.querySelector('.bloque-enlaces').value.split('\n').filter(Boolean);
-    b.enlaces = enlacesRaw.map(function(line) { var p=line.split('|'); return {texto:p[0]?.trim()||'', url:p[1]?.trim()||''}; }).filter(function(e){return e.texto && e.url;});
+    b.enlaces = enlacesRaw.map(function(line) { var p=line.split('|'); return {texto:(p[0]||'').trim(), url:(p[1]||'').trim()}; }).filter(function(e){return e.texto && e.url;});
   }
   bloqueEditando = -1;
   guardarEstudioBloques();
@@ -1228,7 +1336,7 @@ $('tabs').addEventListener('click', function(e) {
 // ============================================================
 function statusBol(t,m){ var el=$('statusBol'); el.className='status show '+t; el.textContent=m; }
 function cargarBoletines() { ghGet('data/boletines.json').then(function(r){ BOLETINES=r&&r.content?r.content:[]; renderBoletines(); }).catch(function(){ BOLETINES=[]; renderBoletines(); }); }
-function renderBoletines() { if(!BOLETINES.length){ $('listaBoletines').innerHTML='<p class="mini">Sin boletines.</p>'; return; } $('listaBoletines').innerHTML=BOLETINES.map(function(b,i){ return '<div class="bol-fila"><div><strong>'+(b.titulo||'Sin título')+'</strong>'+(b.activo?'<span class="chip dest">activo</span>':'<span class="chip">apagado</span>')+'<div class="meta" style="font-size:10px;color:var(--mudo);margin-top:3px;">'+ (b.codigo||'sin código')+' · '+ (b.retraso||8)+' s</div></div><div class="acciones"><button data-bol-activar="'+i+'">'+(b.activo?'●':'○')+'</button><button data-bol-editar="'+i+'">✎</button><button data-bol-borrar="'+i+'">✕</button></div></div>'; }).join(''); }
+function renderBoletines() { if(!BOLETINES.length){ $('listaBoletines').innerHTML='<p class="mini">Sin boletines.</p>'; return; } $('listaBoletines').innerHTML=BOLETINES.map(function(b,i){ return '<div class="bol-fila"><div><strong>'+(b.titulo||'Sin título')+'</strong>'+(b.activo?'<span class="chip dest">activo</span>':'<span class="chip">apagado</span>')+'<div class="meta" style="font-size:10px;color:var(--mudo);margin-top:3px;">'+(b.codigo||'sin código')+' · '+(b.retraso||8)+' s</div></div><div class="acciones"><button data-bol-activar="'+i+'">'+(b.activo?'●':'○')+'</button><button data-bol-editar="'+i+'">✎</button><button data-bol-borrar="'+i+'">✕</button></div></div>'; }).join(''); }
 $('listaBoletines').addEventListener('click', function(e){ var a=e.target.closest('[data-bol-activar]'), ed=e.target.closest('[data-bol-editar]'), bo=e.target.closest('[data-bol-borrar]'); if(a){ var ia=parseInt(a.getAttribute('data-bol-activar'),10); var prender=!BOLETINES[ia].activo; for(var k=0;k<BOLETINES.length;k++) BOLETINES[k].activo=false; BOLETINES[ia].activo=prender; guardarBoletines('Cambiar activo'); } if(ed) cargarEnFormularioBol(parseInt(ed.getAttribute('data-bol-editar'),10)); if(bo){ var ib=parseInt(bo.getAttribute('data-bol-borrar'),10); if(!confirm('¿Borrar?')) return; BOLETINES.splice(ib,1); guardarBoletines('Borrar'); } });
 function cargarEnFormularioBol(i){ var b=BOLETINES[i]; bolEditando=i; bolImagenNueva=null; $('bolFormTitulo').textContent='Editando'; $('bolEtiquetaIn').value=b.etiqueta||''; $('bolTituloIn').value=b.titulo||''; $('bolTextoIn').value=b.texto||''; $('bolBotonIn').value=b.boton||'Quiero entrar'; $('bolCodigoIn').value=b.codigo||''; $('bolGraciasIn').value=b.gracias||''; $('bolRetrasoIn').value=b.retraso||8; $('bolFormspreeIn').value=b.formspree||''; $('bolActivoIn').checked=!!b.activo; if(b.imagen){ $('bolPrev').src=b.imagen; $('bolPrev').style.display='block'; }else $('bolPrev').style.display='none'; $('btnCancelarBol').style.display='block'; }
 $('btnCancelarBol').addEventListener('click', function(){ bolEditando=-1; bolImagenNueva=null; $('bolFormTitulo').textContent='Nuevo boletín'; $('bolTituloIn').value=''; $('bolTextoIn').value=''; $('bolCodigoIn').value=''; $('bolActivoIn').checked=false; $('bolArchivo').value=''; $('bolPrev').style.display='none'; $('btnCancelarBol').style.display='none'; statusBol('',''); });
@@ -1256,7 +1364,7 @@ function contar(lista,campo){ var m={}; lista.forEach(function(v){ var k=v[campo
 function bloqueRank(tit,filas,total){ if(!filas.length) return ''; var html='<label style="margin-top:18px;">'+tit+'</label><div class="rank">'; filas.slice(0,6).forEach(function(f){ var pct=total?Math.round(f.n/total*100):0; html+='<div class="rank-fila"><span>'+f.k+'</span><span>'+f.n+' · '+pct+'%</span><div class="rank-barra"><i style="width:'+pct+'%"></i></div></div>'; }); return html+'</div>'; }
 function renderTablero(){ var lista=ventasEnRango(); if(!lista.length){ $('tablero').innerHTML='<p class="mini">Sin ventas en este rango.</p>'; return; } var ingreso=lista.reduce(function(s,v){ return s+(v.precio||0); },0); var costo=lista.reduce(function(s,v){ return s+(v.costo||costoUnitario()); },0); var ganancia=ingreso-costo; var margen=ingreso?Math.round(ganancia/ingreso*100):0; var ticket=Math.round(ingreso/lista.length); var html='<div class="kpis">'+'<div class="kpi"><div class="n">'+lista.length+'</div><div class="q">Piezas</div></div>'+'<div class="kpi"><div class="n">'+plata(ingreso)+'</div><div class="q">Ingreso</div></div>'+'<div class="kpi"><div class="n '+(ganancia>=0?'bueno':'malo')+'">'+plata(ganancia)+'</div><div class="q">Ganancia</div></div>'+'<div class="kpi"><div class="n '+(margen>=30?'bueno':'malo')+'">'+margen+'%</div><div class="q">Margen</div></div>'+'<div class="kpi"><div class="n">'+plata(ticket)+'</div><div class="q">Ticket promedio</div></div>'+'<div class="kpi"><div class="n">'+plata(costoUnitario())+'</div><div class="q">Costo por prenda</div></div>'+'</div>'; html+=bloqueRank('Diseños más vendidos', contar(lista,'nombre'), lista.length); html+=bloqueRank('Tallas', contar(lista,'talla'), lista.length); html+=bloqueRank('Colores', contar(lista,'color'), lista.length); html+=bloqueRank('Canales', contar(lista,'canal'), lista.length); $('tablero').innerHTML=html; }
 function renderListaVentas(){ if(!VENTAS.length){ $('listaVentas').innerHTML='<p class="mini">Sin ventas.</p>'; return; } $('listaVentas').innerHTML=VENTAS.slice(0,40).map(function(v,i){ return '<div class="venta-fila"><div><strong>'+v.nombre+'</strong><div class="meta">'+v.fecha+' · Talla '+v.talla+' · '+v.color+' · '+v.canal+(v.nota?' · '+v.nota:'')+'</div></div><div style="display:flex;align-items:center;gap:6px;"><span>'+plata(v.precio)+'</span><button data-borrar-venta="'+i+'">✕</button></div></div>'; }).join(''); }
-$('btnCsv').addEventListener('click', function(){ if(!VENTAS.length){ alert('Sin ventas.'); return; } var cab=['fecha','producto','categoria','talla','color','precio','costo','ganancia','canal','nota']; var filas=VENTAS.map(function(v){ return [v.fecha,v.nombre,v.categoria,v.talla,v.color,v.precio, v.costo, (v.precio-v.costo), v.canal, (v.nota||'').replace(/[",\n]/g,' ')]; }); var csv=cab.join(',')+'\n'+filas.map(function(f){ return f.map(function(c){ return '"'+String(c==null?'':c)+'"'; }).join(','); }).join('\n'); var url=URL.createObjectURL(new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'})); var a=document.createElement('a'); a.href=url; a.download='yuzu-ventas-'+new Date().toISOString().slice(0,10)+'.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); });
+$('btnCsv').addEventListener('click', function(){ if(!VENTAS.length){ alert('Sin ventas.'); return; } var cab=['fecha','producto','categoria','talla','color','precio','costo','ganancia','canal','nota']; var filas=VENTAS.map(function(v){ return [v.fecha,v.nombre,v.categoria,v.talla,v.color,v.precio,v.costo,(v.precio-v.costo),v.canal,(v.nota||'').replace(/[",\n]/g,' ')]; }); var csv=cab.join(',')+'\n'+filas.map(function(f){ return f.map(function(c){ return '"'+String(c==null?'':c)+'"'; }).join(','); }).join('\n'); var url=URL.createObjectURL(new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'})); var a=document.createElement('a'); a.href=url; a.download='yuzu-ventas-'+new Date().toISOString().slice(0,10)+'.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); });
 
 // ============================================================
 // 6. INICIO
