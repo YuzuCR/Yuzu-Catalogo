@@ -986,7 +986,7 @@
     "id": 1787607763579,
     "nombre": "Blessed",
     "categoria": "Religioso",
-    "subcategoria": "14500",
+    "subcategoria": "Ángeles",
     "imagenes": [
       "images/blessed-gal-1787607763579-0.jpg"
     ],
@@ -1021,6 +1021,8 @@
     "precio": 14500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false
+    "oculto": false,
+    "impresion": "pecho",
+    "destacado": false
   }
 ]
