@@ -680,9 +680,9 @@ function cargar() {
     fetch('data/categorias.json?t=' + Date.now()).then(function (r) { return r.json(); })
   ]).then(function (r) {
     PRODUCTOS = r[0]; CATEGORIAS = r[1];
-    // FIX: excluye ocultos Y agotados del catálogo visible
+    // Solo oculto determina visibilidad — agotado ya no existe como concepto
     VISIBLES = PRODUCTOS.filter(function (p) {
-      return !p.oculto && !p.agotado;
+      return !p.oculto;
     }).sort(function (a, b) {
       if (!!b.destacado !== !!a.destacado) return b.destacado ? 1 : -1;
       return b.id - a.id;
