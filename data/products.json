@@ -933,8 +933,8 @@
   {
     "id": 1787607560948,
     "nombre": "Gangsta",
-    "categoria": "Urbano",
-    "subcategoria": "Angels",
+    "categoria": "Religioso",
+    "subcategoria": "Ángeles",
     "imagenes": [
       "images/gangsta-gal-1787607560948-0.jpg"
     ],
@@ -980,7 +980,9 @@
     "precio": 17500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false
+    "oculto": false,
+    "impresion": "pecho",
+    "destacado": false
   },
   {
     "id": 1787607763579,
