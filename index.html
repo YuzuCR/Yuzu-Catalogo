@@ -165,7 +165,6 @@
   .pieza-media .alt { opacity: 0; }
   .pieza:hover .alt { opacity: 1; }
   .pieza:hover .base, .pieza:hover .alt { transform: scale(1.03); }
-  .pieza-media.agotado img { filter: grayscale(1); opacity: 0.55; }
   .sello { position: absolute; left: 0; bottom: 0; background: var(--tinta); color: var(--papel); font-family: var(--dato); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; padding: 5px 9px; }
   .pieza-texto { opacity: 0; transform: translateY(10px); transition: opacity .7s var(--suave) .18s, transform .7s var(--lento) .18s; display: flex; flex-direction: column; gap: 4px; padding-top: 12px; }
   .pieza.dentro .pieza-texto { opacity: 1; transform: none; }
@@ -180,7 +179,7 @@
   .vacio { grid-column: 1/-1; padding: 70px 0; text-align: center; color: var(--tinta-2); font-size: 14px; }
   .hueco { aspect-ratio: 3/4; background: var(--papel-2); animation: latir 1.6s ease-in-out infinite; border-radius: 4px; }
 
-  /* ===== BLOQUE EDITORIAL (quiet luxury) ===== */
+  /* ===== BLOQUE EDITORIAL ===== */
   .editorial-destacado { padding: 50px 18px; border-bottom: 1px solid var(--linea); }
   .editorial-destacado .inner { max-width: 600px; margin: 0 auto; text-align: center; }
   .editorial-destacado .inner h2 { font-family: var(--display); font-size: clamp(30px, 8vw, 64px); line-height: 0.92; text-transform: uppercase; margin: 16px 0; letter-spacing: -0.01em; }
@@ -245,7 +244,6 @@
   .comprar:hover::before { transform: none; }
   .comprar:disabled { background: var(--papel-2); color: var(--tinta-2); cursor: not-allowed; }
   .comprar:disabled::before { display: none; }
-  .aviso-agotado { text-align: center; margin-top: 12px; }
 
   details { border-top: 1px solid var(--linea-fina); }
   details:last-of-type { border-bottom: 1px solid var(--linea-fina); }
@@ -337,7 +335,7 @@
     .seleccion.ver { grid-template-columns: 1fr 1fr; }
     .sel-media { aspect-ratio: auto; min-height: 74vh; }
     .sel-info { padding: 60px 46px; }
-   .rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 24px 16px; padding: 0 36px 80px; overflow: visible; }
+    .rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 24px 16px; padding: 0 36px 80px; overflow: visible; }
     .rejilla .pieza, .rejilla .hueco { flex: none; }
     .carrusel-guia { display: none; }
     .detras { grid-template-columns: .85fr 1.15fr; gap: 50px; align-items: center; padding-top: 90px; padding-bottom: 90px; }
@@ -348,7 +346,6 @@
     .pie-grid { grid-template-columns: repeat(3, 1fr); }
     .editorial-destacado { padding: 70px 36px; }
   }
- .rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 24px 16px; padding: 0 36px 80px; overflow: visible; }
 
   @media (max-width: 600px) {
     .rejilla { gap: 12px; padding: 4px 12px 30px; scroll-snap-type: x mandatory; }
@@ -520,7 +517,6 @@
       </div>
 
       <button class="comprar" id="btnComprar" onclick="agregar()">Agregar a la bolsa</button>
-      <p class="dato aviso-agotado" id="avisoAgotado" style="display:none">Agotado por ahora — escribinos y te avisamos</p>
 
       <div class="ficha-specs">
         <details open>
@@ -668,7 +664,10 @@ function cargar() {
     fetch('data/categorias.json?t=' + Date.now()).then(function (r) { return r.json(); })
   ]).then(function (r) {
     PRODUCTOS = r[0]; CATEGORIAS = r[1];
-    VISIBLES = PRODUCTOS.filter(function (p) { return !p.oculto; }).sort(function (a, b) {
+    // FIX: excluye ocultos Y agotados del catálogo visible
+    VISIBLES = PRODUCTOS.filter(function (p) {
+      return !p.oculto && !p.agotado;
+    }).sort(function (a, b) {
       if (!!b.destacado !== !!a.destacado) return b.destacado ? 1 : -1;
       return b.id - a.id;
     });
@@ -787,7 +786,7 @@ function pintarRejilla(conFundido) {
     return;
   }
 
-  rej.innerHTML = lista.map(function (p, idx) {
+  rej.innerHTML = lista.map(function (p) {
     var f = todasLasFotos(p);
     var base = f[0] || '', alt = f[1] || '';
     var nCol = (p.colores || []).length;
@@ -795,14 +794,10 @@ function pintarRejilla(conFundido) {
     var nota = esManifiesto(p)
       ? plata(MANIFIESTO.monto) + ' a ECPAT'
       : (nCol ? nCol + (nCol === 1 ? ' color' : ' colores') : '');
-    // Camino B (opcional): destaca los índices 0, 4, 8...
-    var esDestacado = (idx === 0 || idx === 4 || idx === 8);
-    var claseExtra = esDestacado ? ' destacado' : '';
-    return '<article class="pieza' + claseExtra + '" onclick="abrirFicha(' + p.id + ')">' +
-      '<div class="pieza-media' + (p.agotado ? ' agotado' : '') + '">' +
+    return '<article class="pieza" onclick="abrirFicha(' + p.id + ')">' +
+      '<div class="pieza-media">' +
         (base ? '<img class="base" src="' + esc(base) + '" alt="' + esc(p.nombre) + '" loading="lazy">' : '') +
         (alt ? '<img class="alt" src="' + esc(alt) + '" alt="" loading="lazy">' : '') +
-        (p.agotado ? '<span class="sello">Agotado</span>' : '') +
       '</div>' +
       '<div class="pieza-texto">' +
         '<div class="placa"><span class="dato">' + ref(p) + '</span><span class="dato">' + nota + '</span></div>' +
@@ -868,9 +863,8 @@ function abrirFicha(id) {
   }).join('');
 
   var btn = $('btnComprar');
-  btn.disabled = !!actual.agotado;
-  btn.textContent = actual.agotado ? 'Agotado' : 'Agregar a la bolsa';
-  $('avisoAgotado').style.display = actual.agotado ? 'block' : 'none';
+  btn.disabled = false;
+  btn.textContent = 'Agregar a la bolsa';
 
   fotos = fotosDe(actual, color) || todasLasFotos(actual);
   pintarFoto();
