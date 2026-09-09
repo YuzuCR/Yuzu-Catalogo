@@ -1021,6 +1021,6 @@
     "precio": 14500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false
+    "oculto": true
   }
 ]
