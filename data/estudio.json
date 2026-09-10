@@ -143,6 +143,15 @@
           "estadistica": "",
           "tipo": "behance",
           "align": "left"
+        },
+        {
+          "titulo": "KA FASHION",
+          "descripcion": "Sony Vegas Pro - Photoshop",
+          "enlace": "https://www.behance.net/gallery/255277319/KA-FASHION",
+          "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/4dac24255277319.6a9f1b2b4a81a.png",
+          "estadistica": "",
+          "tipo": "behance",
+          "align": "left"
         }
       ]
     }
