@@ -26,7 +26,17 @@
       "titulo": "Mis publicaciones",
       "etiqueta": "Portafolio",
       "descripcion": "Algunos de mis trabajos recientes.",
-      "proyectos": []
+      "proyectos": [
+        {
+          "titulo": "Anti-Aging Experts CR",
+          "descripcion": "Clìnica de anti envejecimiento",
+          "enlace": "https://www.behance.net/gallery/254982017/CLINICA-ANTI-AGING-EXPERTS",
+          "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f851f9254982017.6a932efd1656f.png",
+          "estadistica": "",
+          "tipo": "behance",
+          "align": "left"
+        }
+      ]
     }
   ]
 }
