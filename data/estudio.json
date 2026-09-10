@@ -161,6 +161,15 @@
           "estadistica": "",
           "tipo": "behance",
           "align": "left"
+        },
+        {
+          "titulo": "MEMORIAL PETS",
+          "descripcion": "Photoshop",
+          "enlace": "https://www.behance.net/gallery/255403149/MEMORIAL-PETS-CR",
+          "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/d71804255403149.6aa06b2589a44.png",
+          "estadistica": "",
+          "tipo": "behance",
+          "align": "left"
         }
       ]
     }
