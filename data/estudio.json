@@ -125,6 +125,15 @@
           "estadistica": "",
           "tipo": "behance",
           "align": "left"
+        },
+        {
+          "titulo": "TRICICLO",
+          "descripcion": "Adobe Photoshop",
+          "enlace": "https://www.behance.net/gallery/176710635/RESTAURANTE-TRICICLO",
+          "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5ffdbf176710635.64c9a8bc60c9d.jpg",
+          "estadistica": "",
+          "tipo": "behance",
+          "align": "left"
         }
       ]
     }
