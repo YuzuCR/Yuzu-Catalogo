@@ -20,5 +20,13 @@
       "q": "Negocios ayudados"
     }
   ],
-  "bloques": []
+  "bloques": [
+    {
+      "tipo": "proyectos",
+      "titulo": "Mis publicaciones",
+      "etiqueta": "Portafolio",
+      "descripcion": "Algunos de mis trabajos recientes.",
+      "proyectos": []
+    }
+  ]
 }
