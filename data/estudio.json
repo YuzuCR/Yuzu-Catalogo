@@ -60,7 +60,16 @@
           "enlace": "https://www.behance.net/gallery/254988299/FERRETERIA-DELI-TOOLS",
           "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/7df507254988299.6a937d764b8d9.jpg",
           "estadistica": "",
-          "tipo": "instagram",
+          "tipo": "behance",
+          "align": "left"
+        },
+        {
+          "titulo": "MV MODELS",
+          "descripcion": "Canon EOS Rebel T6 - Adobe Lightroom",
+          "enlace": "https://www.behance.net/gallery/254992135/ACADEMIA-MV-MODELS",
+          "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/fs/d9bd52254992135.6a93bf0ab3a88.jpg",
+          "estadistica": "",
+          "tipo": "behance",
           "align": "left"
         }
       ]
