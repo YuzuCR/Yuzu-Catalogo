@@ -80,6 +80,15 @@
           "estadistica": "",
           "tipo": "behance",
           "align": "left"
+        },
+        {
+          "titulo": "LA HUERTA DE JULIÁN",
+          "descripcion": "Adobe Photoshop",
+          "enlace": "https://www.behance.net/gallery/138776517/LA-HUERTA-DE-JULIAN",
+          "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/80a17e138776517.6a949f4fc23d0.png",
+          "estadistica": "",
+          "tipo": "behance",
+          "align": "left"
         }
       ]
     }
