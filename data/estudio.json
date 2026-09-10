@@ -38,9 +38,18 @@
         },
         {
           "titulo": "VETERINARIA FEDOR",
-          "descripcion": "",
+          "descripcion": "Gemini - Sony Vegas Pro",
           "enlace": "https://www.behance.net/gallery/254987195/VETERINARIA-FEDOR",
           "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/b9c5db254987195.6a936b0a313bc.gif",
+          "estadistica": "",
+          "tipo": "behance",
+          "align": "left"
+        },
+        {
+          "titulo": "HOTEL MARRIOT",
+          "descripcion": "Canon EOS Rebel T6 - Adobe Lightroom",
+          "enlace": "https://www.behance.net/gallery/254987627/HOTEL-MARRIOT",
+          "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/fs/193008254987627.6a937347dbc98.jpg",
           "estadistica": "",
           "tipo": "behance",
           "align": "left"
