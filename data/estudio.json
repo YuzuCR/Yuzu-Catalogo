@@ -22,14 +22,6 @@
   ],
   "bloques": [
     {
-      "tipo": "texto",
-      "titulo": "Clientes Satisfechos",
-      "etiqueta": "",
-      "descripcion": "",
-      "parrafos": [],
-      "oficios": []
-    },
-    {
       "tipo": "proyectos",
       "titulo": "Veterinaria Fedor",
       "etiqueta": "2026",
