@@ -92,7 +92,7 @@
         },
         {
           "titulo": "BUEN CAFÉ",
-          "descripcion": "Adobe Illustrator",
+          "descripcion": "Adobe Illustrator - Sony Vegas Pro",
           "enlace": "https://www.behance.net/gallery/144493495/BUEN-CAFE",
           "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/4651a8144493495.628d562c2ca24.png",
           "estadistica": "",
@@ -101,11 +101,20 @@
         },
         {
           "titulo": "JOYERÍA TRASCIENDE",
-          "descripcion": "Adobe Lightroom - Adobe Photoshop",
+          "descripcion": "Adobe Lightroom - Adobe Photoshop - Sony Vegas Pro",
           "enlace": "https://www.behance.net/gallery/175524383/JOYERIA-TRASCIENDE",
           "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/fs/6b6a58175524383.6a94a7ca0fa47.jpg",
           "estadistica": "",
-          "tipo": "instagram",
+          "tipo": "behance",
+          "align": "left"
+        },
+        {
+          "titulo": "SARTENAZOS",
+          "descripcion": "Adobe Illustrator - Adobe Photoshop - Sony Vegas Pro",
+          "enlace": "https://www.behance.net/gallery/175526063/RESTAURANTE-SARTENAZOS",
+          "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/fs/e15cb8175526063.6a9619fa5cf1d.png",
+          "estadistica": "",
+          "tipo": "behance",
           "align": "left"
         }
       ]
