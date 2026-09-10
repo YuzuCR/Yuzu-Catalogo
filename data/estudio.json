@@ -53,6 +53,15 @@
           "estadistica": "",
           "tipo": "behance",
           "align": "left"
+        },
+        {
+          "titulo": "DELI TOOLS",
+          "descripcion": "Adobe Illustrator",
+          "enlace": "https://www.behance.net/gallery/254988299/FERRETERIA-DELI-TOOLS",
+          "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/7df507254988299.6a937d764b8d9.jpg",
+          "estadistica": "",
+          "tipo": "instagram",
+          "align": "left"
         }
       ]
     }
