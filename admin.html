@@ -183,6 +183,30 @@
   .modal-pie .btn { margin-top: 0; }
   .modal-pie .btn-sec { flex: 1; }
   .modal-pie .btn { flex: 2; }
+
+  /* ===== TIENDA ===== */
+  .img-fija { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--linea); }
+  .img-fija:last-child { border-bottom: none; }
+  .img-fija .vista { width: 96px; height: 72px; border-radius: 6px; background: var(--sup2) center/cover no-repeat; border: 1px solid var(--linea); display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--mudo); text-align: center; }
+  .img-fija .vista.logo { background-size: contain; background-color: #fff; }
+  .img-fija strong { font-size: 13px; display: block; }
+  .img-fija .row { margin-top: 6px; }
+  .img-fija .row .btn { padding: 7px 12px; font-size: 12px; }
+  .check-lista { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; margin-top: 6px; }
+  .check-lista .check-row { margin-top: 4px; }
+  .check-lista .check-row span { font-size: 12px; }
+  .nombre-fila { background: var(--sup2); border: 1px solid var(--linea); border-radius: 8px; padding: 12px; margin-top: 10px; }
+  .nombre-fila .cab { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; margin-bottom: 8px; }
+  .nombre-fila .cab em { font-style: normal; color: var(--yuzu); font-family: var(--mono); font-size: 11px; text-transform: uppercase; }
+  .nombre-fila .grid { display: grid; grid-template-columns: 90px 1fr; gap: 6px; }
+  .nombre-fila input { font-size: 13px; padding: 8px; }
+  .nombre-fila .ancho { grid-column: 1/-1; }
+  .resena-fila { display: grid; grid-template-columns: 48px 1fr auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--linea); }
+  .resena-fila img, .resena-fila .sin { width: 48px; height: 60px; object-fit: cover; border-radius: 5px; background: var(--sup2); }
+  .resena-fila .meta { font-size: 10px; color: var(--mudo); margin-top: 3px; }
+  .resena-fila .txt { font-size: 12px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .resena-fila .acciones { display: flex; gap: 4px; }
+  .resena-fila .acciones button { background: none; border: 1px solid var(--linea); border-radius: 6px; color: var(--mudo); cursor: pointer; font-size: 13px; padding: 4px 8px; }
 </style>
 </head>
 <body>
@@ -208,6 +232,7 @@
   <!-- TABS -->
   <div class="tabs" id="tabs" style="display:none;">
     <button class="tab on" data-tab="productos">Productos</button>
+    <button class="tab" data-tab="tienda">Tienda</button>
     <button class="tab" data-tab="estudio">Portafolio</button>
     <button class="tab" data-tab="boletines">Boletines</button>
     <button class="tab" data-tab="ventas">Ventas</button>
@@ -270,6 +295,56 @@
       <div id="listaProductos" style="margin-top:14px;"></div>
       <div class="status" id="statusEdit"></div>
     </div>
+  </div>
+
+  <!-- ==================== PANEL TIENDA ==================== -->
+  <div class="panel" id="panel-tienda">
+    <div class="card">
+      <h2>Imágenes de la tienda</h2>
+      <p class="mini">Se reemplazan al instante en la página. La portada se ve mejor horizontal; el logo, PNG con fondo transparente.</p>
+      <div id="imgsFijas"></div>
+      <div class="status" id="statusImgs"></div>
+    </div>
+
+    <div class="card">
+      <h2>Drops y banners</h2>
+      <label>Drop actual</label>
+      <select id="tDropActual"></select>
+      <label>Drops pasados (máximo 4)</label>
+      <div class="check-lista" id="tDropsPasados"></div>
+      <label>Banners de la portada (máximo 4 · vacío = automático)</label>
+      <div class="check-lista" id="tBanners"></div>
+      <button class="btn" id="btnGuardarDrops">Guardar drops y banners</button>
+      <div class="status" id="statusDrops"></div>
+    </div>
+
+    <div class="card">
+      <h2>Nombres de colecciones</h2>
+      <p class="mini">Formato de la tienda: <strong>SIGLA ⊹ TÍTULO</strong>. Lo que dejés vacío se llena solo (sigla automática y el nombre de la serie).</p>
+      <div id="tNombres"></div>
+      <button class="btn" id="btnGuardarNombres">Guardar nombres</button>
+      <div class="status" id="statusNombres"></div>
+    </div>
+
+    <div class="card">
+      <h2 id="resFormTitulo">Nueva reseña</h2>
+      <p class="mini">Solo reseñas reales. Subí la captura de WhatsApp tal cual (podés tapar el número antes).</p>
+      <label>Captura</label>
+      <div class="file-drop" id="dropResena">Tocá para elegir la captura</div>
+      <input type="file" id="inputResena" class="hidden-input" accept="image/*">
+      <img class="prev-bol" id="resPrev" style="display:none;object-fit:contain;max-height:220px;">
+      <label>Nombre del cliente</label><input type="text" id="resNombre" placeholder="ej: María">
+      <div class="row">
+        <div style="flex:1"><label>Fecha</label><input type="date" id="resFecha"></div>
+        <div style="flex:1"><label>Estrellas</label><select id="resEstrellas"><option value="">Sin estrellas</option><option value="5">★★★★★</option><option value="4">★★★★</option><option value="3">★★★</option></select></div>
+      </div>
+      <label>Texto (opcional si hay captura)</label><textarea id="resTexto" rows="3" placeholder="Lo que te escribió, con sus palabras"></textarea>
+      <label>Pieza</label><select id="resPieza"></select>
+      <button class="btn" id="btnGuardarResena">Guardar reseña</button>
+      <button class="btn btn-sec" id="btnCancelarResena" style="display:none;">Cancelar</button>
+      <div class="status" id="statusResena"></div>
+    </div>
+    <div class="card"><h2>Reseñas publicadas</h2><div id="listaResenas"></div></div>
   </div>
 
   <!-- ==================== PANEL ESTUDIO ==================== -->
@@ -1329,6 +1404,7 @@ $('tabs').addEventListener('click', function(e) {
   if (t === 'boletines') cargarBoletines();
   if (t === 'ventas') cargarVentas();
   if (t === 'estudio') cargarEstudio();
+  if (t === 'tienda') cargarTienda();
 });
 
 // ============================================================
@@ -1349,7 +1425,7 @@ function limpiarFormBol(){ bolEditando=-1; bolImagenNueva=null; $('bolFormTitulo
 // ============================================================
 function statusVenta(t,m){ var el=$('statusVenta'); el.className='status show '+t; el.textContent=m; }
 function cargarVentas(){ ghGet('data/ventas.json').then(function(r){ var d=r&&r.content?r.content:{}; VENTAS=d.ventas||[]; if(d.costos) COSTOS=d.costos; $('costoTela').value=COSTOS.tela; $('costoDtf').value=COSTOS.dtf; $('costoEmpaque').value=COSTOS.empaque; $('costoEnvio').value=COSTOS.envio; prepararFormVenta(); renderTablero(); renderListaVentas(); }).catch(function(){ VENTAS=[]; prepararFormVenta(); renderTablero(); renderListaVentas(); }); }
-function prepararFormVenta(){ $('ventaProducto').innerHTML=PRODUCTOS.map(function(p){ return '<option value="'+p.id+'">'+p.nombre+'</option>'; }).join(''); $('ventaColor').innerHTML=COLORES.map(function(c){ return '<option value="'+c.name+'">'+c.name+'</option>'; }).join(''); if(!$('ventaFecha').value) $('ventaFecha').value=new Date().toISOString().slice(0,10); sincronizarPrecioVenta(); }
+function prepararFormVenta(){ $('ventaProducto').innerHTML=PRODUCTOS.map(function(p){ return '<option value="'+p.id+'">'+p.nombre+'</option>'; }).join(''); $('ventaColor').innerHTML=COLORES.map(function(c){ return '<option value="'+c.name+'">'+c.name+'</option>'; }).join(''); if(!$('ventaFecha').value) $('ventaFecha').value=hoyLocal(); sincronizarPrecioVenta(); }
 function sincronizarPrecioVenta(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p) return; $('ventaPrecio').value=(p.enDescuento&&p.precioDescuento)?p.precioDescuento:(p.precio||19500); }
 $('ventaProducto').addEventListener('change', sincronizarPrecioVenta);
 $('btnGuardarCostos').addEventListener('click', function(){ COSTOS={ tela:parseInt(($('costoTela').value||'0').replace(/\D/g,''),10)||0, dtf:parseInt(($('costoDtf').value||'0').replace(/\D/g,''),10)||0, empaque:parseInt(($('costoEmpaque').value||'0').replace(/\D/g,''),10)||0, envio:parseInt(($('costoEnvio').value||'0').replace(/\D/g,''),10)||0 }; guardarVentas('Actualizar costos', 'statusCostos'); });
@@ -1365,6 +1441,267 @@ function bloqueRank(tit,filas,total){ if(!filas.length) return ''; var html='<la
 function renderTablero(){ var lista=ventasEnRango(); if(!lista.length){ $('tablero').innerHTML='<p class="mini">Sin ventas en este rango.</p>'; return; } var ingreso=lista.reduce(function(s,v){ return s+(v.precio||0); },0); var costo=lista.reduce(function(s,v){ return s+(v.costo||costoUnitario()); },0); var ganancia=ingreso-costo; var margen=ingreso?Math.round(ganancia/ingreso*100):0; var ticket=Math.round(ingreso/lista.length); var html='<div class="kpis">'+'<div class="kpi"><div class="n">'+lista.length+'</div><div class="q">Piezas</div></div>'+'<div class="kpi"><div class="n">'+plata(ingreso)+'</div><div class="q">Ingreso</div></div>'+'<div class="kpi"><div class="n '+(ganancia>=0?'bueno':'malo')+'">'+plata(ganancia)+'</div><div class="q">Ganancia</div></div>'+'<div class="kpi"><div class="n '+(margen>=30?'bueno':'malo')+'">'+margen+'%</div><div class="q">Margen</div></div>'+'<div class="kpi"><div class="n">'+plata(ticket)+'</div><div class="q">Ticket promedio</div></div>'+'<div class="kpi"><div class="n">'+plata(costoUnitario())+'</div><div class="q">Costo por prenda</div></div>'+'</div>'; html+=bloqueRank('Diseños más vendidos', contar(lista,'nombre'), lista.length); html+=bloqueRank('Tallas', contar(lista,'talla'), lista.length); html+=bloqueRank('Colores', contar(lista,'color'), lista.length); html+=bloqueRank('Canales', contar(lista,'canal'), lista.length); $('tablero').innerHTML=html; }
 function renderListaVentas(){ if(!VENTAS.length){ $('listaVentas').innerHTML='<p class="mini">Sin ventas.</p>'; return; } $('listaVentas').innerHTML=VENTAS.slice(0,40).map(function(v,i){ return '<div class="venta-fila"><div><strong>'+v.nombre+'</strong><div class="meta">'+v.fecha+' · Talla '+v.talla+' · '+v.color+' · '+v.canal+(v.nota?' · '+v.nota:'')+'</div></div><div style="display:flex;align-items:center;gap:6px;"><span>'+plata(v.precio)+'</span><button data-borrar-venta="'+i+'">✕</button></div></div>'; }).join(''); }
 $('btnCsv').addEventListener('click', function(){ if(!VENTAS.length){ alert('Sin ventas.'); return; } var cab=['fecha','producto','categoria','talla','color','precio','costo','ganancia','canal','nota']; var filas=VENTAS.map(function(v){ return [v.fecha,v.nombre,v.categoria,v.talla,v.color,v.precio,v.costo,(v.precio-v.costo),v.canal,(v.nota||'').replace(/[",\n]/g,' ')]; }); var csv=cab.join(',')+'\n'+filas.map(function(f){ return f.map(function(c){ return '"'+String(c==null?'':c)+'"'; }).join(','); }).join('\n'); var url=URL.createObjectURL(new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'})); var a=document.createElement('a'); a.href=url; a.download='yuzu-ventas-'+new Date().toISOString().slice(0,10)+'.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); });
+
+// ============================================================
+// 5b. TIENDA (imágenes, drops, nombres, reseñas)
+// ============================================================
+var TIENDA = { nombres: {}, drops: null, banners: [] };
+var RESENAS = [], resEditando = -1, resImagenNueva = null;
+
+function hoyLocal() { var d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); }
+function refDe(p) { return 'YZ-' + String(p.id).slice(-4); }
+function statusDe(id, t, m) { var el = $(id); el.className = 'status show ' + t; el.textContent = m; }
+function leerJSON(path, porDefecto) {
+  return ghGet(path).then(function (r) { return r; }).catch(function () { return { content: porDefecto, sha: null }; });
+}
+function guardarJSON(path, obj, msg) {
+  return fetch(urlDe(path), { headers: { Authorization: 'token ' + getConfig().token } })
+    .then(function (res) { return res.ok ? res.json() : null; })
+    .then(function (d) { return ghPut(path, obj, d ? d.sha : null, msg); });
+}
+function subirArchivoFijo(path, base64, msg) {
+  return fetch(urlDe(path), { headers: { Authorization: 'token ' + getConfig().token } })
+    .then(function (res) { return res.ok ? res.json() : null; })
+    .then(function (d) {
+      var body = { message: msg, content: base64 };
+      if (d && d.sha) body.sha = d.sha;
+      return fetch(urlDe(path), { method: 'PUT', headers: { Authorization: 'token ' + getConfig().token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    })
+    .then(function (res) { if (!res.ok) return errorDeRespuesta(res, 'Error subiendo ' + path); return res.json(); });
+}
+function comprimirCon(file, maxLado) {
+  return new Promise(function (ok) {
+    var antes = MAX_LADO; MAX_LADO = maxLado;
+    comprimirImagen(file, function (r) { MAX_LADO = antes; ok(r); });
+  });
+}
+function leerCrudo(file) {
+  return new Promise(function (ok) {
+    var rd = new FileReader();
+    rd.onload = function () { ok(String(rd.result).split(',')[1]); };
+    rd.onerror = function () { ok(null); };
+    rd.readAsDataURL(file);
+  });
+}
+
+// Todas las subcategorías que existen (productos + categorias.json)
+function subcategoriasTienda() {
+  var mapa = {};
+  PRODUCTOS.forEach(function (p) { if (p.subcategoria && !p.oculto) { mapa[p.subcategoria] = mapa[p.subcategoria] || { n: 0, cat: p.categoria, ultimo: 0 }; mapa[p.subcategoria].n++; if (p.id > mapa[p.subcategoria].ultimo) mapa[p.subcategoria].ultimo = p.id; } });
+  Object.keys(CATEGORIAS).forEach(function (c) { (CATEGORIAS[c] || []).forEach(function (s) { if (!mapa[s] && !/^\d+$/.test(s)) mapa[s] = { n: 0, cat: c, ultimo: 0 }; }); });
+  return Object.keys(mapa).sort(function (a, b) { return a.localeCompare(b, 'es'); }).map(function (s) { return { nombre: s, n: mapa[s].n, cat: mapa[s].cat, ultimo: mapa[s].ultimo }; });
+}
+var VACIAS = ['de', 'del', 'la', 'las', 'los', 'el', 'y'];
+function siglaAuto(nombre) {
+  var w = String(nombre).split(/[\s\-]+/).filter(function (x) { return x && VACIAS.indexOf(x.toLowerCase()) === -1; });
+  if (w.length === 1) { var t = w[0].match(/[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+/g); if (t && t.length > 1) w = t; }
+  if (w.length < 2) return '';
+  return w.slice(0, 4).map(function (x) { return x.charAt(0); }).join('').normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+}
+
+function cargarTienda() {
+  var base = PRODUCTOS.length ? Promise.resolve() : cargarCategorias().then(cargarProductos);
+  base.then(function () {
+    return Promise.all([leerJSON('data/tienda.json', {}), leerJSON('data/resenas.json', [])]);
+  }).then(function (r) {
+    var t = r[0].content || {};
+    TIENDA = { nombres: t.nombres || {}, drops: t.drops || null, banners: t.banners || [] };
+    RESENAS = Array.isArray(r[1].content) ? r[1].content : [];
+    renderImgsFijas(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
+  });
+}
+
+// ---------- Imágenes fijas ----------
+var IMGS_FIJAS = [
+  { ruta: 'images/portada.jpg', nombre: 'Portada', nota: 'Primera imagen de la tienda', max: 2200 },
+  { ruta: 'images/detras.jpg', nombre: 'El taller', nota: 'Foto de la sección "Se hace aquí mismo"', max: 1600 },
+  { ruta: 'images/logo.png', nombre: 'Logo', nota: 'PNG transparente, en negro (en modo oscuro se invierte solo)', crudo: true, logo: true }
+];
+function renderImgsFijas() {
+  $('imgsFijas').innerHTML = IMGS_FIJAS.map(function (f, i) {
+    return '<div class="img-fija"><div class="vista' + (f.logo ? ' logo' : '') + '" id="vistaFija' + i + '">sin imagen</div>' +
+      '<div><strong>' + f.nombre + '</strong><span class="mini" style="margin:0">' + f.nota + '</span>' +
+      '<div class="row"><label class="btn btn-sec" style="margin:0;cursor:pointer">Subir<input type="file" accept="' + (f.logo ? 'image/png' : 'image/*') + '" data-fija="' + i + '" style="display:none"></label>' +
+      '<button class="btn btn-sec" data-quitar-fija="' + i + '">Quitar</button></div></div></div>';
+  }).join('');
+  IMGS_FIJAS.forEach(function (f, i) {
+    var img = new Image();
+    img.onload = function () { var v = $('vistaFija' + i); v.style.backgroundImage = 'url(' + img.src + ')'; v.textContent = ''; };
+    img.src = f.ruta + '?t=' + Date.now();
+  });
+}
+document.addEventListener('change', function (e) {
+  var inp = e.target.closest('[data-fija]'); if (!inp || !inp.files.length) return;
+  var f = IMGS_FIJAS[Number(inp.getAttribute('data-fija'))], file = inp.files[0];
+  statusDe('statusImgs', 'loading', 'Subiendo ' + f.nombre.toLowerCase() + '...');
+  var prep = f.crudo ? leerCrudo(file) : comprimirCon(file, f.max).then(function (r) { return r && r.base64; });
+  prep.then(function (b64) {
+    if (!b64) throw new Error('No pude leer la imagen.');
+    if (b64.length * 0.75 > 4 * 1024 * 1024) throw new Error('La imagen pesa más de 4 MB.');
+    return subirArchivoFijo(f.ruta, b64, f.nombre + ' de la tienda');
+  }).then(function () {
+    statusDe('statusImgs', 'ok', f.nombre + ' subida. GitHub Pages tarda 1–2 minutos en mostrarla.');
+    var v = $('vistaFija' + IMGS_FIJAS.indexOf(f)); v.style.backgroundImage = 'url(' + URL.createObjectURL(file) + ')'; v.textContent = '';
+  }).catch(function (err) { statusDe('statusImgs', 'err', err.message); });
+  inp.value = '';
+});
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-quitar-fija]'); if (!b) return;
+  var f = IMGS_FIJAS[Number(b.getAttribute('data-quitar-fija'))];
+  if (!confirm('¿Quitar ' + f.nombre.toLowerCase() + '?')) return;
+  ghBorrarArchivo(f.ruta, 'Quitar ' + f.nombre).then(function () { statusDe('statusImgs', 'ok', f.nombre + ' quitada.'); renderImgsFijas(); });
+});
+
+// ---------- Drops y banners ----------
+function renderDrops() {
+  var subs = subcategoriasTienda().filter(function (s) { return s.n > 0; });
+  var d = TIENDA.drops || {};
+  var auto = subs.slice().sort(function (a, b) { return b.ultimo - a.ultimo; })[0];
+  $('tDropActual').innerHTML = '<option value="">Automático' + (auto ? ' (hoy: ' + esc(auto.nombre) + ')' : '') + '</option>' +
+    subs.map(function (s) { return '<option value="' + esc(s.nombre) + '"' + (d.actual === s.nombre ? ' selected' : '') + '>' + esc(s.nombre) + ' · ' + s.n + '</option>'; }).join('');
+  $('tDropsPasados').innerHTML = subs.map(function (s) {
+    return '<label class="check-row"><input type="checkbox" value="' + esc(s.nombre) + '"' + ((d.pasados || []).indexOf(s.nombre) !== -1 ? ' checked' : '') + '><span>' + esc(s.nombre) + '</span></label>';
+  }).join('');
+  $('tBanners').innerHTML = subs.map(function (s) {
+    return '<label class="check-row"><input type="checkbox" value="' + esc(s.nombre) + '"' + (TIENDA.banners.indexOf(s.nombre) !== -1 ? ' checked' : '') + '><span>' + esc(s.nombre) + '</span></label>';
+  }).join('');
+}
+function marcados(id) { return Array.prototype.map.call(document.querySelectorAll('#' + id + ' input:checked'), function (i) { return i.value; }); }
+$('btnGuardarDrops').addEventListener('click', function () {
+  var actual = $('tDropActual').value, pasados = marcados('tDropsPasados').filter(function (s) { return s !== actual; }), banners = marcados('tBanners');
+  if (pasados.length > 4) { statusDe('statusDrops', 'err', 'Máximo 4 drops pasados.'); return; }
+  if (banners.length > 4) { statusDe('statusDrops', 'err', 'Máximo 4 banners.'); return; }
+  if (!actual && pasados.length) { statusDe('statusDrops', 'err', 'Para fijar drops pasados, elegí también el drop actual.'); return; }
+  TIENDA.drops = actual ? { actual: actual, pasados: pasados } : null;
+  TIENDA.banners = banners;
+  statusDe('statusDrops', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Drops y banners').then(function () { statusDe('statusDrops', 'ok', 'Guardado.'); })
+    .catch(function (err) { statusDe('statusDrops', 'err', err.message); });
+});
+
+// ---------- Nombres ----------
+function vistaNombre(sub, n) {
+  var s = (n && n.sigla) || siglaAuto(sub), t = (n && n.titulo) || sub;
+  return (s ? s + ' ⊹ ' : '') + t;
+}
+function renderNombres() {
+  var subs = subcategoriasTienda();
+  $('tNombres').innerHTML = subs.length ? subs.map(function (s) {
+    var n = TIENDA.nombres[s.nombre] || {};
+    return '<div class="nombre-fila" data-sub="' + esc(s.nombre) + '">' +
+      '<div class="cab"><span>' + esc(s.nombre) + ' <span class="mini" style="margin:0">· ' + esc(s.cat) + ' · ' + s.n + '</span></span><em>' + esc(vistaNombre(s.nombre, n)) + '</em></div>' +
+      '<div class="grid">' +
+        '<input type="text" data-campo="sigla" maxlength="6" placeholder="' + esc(siglaAuto(s.nombre) || 'Sigla') + '" value="' + esc(n.sigla || '') + '">' +
+        '<input type="text" data-campo="titulo" placeholder="Título épico (ej: Más allá de los muros)" value="' + esc(n.titulo || '') + '">' +
+        '<input class="ancho" type="text" data-campo="frase" placeholder="Frase bajo el título (ej: La serie completa)" value="' + esc(n.frase || '') + '">' +
+        '<input class="ancho" type="text" data-campo="cita" placeholder="Cita de cierre de la colección (opcional)" value="' + esc(n.cita || '') + '">' +
+      '</div></div>';
+  }).join('') : '<p class="mini">Todavía no hay subcategorías.</p>';
+}
+$('tNombres').addEventListener('input', function (e) {
+  var fila = e.target.closest('.nombre-fila'); if (!fila) return;
+  var n = leerFilaNombre(fila);
+  fila.querySelector('.cab em').textContent = vistaNombre(fila.getAttribute('data-sub'), n);
+});
+function leerFilaNombre(fila) {
+  var n = {};
+  Array.prototype.forEach.call(fila.querySelectorAll('[data-campo]'), function (i) { var v = i.value.trim(); if (v) n[i.getAttribute('data-campo')] = i.getAttribute('data-campo') === 'sigla' ? v.toUpperCase() : v; });
+  return n;
+}
+$('btnGuardarNombres').addEventListener('click', function () {
+  var nombres = {};
+  Array.prototype.forEach.call(document.querySelectorAll('#tNombres .nombre-fila'), function (fila) {
+    var n = leerFilaNombre(fila);
+    if (Object.keys(n).length) nombres[fila.getAttribute('data-sub')] = n;
+  });
+  TIENDA.nombres = nombres;
+  statusDe('statusNombres', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Nombres de colecciones').then(function () { statusDe('statusNombres', 'ok', 'Guardado.'); })
+    .catch(function (err) { statusDe('statusNombres', 'err', err.message); });
+});
+
+// ---------- Reseñas ----------
+function prepararFormResena() {
+  var vis = PRODUCTOS.filter(function (p) { return !p.oculto; }).sort(function (a, b) { return a.nombre.localeCompare(b.nombre, 'es'); });
+  $('resPieza').innerHTML = '<option value="">General (no es de una pieza)</option>' +
+    vis.map(function (p) { return '<option value="' + refDe(p) + '">' + esc(p.nombre) + ' · ' + refDe(p) + '</option>'; }).join('');
+  if (!$('resFecha').value) $('resFecha').value = hoyLocal();
+}
+function renderResenas() {
+  if (!RESENAS.length) { $('listaResenas').innerHTML = '<p class="mini">Sin reseñas. La sección no aparece en la tienda hasta que agregués la primera.</p>'; return; }
+  $('listaResenas').innerHTML = RESENAS.map(function (r, i) {
+    return '<div class="resena-fila">' + (r.captura ? '<img src="' + esc(r.captura) + '?t=1" alt="">' : '<span class="sin"></span>') +
+      '<div><strong style="font-size:13px">' + esc(r.nombre || 'Cliente') + '</strong>' + (r.estrellas ? ' <span style="color:var(--yuzu);font-size:11px">' + new Array(r.estrellas + 1).join('★') + '</span>' : '') +
+      (r.texto ? '<div class="txt">' + esc(r.texto) + '</div>' : '') +
+      '<div class="meta">' + esc(r.fecha || '') + (r.pieza ? ' · ' + esc(r.pieza) : '') + '</div></div>' +
+      '<div class="acciones"><button data-res-subir="' + i + '" title="Subir">↑</button><button data-res-editar="' + i + '">✎</button><button data-res-borrar="' + i + '">✕</button></div></div>';
+  }).join('');
+}
+setupDropZone('dropResena', 'inputResena');
+$('inputResena').addEventListener('change', function (e) {
+  var file = e.target.files[0]; if (!file) return;
+  comprimirCon(file, 1400).then(function (r) {
+    if (!r) { statusDe('statusResena', 'err', 'No pude leer la imagen.'); return; }
+    resImagenNueva = r.base64;
+    $('resPrev').src = r.preview; $('resPrev').style.display = 'block';
+  });
+});
+function limpiarFormResena() {
+  resEditando = -1; resImagenNueva = null;
+  $('resFormTitulo').textContent = 'Nueva reseña';
+  $('resNombre').value = ''; $('resTexto').value = ''; $('resEstrellas').value = ''; $('resPieza').value = '';
+  $('resFecha').value = hoyLocal();
+  $('resPrev').style.display = 'none'; $('inputResena').value = '';
+  $('dropResena').textContent = 'Tocá para elegir la captura';
+  $('btnCancelarResena').style.display = 'none';
+}
+$('btnCancelarResena').addEventListener('click', function () { limpiarFormResena(); $('statusResena').className = 'status'; });
+function guardarResenas(msg) {
+  return guardarJSON('data/resenas.json', RESENAS, msg).then(function () { statusDe('statusResena', 'ok', 'Guardado. Aparece en la tienda en 1–2 minutos.'); renderResenas(); })
+    .catch(function (err) { statusDe('statusResena', 'err', err.message); });
+}
+$('btnGuardarResena').addEventListener('click', function () {
+  var previa = resEditando >= 0 ? RESENAS[resEditando] : null;
+  var texto = $('resTexto').value.trim(), tieneCaptura = resImagenNueva || (previa && previa.captura);
+  if (!texto && !tieneCaptura) { statusDe('statusResena', 'err', 'Poné la captura o el texto.'); return; }
+  var id = previa ? previa.id : Date.now();
+  var ref = $('resPieza').value, p = ref ? PRODUCTOS.filter(function (x) { return refDe(x) === ref; })[0] : null;
+  statusDe('statusResena', 'loading', 'Guardando...');
+  var paso = resImagenNueva ? subirArchivoFijo('images/resena-' + id + '.jpg', resImagenNueva, 'Captura de reseña').then(function () { return 'images/resena-' + id + '.jpg'; })
+                            : Promise.resolve(previa ? previa.captura || '' : '');
+  paso.then(function (ruta) {
+    var r = { id: id, nombre: $('resNombre').value.trim(), fecha: $('resFecha').value, texto: texto };
+    if (ruta) r.captura = ruta;
+    if ($('resEstrellas').value) r.estrellas = Number($('resEstrellas').value);
+    if (p) { r.ref = ref; r.pieza = p.nombre; }
+    if (previa) RESENAS[resEditando] = r; else RESENAS.unshift(r);
+    limpiarFormResena();
+    return guardarResenas(previa ? 'Editar reseña' : 'Nueva reseña');
+  }).catch(function (err) { statusDe('statusResena', 'err', err.message); });
+});
+$('listaResenas').addEventListener('click', function (e) {
+  var b;
+  if ((b = e.target.closest('[data-res-borrar]'))) {
+    var i = Number(b.getAttribute('data-res-borrar')), r = RESENAS[i];
+    if (!confirm('¿Borrar la reseña de ' + (r.nombre || 'este cliente') + '?')) return;
+    RESENAS.splice(i, 1);
+    guardarResenas('Borrar reseña');
+    if (r.captura) ghBorrarArchivo(r.captura, 'Borrar captura de reseña');
+  } else if ((b = e.target.closest('[data-res-subir]'))) {
+    var k = Number(b.getAttribute('data-res-subir')); if (k === 0) return;
+    var x = RESENAS.splice(k, 1)[0]; RESENAS.splice(k - 1, 0, x);
+    guardarResenas('Ordenar reseñas');
+  } else if ((b = e.target.closest('[data-res-editar]'))) {
+    var j = Number(b.getAttribute('data-res-editar')), rr = RESENAS[j];
+    resEditando = j; resImagenNueva = null;
+    $('resFormTitulo').textContent = 'Editando reseña';
+    $('resNombre').value = rr.nombre || ''; $('resTexto').value = rr.texto || ''; $('resFecha').value = rr.fecha || '';
+    $('resEstrellas').value = rr.estrellas ? String(rr.estrellas) : ''; $('resPieza').value = rr.ref || '';
+    if (rr.captura) { $('resPrev').src = rr.captura + '?t=1'; $('resPrev').style.display = 'block'; } else $('resPrev').style.display = 'none';
+    $('btnCancelarResena').style.display = 'block';
+    $('resFormTitulo').scrollIntoView({ behavior: 'smooth' });
+  }
+});
 
 // ============================================================
 // 6. INICIO
