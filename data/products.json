@@ -26,7 +26,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -70,7 +70,7 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 16500,
-    "oculto": false
+    "oculto": true
   },
   {
     "id": 1786733978428,
@@ -111,7 +111,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -151,7 +151,7 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500,
-    "oculto": false
+    "oculto": true
   },
   {
     "id": 1786734852270,
@@ -186,7 +186,7 @@
     "impresion": "espalda",
     "destacado": false,
     "agotado": true,
-    "oculto": false
+    "oculto": true
   },
   {
     "id": 1786735084350,
@@ -222,7 +222,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -257,7 +257,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -282,7 +282,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -307,7 +307,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -332,7 +332,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": false
@@ -362,7 +362,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -390,7 +390,7 @@
     "impresion": "espalda",
     "destacado": false,
     "agotado": true,
-    "oculto": false
+    "oculto": true
   },
   {
     "id": 1786742911223,
@@ -412,7 +412,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": false
@@ -437,7 +437,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -462,7 +462,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -487,7 +487,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -514,7 +514,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -538,7 +538,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -562,7 +562,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -586,7 +586,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -610,7 +610,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false
+    "oculto": true
   },
   {
     "id": 1786760142535,
@@ -634,7 +634,7 @@
     "impresion": "espalda",
     "destacado": false,
     "agotado": false,
-    "oculto": false
+    "oculto": true
   },
   {
     "id": 1786760507181,
@@ -658,7 +658,7 @@
     "impresion": "espalda",
     "destacado": false,
     "agotado": false,
-    "oculto": false
+    "oculto": true
   },
   {
     "id": 1786831106586,
@@ -703,7 +703,7 @@
     "precio": 16500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false
+    "oculto": true
   },
   {
     "id": 1786831205702,
@@ -747,7 +747,7 @@
     "precio": 16500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": true,
     "agotado": false
@@ -802,7 +802,7 @@
     "precio": 19500,
     "enDescuento": true,
     "precioDescuento": 15500,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": false
@@ -827,7 +827,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": false,
     "agotado": true
@@ -852,7 +852,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "espalda",
     "destacado": true,
     "agotado": false
@@ -876,7 +876,7 @@
     "precio": 19500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false
+    "oculto": true
   },
   {
     "id": 1787012245252,
@@ -928,7 +928,7 @@
     "precio": 17500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false
+    "oculto": true
   },
   {
     "id": 1787607560948,
@@ -980,7 +980,7 @@
     "precio": 17500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "pecho",
     "destacado": false
   },
@@ -1023,7 +1023,7 @@
     "precio": 14500,
     "enDescuento": false,
     "precioDescuento": null,
-    "oculto": false,
+    "oculto": true,
     "impresion": "pecho",
     "destacado": false
   }
