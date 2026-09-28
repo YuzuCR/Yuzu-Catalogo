@@ -291,6 +291,7 @@
         <button class="btn btn-sec" id="btnRecargar">Recargar lista</button>
         <button class="btn btn-sec" id="btnGestionarVis">Gestionar visibilidad</button>
         <button class="btn btn-sec" id="btnQuitarDesc">Quitar descuentos</button>
+        <button class="btn btn-sec" id="btnBorrarLote" style="color:var(--rojo);border-color:var(--rojo);">Borrar en lote</button>
       </div>
       <div id="listaProductos" style="margin-top:14px;"></div>
       <div class="status" id="statusEdit"></div>
@@ -418,6 +419,29 @@
       <div class="row"><button class="btn btn-sec" id="btnCsv">CSV</button><button class="btn btn-sec" id="btnRecargarVentas">Recargar</button></div>
     </div>
     <div class="card"><h2>Últimas ventas</h2><div id="listaVentas"></div></div>
+  </div>
+</div>
+
+<!-- MODAL BORRAR EN LOTE -->
+<div class="modal-fondo" id="modalBorrar">
+  <div class="modal">
+    <div class="modal-cab">
+      <h3>Borrar productos</h3>
+      <button id="btnCerrarBorrar">✕</button>
+    </div>
+    <div class="modal-tools">
+      <button id="btnBorrarTodos">Marcar todos</button>
+      <button id="btnBorrarOcultos">Marcar ocultos</button>
+      <button id="btnBorrarNinguno">Desmarcar todos</button>
+    </div>
+    <div class="modal-lista" id="listaBorrar"></div>
+    <div style="padding:12px 20px 0;">
+      <label class="check-row" style="margin:0;"><input type="checkbox" id="borrarImagenes" checked><span style="font-size:12px;">Borrar también sus fotos y mockups del repositorio</span></label>
+    </div>
+    <div class="modal-pie">
+      <button class="btn btn-sec" id="btnCancelarBorrar">Cancelar</button>
+      <button class="btn" id="btnConfirmarBorrar" style="background:var(--rojo);color:#fff;" disabled>Borrar (0)</button>
+    </div>
   </div>
 </div>
 
@@ -1119,6 +1143,85 @@ $('btnVerTodos').addEventListener('click', function() {
   modalFiltroOcultos = false;
   renderModalLista();
 });
+
+// ========== BORRAR EN LOTE ==========
+function abrirModalBorrar() {
+  $('listaBorrar').innerHTML = PRODUCTOS.length ? PRODUCTOS.map(function (p, idx) {
+    return '<label class="modal-item">' +
+      '<img src="' + portadaDe(p) + '" alt="">' +
+      '<div class="m-nombre">' + esc(p.nombre) + '</div>' +
+      '<span class="m-estado">' + (p.oculto ? 'oculto' : 'visible') + '</span>' +
+      '<input type="checkbox" data-borrar="' + idx + '">' +
+      '</label>';
+  }).join('') : '<p style="color:var(--mudo);font-size:13px;padding:20px 0;">No hay productos.</p>';
+  contarBorrar();
+  $('modalBorrar').classList.add('abierto');
+}
+function cerrarModalBorrar() { $('modalBorrar').classList.remove('abierto'); }
+function marcadosBorrar() {
+  return Array.prototype.filter.call($('listaBorrar').querySelectorAll('[data-borrar]'), function (cb) { return cb.checked; })
+    .map(function (cb) { return PRODUCTOS[parseInt(cb.getAttribute('data-borrar'), 10)]; });
+}
+function contarBorrar() {
+  var n = marcadosBorrar().length;
+  $('btnConfirmarBorrar').textContent = 'Borrar (' + n + ')';
+  $('btnConfirmarBorrar').disabled = !n;
+}
+function marcarBorrar(fn) {
+  $('listaBorrar').querySelectorAll('[data-borrar]').forEach(function (cb) { cb.checked = fn(PRODUCTOS[parseInt(cb.getAttribute('data-borrar'), 10)]); });
+  contarBorrar();
+}
+function rutasDe(p) {
+  var r = (p.imagenes || []).slice();
+  if (p.mockups) Object.keys(p.mockups).forEach(function (c) {
+    var l = p.mockups[c]; (typeof l === 'string' ? [l] : l || []).forEach(function (x) { if (r.indexOf(x) === -1) r.push(x); });
+  });
+  return r;
+}
+function borrarEnLote() {
+  var borrar = marcadosBorrar();
+  if (!borrar.length) return;
+  var conImagenes = $('borrarImagenes').checked;
+  var escrito = prompt('Vas a borrar ' + borrar.length + ' producto(s)' + (conImagenes ? ' y sus imágenes' : '') + '. No se puede deshacer.\n\nEscribí BORRAR para confirmar:');
+  if (!escrito || escrito.trim().toUpperCase() !== 'BORRAR') return;
+
+  // Solo se borran imágenes que ningún producto restante use
+  var restantes = PRODUCTOS.filter(function (p) { return borrar.indexOf(p) === -1; });
+  var enUso = {};
+  restantes.forEach(function (p) { rutasDe(p).forEach(function (r) { enUso[r] = true; }); });
+  var imagenes = [];
+  if (conImagenes) borrar.forEach(function (p) { rutasDe(p).forEach(function (r) { if (!enUso[r] && imagenes.indexOf(r) === -1) imagenes.push(r); }); });
+
+  cerrarModalBorrar();
+  statusEdit('loading', 'Borrando ' + borrar.length + ' producto(s) del catálogo...');
+  ghGet('data/products.json').then(function (r) {
+    var ids = borrar.map(function (p) { return p.id; });
+    var nuevos = r.content.filter(function (p) { return ids.indexOf(p.id) === -1; });
+    return ghPut('data/products.json', nuevos, r.sha, 'Borra ' + borrar.length + ' producto(s) en lote').then(function () { PRODUCTOS = nuevos; });
+  }).then(function () {
+    renderLista();
+    var hechas = 0, cadena = Promise.resolve();
+    imagenes.forEach(function (ruta) {
+      cadena = cadena.then(function () {
+        statusEdit('loading', 'Productos borrados. Quitando imágenes: ' + (hechas + 1) + ' de ' + imagenes.length + '...');
+        return ghBorrarArchivo(ruta, 'Borra imagen: ' + ruta).then(function () { hechas++; });
+      });
+    });
+    return cadena.then(function () {
+      statusEdit('ok', '✓ ' + borrar.length + ' producto(s) borrados' + (imagenes.length ? ' y ' + hechas + ' imagen(es) quitadas' : '') + '. Tarda 1-2 min en verse en la tienda.');
+    });
+  }).catch(function (e) { statusEdit('err', 'Error: ' + e.message + '. Recargá la lista antes de intentar de nuevo.'); });
+}
+$('btnBorrarLote').addEventListener('click', abrirModalBorrar);
+$('btnCerrarBorrar').addEventListener('click', cerrarModalBorrar);
+$('btnCancelarBorrar').addEventListener('click', cerrarModalBorrar);
+$('modalBorrar').addEventListener('click', function (e) { if (e.target === $('modalBorrar')) cerrarModalBorrar(); });
+$('listaBorrar').addEventListener('change', contarBorrar);
+$('btnBorrarTodos').addEventListener('click', function () { marcarBorrar(function () { return true; }); });
+$('btnBorrarOcultos').addEventListener('click', function () { marcarBorrar(function (p) { return !!p.oculto; }); });
+$('btnBorrarNinguno').addEventListener('click', function () { marcarBorrar(function () { return false; }); });
+$('btnConfirmarBorrar').addEventListener('click', borrarEnLote);
+
 
 // ========== DRAG & DROP ==========
 function setupDropZone(zoneId, fileInputId) {
