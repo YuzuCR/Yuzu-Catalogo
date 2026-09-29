@@ -319,10 +319,6 @@
         <div style="flex:1"><label>Manga larga</label><input type="text" inputmode="numeric" id="pMangalarga"></div>
         <div style="flex:1"><label>Hoodie</label><input type="text" inputmode="numeric" id="pHoodie"></div>
       </div>
-      <div class="row">
-        <div style="flex:1"><label>Recargo 2XL</label><input type="text" inputmode="numeric" id="pExtra2xl"></div>
-        <div style="flex:1"></div>
-      </div>
       <label style="margin-top:20px">Precio del diseño según estilo (se suma a la prenda)</label>
       <div class="row">
         <div style="flex:1"><label>Minimalista</label><input type="text" inputmode="numeric" id="pEstMinimalista"></div>
@@ -334,7 +330,7 @@
       </div>
       <div class="row">
         <div style="flex:1"><label>Uniformes: mínimo de piezas</label><input type="text" inputmode="numeric" id="pUniMin"></div>
-        <div style="flex:1"><label>Uniformes: rebaja por pieza</label><input type="text" inputmode="numeric" id="pUniDesc"></div>
+        <div style="flex:1"></div>
       </div>
       <div class="aviso" id="pVista"></div>
       <button class="btn" id="btnGuardarPrecios">Guardar precios</button>
@@ -1735,17 +1731,18 @@ $('btnGuardarDrops').addEventListener('click', function () {
 var PRECIOS_BASE = { boxy: 18900, sinmangas: 17900, mangalarga: 19900, hoodie: 23900, extra2xl: 1000, uniMinimo: 5, uniDescuento: 6000 };
 var ESTILOS_BASE = { minimalista: 4000, brutalista: 7000, otro: 5000, uniformes: 8000 };
 var CAMPOS_ESTILO = { minimalista: 'pEstMinimalista', brutalista: 'pEstBrutalista', otro: 'pEstOtro', uniformes: 'pEstUniformes' };
-var CAMPOS_PRECIO = { boxy: 'pBoxy', sinmangas: 'pSinmangas', mangalarga: 'pMangalarga', hoodie: 'pHoodie', extra2xl: 'pExtra2xl', uniMinimo: 'pUniMin', uniDescuento: 'pUniDesc' };
+var CAMPOS_PRECIO = { boxy: 'pBoxy', sinmangas: 'pSinmangas', mangalarga: 'pMangalarga', hoodie: 'pHoodie', uniMinimo: 'pUniMin' };
 function precioActual(k) { var v = TIENDA.precios[k]; return (v === undefined || v === null || v === '') ? PRECIOS_BASE[k] : Number(v); }
 function leerPrecios() {
   var out = {};
   Object.keys(CAMPOS_PRECIO).forEach(function (k) { var v = parseInt(String($(CAMPOS_PRECIO[k]).value).replace(/\D/g, ''), 10); out[k] = isNaN(v) ? PRECIOS_BASE[k] : v; });
+  out.extra2xl = 0; out.uniDescuento = 0; // ya incluidos en el precio de cada prenda
   out.estilos = {};
   Object.keys(CAMPOS_ESTILO).forEach(function (k) { var v = parseInt(String($(CAMPOS_ESTILO[k]).value).replace(/\D/g, ''), 10); out.estilos[k] = isNaN(v) ? ESTILOS_BASE[k] : v; });
   return out;
 }
 function vistaPrecios() {
-  var p = leerPrecios(), uni = p.boxy - p.uniDescuento;
+  var p = leerPrecios(), uni = p.boxy;
   $('pVista').innerHTML = 'Boxy minimalista: <strong>' + plata(p.boxy + p.estilos.minimalista) + '</strong> · brutalista: <strong>' + plata(p.boxy + p.estilos.brutalista) + '</strong><br>' +
     'Uniformes boxy: <strong>' + plata(uni) + ' c/u</strong> · ' + p.uniMinimo + ' piezas = <strong>' + plata(uni * p.uniMinimo + p.estilos.uniformes) + '</strong> (diseño incluido)';
 }
@@ -1759,7 +1756,6 @@ Object.keys(CAMPOS_PRECIO).forEach(function (k) { $(CAMPOS_PRECIO[k]).addEventLi
 Object.keys(CAMPOS_ESTILO).forEach(function (k) { $(CAMPOS_ESTILO[k]).addEventListener('input', vistaPrecios); });
 $('btnGuardarPrecios').addEventListener('click', function () {
   var p = leerPrecios();
-  if (p.uniDescuento >= p.boxy) { statusDe('statusPrecios', 'err', 'La rebaja de uniformes no puede ser mayor al precio.'); return; }
   TIENDA.precios = p;
   statusDe('statusPrecios', 'loading', 'Guardando...');
   guardarJSON('data/tienda.json', TIENDA, 'Precios de prendas').then(function () { statusDe('statusPrecios', 'ok', 'Guardado. Se ve en la tienda en 1–2 minutos.'); })
