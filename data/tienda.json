@@ -3,13 +3,18 @@
   "drops": null,
   "banners": [],
   "precios": {
-    "boxy": 18900,
-    "sinmangas": 17900,
-    "mangalarga": 19900,
-    "hoodie": 23900,
+    "boxy": 13700,
+    "sinmangas": 11500,
+    "mangalarga": 13900,
+    "hoodie": 15600,
     "extra2xl": 1000,
-    "recargo": 5000,
-    "uniMinimo": 12,
-    "uniDescuento": 6000
+    "uniMinimo": 5,
+    "uniDescuento": 6000,
+    "estilos": {
+      "minimalista": 3800,
+      "brutalista": 5800,
+      "otro": 6000,
+      "uniformes": 6500
+    }
   }
 }
