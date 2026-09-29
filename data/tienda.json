@@ -2,5 +2,14 @@
   "nombres": {},
   "drops": null,
   "banners": [],
-  "precios": {}
+  "precios": {
+    "boxy": 18900,
+    "sinmangas": 17900,
+    "mangalarga": 19900,
+    "hoodie": 23900,
+    "extra2xl": 1000,
+    "recargo": 5000,
+    "uniMinimo": 12,
+    "uniDescuento": 6000
+  }
 }
