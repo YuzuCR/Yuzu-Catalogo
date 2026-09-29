@@ -309,6 +309,30 @@
     </div>
 
     <div class="card">
+      <h2>Precios de prendas</h2>
+      <p class="mini">Se usan en "Construí tu prenda". El precio de cada diseño del catálogo se cambia en Productos (o con "Precio a todos").</p>
+      <div class="row">
+        <div style="flex:1"><label>Boxy oversize</label><input type="text" inputmode="numeric" id="pBoxy"></div>
+        <div style="flex:1"><label>Sin mangas</label><input type="text" inputmode="numeric" id="pSinmangas"></div>
+      </div>
+      <div class="row">
+        <div style="flex:1"><label>Manga larga</label><input type="text" inputmode="numeric" id="pMangalarga"></div>
+        <div style="flex:1"><label>Hoodie</label><input type="text" inputmode="numeric" id="pHoodie"></div>
+      </div>
+      <div class="row">
+        <div style="flex:1"><label>Recargo 2XL</label><input type="text" inputmode="numeric" id="pExtra2xl"></div>
+        <div style="flex:1"><label>Recargo personalizado</label><input type="text" inputmode="numeric" id="pRecargo"></div>
+      </div>
+      <div class="row">
+        <div style="flex:1"><label>Uniformes: mínimo de piezas</label><input type="text" inputmode="numeric" id="pUniMin"></div>
+        <div style="flex:1"><label>Uniformes: rebaja por pieza</label><input type="text" inputmode="numeric" id="pUniDesc"></div>
+      </div>
+      <div class="aviso" id="pVista"></div>
+      <button class="btn" id="btnGuardarPrecios">Guardar precios</button>
+      <div class="status" id="statusPrecios"></div>
+    </div>
+
+    <div class="card">
       <h2>Drops y banners</h2>
       <label>Drop actual</label>
       <select id="tDropActual"></select>
@@ -1564,7 +1588,7 @@ $('btnCsv').addEventListener('click', function(){ if(!VENTAS.length){ alert('Sin
 // ============================================================
 // 5b. TIENDA (imágenes, drops, nombres, reseñas)
 // ============================================================
-var TIENDA = { nombres: {}, drops: null, banners: [] };
+var TIENDA = { nombres: {}, drops: null, banners: [], precios: {} };
 var RESENAS = [], resEditando = -1, resImagenNueva = null;
 
 function hoyLocal() { var d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); }
@@ -1608,7 +1632,7 @@ function subcategoriasTienda() {
   var mapa = {};
   PRODUCTOS.forEach(function (p) { if (p.subcategoria && !p.oculto) { mapa[p.subcategoria] = mapa[p.subcategoria] || { n: 0, cat: p.categoria, ultimo: 0 }; mapa[p.subcategoria].n++; if (p.id > mapa[p.subcategoria].ultimo) mapa[p.subcategoria].ultimo = p.id; } });
   Object.keys(CATEGORIAS).forEach(function (c) { (CATEGORIAS[c] || []).forEach(function (s) { if (!mapa[s] && !/^\d+$/.test(s)) mapa[s] = { n: 0, cat: c, ultimo: 0 }; }); });
-  return Object.keys(mapa).sort(function (a, b) { return a.localeCompare(b, 'es'); }).map(function (s) { return { nombre: s, n: mapa[s].n, cat: mapa[s].cat, ultimo: mapa[s].ultimo }; });
+  return Object.keys(mapa).sort(function (a, b) { return a.localeCompare(b, 'es'); }).map(function (s) { return { nombre: s, n: mapa[s].n, cat: mapa[s].cat, ultimo: mapa[s].ultimo, total: PRODUCTOS.filter(function (p) { return p.subcategoria === s; }).length }; });
 }
 var VACIAS = ['de', 'del', 'la', 'las', 'los', 'el', 'y'];
 function siglaAuto(nombre) {
@@ -1624,9 +1648,9 @@ function cargarTienda() {
     return Promise.all([leerJSON('data/tienda.json', {}), leerJSON('data/resenas.json', [])]);
   }).then(function (r) {
     var t = r[0].content || {};
-    TIENDA = { nombres: t.nombres || {}, drops: t.drops || null, banners: t.banners || [] };
+    TIENDA = { nombres: t.nombres || {}, drops: t.drops || null, banners: t.banners || [], precios: t.precios || {} };
     RESENAS = Array.isArray(r[1].content) ? r[1].content : [];
-    renderImgsFijas(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
+    renderImgsFijas(); renderPrecios(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
   });
 }
 
@@ -1698,6 +1722,62 @@ $('btnGuardarDrops').addEventListener('click', function () {
     .catch(function (err) { statusDe('statusDrops', 'err', err.message); });
 });
 
+// ---------- Precios ----------
+var PRECIOS_BASE = { boxy: 18900, sinmangas: 17900, mangalarga: 19900, hoodie: 23900, extra2xl: 1000, recargo: 5000, uniMinimo: 12, uniDescuento: 6000 };
+var CAMPOS_PRECIO = { boxy: 'pBoxy', sinmangas: 'pSinmangas', mangalarga: 'pMangalarga', hoodie: 'pHoodie', extra2xl: 'pExtra2xl', recargo: 'pRecargo', uniMinimo: 'pUniMin', uniDescuento: 'pUniDesc' };
+function precioActual(k) { var v = TIENDA.precios[k]; return (v === undefined || v === null || v === '') ? PRECIOS_BASE[k] : Number(v); }
+function leerPrecios() {
+  var out = {};
+  Object.keys(CAMPOS_PRECIO).forEach(function (k) { var v = parseInt(String($(CAMPOS_PRECIO[k]).value).replace(/\D/g, ''), 10); out[k] = isNaN(v) ? PRECIOS_BASE[k] : v; });
+  return out;
+}
+function vistaPrecios() {
+  var p = leerPrecios(), uni = p.boxy - p.uniDescuento;
+  $('pVista').innerHTML = 'Personalizado boxy: <strong>' + plata(p.boxy + p.recargo) + '</strong><br>' +
+    'Uniformes boxy: <strong>' + plata(uni) + ' c/u</strong> · ' + p.uniMinimo + ' piezas = <strong>' + plata(uni * p.uniMinimo + p.recargo) + '</strong> (diseño incluido)';
+}
+function renderPrecios() {
+  Object.keys(CAMPOS_PRECIO).forEach(function (k) { $(CAMPOS_PRECIO[k]).value = precioActual(k); });
+  vistaPrecios();
+}
+Object.keys(CAMPOS_PRECIO).forEach(function (k) { $(CAMPOS_PRECIO[k]).addEventListener('input', vistaPrecios); });
+$('btnGuardarPrecios').addEventListener('click', function () {
+  var p = leerPrecios();
+  if (p.uniDescuento >= p.boxy) { statusDe('statusPrecios', 'err', 'La rebaja de uniformes no puede ser mayor al precio.'); return; }
+  TIENDA.precios = p;
+  statusDe('statusPrecios', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Precios de prendas').then(function () { statusDe('statusPrecios', 'ok', 'Guardado. Se ve en la tienda en 1–2 minutos.'); })
+    .catch(function (err) { statusDe('statusPrecios', 'err', err.message); });
+});
+
+// ---------- Borrar subcategoría ----------
+function borrarSubcategoria(sub) {
+  var usan = PRODUCTOS.filter(function (p) { return p.subcategoria === sub; });
+  if (usan.length) { alert('"' + sub + '" tiene ' + usan.length + ' producto(s) (incluyendo ocultos). Borralos o cambiales la subcategoría primero.'); return; }
+  var cat = null;
+  Object.keys(CATEGORIAS).forEach(function (c) { if ((CATEGORIAS[c] || []).indexOf(sub) !== -1) cat = c; });
+  if (!confirm('¿Borrar la subcategoría "' + sub + '"' + (cat ? ' de ' + cat : '') + '?')) return;
+  if (cat) {
+    CATEGORIAS[cat] = CATEGORIAS[cat].filter(function (s) { return s !== sub; });
+    var vacia = !CATEGORIAS[cat].filter(function (s) { return !/^\d+$/.test(s); }).length && !PRODUCTOS.some(function (p) { return p.categoria === cat; });
+    if (vacia && confirm('La categoría "' + cat + '" quedó vacía. ¿Borrarla también?')) delete CATEGORIAS[cat];
+  }
+  delete TIENDA.nombres[sub];
+  TIENDA.banners = (TIENDA.banners || []).filter(function (s) { return s !== sub; });
+  if (TIENDA.drops) {
+    if (TIENDA.drops.actual === sub) TIENDA.drops = null;
+    else TIENDA.drops.pasados = (TIENDA.drops.pasados || []).filter(function (s) { return s !== sub; });
+  }
+  statusDe('statusNombres', 'loading', 'Borrando...');
+  guardarJSON('data/categorias.json', CATEGORIAS, 'Borra subcategoría ' + sub)
+    .then(function () { return guardarJSON('data/tienda.json', TIENDA, 'Limpia ' + sub); })
+    .then(function () { statusDe('statusNombres', 'ok', '"' + sub + '" borrada.'); renderCategorias(); renderNombres(); renderDrops(); })
+    .catch(function (err) { statusDe('statusNombres', 'err', err.message); });
+}
+$('tNombres').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-borrar-sub]'); if (b) borrarSubcategoria(b.getAttribute('data-borrar-sub'));
+});
+
 // ---------- Nombres ----------
 function vistaNombre(sub, n) {
   var s = (n && n.sigla) || siglaAuto(sub), t = (n && n.titulo) || sub;
@@ -1708,7 +1788,8 @@ function renderNombres() {
   $('tNombres').innerHTML = subs.length ? subs.map(function (s) {
     var n = TIENDA.nombres[s.nombre] || {};
     return '<div class="nombre-fila" data-sub="' + esc(s.nombre) + '">' +
-      '<div class="cab"><span>' + esc(s.nombre) + ' <span class="mini" style="margin:0">· ' + esc(s.cat) + ' · ' + s.n + '</span></span><em>' + esc(vistaNombre(s.nombre, n)) + '</em></div>' +
+      '<div class="cab"><span>' + esc(s.nombre) + ' <span class="mini" style="margin:0">· ' + esc(s.cat) + ' · ' + s.n + '</span></span><span style="display:flex;align-items:center;gap:10px"><em>' + esc(vistaNombre(s.nombre, n)) + '</em>' +
+        (s.total ? '' : '<button class="prod-btn del" data-borrar-sub="' + esc(s.nombre) + '" title="Borrar subcategoría">✕</button>') + '</span></div>' +
       '<div class="grid">' +
         '<input type="text" data-campo="sigla" maxlength="6" placeholder="' + esc(siglaAuto(s.nombre) || 'Sigla') + '" value="' + esc(n.sigla || '') + '">' +
         '<input type="text" data-campo="titulo" placeholder="Título épico (ej: Más allá de los muros)" value="' + esc(n.titulo || '') + '">' +
