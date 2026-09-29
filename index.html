@@ -590,6 +590,9 @@
   .pers .tallas { grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); }
   .talla:disabled { opacity: .25; cursor: not-allowed; text-decoration: line-through; }
   .pers-pie { border-top: 1px solid var(--linea); padding: 16px var(--margen); flex-shrink: 0; }
+  .pers-desglose { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed var(--linea); }
+  .pers-desglose div { display: flex; justify-content: space-between; gap: 10px; font-family: var(--dato); font-size: 11px; color: var(--tinta-2); line-height: 1.9; }
+  .pers-desglose div span:last-child { color: var(--tinta); white-space: nowrap; }
   .pers-resumen { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 12px; }
   .pers-resumen .total-n { font-size: 20px; }
   .pers-aviso { color: var(--oferta); margin-bottom: 10px; }
@@ -726,7 +729,7 @@
 
   <section class="banda-pers envoltura">
     <div>
-      <span class="dato">Diseño a pedido · +₡5.000</span>
+      <span class="dato">Diseño a pedido</span>
       <h2>¿Tenés una idea?<br>La diseño yo.</h2>
     </div>
     <div>
@@ -964,9 +967,10 @@
   <div class="pers-cuerpo" id="persCuerpo"></div>
   <div class="pers-pie">
     <p class="dato pers-aviso oculto" id="persAviso"></p>
+    <div class="pers-desglose" id="persDesglose"></div>
     <div class="pers-resumen"><span class="dato" id="persDetalle">Elegí estilo y prenda</span><span class="total-n" id="persTotal">—</span></div>
     <button class="btn btn-ancho" id="persEnviar">Enviar por WhatsApp</button>
-    <p class="dato nota">Envío incluido. Las imágenes de referencia las mandás en el chat.</p>
+    <p class="dato nota">Las imágenes de referencia las mandás en el chat.</p>
   </div>
 </aside>
 
@@ -1051,7 +1055,7 @@ var FAQ = [
   ['¿Cuánto tarda en llegar?', 'Producimos los miércoles. La entrega toma una semana desde que se confirma el pedido.'],
   ['¿Cuánto cuesta el envío?', 'Nada extra: ya está incluido en el precio, a cualquier parte de Costa Rica.'],
   ['¿Qué talla pido?', 'El corte es oversized. Si querés algo más pegado, bajá una talla. Revisá la guía de tallas con las medidas en plano.'],
-  ['¿Hacen diseños personalizados?', 'Sí. Tocá «Construí tu prenda», elegí estilo y prenda y contame tu idea. Cuesta ₡5.000 más que la prenda y te mando el diseño para aprobarlo antes de imprimir. Uniformes: mínimo 12 piezas con precio por volumen; el diseño se cobra una sola vez.'],
+  ['¿Hacen diseños personalizados?', 'Sí. Tocá «Construí tu prenda», elegí estilo y prenda y contame tu idea. El diseño se cobra aparte según el estilo y lo ves sumado antes de enviar. Te mando el diseño para aprobarlo antes de imprimir. Uniformes: mínimo 5 piezas con precio por volumen; el diseño se cobra una sola vez.'],
   ['¿Cuánto dura el estampado?', 'La impresión es DTF: aguanta entre 100 y 120 lavadas sin agrietarse si la lavás al revés y con agua fría.']
 ];
 
@@ -1139,7 +1143,7 @@ function cargar() {
     var P = T.precios || {};
     PRENDAS.forEach(function (pr) { if (P[pr.id] > 0) pr.precio = Number(P[pr.id]); });
     if (P.extra2xl >= 0 && P.extra2xl !== undefined && P.extra2xl !== '') { TALLA_EXTRA['2XL'] = Number(P.extra2xl); PRENDAS[0].extra = { '2XL': Number(P.extra2xl) }; }
-    if (P.recargo >= 0 && P.recargo !== undefined && P.recargo !== '') RECARGO_PERSONALIZADO = Number(P.recargo);
+    if (P.estilos) ESTILOS.forEach(function (e) { var v = P.estilos[e.id]; if (v !== undefined && v !== '' && v >= 0) e.precio = Number(v); });
     if (P.uniMinimo > 0) MINIMO_UNIFORMES = Number(P.uniMinimo);
     if (P.uniDescuento >= 0 && P.uniDescuento !== undefined && P.uniDescuento !== '') DESCUENTO_UNIFORMES = Number(P.uniDescuento);
     PRODUCTOS = Array.isArray(r[0]) ? r[0] : [];
@@ -1732,7 +1736,7 @@ function mostrarProducto(r) {
           '<li>' + svg('calendario') + 'Se produce el miércoles · llega en una semana</li>' +
           '<li>' + svg('chat') + 'Pedido y pago coordinados por WhatsApp</li>' +
         '</ul>' +
-        '<button class="btn btn-hueco btn-ancho pers-btn-ficha" data-abrir-pers data-pers-base>Personalizá este diseño · +' + plata(RECARGO_PERSONALIZADO) + '</button>' +
+        '<button class="btn btn-hueco btn-ancho pers-btn-ficha" data-abrir-pers data-pers-base>Personalizá este diseño · desde +' + plata(precioDisenoMinimo()) + '</button>' +
         '<button class="compartir" id="prCompartir"><span id="prCompartirTxt">Copiar enlace de esta pieza</span></button>' +
         '<div class="plegables">' +
           '<details class="plegable" open><summary>Descripción</summary><div class="cuerpo-det">' +
@@ -2082,18 +2086,20 @@ $('temaBtn').addEventListener('click', function () {
 /* =====================================================================
    PERSONALIZADO — "Construí tu prenda"
    ===================================================================== */
-var RECARGO_PERSONALIZADO = 5000;
-var MINIMO_UNIFORMES = 12;
+var MINIMO_UNIFORMES = 5;
 var DESCUENTO_UNIFORMES = 6000;   // rebaja por pieza en uniformes (volumen = DTF, bus y envío compartidos)
 var MEDIDAS_UNISEX = { XS: [41, 61], S: [46, 69], M: [51, 71], L: [56, 74], XL: [61, 76], '2XL': [66, 79], '3XL': [71, 81] };
 var GRIS_JASPEADO = { name: 'Gris jaspeado', hex: '#b4b4b1' }, ROJO = { name: 'Rojo', hex: '#c62828' }, NAVY = { name: 'Azul navy', hex: '#1f2a44' };
 
+// precio = lo que cuesta el diseño (se suma a la prenda). En uniformes se cobra una sola vez por pedido.
 var ESTILOS = [
-  { id: 'minimalista', nombre: 'Minimalista', texto: 'Un rostro, una línea, una idea limpia en toda la pieza.' },
-  { id: 'brutalista', nombre: 'Composición brutalista', texto: 'Collage, tipografía pesada y capas. Lo que más hago.' },
-  { id: 'uniformes', nombre: 'Uniformes y grupos', texto: '' },
-  { id: 'otro', nombre: 'Otro / tengo mi idea', texto: 'Contame lo que imaginás y lo vemos juntos.' }
+  { id: 'minimalista', nombre: 'Minimalista', texto: 'Un rostro, una línea, una idea limpia en toda la pieza.', precio: 4000 },
+  { id: 'brutalista', nombre: 'Composición brutalista', texto: 'Collage, tipografía pesada y capas. Lo que más hago.', precio: 7000 },
+  { id: 'uniformes', nombre: 'Uniformes y grupos', texto: '', precio: 8000 },
+  { id: 'otro', nombre: 'Otro / tengo mi idea', texto: 'Contame lo que imaginás y lo vemos juntos.', precio: 5000 }
 ];
+function estiloPorId(id) { for (var i = 0; i < ESTILOS.length; i++) if (ESTILOS[i].id === id) return ESTILOS[i]; return null; }
+function precioDisenoMinimo() { return Math.min.apply(null, ESTILOS.filter(function (e) { return e.id !== 'uniformes'; }).map(function (e) { return e.precio; })); }
 
 var PRENDAS = [
   { id: 'boxy', nombre: 'Boxy oversize', texto: 'Camiseta oversize, cuello redondo', precio: 18900,
@@ -2110,8 +2116,9 @@ var PRENDAS = [
     tallas: ['XS', 'S', 'M', 'L', 'XL', '2XL'], medidas: MEDIDAS_UNISEX },
   { id: 'hoodie', nombre: 'Hoodie', texto: 'Con capucha', precio: 23900,
     material: 'Por confirmar', gramaje: 'Por confirmar', estampado: 'Espalda grande + pecho pequeño + mangas',
-    colores: [{ name: 'Negro', hex: '#1a1a1a' }], tallas: ['S', 'M', 'L', 'XL'], medidas: null,
-    nota: 'Material, gramaje y medidas: consultanos por WhatsApp.' }
+    colores: [{ name: 'Negro', hex: '#1a1a1a' }], tallas: ['S', 'M', 'L', 'XL'],
+    medidas: { S: ['48–50', 65], M: ['52–52.5', '68–69'], L: [56, '71–72'], XL: ['59–60', 74] },
+    nota: 'Material y gramaje: consultanos por WhatsApp.' }
 ];
 
 var PS = { estilo: null, prenda: null, color: null, talla: null, cant: 1, idea: '', tallasGrupo: '', base: null };
@@ -2144,10 +2151,10 @@ function pintarPers() {
   var h = '';
   ESTILOS[2].texto = textoUniformes();
   h += '<section class="paso"><div class="paso-tit"><span class="n">01</span><h3>Estilo</h3></div><div class="opciones-grid">' +
-    ESTILOS.map(function (e) { return '<button class="opcion' + (PS.estilo === e.id ? ' on' : '') + '" data-p-estilo="' + e.id + '"><strong>' + esc(e.nombre) + '</strong><span>' + esc(e.texto) + '</span></button>'; }).join('') + '</div></section>';
+    ESTILOS.map(function (e) { return '<button class="opcion' + (PS.estilo === e.id ? ' on' : '') + '" data-p-estilo="' + e.id + '"><strong>' + esc(e.nombre) + '</strong><span>' + esc(e.texto) + '</span><span class="desde">' + (e.id === 'uniformes' ? 'Diseño ' + plata(e.precio) + ' · una vez' : 'Diseño +' + plata(e.precio)) + '</span></button>'; }).join('') + '</div></section>';
 
   h += '<section class="paso"><div class="paso-tit"><span class="n">02</span><h3>Prenda</h3></div><div class="opciones-grid">' +
-    PRENDAS.map(function (p) { return '<button class="opcion' + (PS.prenda === p.id ? ' on' : '') + '" data-p-prenda="' + p.id + '"><strong>' + esc(p.nombre) + '</strong><span>' + esc(p.texto) + '</span><span class="desde">' + (uni ? plata(p.precio - DESCUENTO_UNIFORMES) + ' c/u' : plata(p.precio + RECARGO_PERSONALIZADO)) + '</span></button>'; }).join('') + '</div>' +
+    PRENDAS.map(function (p) { return '<button class="opcion' + (PS.prenda === p.id ? ' on' : '') + '" data-p-prenda="' + p.id + '"><strong>' + esc(p.nombre) + '</strong><span>' + esc(p.texto) + '</span><span class="desde">' + (uni ? plata(p.precio - DESCUENTO_UNIFORMES) + ' c/u' : plata(p.precio)) + '</span></button>'; }).join('') + '</div>' +
     '<div class="ficha-prenda"><dl>' +
       '<dt>Material</dt><dd>' + esc(pr.material) + '</dd>' +
       '<dt>Gramaje</dt><dd>' + esc(pr.gramaje) + '</dd>' +
@@ -2165,7 +2172,7 @@ function pintarPers() {
   if (uni) {
     h += '<section class="paso"><div class="paso-tit"><span class="n">04</span><h3>Cantidad y tallas</h3></div>' +
       '<div class="cantidad"><button data-p-cant="-1" aria-label="Menos">−</button><span>' + PS.cant + '</span><button data-p-cant="1" aria-label="Más">+</button></div>' +
-      '<p class="nota-paso">Mínimo ' + MINIMO_UNIFORMES + ' piezas a ' + plata(calcularPers().unit) + ' c/u. El diseño (' + plata(RECARGO_PERSONALIZADO) + ') se cobra una sola vez.</p>' +
+      '<p class="nota-paso">Mínimo ' + MINIMO_UNIFORMES + ' piezas a ' + plata(calcularPers().unit) + ' c/u. El diseño (' + plata(estiloPorId('uniformes').precio) + ') se cobra una sola vez.</p>' +
       '<label class="sr" for="persTallasGrupo">Distribución de tallas</label>' +
       '<input class="campo-txt" id="persTallasGrupo" style="margin-top:12px" placeholder="Tallas, ej: 4 M, 6 L, 2 XL" value="' + esc(PS.tallasGrupo) + '"></section>';
   } else {
@@ -2187,10 +2194,23 @@ function pintarPers() {
 
 function textoUniformes() { return 'Equipos, empresas, eventos. Mínimo ' + MINIMO_UNIFORMES + ' piezas, precio por volumen.'; }
 function calcularPers() {
-  var pr = prendaPorId(PS.prenda), uni = PS.estilo === 'uniformes';
-  var unit = precioPrenda(pr, uni ? 'M' : PS.talla) - (uni ? DESCUENTO_UNIFORMES : 0);
-  var total = uni ? unit * PS.cant + RECARGO_PERSONALIZADO : (unit + RECARGO_PERSONALIZADO) * PS.cant;
-  return { pr: pr, uni: uni, unit: unit, total: total };
+  var pr = prendaPorId(PS.prenda), uni = PS.estilo === 'uniformes', est = estiloPorId(PS.estilo);
+  var diseno = est ? est.precio : 0, lineas = [], unit, total;
+  if (uni) {
+    unit = pr.precio - DESCUENTO_UNIFORMES;
+    total = unit * PS.cant + diseno;
+    lineas.push([PS.cant + ' × ' + pr.nombre + ' (precio por volumen)', plata(unit * PS.cant)]);
+    lineas.push(['Diseño de uniforme · una vez', '+' + plata(diseno)]);
+  } else {
+    var extra = (pr.extra && pr.extra[PS.talla]) || 0;
+    unit = pr.precio + extra + diseno;
+    total = unit * PS.cant;
+    lineas.push([pr.nombre, plata(pr.precio)]);
+    if (extra) lineas.push(['Talla ' + PS.talla, '+' + plata(extra)]);
+    lineas.push([est ? 'Diseño ' + est.nombre.toLowerCase() : 'Diseño (elegí un estilo)', est ? '+' + plata(diseno) : '—']);
+  }
+  lineas.push(['Envío', 'Incluido']);
+  return { pr: pr, uni: uni, unit: unit, total: total, lineas: lineas };
 }
 function faltaPers() {
   if (!PS.estilo) return 'Elegí un estilo';
@@ -2203,6 +2223,7 @@ function actualizarResumenPers() {
   var c = calcularPers();
   $('persDetalle').textContent = c.pr.nombre + ' · ' + PS.color + (c.uni ? ' · ' + PS.cant + ' × ' + plata(c.unit) : (PS.talla ? ' · ' + PS.talla : ''));
   $('persTotal').textContent = plata(c.total);
+  $('persDesglose').innerHTML = c.lineas.map(function (l) { return '<div><span>' + esc(l[0]) + '</span><span>' + esc(l[1]) + '</span></div>'; }).join('');
   $('persAviso').classList.add('oculto');
 }
 
@@ -2243,7 +2264,8 @@ $('persEnviar').addEventListener('click', function () {
     (c.uni ? 'Cantidad: ' + PS.cant + ' piezas a ' + plata(c.unit) + ' c/u\nTallas: ' + (PS.tallasGrupo.trim() || 'por definir') + '\n' : 'Talla: ' + PS.talla + '\n') +
     (PS.base ? 'Diseño base: ' + PS.base.nombre + ' (' + ref(PS.base) + ')\n' : '') +
     '\nIdea:\n' + PS.idea.trim() + '\n\n' +
-    'Total estimado: ' + plata(c.total) + ' (envío incluido' + (c.uni ? ', diseño cobrado una vez' : '') + ')\n' +
+    c.lineas.map(function (l) { return l[0] + ': ' + l[1]; }).join('\n') + '\n' +
+    'Total estimado: ' + plata(c.total) + '\n' +
     '\nTe mando las referencias por acá.';
   evento('personalizado_enviar', { estilo: PS.estilo, prenda: PS.prenda, value: c.total, currency: 'CRC' });
   window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
