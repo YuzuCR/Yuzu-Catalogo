@@ -268,11 +268,11 @@
       <div class="color-check-grid" id="colorCheckGrid"></div>
       <label>Tipo de impresión</label>
       <select id="impresionSelect">
-        <option value="espalda">Espalda grande + pecho pequeño — ₡19.500</option>
-        <option value="pecho">Solo pecho — ₡14.500</option>
+        <option value="espalda">Espalda grande + pecho pequeño</option>
+        <option value="pecho">Solo pecho</option>
       </select>
       <label>Precio</label>
-      <input type="text" id="precioInput" value="19500" inputmode="numeric">
+      <input type="text" id="precioInput" value="18900" inputmode="numeric">
       <label class="check-row"><input type="checkbox" id="descuentoCheck"><span>Está en descuento</span></label>
       <div id="rowDescuento" style="display:none;">
         <label>Precio con descuento</label>
@@ -291,6 +291,7 @@
         <button class="btn btn-sec" id="btnRecargar">Recargar lista</button>
         <button class="btn btn-sec" id="btnGestionarVis">Gestionar visibilidad</button>
         <button class="btn btn-sec" id="btnQuitarDesc">Quitar descuentos</button>
+        <button class="btn btn-sec" id="btnPrecioTodos">Precio a todos</button>
         <button class="btn btn-sec" id="btnBorrarLote" style="color:var(--rojo);border-color:var(--rojo);">Borrar en lote</button>
       </div>
       <div id="listaProductos" style="margin-top:14px;"></div>
@@ -685,7 +686,7 @@ function crearSubcategoria() {
 $('btnNuevaCat').addEventListener('click', crearCategoria);
 $('btnNuevaSubcat').addEventListener('click', crearSubcategoria);
 $('impresionSelect').addEventListener('change', function () {
-  $('precioInput').value = this.value === 'pecho' ? '14500' : '19500';
+  $('precioInput').value = this.value === 'pecho' ? '14900' : '18900';
 });
 $('descuentoCheck').addEventListener('change', function () {
   $('rowDescuento').style.display = this.checked ? 'block' : 'none';
@@ -769,7 +770,7 @@ function subirProducto() {
   }).then(function () {
     mostrarStatus('ok', '✓ "' + nombre + '" subido. Tarda 1-2 min en verse en la tienda.');
     $('nombreProducto').value = '';
-    $('precioInput').value = '19500';
+    $('precioInput').value = '18900';
     $('descuentoCheck').checked = false;
     $('precioDescuentoInput').value = '';
     $('rowDescuento').style.display = 'none';
@@ -813,7 +814,7 @@ function renderLista(abrirIdx) {
   var html = '';
   for (var i = 0; i < PRODUCTOS.length; i++) {
     var p = PRODUCTOS[i];
-    var precio = p.precio || 19500;
+    var precio = p.precio || 18900;
     var meta = (p.enDescuento && p.precioDescuento)
       ? '<span class="tachado">' + plata(precio) + '</span><span class="vigente">' + plata(p.precioDescuento) + '</span>'
       : '<span class="vigente">' + plata(precio) + '</span>';
@@ -855,7 +856,7 @@ function abrirEdicion(i) {
   if (caja.style.display === 'block') { caja.style.display = 'none'; return; }
 
   var p = PRODUCTOS[i];
-  var precio = p.precio || 19500;
+  var precio = p.precio || 18900;
   var colores = p.colores || [];
   var cats = Object.keys(CATEGORIAS);
 
@@ -1142,6 +1143,21 @@ $('btnSoloOcultos').addEventListener('click', function() {
 $('btnVerTodos').addEventListener('click', function() {
   modalFiltroOcultos = false;
   renderModalLista();
+});
+
+// ========== PRECIO A TODOS ==========
+$('btnPrecioTodos').addEventListener('click', function () {
+  if (!PRODUCTOS.length) return;
+  var v = prompt('Nuevo precio para los ' + PRODUCTOS.length + ' productos (sin puntos ni ₡):', '18900');
+  if (v === null) return;
+  var precio = parseInt(String(v).replace(/\D/g, ''), 10);
+  if (!precio || precio < 1000) { alert('Precio inválido.'); return; }
+  var quitados = 0;
+  PRODUCTOS.forEach(function (p) {
+    p.precio = precio;
+    if (p.enDescuento && (!p.precioDescuento || p.precioDescuento >= precio)) { p.enDescuento = false; p.precioDescuento = null; quitados++; }
+  });
+  guardarProductos('Precio ' + precio + ' a todos' + (quitados ? ' (' + quitados + ' descuentos quitados)' : ''));
 });
 
 // ========== BORRAR EN LOTE ==========
@@ -1529,7 +1545,7 @@ function limpiarFormBol(){ bolEditando=-1; bolImagenNueva=null; $('bolFormTitulo
 function statusVenta(t,m){ var el=$('statusVenta'); el.className='status show '+t; el.textContent=m; }
 function cargarVentas(){ ghGet('data/ventas.json').then(function(r){ var d=r&&r.content?r.content:{}; VENTAS=d.ventas||[]; if(d.costos) COSTOS=d.costos; $('costoTela').value=COSTOS.tela; $('costoDtf').value=COSTOS.dtf; $('costoEmpaque').value=COSTOS.empaque; $('costoEnvio').value=COSTOS.envio; prepararFormVenta(); renderTablero(); renderListaVentas(); }).catch(function(){ VENTAS=[]; prepararFormVenta(); renderTablero(); renderListaVentas(); }); }
 function prepararFormVenta(){ $('ventaProducto').innerHTML=PRODUCTOS.map(function(p){ return '<option value="'+p.id+'">'+p.nombre+'</option>'; }).join(''); $('ventaColor').innerHTML=COLORES.map(function(c){ return '<option value="'+c.name+'">'+c.name+'</option>'; }).join(''); if(!$('ventaFecha').value) $('ventaFecha').value=hoyLocal(); sincronizarPrecioVenta(); }
-function sincronizarPrecioVenta(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p) return; $('ventaPrecio').value=(p.enDescuento&&p.precioDescuento)?p.precioDescuento:(p.precio||19500); }
+function sincronizarPrecioVenta(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p) return; $('ventaPrecio').value=(p.enDescuento&&p.precioDescuento)?p.precioDescuento:(p.precio||18900); }
 $('ventaProducto').addEventListener('change', sincronizarPrecioVenta);
 $('btnGuardarCostos').addEventListener('click', function(){ COSTOS={ tela:parseInt(($('costoTela').value||'0').replace(/\D/g,''),10)||0, dtf:parseInt(($('costoDtf').value||'0').replace(/\D/g,''),10)||0, empaque:parseInt(($('costoEmpaque').value||'0').replace(/\D/g,''),10)||0, envio:parseInt(($('costoEnvio').value||'0').replace(/\D/g,''),10)||0 }; guardarVentas('Actualizar costos', 'statusCostos'); });
 $('btnGuardarVenta').addEventListener('click', function(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p){ statusVenta('err','Elegí producto.'); return; } var precio=parseInt(($('ventaPrecio').value||'0').replace(/\D/g,''),10); if(!precio){ statusVenta('err','Poné precio.'); return; } VENTAS.unshift({ id:Date.now(), productoId:id, nombre:p.nombre, categoria:p.categoria||'', talla:$('ventaTalla').value, color:$('ventaColor').value, precio:precio, costo:costoUnitario(), canal:$('ventaCanal').value, fecha:$('ventaFecha').value, nota:$('ventaNota').value.trim() }); $('ventaNota').value=''; guardarVentas('Registrar venta','statusVenta'); });
