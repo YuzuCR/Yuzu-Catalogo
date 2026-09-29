@@ -999,7 +999,7 @@ var WHATSAPP = '50661984904';
 var PRECIO_BASE = 18900;
 var POR_PAGINA = 24;
 var TALLAS = ['S', 'M', 'L', 'XL', '2XL'];
-var TALLA_EXTRA = { '2XL': 1000 };          // recargo por talla
+var TALLA_EXTRA = {};                      // recargo por talla (vacío: ya incluido en el precio)
 var TALLA_SOLO = { '2XL': ['Negro'] };     // tallas que solo vienen en ciertos colores
 var MEDIDAS = { S: [51, 66], M: [56, 71], L: [61, 74], XL: [66, 76] };
 var MANIFIESTO = { categoria: 'Manifiesto', monto: 5555, destino: 'ECPAT International' };
@@ -1055,7 +1055,7 @@ var FAQ = [
   ['¿Cuánto tarda en llegar?', 'Producimos los miércoles. La entrega toma una semana desde que se confirma el pedido.'],
   ['¿Cuánto cuesta el envío?', 'Nada extra: ya está incluido en el precio, a cualquier parte de Costa Rica.'],
   ['¿Qué talla pido?', 'El corte es oversized. Si querés algo más pegado, bajá una talla. Revisá la guía de tallas con las medidas en plano.'],
-  ['¿Hacen diseños personalizados?', 'Sí. Tocá «Construí tu prenda», elegí estilo y prenda y contame tu idea. El diseño se cobra aparte según el estilo y lo ves sumado antes de enviar. Te mando el diseño para aprobarlo antes de imprimir. Uniformes: mínimo 5 piezas con precio por volumen; el diseño se cobra una sola vez.'],
+  ['¿Hacen diseños personalizados?', 'Sí. Tocá «Construí tu prenda», elegí estilo y prenda y contame tu idea. El diseño se cobra aparte según el estilo y lo ves sumado antes de enviar. Te mando el diseño para aprobarlo antes de imprimir. Uniformes: mínimo 5 piezas; el diseño se cobra una sola vez.'],
   ['¿Cuánto dura el estampado?', 'La impresión es DTF: aguanta entre 100 y 120 lavadas sin agrietarse si la lavás al revés y con agua fría.']
 ];
 
@@ -1142,10 +1142,8 @@ function cargar() {
     if (T.banners && T.banners.length) BANNERS = T.banners;
     var P = T.precios || {};
     PRENDAS.forEach(function (pr) { if (P[pr.id] > 0) pr.precio = Number(P[pr.id]); });
-    if (P.extra2xl >= 0 && P.extra2xl !== undefined && P.extra2xl !== '') { TALLA_EXTRA['2XL'] = Number(P.extra2xl); PRENDAS[0].extra = { '2XL': Number(P.extra2xl) }; }
     if (P.estilos) ESTILOS.forEach(function (e) { var v = P.estilos[e.id]; if (v !== undefined && v !== '' && v >= 0) e.precio = Number(v); });
     if (P.uniMinimo > 0) MINIMO_UNIFORMES = Number(P.uniMinimo);
-    if (P.uniDescuento >= 0 && P.uniDescuento !== undefined && P.uniDescuento !== '') DESCUENTO_UNIFORMES = Number(P.uniDescuento);
     PRODUCTOS = Array.isArray(r[0]) ? r[0] : [];
     CATEGORIAS = r[1] || {};
     RESENAS = Array.isArray(r[2]) ? r[2].filter(function (x) { return x && (x.texto || x.captura); }) : [];
@@ -2087,7 +2085,7 @@ $('temaBtn').addEventListener('click', function () {
    PERSONALIZADO — "Construí tu prenda"
    ===================================================================== */
 var MINIMO_UNIFORMES = 5;
-var DESCUENTO_UNIFORMES = 6000;   // rebaja por pieza en uniformes (volumen = DTF, bus y envío compartidos)
+var DESCUENTO_UNIFORMES = 0;
 var MEDIDAS_UNISEX = { XS: [41, 61], S: [46, 69], M: [51, 71], L: [56, 74], XL: [61, 76], '2XL': [66, 79], '3XL': [71, 81] };
 var GRIS_JASPEADO = { name: 'Gris jaspeado', hex: '#b4b4b1' }, ROJO = { name: 'Rojo', hex: '#c62828' }, NAVY = { name: 'Azul navy', hex: '#1f2a44' };
 
@@ -2104,7 +2102,7 @@ function precioDisenoMinimo() { return Math.min.apply(null, ESTILOS.filter(funct
 var PRENDAS = [
   { id: 'boxy', nombre: 'Boxy oversize', texto: 'Camiseta oversize, cuello redondo', precio: 18900,
     material: '100% algodón jersey', gramaje: '190 g', estampado: 'Espalda grande + pecho pequeño',
-    colores: COLORES, tallas: ['S', 'M', 'L', 'XL', '2XL'], extra: { '2XL': 1000 }, solo: { '2XL': ['Negro'] },
+    colores: COLORES, tallas: ['S', 'M', 'L', 'XL', '2XL'], solo: { '2XL': ['Negro'] },
     medidas: { S: [51, 66], M: [56, 71], L: [61, 74], XL: [66, 76] } },
   { id: 'sinmangas', nombre: 'Sin mangas', texto: 'Tank de corte recto', precio: 17900,
     material: '100% algodón jersey (gris jaspeado: 90% algodón, 10% poliéster)', gramaje: '160–170 g', estampado: 'Espalda grande + pecho pequeño',
@@ -2192,14 +2190,14 @@ function pintarPers() {
   actualizarResumenPers();
 }
 
-function textoUniformes() { return 'Equipos, empresas, eventos. Mínimo ' + MINIMO_UNIFORMES + ' piezas, precio por volumen.'; }
+function textoUniformes() { return 'Equipos, empresas, eventos. Mínimo ' + MINIMO_UNIFORMES + ' piezas.'; }
 function calcularPers() {
   var pr = prendaPorId(PS.prenda), uni = PS.estilo === 'uniformes', est = estiloPorId(PS.estilo);
   var diseno = est ? est.precio : 0, lineas = [], unit, total;
   if (uni) {
     unit = pr.precio - DESCUENTO_UNIFORMES;
     total = unit * PS.cant + diseno;
-    lineas.push([PS.cant + ' × ' + pr.nombre + ' (precio por volumen)', plata(unit * PS.cant)]);
+    lineas.push([PS.cant + ' × ' + pr.nombre, plata(unit * PS.cant)]);
     lineas.push(['Diseño de uniforme · una vez', '+' + plata(diseno)]);
   } else {
     var extra = (pr.extra && pr.extra[PS.talla]) || 0;
