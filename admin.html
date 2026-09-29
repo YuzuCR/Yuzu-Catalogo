@@ -670,6 +670,7 @@ function renderCategorias() {
   for (var i = 0; i < cats.length; i++) html += '<option value="' + cats[i] + '">' + cats[i] + '</option>';
   html += '<option value="__nueva__">+ Crear nueva categoría</option>';
   sel.innerHTML = html;
+  $('rowNuevaCat').style.display = sel.value === '__nueva__' ? 'flex' : 'none';
   renderSubcategorias();
 }
 function renderSubcategorias() {
