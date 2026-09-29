@@ -7,9 +7,9 @@
     "sinmangas": 11500,
     "mangalarga": 13900,
     "hoodie": 15600,
-    "extra2xl": 1000,
     "uniMinimo": 5,
-    "uniDescuento": 6000,
+    "extra2xl": 0,
+    "uniDescuento": 0,
     "estilos": {
       "minimalista": 3800,
       "brutalista": 5800,
