@@ -361,7 +361,8 @@
   .color { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--linea); position: relative; transition: box-shadow .3s var(--suave), transform .3s var(--lento); }
   .color:hover { transform: translateY(-2px); }
   .color.on { box-shadow: 0 0 0 2px var(--papel), 0 0 0 3px var(--tinta); }
-  .tallas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .tallas { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .talla:disabled { opacity: .25; cursor: not-allowed; text-decoration: line-through; }
   .talla { position: relative; overflow: hidden; z-index: 0; border: 1px solid var(--linea); padding: 14px 0; text-align: center; font-family: var(--dato); font-size: 13px; transition: color .35s var(--suave), border-color .35s; }
   .talla::before { content: ''; position: absolute; inset: 0; background: var(--tinta); z-index: -1; transform: translateY(101%); transition: transform .45s var(--lento); }
   .talla:hover { border-color: var(--tinta); }
@@ -554,6 +555,50 @@
     .col-cab { padding-top: 40px; padding-bottom: 34px; }
   }
 
+
+  /* ================= PERSONALIZADO ================= */
+  .pers-velo { position: fixed; inset: 0; z-index: 330; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .4s; }
+  .pers-velo.abierta { opacity: 1; pointer-events: all; }
+  .pers { position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 620px; z-index: 340; background: var(--papel); display: flex; flex-direction: column; transform: translateX(100%); visibility: hidden; transition: transform .55s var(--lento), visibility 0s linear .55s; border-left: 1px solid var(--linea); }
+  .pers.abierta { transform: none; visibility: visible; transition: transform .55s var(--lento), visibility 0s; }
+  .pers-top { display: flex; justify-content: space-between; align-items: center; height: var(--alto-cab); padding: 0 var(--margen); border-bottom: 1px solid var(--linea); flex-shrink: 0; }
+  .pers-top h2 { font-family: var(--display); font-weight: 800; font-size: 24px; text-transform: uppercase; }
+  .pers-cuerpo { flex: 1; overflow-y: auto; padding: 8px var(--margen) 30px; }
+  .paso { padding: 22px 0; border-bottom: 1px solid var(--linea-fina); }
+  .paso:last-child { border-bottom: none; }
+  .paso-tit { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .paso-tit .n { font-family: var(--dato); font-size: 10px; color: var(--yuzu); }
+  .paso-tit h3 { font-family: var(--display); font-weight: 800; font-size: 22px; text-transform: uppercase; }
+  .opciones-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .opcion { text-align: left; border: 1px solid var(--linea); padding: 14px; transition: border-color .3s, background .3s; display: flex; flex-direction: column; gap: 4px; }
+  .opcion:hover { border-color: var(--tinta); }
+  .opcion.on { border-color: var(--yuzu); background: var(--papel-2); box-shadow: inset 0 0 0 1px var(--yuzu); }
+  .opcion strong { font-family: var(--display); font-weight: 600; font-size: 18px; text-transform: uppercase; line-height: 1.05; }
+  .opcion span { font-size: 12px; color: var(--tinta-2); line-height: 1.4; }
+  .opcion .desde { font-family: var(--dato); font-size: 11px; color: var(--tinta); margin-top: auto; padding-top: 6px; }
+  .ficha-prenda { margin-top: 14px; border: 1px solid var(--linea-fina); padding: 14px; font-size: 13px; color: var(--tinta-2); }
+  .ficha-prenda dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+  .ficha-prenda dt { font-family: var(--dato); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+  .ficha-prenda dd { color: var(--tinta); }
+  .ficha-prenda details { margin-top: 12px; }
+  .ficha-prenda summary { cursor: pointer; font-family: var(--dato); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+  .ficha-prenda .tabla { margin-top: 10px; }
+  .pers textarea, .pers .campo-txt { width: 100%; background: transparent; border: 1px solid var(--linea); padding: 12px; font: inherit; font-size: 14px; color: var(--tinta); resize: vertical; }
+  .pers textarea:focus, .pers .campo-txt:focus { outline: none; border-color: var(--tinta); }
+  .pers .nota-paso { font-size: 12px; color: var(--tinta-2); margin-top: 8px; }
+  .pers .tallas { grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); }
+  .talla:disabled { opacity: .25; cursor: not-allowed; text-decoration: line-through; }
+  .pers-pie { border-top: 1px solid var(--linea); padding: 16px var(--margen); flex-shrink: 0; }
+  .pers-resumen { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+  .pers-resumen .total-n { font-size: 20px; }
+  .pers-aviso { color: var(--oferta); margin-bottom: 10px; }
+  .banda-pers { border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); padding-top: 50px; padding-bottom: 50px; display: grid; gap: 22px; }
+  .banda-pers h2 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 10vw, 88px); line-height: .88; text-transform: uppercase; }
+  .banda-pers p { color: var(--tinta-2); max-width: 44ch; font-size: 14px; }
+  .banda-pers .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pers-btn-ficha { margin-bottom: 22px; }
+  @media (min-width: 960px) { .banda-pers { grid-template-columns: 1.2fr 1fr; align-items: end; padding-top: 80px; padding-bottom: 80px; } }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-delay: 0s !important; }
     .marquesina-pista { animation: none; }
@@ -676,6 +721,22 @@
   <section class="seccion envoltura oculto" id="secResenas" style="padding-top:60px">
     <div class="sec-cab"><div><span class="dato">Capturas reales de WhatsApp</span><h2>Lo que dicen</h2></div></div>
     <div class="resenas" id="resenasInicio"></div>
+  </section>
+
+  <section class="banda-pers envoltura">
+    <div>
+      <span class="dato">Diseño a pedido · +₡5.000</span>
+      <h2>¿Tenés una idea?<br>La diseño yo.</h2>
+    </div>
+    <div>
+      <p>Minimalista, composición brutalista o uniformes para tu grupo. Elegís la prenda, me contás la idea y te mando el diseño antes de imprimir.</p>
+      <div class="chips" style="margin:18px 0 22px">
+        <button class="chip" data-abrir-pers="minimalista">Minimalista</button>
+        <button class="chip" data-abrir-pers="brutalista">Brutalista</button>
+        <button class="chip" data-abrir-pers="uniformes">Uniformes</button>
+      </div>
+      <button class="btn" data-abrir-pers>Construí tu prenda</button>
+    </div>
   </section>
 
   <section class="seccion envoltura" id="secMuro" style="padding-top:60px">
@@ -813,6 +874,7 @@
       <button class="lnk" type="button" data-abrir-busca>Buscar</button>
       <a href="#/c/todo">Todo el archivo</a>
       <a href="#/c/ofertas">Ofertas</a>
+      <a href="#/personalizado">Personalizado</a>
       <a href="#/c/todo" id="pieDrop">Drop actual</a>
       <a href="#/taller">El taller</a>
       <a href="estudio.html">Estudio</a>
@@ -891,6 +953,22 @@
   </div>
 </div>
 
+<!-- ============ PERSONALIZADO ============ -->
+<div class="pers-velo" id="persVelo"></div>
+<aside class="pers" id="pers" aria-label="Construí tu prenda" role="dialog">
+  <div class="pers-top">
+    <h2>Construí tu prenda</h2>
+    <button class="icono" id="cerrarPers" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="pers-cuerpo" id="persCuerpo"></div>
+  <div class="pers-pie">
+    <p class="dato pers-aviso oculto" id="persAviso"></p>
+    <div class="pers-resumen"><span class="dato" id="persDetalle">Elegí estilo y prenda</span><span class="total-n" id="persTotal">—</span></div>
+    <button class="btn btn-ancho" id="persEnviar">Enviar por WhatsApp</button>
+    <p class="dato nota">Envío incluido. Las imágenes de referencia las mandás en el chat.</p>
+  </div>
+</aside>
+
 <!-- ============ BOLSA ============ -->
 <div class="velo" id="velo"></div>
 <aside class="bolsa" id="bolsa" aria-label="Tu bolsa">
@@ -913,10 +991,12 @@
    CONFIGURACIÓN — lo único que deberías tocar a mano
    ===================================================================== */
 var WHATSAPP = '50661984904';
-var PRECIO_BASE = 19500;
+var PRECIO_BASE = 18900;
 var POR_PAGINA = 24;
-var TALLAS = ['S', 'M', 'L', 'XL'];
-var MEDIDAS = { S: [50, 66], M: [55, 71], L: [60, 73], XL: [66, 76] };
+var TALLAS = ['S', 'M', 'L', 'XL', '2XL'];
+var TALLA_EXTRA = { '2XL': 1000 };          // recargo por talla
+var TALLA_SOLO = { '2XL': ['Negro'] };     // tallas que solo vienen en ciertos colores
+var MEDIDAS = { S: [51, 66], M: [56, 71], L: [61, 74], XL: [66, 76] };
 var MANIFIESTO = { categoria: 'Manifiesto', monto: 5555, destino: 'ECPAT International' };
 var DIAS_NUEVO = 21; // una pieza lleva sello "Nuevo" durante estos días
 
@@ -970,6 +1050,7 @@ var FAQ = [
   ['¿Cuánto tarda en llegar?', 'Producimos los miércoles. La entrega toma una semana desde que se confirma el pedido.'],
   ['¿Cuánto cuesta el envío?', 'Nada extra: ya está incluido en el precio, a cualquier parte de Costa Rica.'],
   ['¿Qué talla pido?', 'El corte es oversized. Si querés algo más pegado, bajá una talla. Revisá la guía de tallas con las medidas en plano.'],
+  ['¿Hacen diseños personalizados?', 'Sí. Tocá «Construí tu prenda», elegí estilo y prenda y contame tu idea. Cuesta ₡5.000 más que la prenda y te mando el diseño para aprobarlo antes de imprimir. Uniformes: mínimo 12 piezas, el diseño se cobra una sola vez.'],
   ['¿Cuánto dura el estampado?', 'La impresión es DTF: aguanta entre 100 y 120 lavadas sin agrietarse si la lavás al revés y con agua fría.']
 ];
 
@@ -1047,8 +1128,13 @@ function cargar() {
   Promise.all([
     fetch('data/products.json' + t).then(function (r) { return r.json(); }),
     fetch('data/categorias.json' + t).then(function (r) { return r.json(); }).catch(function () { return {}; }),
-    fetch('data/resenas.json' + t).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; })
+    fetch('data/resenas.json' + t).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; }),
+    fetch('data/tienda.json' + t).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; })
   ]).then(function (r) {
+    var T = r[3] || {};
+    if (T.nombres) Object.keys(T.nombres).forEach(function (k) { NOMBRES[k] = T.nombres[k]; });
+    if (T.drops && T.drops.actual) DROPS = T.drops;
+    if (T.banners && T.banners.length) BANNERS = T.banners;
     PRODUCTOS = Array.isArray(r[0]) ? r[0] : [];
     CATEGORIAS = r[1] || {};
     RESENAS = Array.isArray(r[2]) ? r[2].filter(function (x) { return x && (x.texto || x.captura); }) : [];
@@ -1150,7 +1236,8 @@ function pintarMenus() {
     itemMega('Colecciones', colCols, '<a class="subrayado" href="#/c/todo">Todo el archivo (' + VISIBLES.length + ')</a>') +
     itemMega('Productos', prodCol, '<a class="subrayado" href="#/ayuda/tallas">Guía de tallas</a>') +
     (dropCol ? itemMega('Drops', dropCol, '') : '') +
-    (nOf ? '<div class="nav-item"><a class="nav-top" href="#/c/ofertas" data-ruta="ofertas">Ofertas</a></div>' : '');
+    (nOf ? '<div class="nav-item"><a class="nav-top" href="#/c/ofertas" data-ruta="ofertas">Ofertas</a></div>' : '') +
+    '<div class="nav-item"><a class="nav-top" href="#/personalizado" style="color:var(--yuzu)">Personalizado</a></div>';
   $('navDesk').innerHTML = html;
 
   // ---------- Cajón móvil ----------
@@ -1172,6 +1259,7 @@ function pintarMenus() {
       '</details>';
   }
   if (nOf) m += '<a class="cajon-link" href="#/c/ofertas">Ofertas</a>';
+  m += '<a class="cajon-link" href="#/personalizado" style="color:var(--yuzu)">Personalizado</a>';
   m += '<a class="cajon-link" href="#/ayuda">Ayuda</a><a class="cajon-link" href="#/taller">El taller</a><a class="cajon-link" href="estudio.html">Estudio</a>';
   $('cajonCuerpo').innerHTML = m;
 
@@ -1289,10 +1377,10 @@ function pintarInicio() {
   contarCarril('carrilDest', 'contDest');
 
   // ----- Banners -----
-  var subsB;
-  if (BANNERS && BANNERS.length) subsB = BANNERS.map(buscarSub).filter(Boolean);
-  else subsB = todasLasSubs().filter(function (s) { return !DROP_ACTUAL || s.nombre !== DROP_ACTUAL.nombre; })
-                .sort(function (a, b) { return (b.n - a.n) || (b.ultimo - a.ultimo); });
+  var subsB = (BANNERS || []).map(buscarSub).filter(Boolean);
+  todasLasSubs().filter(function (s) { return (!DROP_ACTUAL || s.nombre !== DROP_ACTUAL.nombre) && subsB.indexOf(s) === -1; })
+    .sort(function (a, b) { return (b.n - a.n) || (b.ultimo - a.ultimo); })
+    .forEach(function (s) { subsB.push(s); });
   subsB = subsB.slice(0, 4);
   $('banners').innerHTML = subsB.map(function (s) {
     var ps = productosDeSub(s.nombre), p = ps[0];
@@ -1573,7 +1661,7 @@ function svg(n) { return '<svg viewBox="0 0 24 24">' + ICONOS[n] + '</svg>'; }
 
 function tablaTallas() {
   return '<table class="tabla"><tr><th>Talla</th><th>Ancho</th><th>Largo</th></tr>' +
-    TALLAS.map(function (t) { var m = MEDIDAS[t] || ['–', '–']; return '<tr><td>' + t + '</td><td>' + m[0] + ' cm</td><td>' + m[1] + ' cm</td></tr>'; }).join('') + '</table>';
+    TALLAS.filter(function (t) { return MEDIDAS[t]; }).map(function (t) { var m = MEDIDAS[t]; return '<tr><td>' + t + '</td><td>' + m[0] + ' cm</td><td>' + m[1] + ' cm</td></tr>'; }).join('') + '</table>';
 }
 function faqHTML() { return FAQ.map(function (q) { return '<p class="faq-q">' + esc(q[0]) + '</p><p>' + esc(q[1]) + '</p>'; }).join(''); }
 
@@ -1624,7 +1712,7 @@ function mostrarProducto(r) {
             return '<button class="color' + (c === PR.color ? ' on' : '') + '" data-color="' + esc(c) + '" style="background:' + hexDe(c) + '" title="' + esc(c) + '" aria-label="' + esc(c) + '"></button>';
           }).join('') + '</div></div>' +
         '<div class="campo"><div class="campo-tit"><span class="dato">Talla · <span class="valor" id="prMedida">elegí una</span></span><button class="guia-link" id="prGuia">Guía de tallas</button></div>' +
-          '<div class="tallas" id="prTallas">' + TALLAS.map(function (t) { return '<button class="talla" data-talla="' + t + '">' + t + '</button>'; }).join('') + '</div>' +
+          '<div class="tallas" id="prTallas">' + tallasHTML(PR.color, null) + '</div>' +
           '<p class="dato talla-aviso oculto" id="prAvisoTalla">Elegí una talla primero</p></div>' +
         '<div class="campo"><div class="campo-tit"><span class="dato">Cantidad</span></div>' +
           '<div class="cantidad"><button data-cant="-1" aria-label="Menos">−</button><span id="prCant">1</span><button data-cant="1" aria-label="Más">+</button></div></div>' +
@@ -1637,6 +1725,7 @@ function mostrarProducto(r) {
           '<li>' + svg('calendario') + 'Se produce el miércoles · llega en una semana</li>' +
           '<li>' + svg('chat') + 'Pedido y pago coordinados por WhatsApp</li>' +
         '</ul>' +
+        '<button class="btn btn-hueco btn-ancho pers-btn-ficha" data-abrir-pers data-pers-base>Personalizá este diseño · +' + plata(RECARGO_PERSONALIZADO) + '</button>' +
         '<button class="compartir" id="prCompartir"><span id="prCompartirTxt">Copiar enlace de esta pieza</span></button>' +
         '<div class="plegables">' +
           '<details class="plegable" open><summary>Descripción</summary><div class="cuerpo-det">' +
@@ -1717,14 +1806,17 @@ $('vProducto').addEventListener('click', function (e) {
     var c = $('prColores').querySelectorAll('.color');
     for (var i = 0; i < c.length; i++) c[i].classList.toggle('on', c[i] === b);
     $('prColorNom').textContent = PR.color;
+    if (PR.talla && !tallaOk(PR.talla, PR.color)) { PR.talla = null; $('prMedida').textContent = 'elegí una'; }
+    $('prTallas').innerHTML = tallasHTML(PR.color, PR.talla);
     PR.fotos = fotosProducto(PR.p, PR.color);
     pintarGaleria();
   } else if ((b = e.target.closest('[data-talla]'))) {
+    if (b.disabled) return;
     PR.talla = b.getAttribute('data-talla');
     var t = $('prTallas').querySelectorAll('.talla');
     for (var j = 0; j < t.length; j++) t[j].classList.toggle('on', t[j] === b);
-    var m = MEDIDAS[PR.talla];
-    $('prMedida').textContent = PR.talla + (m ? ' · ' + m[0] + ' × ' + m[1] + ' cm' : '');
+    var m = MEDIDAS[PR.talla], ex = TALLA_EXTRA[PR.talla];
+    $('prMedida').textContent = PR.talla + (m ? ' · ' + m[0] + ' × ' + m[1] + ' cm' : '') + (ex ? ' · +' + plata(ex) : '');
     $('prAvisoTalla').classList.add('oculto');
   } else if ((b = e.target.closest('[data-cant]'))) {
     PR.cant = Math.max(1, Math.min(20, PR.cant + Number(b.getAttribute('data-cant'))));
@@ -1747,6 +1839,13 @@ $('vProducto').addEventListener('click', function (e) {
     abrirZoom([b.getAttribute('data-zoom-src')], 0);
   }
 });
+function tallaOk(t, color) { return !TALLA_SOLO[t] || TALLA_SOLO[t].indexOf(color) !== -1; }
+function tallasHTML(color, activa) {
+  return TALLAS.map(function (t) {
+    var ok = tallaOk(t, color), ex = TALLA_EXTRA[t];
+    return '<button class="talla' + (t === activa ? ' on' : '') + '" data-talla="' + t + '"' + (ok ? '' : ' disabled title="Solo en ' + TALLA_SOLO[t].join(' y ').toLowerCase() + '"') + '>' + t + (ex ? '<br><span style="font-size:9px">+' + plata(ex) + '</span>' : '') + '</button>';
+  }).join('');
+}
 function exigirTalla() {
   if (PR.talla) return true;
   $('prAvisoTalla').classList.remove('oculto');
@@ -1820,7 +1919,7 @@ function lineaDe(p, talla, color, cant) {
   var fotos = fotosDe(p, color);
   return {
     linea: Date.now() + Math.floor(Math.random() * 1000), id: p.id, nombre: p.nombre, ref: ref(p),
-    talla: talla, color: color, precio: precioVigente(p), cant: cant || 1,
+    talla: talla, color: color, precio: precioVigente(p) + (TALLA_EXTRA[talla] || 0), cant: cant || 1,
     manifiesto: esManifiesto(p), foto: (fotos && fotos[0]) || fotoBase(p)
   };
 }
@@ -1892,7 +1991,7 @@ $('bolsaLista').addEventListener('click', function (e) {
 function abrirBolsa() { cerrarAgregado(); $('bolsa').classList.add('abierta'); $('velo').classList.add('abierta'); document.body.style.overflow = 'hidden'; }
 function cerrarBolsa() { $('bolsa').classList.remove('abierta'); if (!$('cajon').classList.contains('abierta')) $('velo').classList.remove('abierta'); desbloquearScroll(); }
 function desbloquearScroll() {
-  if (!$('bolsa').classList.contains('abierta') && !$('cajon').classList.contains('abierta') && !$('zoom').classList.contains('abierta') && !$('buscador').classList.contains('abierta')) document.body.style.overflow = '';
+  if (!$('bolsa').classList.contains('abierta') && !$('cajon').classList.contains('abierta') && !$('zoom').classList.contains('abierta') && !$('buscador').classList.contains('abierta') && !($('pers') && $('pers').classList.contains('abierta'))) document.body.style.overflow = '';
 }
 $('btnBolsa').addEventListener('click', abrirBolsa);
 $('cerrarBolsa').addEventListener('click', cerrarBolsa);
@@ -1974,6 +2073,183 @@ $('temaBtn').addEventListener('click', function () {
 });
 
 /* =====================================================================
+   PERSONALIZADO — "Construí tu prenda"
+   ===================================================================== */
+var RECARGO_PERSONALIZADO = 5000;
+var MINIMO_UNIFORMES = 12;
+var MEDIDAS_UNISEX = { XS: [41, 61], S: [46, 69], M: [51, 71], L: [56, 74], XL: [61, 76], '2XL': [66, 79], '3XL': [71, 81] };
+var GRIS_JASPEADO = { name: 'Gris jaspeado', hex: '#b4b4b1' }, ROJO = { name: 'Rojo', hex: '#c62828' }, NAVY = { name: 'Azul navy', hex: '#1f2a44' };
+
+var ESTILOS = [
+  { id: 'minimalista', nombre: 'Minimalista', texto: 'Un rostro, una línea, una idea limpia en toda la pieza.' },
+  { id: 'brutalista', nombre: 'Composición brutalista', texto: 'Collage, tipografía pesada y capas. Lo que más hago.' },
+  { id: 'uniformes', nombre: 'Uniformes y grupos', texto: 'Equipos, empresas, eventos. Mínimo ' + MINIMO_UNIFORMES + ' piezas.' },
+  { id: 'otro', nombre: 'Otro / tengo mi idea', texto: 'Contame lo que imaginás y lo vemos juntos.' }
+];
+
+var PRENDAS = [
+  { id: 'boxy', nombre: 'Boxy oversize', texto: 'Camiseta oversize, cuello redondo', precio: 18900,
+    material: '100% algodón jersey', gramaje: '190 g', estampado: 'Espalda grande + pecho pequeño',
+    colores: COLORES, tallas: ['S', 'M', 'L', 'XL', '2XL'], extra: { '2XL': 1000 }, solo: { '2XL': ['Negro'] },
+    medidas: { S: [51, 66], M: [56, 71], L: [61, 74], XL: [66, 76] } },
+  { id: 'sinmangas', nombre: 'Sin mangas', texto: 'Tank de corte recto', precio: 17900,
+    material: '100% algodón jersey (gris jaspeado: 90% algodón, 10% poliéster)', gramaje: '160–170 g', estampado: 'Espalda grande + pecho pequeño',
+    colores: [{ name: 'Blanco', hex: '#f2f0eb' }, { name: 'Negro', hex: '#1a1a1a' }, GRIS_JASPEADO, ROJO, NAVY, { name: 'Azul royal', hex: '#1e4fb5' }],
+    tallas: ['S', 'M', 'L', 'XL'], medidas: MEDIDAS_UNISEX },
+  { id: 'mangalarga', nombre: 'Manga larga', texto: 'Cuello redondo, puño en la manga', precio: 19900,
+    material: '100% algodón jersey (gris jaspeado: 90% algodón, 10% poliéster)', gramaje: '190–200 g', estampado: 'Espalda grande + pecho pequeño + mangas',
+    colores: [{ name: 'Blanco', hex: '#f2f0eb' }, { name: 'Negro', hex: '#1a1a1a' }, GRIS_JASPEADO, ROJO, NAVY, { name: 'Amarillo', hex: '#f2c318' }, { name: 'Verde perico', hex: '#1f9e3a' }],
+    tallas: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'], extra: { '3XL': 1000 }, solo: { '3XL': ['Azul navy', 'Verde perico'] }, medidas: MEDIDAS_UNISEX },
+  { id: 'hoodie', nombre: 'Hoodie', texto: 'Con capucha', precio: 23900,
+    material: 'Por confirmar', gramaje: 'Por confirmar', estampado: 'Espalda grande + pecho pequeño + mangas',
+    colores: [{ name: 'Negro', hex: '#1a1a1a' }], tallas: ['S', 'M', 'L', 'XL'], medidas: null,
+    nota: 'Material, gramaje y medidas: consultanos por WhatsApp.' }
+];
+
+var PS = { estilo: null, prenda: null, color: null, talla: null, cant: 1, idea: '', tallasGrupo: '', base: null };
+
+function prendaPorId(id) { for (var i = 0; i < PRENDAS.length; i++) if (PRENDAS[i].id === id) return PRENDAS[i]; return null; }
+function tallaDisponible(pr, talla, color) { return !(pr.solo && pr.solo[talla]) || pr.solo[talla].indexOf(color) !== -1; }
+function precioPrenda(pr, talla) { return pr.precio + ((pr.extra && pr.extra[talla]) || 0); }
+
+function abrirPers(opciones) {
+  opciones = opciones || {};
+  PS = { estilo: opciones.estilo || PS.estilo, prenda: PS.prenda || 'boxy', color: PS.color, talla: null, cant: 1, idea: PS.idea, tallasGrupo: PS.tallasGrupo, base: opciones.base || null };
+  if (opciones.base) { PS.estilo = PS.estilo || 'otro'; PS.idea = 'Basado en ' + opciones.base.nombre + ' (' + ref(opciones.base) + '): '; }
+  var pr = prendaPorId(PS.prenda);
+  if (!PS.color || !pr.colores.some(function (c) { return c.name === PS.color; })) PS.color = pr.colores[0].name;
+  if (PS.estilo === 'uniformes') PS.cant = MINIMO_UNIFORMES;
+  pintarPers();
+  $('pers').classList.add('abierta'); $('persVelo').classList.add('abierta');
+  document.body.style.overflow = 'hidden';
+  $('persCuerpo').scrollTop = 0;
+  evento('personalizado_abrir', { estilo: PS.estilo || '', base: opciones.base ? ref(opciones.base) : '' });
+}
+function cerrarPers() {
+  $('pers').classList.remove('abierta'); $('persVelo').classList.remove('abierta');
+  desbloquearScroll();
+  if (/^#\/personalizado/.test(location.hash)) history.replaceState(null, '', ultimaRuta || '#/');
+}
+
+function pintarPers() {
+  var pr = prendaPorId(PS.prenda), uni = PS.estilo === 'uniformes';
+  var h = '';
+  h += '<section class="paso"><div class="paso-tit"><span class="n">01</span><h3>Estilo</h3></div><div class="opciones-grid">' +
+    ESTILOS.map(function (e) { return '<button class="opcion' + (PS.estilo === e.id ? ' on' : '') + '" data-p-estilo="' + e.id + '"><strong>' + esc(e.nombre) + '</strong><span>' + esc(e.texto) + '</span></button>'; }).join('') + '</div></section>';
+
+  h += '<section class="paso"><div class="paso-tit"><span class="n">02</span><h3>Prenda</h3></div><div class="opciones-grid">' +
+    PRENDAS.map(function (p) { return '<button class="opcion' + (PS.prenda === p.id ? ' on' : '') + '" data-p-prenda="' + p.id + '"><strong>' + esc(p.nombre) + '</strong><span>' + esc(p.texto) + '</span><span class="desde">' + plata(p.precio + RECARGO_PERSONALIZADO) + '</span></button>'; }).join('') + '</div>' +
+    '<div class="ficha-prenda"><dl>' +
+      '<dt>Material</dt><dd>' + esc(pr.material) + '</dd>' +
+      '<dt>Gramaje</dt><dd>' + esc(pr.gramaje) + '</dd>' +
+      '<dt>Estampado</dt><dd>' + esc(pr.estampado) + '</dd>' +
+      '<dt>Tallas</dt><dd>' + pr.tallas.join(' · ') + (pr.solo ? ' <span class="dato">(' + Object.keys(pr.solo).map(function (t) { return t + ' solo en ' + pr.solo[t].join(' y ').toLowerCase(); }).join('; ') + ')</span>' : '') + '</dd>' +
+      '<dt>Colores</dt><dd>' + pr.colores.map(function (c) { return c.name; }).join(', ') + '</dd>' +
+    '</dl>' +
+    (pr.medidas ? '<details><summary>Medidas en cm (ancho × largo, en plano)</summary><table class="tabla"><tr><th>Talla</th><th>Ancho</th><th>Largo</th></tr>' +
+      pr.tallas.map(function (t) { var m = pr.medidas[t]; return '<tr><td>' + t + '</td><td>' + (m ? m[0] + ' cm' : '—') + '</td><td>' + (m ? m[1] + ' cm' : '—') + '</td></tr>'; }).join('') + '</table></details>' : '') +
+    (pr.nota ? '<p class="nota-paso">' + esc(pr.nota) + '</p>' : '') + '</div></section>';
+
+  h += '<section class="paso"><div class="paso-tit"><span class="n">03</span><h3>Color · <span class="dato" style="color:var(--tinta)">' + esc(PS.color) + '</span></h3></div><div class="colores">' +
+    pr.colores.map(function (c) { return '<button class="color' + (PS.color === c.name ? ' on' : '') + '" data-p-color="' + esc(c.name) + '" style="background:' + c.hex + '" title="' + esc(c.name) + '" aria-label="' + esc(c.name) + '"></button>'; }).join('') + '</div></section>';
+
+  if (uni) {
+    h += '<section class="paso"><div class="paso-tit"><span class="n">04</span><h3>Cantidad y tallas</h3></div>' +
+      '<div class="cantidad"><button data-p-cant="-1" aria-label="Menos">−</button><span>' + PS.cant + '</span><button data-p-cant="1" aria-label="Más">+</button></div>' +
+      '<p class="nota-paso">Mínimo ' + MINIMO_UNIFORMES + ' piezas. El diseño se cobra una sola vez.</p>' +
+      '<label class="sr" for="persTallasGrupo">Distribución de tallas</label>' +
+      '<input class="campo-txt" id="persTallasGrupo" style="margin-top:12px" placeholder="Tallas, ej: 4 M, 6 L, 2 XL" value="' + esc(PS.tallasGrupo) + '"></section>';
+  } else {
+    h += '<section class="paso"><div class="paso-tit"><span class="n">04</span><h3>Talla</h3></div><div class="tallas">' +
+      pr.tallas.map(function (t) {
+        var ok = tallaDisponible(pr, t, PS.color), extra = pr.extra && pr.extra[t];
+        return '<button class="talla' + (PS.talla === t ? ' on' : '') + '" data-p-talla="' + t + '"' + (ok ? '' : ' disabled title="No viene en ' + esc(PS.color) + '"') + '>' + t + (extra ? '<br><span style="font-size:9px">+' + plata(extra) + '</span>' : '') + '</button>';
+      }).join('') + '</div></section>';
+  }
+
+  h += '<section class="paso"><div class="paso-tit"><span class="n">05</span><h3>Tu idea</h3></div>' +
+    '<label class="sr" for="persIdea">Tu idea</label>' +
+    '<textarea id="persIdea" rows="4" placeholder="Qué querés, para quién, qué referencias tenés en mente...">' + esc(PS.idea) + '</textarea>' +
+    '<p class="nota-paso">Las imágenes de referencia me las mandás por WhatsApp después de enviar esto. Antes de imprimir te mando el diseño para que lo aprobés.</p></section>';
+
+  $('persCuerpo').innerHTML = h;
+  actualizarResumenPers();
+}
+
+function calcularPers() {
+  var pr = prendaPorId(PS.prenda), uni = PS.estilo === 'uniformes';
+  var unit = precioPrenda(pr, uni ? 'M' : PS.talla);
+  var total = uni ? unit * PS.cant + RECARGO_PERSONALIZADO : (unit + RECARGO_PERSONALIZADO) * PS.cant;
+  return { pr: pr, uni: uni, unit: unit, total: total };
+}
+function faltaPers() {
+  if (!PS.estilo) return 'Elegí un estilo';
+  if (PS.estilo !== 'uniformes' && !PS.talla) return 'Elegí una talla';
+  if (PS.estilo === 'uniformes' && PS.cant < MINIMO_UNIFORMES) return 'Mínimo ' + MINIMO_UNIFORMES + ' piezas';
+  if (!PS.idea.trim() || (PS.base && PS.idea.trim() === ('Basado en ' + PS.base.nombre + ' (' + ref(PS.base) + '):'))) return 'Contame tu idea';
+  return '';
+}
+function actualizarResumenPers() {
+  var c = calcularPers();
+  $('persDetalle').textContent = c.pr.nombre + ' · ' + PS.color + (c.uni ? ' · ' + PS.cant + ' piezas' : (PS.talla ? ' · ' + PS.talla : ''));
+  $('persTotal').textContent = plata(c.total);
+  $('persAviso').classList.add('oculto');
+}
+
+$('persCuerpo').addEventListener('click', function (e) {
+  var b;
+  if ((b = e.target.closest('[data-p-estilo]'))) {
+    PS.estilo = b.getAttribute('data-p-estilo');
+    if (PS.estilo === 'uniformes' && PS.cant < MINIMO_UNIFORMES) PS.cant = MINIMO_UNIFORMES;
+    if (PS.estilo !== 'uniformes') PS.cant = 1;
+  } else if ((b = e.target.closest('[data-p-prenda]'))) {
+    PS.prenda = b.getAttribute('data-p-prenda');
+    var pr = prendaPorId(PS.prenda);
+    if (!pr.colores.some(function (c) { return c.name === PS.color; })) PS.color = pr.colores[0].name;
+    if (PS.talla && (pr.tallas.indexOf(PS.talla) === -1 || !tallaDisponible(pr, PS.talla, PS.color))) PS.talla = null;
+  } else if ((b = e.target.closest('[data-p-color]'))) {
+    PS.color = b.getAttribute('data-p-color');
+    if (PS.talla && !tallaDisponible(prendaPorId(PS.prenda), PS.talla, PS.color)) PS.talla = null;
+  } else if ((b = e.target.closest('[data-p-talla]'))) {
+    PS.talla = b.getAttribute('data-p-talla');
+  } else if ((b = e.target.closest('[data-p-cant]'))) {
+    PS.cant = Math.max(MINIMO_UNIFORMES, Math.min(500, PS.cant + Number(b.getAttribute('data-p-cant'))));
+  } else return;
+  var y = $('persCuerpo').scrollTop;
+  pintarPers();
+  $('persCuerpo').scrollTop = y;
+});
+$('persCuerpo').addEventListener('input', function (e) {
+  if (e.target.id === 'persIdea') PS.idea = e.target.value;
+  if (e.target.id === 'persTallasGrupo') PS.tallasGrupo = e.target.value;
+});
+$('persEnviar').addEventListener('click', function () {
+  var falta = faltaPers();
+  if (falta) { $('persAviso').textContent = falta; $('persAviso').classList.remove('oculto'); return; }
+  var c = calcularPers(), estilo = ESTILOS.filter(function (x) { return x.id === PS.estilo; })[0];
+  var msg = 'Hola Yuzu, quiero un diseño personalizado.\n\n' +
+    'Estilo: ' + estilo.nombre + '\n' +
+    'Prenda: ' + c.pr.nombre + ' · ' + PS.color + '\n' +
+    (c.uni ? 'Cantidad: ' + PS.cant + ' piezas\nTallas: ' + (PS.tallasGrupo.trim() || 'por definir') + '\n' : 'Talla: ' + PS.talla + '\n') +
+    (PS.base ? 'Diseño base: ' + PS.base.nombre + ' (' + ref(PS.base) + ')\n' : '') +
+    '\nIdea:\n' + PS.idea.trim() + '\n\n' +
+    'Total estimado: ' + plata(c.total) + ' (envío incluido' + (c.uni ? ', diseño cobrado una vez' : '') + ')\n' +
+    '\nTe mando las referencias por acá.';
+  evento('personalizado_enviar', { estilo: PS.estilo, prenda: PS.prenda, value: c.total, currency: 'CRC' });
+  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
+});
+$('cerrarPers').addEventListener('click', cerrarPers);
+$('persVelo').addEventListener('click', cerrarPers);
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-abrir-pers]');
+  if (!b) return;
+  e.preventDefault();
+  var est = b.getAttribute('data-abrir-pers');
+  cerrarCajon();
+  abrirPers({ estilo: est || null, base: b.hasAttribute('data-pers-base') && PR.p ? PR.p : null });
+});
+
+/* =====================================================================
    ENRUTADOR
    #/                      inicio
    #/c/todo | ofertas | destacados | espalda | pecho
@@ -1984,7 +2260,7 @@ $('temaBtn').addEventListener('click', function () {
    #/ayuda[/seccion]       ayuda
    #/taller                inicio → sección El taller
    ===================================================================== */
-var primeraRuta = true;
+var primeraRuta = true, ultimaRuta = '';
 function mostrarVista(id) {
   ['vInicio', 'vColeccion', 'vProducto', 'vAyuda'].forEach(function (v) { $(v).classList.toggle('activa', v === id); });
 }
@@ -2007,6 +2283,12 @@ function enrutar() {
   if ($('zoom').classList.contains('abierta')) cerrarZoom();
 
   var destino = null;
+  if (partes[0] === 'personalizado') {
+    if (!$('vInicio').classList.contains('activa') && !$('vColeccion').classList.contains('activa') && !$('vProducto').classList.contains('activa') && !$('vAyuda').classList.contains('activa')) mostrarVista('vInicio');
+    abrirPers({ estilo: partes[1] || null });
+    return;
+  }
+  if ($('pers').classList.contains('abierta')) { $('pers').classList.remove('abierta'); $('persVelo').classList.remove('abierta'); }
   if (!partes.length || partes[0] === 'taller') {
     mostrarVista('vInicio');
     document.title = 'Yuzu — Archivo';
@@ -2037,6 +2319,7 @@ function enrutar() {
   if (destino) setTimeout(function () { destino.scrollIntoView({ behavior: primeraRuta ? 'auto' : 'smooth', block: 'start' }); }, 60);
   else window.scrollTo(0, 0);
 
+  ultimaRuta = location.hash || '#/';
   if (!primeraRuta) evento('page_view', { page_title: document.title, page_location: location.href });
   primeraRuta = false;
 }
@@ -2132,6 +2415,7 @@ document.addEventListener('keydown', function (e) {
     if ($('zoom').classList.contains('abierta')) { cerrarZoom(); return; }
     if ($('bolVelo').classList.contains('abierto')) { cerrarBoletin(); return; }
     if ($('buscador').classList.contains('abierta')) { cerrarBuscador(); return; }
+    if ($('pers').classList.contains('abierta')) { cerrarPers(); return; }
     if ($('bolsa').classList.contains('abierta')) { cerrarBolsa(); return; }
     if ($('cajon').classList.contains('abierta')) { cerrarCajon(); return; }
     if ($('agregado').classList.contains('ver')) { cerrarAgregado(); return; }
