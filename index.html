@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yuzu — Archivo</title>
 <meta name="description" content="Streetwear hecho a pedido en Costa Rica. Algodón 190 g, corte oversized, impresión DTF.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Yuzu">
+<meta property="og:title" content="Yuzu — Streetwear hecho a pedido en Costa Rica">
+<meta property="og:description" content="Camisetas oversize con diseños de anime y cultura pop. Envío incluido a todo Costa Rica.">
+<meta property="og:image" content="https://yuzucr.github.io/Yuzu-Catalogo/images/portada.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0b0b0a">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZRDRT4NEQ3"></script>
 <script>
@@ -359,6 +365,8 @@
   .campo-tit .valor { color: var(--tinta); }
   .guia-link { font-family: var(--dato); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 3px; color: var(--tinta-2); }
   .colores { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chips-prenda { display: flex; flex-wrap: wrap; gap: 8px; }
+  .gal-cargando { flex: 0 0 100%; display: flex; align-items: center; justify-content: center; font-family: var(--dato); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-2); animation: latir 1.4s ease-in-out infinite; }
   .color { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--linea); position: relative; transition: box-shadow .3s var(--suave), transform .3s var(--lento); }
   .color:hover { transform: translateY(-2px); }
   .color.on { box-shadow: 0 0 0 2px var(--papel), 0 0 0 3px var(--tinta); }
@@ -603,6 +611,37 @@
   .pers-btn-ficha { margin-bottom: 22px; }
   @media (min-width: 960px) { .banda-pers { grid-template-columns: 1.2fr 1fr; align-items: end; padding-top: 80px; padding-bottom: 80px; } }
 
+  /* ================= CAPTURA / CUPONES / CORTE / TALLA ================= */
+  .cap-teaser { position: fixed; left: 16px; bottom: 76px; z-index: 86; display: none; align-items: center; gap: 10px; background: var(--yuzu); color: #0b0b0a; border-radius: 28px; padding: 11px 14px 11px 18px; font-family: var(--dato); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; box-shadow: 0 6px 20px rgba(0,0,0,.35); transition: transform .3s var(--lento); }
+  .cap-teaser.ver { display: inline-flex; animation: surgir .6s var(--lento); }
+  .cap-teaser:hover { transform: translateY(-2px); }
+  .cap-teaser .x { width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,.15); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; }
+  .cap-paso { display: none; }
+  .cap-paso.ver { display: block; animation: surgir .5s var(--suave); }
+  .cap-grande { font-family: var(--display); font-weight: 800; font-size: clamp(54px, 16vw, 84px); line-height: .85; text-transform: uppercase; color: var(--yuzu); margin: 8px 0 6px; }
+  .cap-saltar { display: block; width: 100%; text-align: center; margin-top: 12px; font-size: 12px; color: var(--tinta-2); text-decoration: underline; text-underline-offset: 3px; }
+  .cap-codigo { display: inline-block; font-family: var(--dato); font-size: 18px; letter-spacing: .14em; border: 1px dashed var(--yuzu); padding: 10px 16px; margin: 12px 0; color: var(--tinta); }
+  .cupon-fila { display: flex; gap: 6px; margin-bottom: 10px; }
+  .cupon-fila input { flex: 1; min-width: 0; background: transparent; border: 1px solid var(--linea); padding: 9px 10px; font-family: var(--dato); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+  .cupon-fila input:focus { outline: none; border-color: var(--tinta); }
+  .cupon-fila button { border: 1px solid var(--linea); padding: 0 14px; font-family: var(--dato); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+  .cupon-fila button:hover { border-color: var(--tinta); }
+  .cupon-ok { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; padding: 8px 10px; border: 1px dashed var(--yuzu); font-family: var(--dato); font-size: 11px; letter-spacing: .08em; }
+  .cupon-ok button { font-size: 10px; text-decoration: underline; color: var(--tinta-2); }
+  .cupon-msg { font-family: var(--dato); font-size: 10px; letter-spacing: .08em; margin: -4px 0 10px; color: var(--oferta); }
+  .descuento-n { color: var(--yuzu); }
+  .corte { display: flex; align-items: center; gap: 12px; border: 1px solid var(--linea); padding: 12px 14px; margin-bottom: 18px; font-size: 13px; }
+  .corte svg { width: 20px; height: 20px; stroke: var(--yuzu); fill: none; stroke-width: 1.5; flex-shrink: 0; }
+  .corte strong { font-weight: 600; }
+  .corte .dato { display: block; margin-top: 2px; color: var(--yuzu); }
+  .bolsa-corte { font-family: var(--dato); font-size: 10px; letter-spacing: .08em; text-align: center; color: var(--tinta-2); margin-bottom: 12px; }
+  .talla-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .talla-form label { font-family: var(--dato); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-2); display: block; margin-bottom: 4px; }
+  .talla-form input, .talla-form select { width: 100%; background: transparent; border: 1px solid var(--linea); padding: 10px; font-size: 14px; color: var(--tinta); }
+  .talla-form select option { background: var(--papel); }
+  .talla-res { text-align: center; margin-top: 20px; }
+  .talla-res .t { font-family: var(--display); font-weight: 800; font-size: 72px; line-height: .9; color: var(--yuzu); }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-delay: 0s !important; }
     .marquesina-pista { animation: none; }
@@ -745,7 +784,7 @@
 
   <section class="seccion envoltura" id="secMuro" style="padding-top:60px">
     <div class="sec-cab">
-      <div><span class="dato">Lo más nuevo del taller</span><h2>@yuzucr</h2></div>
+      <div><span class="dato">Etiquetanos para aparecer acá</span><h2>@yuzucr</h2></div>
       <a class="subrayado" href="https://instagram.com/yuzucr" target="_blank" rel="noopener">Seguir</a>
     </div>
     <div class="muro" id="muro"></div>
@@ -932,6 +971,58 @@
   <div class="z-cont" id="zoomCont"></div>
 </div>
 
+<!-- ============ CAPTURA (descuento por correo / teléfono) ============ -->
+<button class="cap-teaser" id="capTeaser" type="button"><span id="capTeaserTxt">10% OFF</span><span class="x" id="capTeaserX" aria-label="Cerrar">×</span></button>
+<div class="bol-velo" id="capVelo">
+  <div class="bol" role="dialog" aria-modal="true" aria-label="Descuento">
+    <button class="bol-x" id="capX" aria-label="Cerrar">&#10005;</button>
+    <div class="bol-cuerpo">
+      <div class="cap-paso" id="capPaso1">
+        <span class="dato">Lista del taller</span>
+        <div class="cap-grande" id="capPct1">10% OFF</div>
+        <h3 style="margin-top:4px">En tu primer pedido</h3>
+        <p class="bol-texto">Dejá tu correo y el descuento se aplica solo en tu bolsa. Te avisamos de cada tanda nueva.</p>
+        <form id="capForm1"><input type="email" id="capCorreo" placeholder="Correo electrónico" autocomplete="email" required><button class="btn" type="submit" id="capBtn1">Quiero mi descuento</button></form>
+        <p class="dato bol-legal">Podés salirte cuando querás.</p>
+      </div>
+      <div class="cap-paso" id="capPaso2">
+        <span class="dato">Descuento exclusivo</span>
+        <div class="cap-grande" id="capPct2">15% OFF</div>
+        <h3 style="margin-top:4px">Subilo con tu WhatsApp</h3>
+        <p class="bol-texto">Dejanos tu número y cambiamos tu descuento por uno mayor. Solo te escribimos cuando hay drop nuevo.</p>
+        <form id="capForm2"><input type="tel" id="capTel" placeholder="Número de WhatsApp" autocomplete="tel" required><button class="btn" type="submit" id="capBtn2">Desbloquear</button></form>
+        <button class="cap-saltar" type="button" id="capSaltar">No, gracias, me quedo con el anterior</button>
+      </div>
+      <div class="cap-paso" id="capPaso3" style="text-align:center">
+        <span class="dato">Listo</span>
+        <h3>Tu descuento ya está aplicado</h3>
+        <div class="cap-codigo" id="capCodigoFin"></div>
+        <p class="bol-texto" style="margin:0 auto;max-width:30ch">Se descuenta solo del total en tu bolsa al pedir por WhatsApp.</p>
+        <button class="btn" type="button" id="capFin" style="width:100%;margin-top:18px">Seguir viendo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ¿QUÉ TALLA SOY? ============ -->
+<div class="bol-velo" id="tallaVelo">
+  <div class="bol" role="dialog" aria-modal="true" aria-label="¿Qué talla soy?">
+    <button class="bol-x" id="tallaX" aria-label="Cerrar">&#10005;</button>
+    <div class="bol-cuerpo">
+      <span class="dato" id="tallaPrenda">Boxy oversize</span>
+      <h3>¿Qué talla soy?</h3>
+      <p class="bol-texto">Es una estimación. Si tenés una camiseta que te queda bien, medila en plano y comparala con la guía de tallas.</p>
+      <form class="talla-form" id="tallaForm">
+        <div><label for="tallaAltura">Altura (cm)</label><input id="tallaAltura" type="number" inputmode="numeric" min="130" max="215" placeholder="175" required></div>
+        <div><label for="tallaPeso">Peso (kg)</label><input id="tallaPeso" type="number" inputmode="numeric" min="35" max="200" placeholder="72" required></div>
+        <div style="grid-column:1/-1"><label for="tallaGusto">¿Cómo te gusta?</label><select id="tallaGusto"><option value="0">Suelta, oversize (como está pensada)</option><option value="-1">Más ajustada</option><option value="1">Bien grande</option></select></div>
+        <button class="btn" type="submit" style="grid-column:1/-1">Calcular</button>
+      </form>
+      <div class="talla-res oculto" id="tallaRes"><span class="dato">Te recomendamos</span><div class="t" id="tallaT"></div><p class="bol-texto" id="tallaDet" style="margin:6px auto 14px"></p><button class="btn btn-hueco" type="button" id="tallaUsar" style="width:100%">Elegir esta talla</button></div>
+    </div>
+  </div>
+</div>
+
 <!-- ============ BOLETÍN ============ -->
 <div class="bol-velo" id="bolVelo">
   <div class="bol" role="dialog" aria-modal="true" aria-labelledby="bolTitulo">
@@ -984,13 +1075,19 @@
   <div class="bolsa-lista" id="bolsaLista"></div>
   <div class="bolsa-pie">
     <div class="fila-pie oculto" id="bolsaAporte"><span class="dato">Aporte a ECPAT</span><span class="dato" id="bolsaAporteN"></span></div>
+    <div id="cuponCaja"></div>
+    <p class="cupon-msg oculto" id="cuponMsg"></p>
+    <div class="fila-pie oculto" id="filaSubtotal"><span class="dato">Subtotal</span><span class="dato" id="bolsaSubtotal" style="color:var(--tinta)"></span></div>
+    <div class="fila-pie oculto" id="filaDescuento"><span class="dato" id="bolsaDescNom">Descuento</span><span class="dato descuento-n" id="bolsaDescuento"></span></div>
     <div class="fila-pie"><span class="dato">Envío</span><span class="dato" style="color:var(--tinta)">Incluido</span></div>
     <div class="total"><span class="dato">Total</span><span class="total-n" id="bolsaTotal">&#8353;0</span></div>
+    <p class="bolsa-corte oculto" data-corte="linea"></p>
     <button class="btn btn-ancho" id="btnPedir">Pedir por WhatsApp</button>
     <p class="dato nota">Te confirmamos disponibilidad y coordinamos el pago por chat.</p>
   </div>
 </aside>
 
+<script src="mockup.js"></script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN — lo único que deberías tocar a mano
@@ -1015,7 +1112,7 @@ var MARQUESINA = [
 
 var REDES = [
   { nombre: 'Instagram', url: 'https://instagram.com/yuzucr', icono: '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6"/>' },
-  { nombre: 'TikTok', url: 'https://tiktok.com/@yuzu.cr', icono: '<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.6 2.2 4.4 5 4.6"/>' },
+  { nombre: 'TikTok', url: 'https://tiktok.com/@yuzucr', icono: '<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.6 2.2 4.4 5 4.6"/>' },
   { nombre: 'WhatsApp', url: 'https://wa.me/50661984904', icono: '<path d="M4 20l1.3-4A8 8 0 1 1 8 18.8L4 20z"/>' }
 ];
 
@@ -1137,6 +1234,13 @@ function cargar() {
     fetch('data/tienda.json' + t).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; })
   ]).then(function (r) {
     var T = r[3] || {};
+    if (window.YuzuMockup && T.mockup) YuzuMockup.configurar(T.mockup);
+    if (T.coloresPrenda) COLORES_PRENDA = T.coloresPrenda;
+    if (T.corte) CORTE = Object.assign(CORTE, T.corte);
+    if (T.captura) CAPTURA = Object.assign(CAPTURA, T.captura);
+    if (T.cupones) CUPONES_EXTRA = T.cupones;
+    if (CORTE.activo) MARQUESINA = [textoCorte()].concat(MARQUESINA);
+    pintarMarquesinas(); pintarCorte(); iniciarCaptura(); actualizarBolsa();
     if (T.nombres) Object.keys(T.nombres).forEach(function (k) { NOMBRES[k] = T.nombres[k]; });
     if (T.drops && T.drops.actual) DROPS = T.drops;
     if (T.banners && T.banners.length) BANNERS = T.banners;
@@ -1681,7 +1785,8 @@ function mostrarProducto(r) {
     return;
   }
   var disp = p.colores && p.colores.length ? p.colores : COLORES.map(function (c) { return c.name; });
-  PR = { p: p, color: disp[0], talla: null, cant: 1, fotos: [], i: 0 };
+  PR = { p: p, color: disp[0], talla: null, cant: 1, fotos: [], i: 0, prenda: 'boxy', vs: window.YuzuMockup ? YuzuMockup.versionesDe(p) : [], version: 0 };
+  if (PR.vs.length) PR.version = YuzuMockup.recomendada(PR.vs, PR.color);
   document.title = p.nombre + ' — Yuzu';
   evento('view_item', { currency: 'CRC', value: precioVigente(p), items: [{ item_id: ref(p), item_name: p.nombre, item_category: p.categoria, item_category2: p.subcategoria }] });
   guardarVisto(p.id);
@@ -1713,18 +1818,18 @@ function mostrarProducto(r) {
       '<div class="info">' +
         '<span class="dato vendedor">Yuzu · ' + ref(p) + '</span>' +
         '<h1>' + esc(p.nombre) + '</h1>' +
-        '<div class="info-precio">' + (pv < pn ? '<s>' + plata(pn) + '</s><span class="actual rebajado">' + plata(pv) + '</span>' : '<span class="actual">' + plata(pv) + '</span>') + sello + '</div>' +
+        '<div class="info-precio" id="prPrecio">' + precioFichaHTML() + '</div>' +
         '<p class="nota-envio">Envío incluido a todo Costa Rica. <a href="#/ayuda/envios">Cómo funciona</a></p>' +
         (esManifiesto(p) ? '<div class="ficha-manifiesto"><span class="dato">Manifiesto</span><p><strong>' + plata(MANIFIESTO.monto) + '</strong> de esta pieza se giran a <strong>' + MANIFIESTO.destino + '</strong>. Comprobante trimestral en @yuzucr.</p></div>' : '') +
+        prendasFichaHTML() + versionesFichaHTML() +
         '<div class="campo"><div class="campo-tit"><span class="dato">Color · <span class="valor" id="prColorNom">' + esc(PR.color) + '</span></span></div>' +
-          '<div class="colores" id="prColores">' + disp.map(function (c) {
-            return '<button class="color' + (c === PR.color ? ' on' : '') + '" data-color="' + esc(c) + '" style="background:' + hexDe(c) + '" title="' + esc(c) + '" aria-label="' + esc(c) + '"></button>';
-          }).join('') + '</div></div>' +
-        '<div class="campo"><div class="campo-tit"><span class="dato">Talla · <span class="valor" id="prMedida">elegí una</span></span><button class="guia-link" id="prGuia">Guía de tallas</button></div>' +
+          '<div class="colores" id="prColores">' + coloresFichaHTML() + '</div></div>' +
+        '<div class="campo"><div class="campo-tit"><span class="dato">Talla · <span class="valor" id="prMedida">elegí una</span></span><span style="display:flex;gap:14px"><button class="guia-link" id="prTalla">¿Qué talla soy?</button><button class="guia-link" id="prGuia">Guía de tallas</button></span></div>' +
           '<div class="tallas" id="prTallas">' + tallasHTML(PR.color, null) + '</div>' +
           '<p class="dato talla-aviso oculto" id="prAvisoTalla">Elegí una talla primero</p></div>' +
         '<div class="campo"><div class="campo-tit"><span class="dato">Cantidad</span></div>' +
           '<div class="cantidad"><button data-cant="-1" aria-label="Menos">−</button><span id="prCant">1</span><button data-cant="1" aria-label="Más">+</button></div></div>' +
+        '<div class="corte oculto" data-corte="caja"></div>' +
         '<div class="acciones">' +
           '<button class="btn btn-hueco btn-ancho" id="prAgregar">Agregar a la bolsa</button>' +
           '<button class="btn btn-ancho" id="prPedir">Pedir ahora por WhatsApp</button>' +
@@ -1735,7 +1840,7 @@ function mostrarProducto(r) {
           '<li>' + svg('chat') + 'Pedido y pago coordinados por WhatsApp</li>' +
         '</ul>' +
         '<button class="btn btn-hueco btn-ancho pers-btn-ficha" data-abrir-pers data-pers-base>Personalizá este diseño · desde +' + plata(precioDisenoMinimo()) + '</button>' +
-        '<button class="compartir" id="prCompartir"><span id="prCompartirTxt">Copiar enlace de esta pieza</span></button>' +
+        '<div style="display:flex;gap:18px;flex-wrap:wrap"><button class="compartir" id="prCompartir"><span id="prCompartirTxt">Copiar enlace de esta pieza</span></button><button class="compartir" id="prDescargar">Descargar esta imagen</button></div>' +
         '<div class="plegables">' +
           '<details class="plegable" open><summary>Descripción</summary><div class="cuerpo-det">' +
             '<p><strong>' + esc(p.nombre) + '</strong>' + (p.subcategoria ? ' · ' + esc(p.subcategoria) : '') + '</p>' +
@@ -1769,6 +1874,7 @@ function mostrarProducto(r) {
   $('vProducto').innerHTML = h;
   PR.fotos = fotosProducto(p, PR.color);
   pintarGaleria();
+  pintarCorte();
 }
 
 function relacionadosDe(p) {
@@ -1817,14 +1923,20 @@ $('vProducto').addEventListener('click', function (e) {
     $('prColorNom').textContent = PR.color;
     if (PR.talla && !tallaOk(PR.talla, PR.color)) { PR.talla = null; $('prMedida').textContent = 'elegí una'; }
     $('prTallas').innerHTML = tallasHTML(PR.color, PR.talla);
-    PR.fotos = fotosProducto(PR.p, PR.color);
-    pintarGaleria();
+    autoVersion();
+    actualizarGaleriaPR();
+  } else if ((b = e.target.closest('[data-prenda]'))) {
+    cambiarPrendaFicha(b.getAttribute('data-prenda'));
+  } else if ((b = e.target.closest('[data-version]'))) {
+    PR.version = +b.getAttribute('data-version');
+    pintarVersionFicha();
+    actualizarGaleriaPR();
   } else if ((b = e.target.closest('[data-talla]'))) {
     if (b.disabled) return;
     PR.talla = b.getAttribute('data-talla');
     var t = $('prTallas').querySelectorAll('.talla');
     for (var j = 0; j < t.length; j++) t[j].classList.toggle('on', t[j] === b);
-    var m = MEDIDAS[PR.talla], ex = TALLA_EXTRA[PR.talla];
+    var cfgT = tallasPR(), m = cfgT.medidas && cfgT.medidas[PR.talla], ex = cfgT.extra[PR.talla];
     $('prMedida').textContent = PR.talla + (m ? ' · ' + m[0] + ' × ' + m[1] + ' cm' : '') + (ex ? ' · +' + plata(ex) : '');
     $('prAvisoTalla').classList.add('oculto');
   } else if ((b = e.target.closest('[data-cant]'))) {
@@ -1838,21 +1950,131 @@ $('vProducto').addEventListener('click', function (e) {
     var d = $('prMedidas'); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'center' });
   } else if (e.target.closest('#prAgregar')) {
     if (!exigirTalla()) return;
-    agregar(PR.p, PR.talla, PR.color, PR.cant);
+    agregar(PR.p, PR.talla, PR.color, PR.cant, extraPR());
   } else if (e.target.closest('#prPedir')) {
     if (!exigirTalla()) return;
-    pedirWhatsApp([lineaDe(PR.p, PR.talla, PR.color, PR.cant)]);
+    pedirWhatsApp([lineaDe(PR.p, PR.talla, PR.color, PR.cant, extraPR())]);
   } else if (e.target.closest('#prCompartir')) {
     compartir(PR.p);
+  } else if (e.target.closest('#prDescargar')) {
+    descargarImagen();
+  } else if (e.target.closest('#prTalla')) {
+    abrirTalla();
   } else if ((b = e.target.closest('[data-zoom-src]'))) {
     abrirZoom([b.getAttribute('data-zoom-src')], 0);
   }
 });
-function tallaOk(t, color) { return !TALLA_SOLO[t] || TALLA_SOLO[t].indexOf(color) !== -1; }
+/* ---------- Prenda en la ficha (boxy por defecto; otras con mockup automático) ---------- */
+function prendaFicha() { return PR.prenda && PR.prenda !== 'boxy' ? prendaPorId(PR.prenda) : null; }
+function tallasPR() {
+  var pr = prendaFicha();
+  if (!pr) return { tallas: TALLAS, solo: TALLA_SOLO, extra: TALLA_EXTRA, medidas: MEDIDAS };
+  return { tallas: pr.tallas, solo: pr.solo || {}, extra: pr.extra || {}, medidas: pr.medidas };
+}
+var COLORES_PRENDA = {};   // desde data/tienda.json → coloresPrenda (colores activos por prenda)
+function coloresPR() {
+  var pr = prendaFicha();
+  if (!pr) return PR.p.colores && PR.p.colores.length ? PR.p.colores : COLORES.map(function (c) { return c.name; });
+  var activos = COLORES_PRENDA[pr.id];
+  return pr.colores.map(function (c) { return c.name; }).filter(function (c) {
+    return (!activos || activos.indexOf(c) !== -1) && window.YuzuMockup && YuzuMockup.disponible(pr.id, c);
+  });
+}
+function hexPR(c) { var pr = prendaFicha(); if (pr) { var x = pr.colores.filter(function (k) { return k.name === c; })[0]; if (x) return x.hex; } return hexDe(c); }
+function precioPR(normal) {
+  var base = normal ? precioNormal(PR.p) : precioVigente(PR.p), pr = prendaFicha();
+  return pr ? base - prendaPorId('boxy').precio + pr.precio : base;
+}
+function precioFichaHTML() {
+  var pv = precioPR(false), pn = precioPR(true), p = PR.p;
+  var ahorro = pn > pv ? Math.round((1 - pv / pn) * 100) : 0;
+  var sello = esManifiesto(p) ? '<span class="sello">Manifiesto</span>' : (ahorro ? '<span class="sello oferta">Oferta −' + ahorro + '%</span>' : '');
+  return (pv < pn ? '<s>' + plata(pn) + '</s><span class="actual rebajado">' + plata(pv) + '</span>' : '<span class="actual">' + plata(pv) + '</span>') + sello;
+}
+function prendasConDiseno(p) {
+  if (!window.YuzuMockup || !YuzuMockup.versionesDe(p).length) return [];
+  return PRENDAS.filter(function (pr) {
+    if (p.prendas && p.prendas.length && p.prendas.indexOf(pr.id) === -1) return false;
+    var activos = COLORES_PRENDA[pr.id];
+    return pr.id === 'boxy' || pr.colores.some(function (c) { return (!activos || activos.indexOf(c.name) !== -1) && YuzuMockup.disponible(pr.id, c.name); });
+  });
+}
+function versionesFichaHTML() {
+  if (PR.vs.length < 2) return '';
+  return '<div class="campo"><div class="campo-tit"><span class="dato">Versión · <span class="valor" id="prVersionNom">' + esc(PR.vs[PR.version].nombre) + '</span></span></div>' +
+    '<div class="chips-prenda" id="prVersiones">' + PR.vs.map(function (v, i) { return '<button class="chip' + (i === PR.version ? ' on' : '') + '" data-version="' + i + '">' + esc(v.nombre) + '</button>'; }).join('') + '</div>' +
+    '<p class="dato oculto" id="prVersionAviso" style="margin-top:8px"></p></div>';
+}
+function pintarVersionFicha(nota) {
+  if (PR.vs.length < 2) return;
+  var ch = $('prVersiones').querySelectorAll('[data-version]');
+  for (var i = 0; i < ch.length; i++) ch[i].classList.toggle('on', +ch[i].getAttribute('data-version') === PR.version);
+  $('prVersionNom').textContent = PR.vs[PR.version].nombre;
+  var ok = YuzuMockup.recomendadaPara(PR.vs, PR.version, PR.color), av = $('prVersionAviso');
+  av.textContent = nota || (ok ? '' : 'Esta versión puede no verse bien en ' + PR.color.toLowerCase() + '.');
+  av.style.color = ok ? 'var(--tinta-2)' : 'var(--oferta)';
+  av.classList.toggle('oculto', !av.textContent);
+}
+// Al cambiar de color, pasa a la versión recomendada para esa tela
+function autoVersion() {
+  if (PR.vs.length < 2 || YuzuMockup.recomendadaPara(PR.vs, PR.version, PR.color)) { pintarVersionFicha(); return; }
+  PR.version = YuzuMockup.recomendada(PR.vs, PR.color);
+  pintarVersionFicha('Cambiamos a «' + PR.vs[PR.version].nombre + '», que se ve mejor en ' + PR.color.toLowerCase() + '.');
+}
+function prendasFichaHTML() {
+  var lista = prendasConDiseno(PR.p);
+  if (lista.length < 2) return '';
+  return '<div class="campo"><div class="campo-tit"><span class="dato">Prenda · <span class="valor" id="prPrendaNom">' + esc(prendaPorId(PR.prenda).nombre) + '</span></span></div>' +
+    '<div class="chips-prenda" id="prPrendas">' + lista.map(function (pr) { return '<button class="chip' + (pr.id === PR.prenda ? ' on' : '') + '" data-prenda="' + pr.id + '">' + esc(pr.nombre) + '</button>'; }).join('') + '</div></div>';
+}
+function coloresFichaHTML() {
+  return coloresPR().map(function (c) {
+    return '<button class="color' + (c === PR.color ? ' on' : '') + '" data-color="' + esc(c) + '" style="background:' + hexPR(c) + '" title="' + esc(c) + '" aria-label="' + esc(c) + '"></button>';
+  }).join('');
+}
+function cambiarPrendaFicha(id) {
+  PR.prenda = id;
+  var cols = coloresPR();
+  if (cols.indexOf(PR.color) === -1) PR.color = cols[0];
+  var cfgT = tallasPR();
+  if (PR.talla && (cfgT.tallas.indexOf(PR.talla) === -1 || !tallaOk(PR.talla, PR.color))) { PR.talla = null; $('prMedida').textContent = 'elegí una'; }
+  var ch = $('prPrendas').querySelectorAll('[data-prenda]');
+  for (var i = 0; i < ch.length; i++) ch[i].classList.toggle('on', ch[i].getAttribute('data-prenda') === id);
+  $('prPrendaNom').textContent = prendaPorId(id).nombre;
+  $('prColores').innerHTML = coloresFichaHTML();
+  $('prColorNom').textContent = PR.color;
+  $('prTallas').innerHTML = tallasHTML(PR.color, PR.talla);
+  $('prPrecio').innerHTML = precioFichaHTML();
+  autoVersion();
+  actualizarGaleriaPR();
+  evento('ver_en_prenda', { prenda: id, item_id: ref(PR.p) });
+}
+var CACHE_MOCKUP = {};
+function claveGal() { return PR.p.id + '|' + PR.prenda + '|' + PR.color + '|' + PR.version; }
+function actualizarGaleriaPR() {
+  var p = PR.p, usarGuardadas = !prendaFicha() && (!PR.vs.length || (PR.version === YuzuMockup.recomendada(PR.vs, PR.color) && fotosDe(p, PR.color)));
+  if (usarGuardadas || !PR.vs.length) { PR.fotos = fotosProducto(p, PR.color); pintarGaleria(); return; }
+  var clave = claveGal();
+  if (CACHE_MOCKUP[clave]) { PR.fotos = CACHE_MOCKUP[clave]; pintarGaleria(); return; }
+  $('galPista').innerHTML = '<div class="gal-cargando">Armando tu ' + esc(prendaPorId(PR.prenda).nombre.toLowerCase()) + '…</div>';
+  $('miniaturas').innerHTML = '';
+  YuzuMockup.generarTodas(PR.prenda, PR.color, PR.vs, PR.version, p.ajuste).then(function (cvs) {
+    var fotos = cvs.map(function (cv) { return cv.toDataURL('image/jpeg', 0.88); });
+    CACHE_MOCKUP[clave] = fotos;
+    if (PR.p === p && claveGal() === clave) { PR.fotos = fotos.length ? fotos : fotosProducto(p, PR.color); pintarGaleria(); }
+  }).catch(function () { PR.fotos = fotosProducto(p, PR.color); pintarGaleria(); });
+}
+function extraPR() {
+  var pr = prendaFicha(), version = PR.vs.length > 1 ? PR.vs[PR.version].nombre : '';
+  if (!pr && !version) return null;
+  return { prenda: pr ? pr.nombre : '', prendaId: PR.prenda, version: version, versionI: PR.version, precio: precioPR(false), foto: PR.fotos[0] && PR.fotos[0].indexOf('data:') !== 0 ? PR.fotos[0] : fotoBase(PR.p) };
+}
+function tallaOk(t, color) { var so = tallasPR().solo; return !so[t] || so[t].indexOf(color) !== -1; }
 function tallasHTML(color, activa) {
-  return TALLAS.map(function (t) {
-    var ok = tallaOk(t, color), ex = TALLA_EXTRA[t];
-    return '<button class="talla' + (t === activa ? ' on' : '') + '" data-talla="' + t + '"' + (ok ? '' : ' disabled title="Solo en ' + TALLA_SOLO[t].join(' y ').toLowerCase() + '"') + '>' + t + (ex ? '<br><span style="font-size:9px">+' + plata(ex) + '</span>' : '') + '</button>';
+  var cfgT = tallasPR();
+  return cfgT.tallas.map(function (t) {
+    var ok = tallaOk(t, color), ex = cfgT.extra[t];
+    return '<button class="talla' + (t === activa ? ' on' : '') + '" data-talla="' + t + '"' + (ok ? '' : ' disabled title="Solo en ' + cfgT.solo[t].join(' y ').toLowerCase() + '"') + '>' + t + (ex ? '<br><span style="font-size:9px">+' + plata(ex) + '</span>' : '') + '</button>';
   }).join('');
 }
 function exigirTalla() {
@@ -1862,8 +2084,15 @@ function exigirTalla() {
   return false;
 }
 
+function descargarImagen() {
+  var src = PR.fotos[PR.i]; if (!src) return;
+  var a = document.createElement('a');
+  a.href = src; a.download = 'yuzu-' + slug(PR.p.nombre) + '-' + slug(prendaPorId(PR.prenda || 'boxy').nombre) + '-' + slug(PR.color) + '.jpg';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  evento('descargar_mockup', { item_id: ref(PR.p), prenda: PR.prenda, color: PR.color });
+}
 function compartir(p) {
-  var url = location.origin + location.pathname + '#/p/' + ref(p);
+  var url = location.href.split('#')[0].replace(/index\.html$/, '') + 'p/' + ref(p) + '.html';
   var avisar = function () {
     var t = $('prCompartirTxt'); if (!t) return;
     t.textContent = 'Enlace copiado';
@@ -1924,19 +2153,20 @@ $('zoom').addEventListener('click', function (e) { if (e.target === $('zoom')) c
 /* =====================================================================
    BOLSA
    ===================================================================== */
-function lineaDe(p, talla, color, cant) {
+function lineaDe(p, talla, color, cant, extra) {
   var fotos = fotosDe(p, color);
   return {
-    linea: Date.now() + Math.floor(Math.random() * 1000), id: p.id, nombre: p.nombre, ref: ref(p),
-    talla: talla, color: color, precio: precioVigente(p) + (TALLA_EXTRA[talla] || 0), cant: cant || 1,
-    manifiesto: esManifiesto(p), foto: (fotos && fotos[0]) || fotoBase(p)
+    linea: Date.now() + Math.floor(Math.random() * 1000), id: p.id, nombre: p.nombre + (extra && extra.prenda ? ' · ' + extra.prenda : ''), ref: ref(p),
+    talla: talla, color: color, precio: extra ? extra.precio : precioVigente(p) + (TALLA_EXTRA[talla] || 0), cant: cant || 1,
+    prenda: extra ? extra.prenda : '', prendaId: extra ? extra.prendaId : 'boxy', version: extra ? extra.version : '', versionI: extra ? extra.versionI : 0, manifiesto: esManifiesto(p), foto: extra ? extra.foto : ((fotos && fotos[0]) || fotoBase(p))
   };
 }
-function agregar(p, talla, color, cant) {
-  var existente = bolsa.filter(function (i) { return i.id === p.id && i.talla === talla && i.color === color; })[0];
+function agregar(p, talla, color, cant, extra) {
+  var prenda = extra ? extra.prenda : '', version = extra ? extra.version : '';
+  var existente = bolsa.filter(function (i) { return i.id === p.id && i.talla === talla && i.color === color && (i.prenda || '') === prenda && (i.version || '') === version; })[0];
   var item;
   if (existente) { existente.cant = (existente.cant || 1) + cant; item = existente; }
-  else { item = lineaDe(p, talla, color, cant); bolsa.push(item); }
+  else { item = lineaDe(p, talla, color, cant, extra); bolsa.push(item); }
   actualizarBolsa();
   evento('add_to_cart', { currency: 'CRC', value: item.precio * cant, items: [{ item_id: item.ref, item_name: item.nombre, item_variant: color + ' / ' + talla, quantity: cant, price: item.precio }] });
   mostrarAgregado(item, cant);
@@ -1966,7 +2196,12 @@ function actualizarBolsa() {
   $('bolsaN').textContent = n;
   $('bolsaN').classList.toggle('cero', n === 0);
   $('bolsaCuenta').textContent = n ? '(' + n + ')' : '';
-  $('bolsaTotal').textContent = plata(totalDe(bolsa));
+  var sub = totalDe(bolsa), desc = descuentoDe(bolsa);
+  $('bolsaTotal').textContent = plata(sub - desc);
+  $('filaSubtotal').classList.toggle('oculto', !desc); $('filaDescuento').classList.toggle('oculto', !desc);
+  $('bolsaSubtotal').textContent = plata(sub); $('bolsaDescuento').textContent = '−' + plata(desc);
+  if (cupon) $('bolsaDescNom').textContent = 'Descuento ' + cupon.codigo + ' (' + cupon.pct + '%)';
+  pintarCuponBolsa();
   var nMani = manifiestosDe(bolsa);
   $('bolsaAporte').classList.toggle('oculto', !nMani);
   $('bolsaAporteN').textContent = plata(nMani * MANIFIESTO.monto);
@@ -1976,7 +2211,7 @@ function actualizarBolsa() {
     ? bolsa.map(function (i) {
         return '<div class="b-item">' + (i.foto ? '<img src="' + esc(i.foto) + '" alt="">' : '<span></span>') +
           '<div><a class="b-nom" href="#/p/' + esc(i.ref) + '">' + esc(i.nombre) + '</a>' +
-          '<div class="b-det">' + esc(i.ref) + ' · Talla ' + esc(i.talla) + ' · ' + esc(i.color) + '</div>' +
+          '<div class="b-det">' + esc(i.ref) + ' · Talla ' + esc(i.talla) + ' · ' + esc(i.color) + (i.version ? ' · ' + esc(i.version) : '') + '</div>' +
           '<div class="b-cant"><button data-b-menos="' + i.linea + '" aria-label="Menos">−</button><span>' + (i.cant || 1) + '</span><button data-b-mas="' + i.linea + '" aria-label="Más">+</button></div>' +
           '<button class="b-quitar" data-quitar="' + i.linea + '">Quitar</button></div>' +
           '<span class="b-precio">' + plata(i.precio * (i.cant || 1)) + '</span></div>';
@@ -2008,16 +2243,17 @@ $('btnPedir').addEventListener('click', function () { pedirWhatsApp(bolsa); });
 
 function pedirWhatsApp(items) {
   if (!items || !items.length) return;
-  var total = totalDe(items), nMani = manifiestosDe(items);
-  var msg = 'Hola Yuzu, quiero pedir:\n\n';
+  var sub = totalDe(items), desc = descuentoDe(items), total = sub - desc, nMani = manifiestosDe(items), pedido = numeroPedido();
+  var msg = 'Hola Yuzu, quiero hacer este pedido:\nPedido ' + pedido + '\n\n';
   items.forEach(function (i, n) {
-    var c = i.cant || 1;
-    msg += (n + 1) + '. ' + i.nombre + ' (' + i.ref + ')\n   Talla ' + i.talla + ' · ' + i.color + (c > 1 ? ' · ' + c + ' unidades' : '') + '\n   ' + plata(i.precio * c) + '\n\n';
+    var c = i.cant || 1, prenda = i.prenda || 'Boxy oversize', nombre = i.nombre.replace(' · ' + prenda, '');
+    msg += (n + 1) + '. ' + nombre + ' (' + i.ref + ')\n   ' + prenda + ' · ' + i.color + ' · Talla ' + i.talla + (i.version ? ' · ' + i.version : '') + '\n   ' + c + ' × ' + plata(i.precio) + ' = ' + plata(i.precio * c) + '\n\n';
   });
+  if (desc) msg += 'Subtotal: ' + plata(sub) + '\nDescuento ' + cupon.codigo + ' (' + cupon.pct + '%): −' + plata(desc) + '\n';
   msg += 'Total: ' + plata(total) + ' (envío incluido)\n';
   if (nMani) msg += 'Incluye ' + plata(nMani * MANIFIESTO.monto) + ' de aporte a ' + MANIFIESTO.destino + '.\n';
   msg += '\n¿Cómo coordinamos el pago?';
-  evento('begin_checkout', { currency: 'CRC', value: total, items: items.map(function (i) { return { item_id: i.ref, item_name: i.nombre, item_variant: i.color + ' / ' + i.talla, quantity: i.cant || 1, price: i.precio }; }) });
+  evento('begin_checkout', { currency: 'CRC', value: total, coupon: desc ? cupon.codigo : undefined, transaction_id: pedido, items: items.map(function (i) { return { item_id: i.ref, item_name: i.nombre, item_variant: (i.prenda || 'Boxy') + ' / ' + i.color + ' / ' + i.talla, quantity: i.cant || 1, price: i.precio }; }) });
   window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
@@ -2280,6 +2516,189 @@ document.addEventListener('click', function (e) {
 });
 
 /* =====================================================================
+   FECHA DE CORTE
+   ===================================================================== */
+var CORTE = { activo: true, dia: 2, hora: '23:59', prod: 3 };
+var DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+function horaBonita(h) { var p = String(h || '23:59').split(':'), H = +p[0], m = p[1] || '00'; var s = H >= 12 ? 'p. m.' : 'a. m.'; H = H % 12 || 12; return H + ':' + m + ' ' + s; }
+function proximoCorte() {
+  // Costa Rica = UTC-6, sin horario de verano
+  var ahoraCR = new Date(Date.now() - 6 * 3600e3), p = String(CORTE.hora || '23:59').split(':');
+  for (var d = 0; d < 8; d++) {
+    var f = new Date(Date.UTC(ahoraCR.getUTCFullYear(), ahoraCR.getUTCMonth(), ahoraCR.getUTCDate() + d, +p[0], +(p[1] || 0), 59));
+    if (f.getUTCDay() === +CORTE.dia && f > ahoraCR) return new Date(f.getTime() + 6 * 3600e3);
+  }
+  return null;
+}
+function textoCorte() { return 'Pedí antes del ' + DIAS[CORTE.dia] + ' ' + horaBonita(CORTE.hora) + ' → sale el ' + DIAS[CORTE.prod]; }
+function faltaCorte() {
+  var c = proximoCorte(); if (!c) return '';
+  var ms = c - Date.now(), d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+  return 'Faltan ' + (d ? d + ' d ' : '') + (d || h ? h + ' h ' : '') + (d ? '' : m + ' min');
+}
+function pintarCorte() {
+  if (!CORTE.activo) { Array.prototype.forEach.call(document.querySelectorAll('[data-corte]'), function (e) { e.classList.add('oculto'); }); return; }
+  var t = textoCorte(), f = faltaCorte();
+  Array.prototype.forEach.call(document.querySelectorAll('[data-corte]'), function (e) {
+    e.classList.remove('oculto');
+    if (e.getAttribute('data-corte') === 'caja') e.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2.5h6"/></svg><div><strong>' + esc(t) + '</strong><span class="dato">' + esc(f) + '</span></div>';
+    else e.textContent = t + ' · ' + f.toLowerCase();
+  });
+}
+setInterval(pintarCorte, 60000);
+
+/* =====================================================================
+   DESCUENTOS: captura por correo/teléfono + código en la bolsa
+   ===================================================================== */
+var CAPTURA = { activo: true, boton: '10% OFF', pctCorreo: 10, codCorreo: 'BIENVENIDA10', pctTel: 15, codTel: 'VIP15', formspree: '' };
+var CUPONES_EXTRA = [];
+var cupon = null;
+try { cupon = JSON.parse(almacen.leer('yuzu-cupon') || 'null'); } catch (e) { cupon = null; }
+function listaCupones() {
+  var l = CUPONES_EXTRA.filter(function (k) { return k.activo; }).map(function (k) { return { codigo: String(k.codigo).toUpperCase(), pct: +k.pct }; });
+  if (CAPTURA.activo) l.push({ codigo: CAPTURA.codCorreo, pct: +CAPTURA.pctCorreo }, { codigo: CAPTURA.codTel, pct: +CAPTURA.pctTel });
+  return l;
+}
+function buscarCupon(cod) { cod = String(cod || '').trim().toUpperCase(); return listaCupones().filter(function (k) { return k.codigo === cod; })[0] || null; }
+function aplicarCupon(cod, silencioso) {
+  var k = buscarCupon(cod);
+  if (!k) { if (!silencioso) mensajeCupon('Ese código no existe o ya no está activo.'); return false; }
+  if (cupon && cupon.pct > k.pct && silencioso) return true; // no bajar un descuento mayor
+  cupon = k; almacen.guardar('yuzu-cupon', JSON.stringify(k));
+  mensajeCupon(''); actualizarBolsa();
+  evento('cupon_aplicado', { coupon: k.codigo });
+  return true;
+}
+function quitarCupon() { cupon = null; almacen.guardar('yuzu-cupon', 'null'); actualizarBolsa(); }
+function mensajeCupon(t) { var m = $('cuponMsg'); if (!m) return; m.textContent = t; m.classList.toggle('oculto', !t); }
+function descuentoDe(items) {
+  if (!cupon || !buscarCupon(cupon.codigo)) return 0;
+  var base = items.reduce(function (s, i) { return s + (i.manifiesto ? 0 : i.precio * (i.cant || 1)); }, 0);
+  return Math.round(base * cupon.pct / 100 / 100) * 100;
+}
+function pintarCuponBolsa() {
+  var caja = $('cuponCaja'); if (!caja) return;
+  var vigente = cupon && buscarCupon(cupon.codigo);
+  caja.innerHTML = vigente
+    ? '<div class="cupon-ok"><span>Código <strong>' + esc(cupon.codigo) + '</strong> · −' + cupon.pct + '%</span><button type="button" id="cuponQuitar">Quitar</button></div>'
+    : '<form class="cupon-fila" id="cuponForm"><label class="sr" for="cuponInput">Código de descuento</label><input id="cuponInput" placeholder="Código de descuento" autocomplete="off"><button type="submit">Aplicar</button></form>';
+}
+document.addEventListener('submit', function (e) {
+  if (e.target.id !== 'cuponForm') return;
+  e.preventDefault(); aplicarCupon($('cuponInput').value);
+});
+document.addEventListener('click', function (e) { if (e.target.id === 'cuponQuitar') quitarCupon(); });
+
+// --- Captura ---
+function capPaso(n) { ['capPaso1', 'capPaso2', 'capPaso3'].forEach(function (id, i) { $(id).classList.toggle('ver', i + 1 === n); }); }
+function abrirCaptura() {
+  var paso = almacen.leer('yuzu-cap-paso');
+  capPaso(paso === 'tel' ? 2 : paso === 'fin' ? 3 : 1);
+  if (paso === 'fin') $('capCodigoFin').textContent = cupon ? cupon.codigo : CAPTURA.codCorreo;
+  $('capVelo').classList.add('abierto');
+}
+function cerrarCaptura() { $('capVelo').classList.remove('abierto'); pintarTeaser(); }
+function pintarTeaser() {
+  var fin = almacen.leer('yuzu-cap-paso') === 'fin', oculto = sessionStorageLeer('yuzu-cap-x');
+  $('capTeaser').classList.toggle('ver', CAPTURA.activo && !fin && !oculto);
+}
+function sessionStorageLeer(k) { try { return window.sessionStorage.getItem(k); } catch (e) { return null; } }
+function sessionStorageGuardar(k, v) { try { window.sessionStorage.setItem(k, v); } catch (e) {} }
+function enviarFormspree(datos) {
+  var url = CAPTURA.formspree || (BOL && BOL.formspree);
+  if (!url) return;
+  fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(datos) }).catch(function () {});
+}
+function iniciarCaptura() {
+  $('capTeaserTxt').textContent = CAPTURA.boton || (CAPTURA.pctCorreo + '% OFF');
+  $('capPct1').textContent = CAPTURA.pctCorreo + '% OFF';
+  $('capPct2').textContent = CAPTURA.pctTel + '% OFF';
+  $('capBtn2').textContent = 'Desbloquear ' + CAPTURA.pctTel + '%';
+  pintarTeaser();
+  if (CAPTURA.activo && !almacen.leer('yuzu-cap-paso') && !almacen.leer('yuzu-cap-visto')) {
+    setTimeout(function () {
+      if ($('bolsa').classList.contains('abierta') || $('pers').classList.contains('abierta') || $('zoom').classList.contains('abierta')) return;
+      almacen.guardar('yuzu-cap-visto', '1'); abrirCaptura();
+    }, 15000);
+  }
+}
+$('capTeaser').addEventListener('click', function (e) {
+  if (e.target.closest('#capTeaserX')) { sessionStorageGuardar('yuzu-cap-x', '1'); pintarTeaser(); return; }
+  abrirCaptura();
+});
+$('capX').addEventListener('click', cerrarCaptura);
+$('capFin').addEventListener('click', cerrarCaptura);
+$('capVelo').addEventListener('click', function (e) { if (e.target === $('capVelo')) cerrarCaptura(); });
+$('capForm1').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var correo = $('capCorreo').value.trim(); if (correo.indexOf('@') === -1) return;
+  almacen.guardar('yuzu-correo', correo);
+  enviarFormspree({ tipo: 'correo', correo: correo, fecha: new Date().toISOString() });
+  aplicarCupon(CAPTURA.codCorreo, true);
+  almacen.guardar('yuzu-cap-paso', 'tel'); almacen.guardar('yuzu-suscrito', '1');
+  evento('sign_up', { method: 'correo' });
+  capPaso(2);
+});
+$('capForm2').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var tel = $('capTel').value.trim(); if (tel.replace(/\D/g, '').length < 8) { $('capTel').focus(); return; }
+  enviarFormspree({ tipo: 'telefono', correo: almacen.leer('yuzu-correo') || '', telefono: tel, fecha: new Date().toISOString() });
+  aplicarCupon(CAPTURA.codTel, true);
+  almacen.guardar('yuzu-cap-paso', 'fin');
+  evento('sign_up', { method: 'telefono' });
+  $('capCodigoFin').textContent = CAPTURA.codTel; capPaso(3);
+});
+$('capSaltar').addEventListener('click', function () {
+  almacen.guardar('yuzu-cap-paso', 'fin');
+  $('capCodigoFin').textContent = cupon ? cupon.codigo : CAPTURA.codCorreo; capPaso(3);
+});
+
+/* =====================================================================
+   ¿QUÉ TALLA SOY?
+   ===================================================================== */
+var TALLA_SUGERIDA = null;
+function abrirTalla() {
+  $('tallaPrenda').textContent = prendaPorId(PR.prenda || 'boxy').nombre;
+  $('tallaRes').classList.add('oculto');
+  $('tallaVelo').classList.add('abierto');
+}
+function calcularTalla(alt, peso, gusto) {
+  var orden = ['XS', 'S', 'M', 'L', 'XL', '2XL'];
+  var i = peso <= 52 ? 0 : peso <= 62 ? 1 : peso <= 74 ? 2 : peso <= 86 ? 3 : peso <= 100 ? 4 : 5;
+  if (alt >= 185 && i < 4) i++;
+  if (alt <= 158 && i > 1) i--;
+  i += gusto;
+  var disp = tallasPR().tallas, t = orden[Math.max(0, Math.min(orden.length - 1, i))];
+  while (disp.indexOf(t) === -1) { var k = orden.indexOf(t); t = orden[k < orden.indexOf(disp[0]) ? k + 1 : k - 1]; if (!t) { t = disp[0]; break; } }
+  return t;
+}
+$('tallaForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var t = calcularTalla(+$('tallaAltura').value, +$('tallaPeso').value, +$('tallaGusto').value), m = (tallasPR().medidas || {})[t];
+  TALLA_SUGERIDA = t;
+  $('tallaT').textContent = t;
+  $('tallaDet').textContent = m ? 'Medidas de la prenda en plano: ' + m[0] + ' cm de ancho × ' + m[1] + ' cm de largo.' : '';
+  $('tallaRes').classList.remove('oculto');
+  evento('talla_calculada', { talla: t, prenda: PR.prenda });
+});
+$('tallaUsar').addEventListener('click', function () {
+  $('tallaVelo').classList.remove('abierto');
+  var b = $('prTallas') && $('prTallas').querySelector('[data-talla="' + TALLA_SUGERIDA + '"]');
+  if (b && !b.disabled) b.click();
+});
+$('tallaX').addEventListener('click', function () { $('tallaVelo').classList.remove('abierto'); });
+$('tallaVelo').addEventListener('click', function (e) { if (e.target === $('tallaVelo')) $('tallaVelo').classList.remove('abierto'); });
+
+/* =====================================================================
+   NÚMERO DE PEDIDO
+   ===================================================================== */
+function numeroPedido() {
+  var d = new Date(Date.now() - 6 * 3600e3), dos = function (n) { return (n < 10 ? '0' : '') + n; };
+  var al = ''; for (var i = 0; i < 3; i++) al += 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'.charAt(Math.floor(Math.random() * 32));
+  return 'P-' + String(d.getUTCFullYear()).slice(2) + dos(d.getUTCMonth() + 1) + dos(d.getUTCDate()) + '-' + al;
+}
+
+/* =====================================================================
    ENRUTADOR
    #/                      inicio
    #/c/todo | ofertas | destacados | espalda | pecho
@@ -2392,7 +2811,7 @@ function cargarBoletin() {
     .catch(function () {});
 }
 function mostrarBoletin() {
-  if (!BOL) return;
+  if (!BOL || CAPTURA.activo) return;
   if ($('bolsa').classList.contains('abierta') || $('cajon').classList.contains('abierta') || $('zoom').classList.contains('abierta')) return;
   $('bolEtiqueta').textContent = BOL.etiqueta || 'Lista del taller';
   $('bolTitulo').textContent = BOL.titulo || '';
@@ -2432,6 +2851,17 @@ $('pieForm').addEventListener('submit', function (e) {
   e.preventDefault();
   var correo = $('pieCorreo').value.trim();
   if (!correo || correo.indexOf('@') === -1) { $('pieCorreo').focus(); return; }
+  if (CAPTURA.activo) {
+    almacen.guardar('yuzu-correo', correo); almacen.guardar('yuzu-suscrito', '1');
+    enviarFormspree({ tipo: 'correo', origen: 'pie', correo: correo, fecha: new Date().toISOString() });
+    aplicarCupon(CAPTURA.codCorreo, true);
+    if (!almacen.leer('yuzu-cap-paso')) almacen.guardar('yuzu-cap-paso', 'tel');
+    $('pieCorreo').value = '';
+    $('pieOk').textContent = 'Listo: tu ' + CAPTURA.pctCorreo + '% ya está aplicado en la bolsa (código ' + CAPTURA.codCorreo + ').';
+    $('pieOk').classList.remove('oculto');
+    evento('sign_up', { method: 'pie' });
+    return;
+  }
   enviarSuscripcion({ correo: correo, boletin: BOL ? BOL.titulo || '' : 'Pie de página', fecha: new Date().toISOString() });
   $('pieCorreo').value = '';
   $('pieOk').classList.remove('oculto');
@@ -2444,6 +2874,8 @@ document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') {
     if ($('zoom').classList.contains('abierta')) { cerrarZoom(); return; }
     if ($('bolVelo').classList.contains('abierto')) { cerrarBoletin(); return; }
+    if ($('capVelo').classList.contains('abierto')) { cerrarCaptura(); return; }
+    if ($('tallaVelo').classList.contains('abierto')) { $('tallaVelo').classList.remove('abierto'); return; }
     if ($('buscador').classList.contains('abierta')) { cerrarBuscador(); return; }
     if ($('pers').classList.contains('abierta')) { cerrarPers(); return; }
     if ($('bolsa').classList.contains('abierta')) { cerrarBolsa(); return; }
