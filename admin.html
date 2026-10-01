@@ -38,6 +38,21 @@
   .rank-fila:last-child { border-bottom: none; }
   .rank-barra { grid-column: 1/-1; height: 3px; background: var(--linea); border-radius: 2px; overflow: hidden; }
   .rank-barra i { display: block; height: 100%; background: var(--yuzu); }
+  .venta-fila .estado { display: inline-block; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 3px 7px; border-radius: 10px; border: 1px solid var(--linea); cursor: pointer; background: none; color: var(--mudo); }
+  .venta-fila .estado.pendiente { border-color: var(--yuzu); color: var(--yuzu); }
+  .venta-fila .estado.producido { border-color: #6fa8dc; color: #6fa8dc; }
+  .estado.pendiente { border-color: var(--yuzu); color: var(--yuzu); }
+  .estado.producido { border-color: #6fa8dc; color: #6fa8dc; }
+  .ped-item { padding: 8px 0; border-bottom: 1px solid var(--linea); font-size: 12px; }
+  .ped-item .meta { color: var(--mudo); font-size: 10px; margin-top: 2px; }
+  .ped-item.malo strong { color: var(--rojo); }
+  .compras { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .compras td, .compras th { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--linea); }
+  .compras th { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--mudo); font-weight: 400; }
+  .compras td.n { text-align: right; font-weight: 700; }
+  .lamina { margin-top: 14px; }
+  .lamina canvas { width: 100%; height: auto; background: repeating-conic-gradient(#2a2a2a 0 25%, #1c1c1c 0 50%) 0 0 / 16px 16px; border: 1px solid var(--linea); border-radius: 6px; display: block; }
+  .lamina .row { margin-top: 6px; align-items: center; }
   .venta-fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--linea); font-size: 12px; }
   .venta-fila .meta { color: var(--mudo); font-size: 10px; margin-top: 2px; }
   .venta-fila button { background: none; border: none; color: var(--rojo); cursor: pointer; font-size: 15px; padding: 4px; }
@@ -142,6 +157,35 @@
   .mock-head .sw { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--linea); }
   .subtit { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--mudo); margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--linea); }
 
+  /* ===== MOCKUP AUTOMÁTICO ===== */
+  .auto-mk { border: 1px solid var(--linea); border-radius: 9px; padding: 14px; margin-top: 8px; background: var(--sup2); }
+  .png-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+  .png-slot { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; aspect-ratio: 3/4; border: 1px dashed var(--linea); border-radius: 7px; cursor: pointer; font-size: 10px; color: var(--mudo); text-align: center; padding: 6px; margin: 0; background: repeating-conic-gradient(#2a2620 0 25%, #1f1c18 0 50%) 0 0/14px 14px; overflow: hidden; }
+  .png-slot:hover { border-color: var(--yuzu); color: var(--tinta); }
+  .png-slot input { display: none; }
+  .png-slot img { max-width: 100%; max-height: 70%; object-fit: contain; display: none; }
+  .png-slot.lleno img { display: block; }
+  .png-slot .x { position: absolute; top: 4px; right: 4px; display: none; background: rgba(0,0,0,.8); color: #fff; border: none; border-radius: 50%; width: 19px; height: 19px; font-size: 10px; cursor: pointer; }
+  .png-slot.lleno .x { display: block; }
+  .rango-fila { display: grid; grid-template-columns: 110px 1fr 46px; gap: 8px; align-items: center; font-size: 11px; color: var(--mudo); margin-top: 10px; }
+  .rango-fila input[type=range] { width: 100%; accent-color: var(--yuzu); }
+  .mk-prev { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+  .mk-prev canvas, .mk-prev img { width: 100%; border-radius: 6px; background: var(--bg); display: block; }
+  .zona-escena { position: relative; width: 100%; max-width: 420px; aspect-ratio: 3/4; margin: 12px auto 0; background: #111; border-radius: 8px; overflow: hidden; user-select: none; touch-action: none; }
+  .zona-escena img { width: 100%; height: 100%; display: block; pointer-events: none; }
+  .zona-caja { position: absolute; border: 1.5px dashed var(--yuzu); background: rgba(195,194,77,.06); cursor: move; touch-action: none; }
+  .zona-asa { position: absolute; right: -9px; bottom: -9px; width: 18px; height: 18px; background: var(--yuzu); border-radius: 50%; cursor: nwse-resize; touch-action: none; }
+  .zona-medida { text-align: center; font-family: var(--mono); font-size: 12px; color: var(--yuzu); margin-top: 8px; }
+  .ver { border: 1px solid var(--linea); border-radius: 8px; padding: 10px; margin-top: 10px; background: var(--sup); }
+  .ver-cab { display: flex; gap: 8px; align-items: center; }
+  .ver-cab input { flex: 1; padding: 8px; font-size: 13px; }
+  .tela-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .tela { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--linea); cursor: pointer; opacity: .35; padding: 0; }
+  .tela.on { opacity: 1; box-shadow: 0 0 0 2px var(--sup), 0 0 0 3px var(--yuzu); }
+  .png-slot small { font-size: 9px; opacity: .7; }
+  .plant-lista { font-size: 12px; color: var(--mudo); line-height: 1.8; }
+  .plant-lista strong { color: var(--tinta); font-weight: 600; }
+
   /* ===== ESTUDIO ===== */
   .bloque-editor { background: var(--sup2); border: 1px solid var(--linea); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
   .bloque-editor .cab { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
@@ -236,6 +280,7 @@
     <button class="tab" data-tab="estudio">Portafolio</button>
     <button class="tab" data-tab="boletines">Boletines</button>
     <button class="tab" data-tab="ventas">Ventas</button>
+    <button class="tab" data-tab="produccion">Producción</button>
   </div>
 
   <!-- ==================== PANEL PRODUCTOS ==================== -->
@@ -250,6 +295,8 @@
       <div class="file-drop" id="dropMockups">Tocá para elegir mockups</div>
       <input type="file" id="inputMockups" class="hidden-input" accept="image/*" multiple>
       <div class="preview-grid" id="gridMockups"></div>
+      <label>Diseño en PNG · mockups automáticos (opcional)</label>
+      <div class="auto-mk" id="evNuevo"></div>
       <label>Nombre del diseño</label>
       <input type="text" id="nombreProducto" placeholder="ej: Eren 001">
       <label>Categoría</label>
@@ -292,6 +339,7 @@
         <button class="btn btn-sec" id="btnGestionarVis">Gestionar visibilidad</button>
         <button class="btn btn-sec" id="btnQuitarDesc">Quitar descuentos</button>
         <button class="btn btn-sec" id="btnPrecioTodos">Precio a todos</button>
+        <button class="btn btn-sec" id="btnPaginas">Vistas previas al compartir</button>
         <button class="btn btn-sec" id="btnBorrarLote" style="color:var(--rojo);border-color:var(--rojo);">Borrar en lote</button>
       </div>
       <div id="listaProductos" style="margin-top:14px;"></div>
@@ -335,6 +383,91 @@
       <div class="aviso" id="pVista"></div>
       <button class="btn" id="btnGuardarPrecios">Guardar precios</button>
       <div class="status" id="statusPrecios"></div>
+    </div>
+
+    <div class="card">
+      <h2>Descuentos</h2>
+      <p class="mini">Botón flotante tipo "10% OFF": el cliente deja su correo y el código se aplica solo en la bolsa. Después se le ofrece un descuento mayor a cambio de su WhatsApp.</p>
+      <label class="check-row"><input type="checkbox" id="capActivo"><span>Activar captura de correo y teléfono</span></label>
+      <div class="row">
+        <div style="flex:1"><label>Texto del botón</label><input type="text" id="capBoton" placeholder="10% OFF"></div>
+      </div>
+      <div class="row">
+        <div style="flex:1"><label>% por correo</label><input type="text" inputmode="numeric" id="capPctCorreo"></div>
+        <div style="flex:1"><label>Código por correo</label><input type="text" id="capCodCorreo"></div>
+      </div>
+      <div class="row">
+        <div style="flex:1"><label>% por teléfono</label><input type="text" inputmode="numeric" id="capPctTel"></div>
+        <div style="flex:1"><label>Código por teléfono</label><input type="text" id="capCodTel"></div>
+      </div>
+      <label>Formspree (adonde llegan correos y teléfonos)</label>
+      <input type="text" id="capFormspree" placeholder="https://formspree.io/f/xxxxxxx">
+      <label>Otros códigos (para Instagram, clientes, etc.)</label>
+      <div id="cupLista"></div>
+      <div class="row">
+        <input type="text" id="cupNuevoCod" placeholder="CÓDIGO">
+        <input type="text" inputmode="numeric" id="cupNuevoPct" placeholder="%" style="max-width:80px">
+        <button class="btn btn-sec" id="btnCupAgregar">Agregar</button>
+      </div>
+      <button class="btn" id="btnGuardarDesc">Guardar descuentos</button>
+      <div class="status" id="statusDesc"></div>
+    </div>
+
+    <div class="card">
+      <h2>Fecha de corte</h2>
+      <p class="mini">Se muestra en la tienda con cuenta regresiva: "Pedí antes del martes 11:59 p. m. → sale el miércoles".</p>
+      <label class="check-row"><input type="checkbox" id="corteActivo"><span>Mostrar fecha de corte</span></label>
+      <div class="row">
+        <div style="flex:1"><label>Día de corte</label><select id="corteDia"><option value="0">Domingo</option><option value="1">Lunes</option><option value="2">Martes</option><option value="3">Miércoles</option><option value="4">Jueves</option><option value="5">Viernes</option><option value="6">Sábado</option></select></div>
+        <div style="flex:1"><label>Hora</label><input type="time" id="corteHora"></div>
+        <div style="flex:1"><label>Día de producción</label><select id="corteProd"><option value="0">Domingo</option><option value="1">Lunes</option><option value="2">Martes</option><option value="3">Miércoles</option><option value="4">Jueves</option><option value="5">Viernes</option><option value="6">Sábado</option></select></div>
+      </div>
+      <button class="btn" id="btnGuardarCorte">Guardar fecha de corte</button>
+      <div class="status" id="statusCorte"></div>
+    </div>
+
+    <div class="card">
+      <h2>Colores por prenda</h2>
+      <p class="mini">Qué colores se ofrecen en sin mangas, manga larga y hoodie (para todos los diseños). Los de la boxy se eligen en cada producto.</p>
+      <div id="colPrendas"></div>
+      <button class="btn" id="btnGuardarColPrendas">Guardar colores</button>
+      <div class="status" id="statusColPrendas"></div>
+    </div>
+
+    <div class="card">
+      <h2>Zonas de impresión</h2>
+      <p class="mini">Mové el recuadro y estiralo desde el punto amarillo. El diseño de prueba se encaja adentro sin deformarse. Lo que guardés se aplica a todos los colores de esa prenda.</p>
+      <div class="row">
+        <div style="flex:1"><label>Prenda</label><select id="zPrenda"></select></div>
+        <div style="flex:1"><label>Vista</label><select id="zVista"></select></div>
+        <div style="flex:1"><label>Color</label><select id="zColor"></select></div>
+      </div>
+      <div class="zona-escena" id="zEscena"><img id="zImg" alt=""><div class="zona-caja" id="zCaja"><span class="zona-asa" id="zAsa"></span></div></div>
+      <p class="zona-medida" id="zMedida"></p>
+      <label>Probar con otro diseño (opcional)</label>
+      <input type="file" id="zPrueba" accept="image/png">
+      <div class="row" style="margin-top:14px">
+        <button class="btn" id="btnZonaGuardar" style="flex:2">Guardar zona</button>
+        <button class="btn btn-sec" id="btnZonaReset" style="flex:1">Restablecer</button>
+      </div>
+      <div class="status" id="statusZona"></div>
+    </div>
+
+    <div class="card">
+      <h2>Fotos de prendas (plantillas)</h2>
+      <p class="mini">Los colores sin foto propia se tiñen a partir de la foto blanca. Si subís la foto real de un color, se usa esa. Mismo encuadre que las demás, 1080 × 1440.</p>
+      <div class="plant-lista" id="plantLista"></div>
+      <div class="row">
+        <div style="flex:1"><label>Prenda</label><select id="plPrenda"></select></div>
+        <div style="flex:1"><label>Color</label><select id="plColor"></select></div>
+      </div>
+      <div class="png-grid" style="grid-template-columns:repeat(3,1fr)" id="plGrid">
+        <label class="png-slot" data-pl="frente"><input type="file" accept="image/*"><img alt=""><span>Frente</span></label>
+        <label class="png-slot" data-pl="espalda"><input type="file" accept="image/*"><img alt=""><span>Espalda</span></label>
+        <label class="png-slot" data-pl="lado"><input type="file" accept="image/*"><img alt=""><span>Lado</span></label>
+      </div>
+      <button class="btn btn-sec" id="btnPlSubir">Subir fotos de este color</button>
+      <div class="status" id="statusPl"></div>
     </div>
 
     <div class="card">
@@ -434,6 +567,13 @@
       <button class="btn btn-sec" id="btnGuardarCostos">Guardar costos</button>
       <div class="status" id="statusCostos"></div>
     </div>
+    <div class="card"><h2>Pegar pedido de WhatsApp</h2>
+      <p class="mini" style="margin-top:0">Copiá el mensaje completo que te llegó (desde "Hola Yuzu…" hasta el total) y pegalo acá. Se registra una venta por pieza, con el descuento ya repartido.</p>
+      <textarea id="pedidoTexto" rows="7" placeholder="Hola Yuzu, quiero hacer este pedido:&#10;Pedido P-261001-AB3&#10;&#10;1. Eren 001 (YZ-6911)&#10;   Boxy oversize · Negro · Talla L&#10;   1 × ₡13 700 = ₡13 700"></textarea>
+      <div class="row"><button class="btn btn-sec" id="btnLeerPedido">Leer pedido</button></div>
+      <div id="pedidoPrev"></div>
+      <div class="status" id="statusPedido"></div>
+    </div>
     <div class="card"><h2>Registrar venta</h2>
       <label>Producto</label><select id="ventaProducto"></select>
       <div class="row"><div style="flex:1"><label>Talla</label><select id="ventaTalla"><option>S</option><option>M</option><option>L</option><option>XL</option></select></div><div style="flex:1"><label>Color</label><select id="ventaColor"></select></div></div>
@@ -450,6 +590,28 @@
     </div>
     <div class="card"><h2>Últimas ventas</h2><div id="listaVentas"></div></div>
   </div>
+  <!-- ==================== PANEL PRODUCCIÓN ==================== -->
+  <div class="panel" id="panel-produccion">
+    <div class="card"><h2>Por producir</h2>
+      <div id="prodResumen"></div>
+      <div class="row"><button class="btn btn-sec" id="btnProdRecargar">Recargar</button><button class="btn btn-sec" id="btnProdHechos">Marcar todo como producido</button></div>
+      <div class="status" id="statusProd"></div>
+    </div>
+    <div class="card"><h2>Lista de compras</h2><div id="prodCompras"></div><button class="btn btn-sec" id="btnCopiarCompras" style="margin-top:10px">Copiar lista</button></div>
+    <div class="card"><h2>Lámina DTF</h2>
+      <p class="mini" style="margin-top:0">Acomoda todos los diseños de los pedidos pendientes en láminas del tamaño del proveedor. Usa los PNG de impresión de cada versión. Cada diseño se ajusta dentro de su caja sin deformarse.</p>
+      <div class="row"><div style="flex:1"><label>Ancho lámina (cm)</label><input type="number" id="dtfAncho" value="56" step="0.5"></div><div style="flex:1"><label>Alto lámina (cm)</label><select id="dtfAlto"><option value="50" selected>50 (medio metro)</option><option value="100">100 (metro)</option></select></div></div>
+      <div class="row"><div style="flex:1"><label>Resolución</label><select id="dtfDpi"><option value="150">150 dpi (liviana)</option><option value="300" selected>300 dpi (imprenta)</option></select></div><div style="flex:1"><label>Separación (cm)</label><input type="number" id="dtfGap" value="0.5" step="0.1"></div></div>
+      <div class="row"><div style="flex:1"><label>Espalda ancho × alto máx.</label><div class="row" style="margin:0"><input type="number" id="dtfEspW" value="27.5" step="0.5"><input type="number" id="dtfEspH" value="40" step="0.5"></div></div></div>
+      <div class="row"><div style="flex:1"><label>Pecho ancho × alto</label><div class="row" style="margin:0"><input type="number" id="dtfPecW" value="9" step="0.5"><input type="number" id="dtfPecH" value="11" step="0.5"></div></div><div style="flex:1"><label>Manga ancho × alto</label><div class="row" style="margin:0"><input type="number" id="dtfManW" value="7" step="0.5"><input type="number" id="dtfManH" value="30" step="0.5"></div></div></div>
+      <label class="chk" style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="dtfRecortar" checked> Recortar bordes transparentes de cada PNG</label>
+      <label class="chk" style="display:flex;gap:8px;align-items:center;margin-top:6px"><input type="checkbox" id="dtfGirar" checked> Permitir girar diseños 90° para aprovechar la lámina</label>
+      <button class="btn" id="btnArmarLamina" style="margin-top:12px">Armar lámina</button>
+      <div class="status" id="statusLamina"></div>
+      <div id="laminas"></div>
+    </div>
+  </div>
+
 </div>
 
 <!-- MODAL BORRAR EN LOTE -->
@@ -476,6 +638,18 @@
 </div>
 
 <!-- MODAL VISIBILIDAD -->
+<div class="modal-fondo" id="modalDis">
+  <div class="modal" style="max-width:640px;max-height:92vh">
+    <div class="modal-cab"><h3 id="modalDisTit">Diseños</h3><button id="btnCerrarDis">✕</button></div>
+    <div class="modal-lista"><div class="auto-mk" id="evEditar" style="margin:10px 0"></div></div>
+    <div style="padding:0 20px"><div class="status" id="statusDis"></div></div>
+    <div class="modal-pie">
+      <button class="btn btn-sec" id="btnDisGuardar">Guardar</button>
+      <button class="btn" id="btnDisRegenerar">Guardar y regenerar mockups</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-fondo" id="modalFondo">
   <div class="modal">
     <div class="modal-cab">
@@ -496,6 +670,7 @@
   </div>
 </div>
 
+<script src="mockup.js"></script>
 <script>
 // ============================================================
 // 1. UTILITARIOS Y CONFIG
@@ -535,7 +710,7 @@ function mostrarEstadoConfig() {
     $('setupCard').style.display = 'none'; $('configOk').style.display = 'block'; $('formCard').style.display = 'block';
     $('tabs').style.display = 'flex'; $('editCard').style.display = 'block';
     renderColorChecks(); cargarCategorias().then(cargarProductos);
-    cargarEstudio(); cargarBoletines(); cargarVentas();
+    cargarEstudio(); cargarBoletines(); cargarVentas(); cargarCfgMockup();
   } else {
     $('setupCard').style.display = 'block'; $('configOk').style.display = 'none'; $('formCard').style.display = 'none';
     $('editCard').style.display = 'none'; $('tabs').style.display = 'none';
@@ -756,7 +931,11 @@ function subirProducto() {
   var btn = $('btnSubir');
   btn.disabled = true;
   var stamp = Date.now(), rutasGaleria = [], mapaMockups = {}, cadena = Promise.resolve();
+  var datosDisenos = null, nuevoP = null;
   mostrarStatus('loading', 'Subiendo fotos de la galería...');
+  if (EDN.tieneArchivos()) cadena = cadena.then(function () {
+    return EDN.subir(slugify(nombre) + '-' + stamp, function (m) { mostrarStatus('loading', m); }).then(function (r) { datosDisenos = r; });
+  });
 
   galeria.forEach(function (img, idx) {
     cadena = cadena.then(function () {
@@ -787,17 +966,22 @@ function subirProducto() {
   }).then(function () {
     mostrarStatus('loading', 'Guardando producto...');
     return ghGet('data/products.json').then(function (r) {
-      r.content.push({
+      nuevoP = {
         id: stamp, nombre: nombre, categoria: categoria, subcategoria: subcategoria || null,
         imagenes: rutasGaleria, mockups: mapaMockups, colores: colores,
         precio: precio, enDescuento: enDescuento, precioDescuento: precioDescuento,
         impresion: $('impresionSelect').value,
+        versiones: datosDisenos && datosDisenos.versiones.length ? datosDisenos.versiones : undefined,
+        prendas: datosDisenos ? datosDisenos.prendas : undefined,
+        ajuste: datosDisenos ? datosDisenos.ajuste : undefined,
         destacado: $('nuevoDestacado').checked,
         oculto: $('nuevoOculto').checked
-      });
+      };
+      r.content.push(nuevoP);
       return ghPut('data/products.json', r.content, r.sha, 'Nuevo producto: ' + nombre);
     });
   }).then(function () {
+    escribirPaginaProducto(nuevoP);
     mostrarStatus('ok', '✓ "' + nombre + '" subido. Tarda 1-2 min en verse en la tienda.');
     $('nombreProducto').value = '';
     $('precioInput').value = '18900';
@@ -806,7 +990,7 @@ function subirProducto() {
     $('rowDescuento').style.display = 'none';
     $('nuevoDestacado').checked = false;
     $('nuevoOculto').checked = false;
-    galeria = []; mockups = [];
+    galeria = []; mockups = []; EDN.limpiar();
     renderGaleria(); renderMockups(); renderColorChecks();
     return cargarCategorias().then(cargarProductos);
   }).catch(function (e) {
@@ -856,6 +1040,7 @@ function renderLista(abrirIdx) {
       '<div class="prod-info"><div class="prod-nombre">' + p.nombre + '</div>' +
       '<div class="prod-meta">' + meta + '</div></div>' +
       '<button class="prod-btn" data-accion="visible" data-i="' + i + '" title="Mostrar u ocultar">' + (p.oculto ? '○' : '●') + '</button>' +
+      '<button class="prod-btn" data-accion="disenos" data-i="' + i + '" title="Diseños PNG y versiones"' + (p.versiones || p.disenos ? ' style="color:var(--yuzu);border-color:var(--yuzu)"' : '') + '>◐</button>' +
       '<button class="prod-btn" data-accion="editar" data-i="' + i + '" title="Editar">✎</button>' +
       '<button class="prod-btn del" data-accion="borrar" data-i="' + i + '" title="Borrar">✕</button>' +
       '</div><div class="prod-edit" id="edit-' + i + '" style="display:none;"></div>';
@@ -1085,6 +1270,7 @@ $('listaProductos').addEventListener('click', function (e) {
   var i = parseInt(btn.getAttribute('data-i'), 10);
   var accion = btn.getAttribute('data-accion');
   if (accion === 'editar') abrirEdicion(i);
+  else if (accion === 'disenos') abrirDisenosProducto(i);
   else if (accion === 'borrar') borrarProducto(i);
   else if (accion === 'guardar') guardarEdicion(i);
   else if (accion === 'visible') alternarVisible(i);
@@ -1259,6 +1445,7 @@ function borrarEnLote() {
   }).catch(function (e) { statusEdit('err', 'Error: ' + e.message + '. Recargá la lista antes de intentar de nuevo.'); });
 }
 $('btnBorrarLote').addEventListener('click', abrirModalBorrar);
+$('btnPaginas').addEventListener('click', regenerarPaginas);
 $('btnCerrarBorrar').addEventListener('click', cerrarModalBorrar);
 $('btnCancelarBorrar').addEventListener('click', cerrarModalBorrar);
 $('modalBorrar').addEventListener('click', function (e) { if (e.target === $('modalBorrar')) cerrarModalBorrar(); });
@@ -1552,6 +1739,7 @@ $('tabs').addEventListener('click', function(e) {
   $('panel-'+t).classList.add('on');
   if (t === 'boletines') cargarBoletines();
   if (t === 'ventas') cargarVentas();
+  if (t === 'produccion') cargarProduccion();
   if (t === 'estudio') cargarEstudio();
   if (t === 'tienda') cargarTienda();
 });
@@ -1578,23 +1766,262 @@ function prepararFormVenta(){ $('ventaProducto').innerHTML=PRODUCTOS.map(functio
 function sincronizarPrecioVenta(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p) return; $('ventaPrecio').value=(p.enDescuento&&p.precioDescuento)?p.precioDescuento:(p.precio||18900); }
 $('ventaProducto').addEventListener('change', sincronizarPrecioVenta);
 $('btnGuardarCostos').addEventListener('click', function(){ COSTOS={ tela:parseInt(($('costoTela').value||'0').replace(/\D/g,''),10)||0, dtf:parseInt(($('costoDtf').value||'0').replace(/\D/g,''),10)||0, empaque:parseInt(($('costoEmpaque').value||'0').replace(/\D/g,''),10)||0, envio:parseInt(($('costoEnvio').value||'0').replace(/\D/g,''),10)||0 }; guardarVentas('Actualizar costos', 'statusCostos'); });
-$('btnGuardarVenta').addEventListener('click', function(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p){ statusVenta('err','Elegí producto.'); return; } var precio=parseInt(($('ventaPrecio').value||'0').replace(/\D/g,''),10); if(!precio){ statusVenta('err','Poné precio.'); return; } VENTAS.unshift({ id:Date.now(), productoId:id, nombre:p.nombre, categoria:p.categoria||'', talla:$('ventaTalla').value, color:$('ventaColor').value, precio:precio, costo:costoUnitario(), canal:$('ventaCanal').value, fecha:$('ventaFecha').value, nota:$('ventaNota').value.trim() }); $('ventaNota').value=''; guardarVentas('Registrar venta','statusVenta'); });
+$('btnGuardarVenta').addEventListener('click', function(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p){ statusVenta('err','Elegí producto.'); return; } var precio=parseInt(($('ventaPrecio').value||'0').replace(/\D/g,''),10); if(!precio){ statusVenta('err','Poné precio.'); return; } VENTAS.unshift({ id:Date.now(), productoId:id, nombre:p.nombre, categoria:p.categoria||'', talla:$('ventaTalla').value, color:$('ventaColor').value, precio:precio, costo:costoUnitario(), canal:$('ventaCanal').value, fecha:$('ventaFecha').value, nota:$('ventaNota').value.trim(), estado:'pendiente' }); $('ventaNota').value=''; guardarVentas('Registrar venta','statusVenta'); });
 function costoUnitario(){ return (COSTOS.tela||0)+(COSTOS.dtf||0)+(COSTOS.empaque||0)+(COSTOS.envio||0); }
-function guardarVentas(msg,cajaStatus){ var caja=$(cajaStatus||'statusVenta'); caja.className='status'; caja.textContent='Guardando...'; ghGet('data/ventas.json').then(function(r){ return ghPut('data/ventas.json', {costos:COSTOS, ventas:VENTAS}, r?r.sha:null, msg); }).then(function(){ caja.className='status ok'; caja.textContent='Guardado.'; renderTablero(); renderListaVentas(); }).catch(function(err){ caja.className='status err'; caja.textContent='Error: '+err.message; }); }
+function guardarVentas(msg,cajaStatus){ var caja=$(cajaStatus||'statusVenta'); caja.className='status show'; caja.textContent='Guardando...'; ghGet('data/ventas.json').catch(function(){ return null; }).then(function(r){ return ghPut('data/ventas.json', {costos:COSTOS, ventas:VENTAS}, r?r.sha:null, msg); }).then(function(){ caja.className='status show ok'; caja.textContent='Guardado.'; renderTablero(); renderListaVentas(); }).catch(function(err){ caja.className='status show err'; caja.textContent='Error: '+err.message; }); }
 $('listaVentas').addEventListener('click', function(e){ var b=e.target.closest('[data-borrar-venta]'); if(!b) return; var i=parseInt(b.getAttribute('data-borrar-venta'),10); if(!confirm('¿Borrar?')) return; VENTAS.splice(i,1); guardarVentas('Borrar venta'); });
 $('ventaRango').addEventListener('change', renderTablero);
+// ============================================================
+// 5b. PEGAR PEDIDO DE WHATSAPP
+// ============================================================
+var PEDIDO_LEIDO = null;
+function refDe(p) { return 'YZ-' + String(p.id).slice(-4); }
+function numeroDe(t) { return parseInt(String(t || '').replace(/\D/g, ''), 10) || 0; }
+function leerPedido(txt) {
+  var lineas = String(txt || '').replace(/\r/g, '').split('\n'), out = { pedido: '', items: [], cupon: '', pct: 0, total: 0, avisos: [] };
+  var m, actual = null;
+  lineas.forEach(function (l) {
+    var s = l.replace(/^\[[^\]]*\]\s*[^:]*:\s*/, '').trim();
+    if ((m = s.match(/Pedido\s+(P-\d{6}-[A-Z0-9]+)/i))) { out.pedido = m[1].toUpperCase(); return; }
+    if ((m = s.match(/^(\d+)\.\s+(.+?)\s*\((YZ-[A-Z0-9]+)\)\s*$/i))) { actual = { nombre: m[2], ref: m[3].toUpperCase(), prenda: 'Boxy oversize', color: '', talla: '', version: '', cant: 1, precio: 0 }; out.items.push(actual); return; }
+    if (actual && !actual.color && s.indexOf('·') !== -1 && /Talla/i.test(s)) {
+      s.split('·').map(function (x) { return x.trim(); }).forEach(function (x, i) {
+        if (/^Talla\s+/i.test(x)) actual.talla = x.replace(/^Talla\s+/i, '');
+        else if (i === 0) actual.prenda = x;
+        else if (i === 1) actual.color = x;
+        else actual.version = x;
+      });
+      return;
+    }
+    if (actual && (m = s.match(/^(\d+)\s*[×x]\s*₡?\s*([\d\s.,  ]+?)(\s*=|$)/))) { actual.cant = parseInt(m[1], 10) || 1; actual.precio = numeroDe(m[2]); return; }
+    if ((m = s.match(/^Descuento\s+(\S+)\s*\((\d+)%\)/i))) { out.cupon = m[1].toUpperCase(); out.pct = parseInt(m[2], 10) || 0; return; }
+    if ((m = s.match(/^Total:\s*₡?\s*([\d\s.,  ]+)/i))) { out.total = numeroDe(m[1]); }
+  });
+  out.items.forEach(function (it) {
+    var p = PRODUCTOS.filter(function (x) { return refDe(x) === it.ref; })[0];
+    it.p = p || null;
+    if (!p) out.avisos.push(it.ref + ' no existe en el catálogo (se registra solo con el nombre).');
+    if (!it.precio) out.avisos.push('No encontré el precio de ' + it.nombre + '.');
+    if (!it.talla || !it.color) out.avisos.push('Falta talla o color en ' + it.nombre + '.');
+  });
+  if (!out.pedido) out.avisos.push('No encontré el número de pedido. Se va a usar uno nuevo.');
+  if (out.pedido && VENTAS.some(function (v) { return v.pedido === out.pedido; })) out.avisos.push('El pedido ' + out.pedido + ' ya está registrado.');
+  return out;
+}
+function statusPedido(t, m) { var el = $('statusPedido'); el.className = 'status show ' + t; el.textContent = m; }
+$('btnLeerPedido').addEventListener('click', function () {
+  var o = leerPedido($('pedidoTexto').value);
+  if (!o.items.length) { $('pedidoPrev').innerHTML = ''; PEDIDO_LEIDO = null; statusPedido('err', 'No encontré piezas. Pegá el mensaje completo, con las líneas "1. Nombre (YZ-xxxx)".'); return; }
+  PEDIDO_LEIDO = o; $('statusPedido').className = 'status';
+  var bruto = o.items.reduce(function (s, i) { return s + i.precio * i.cant; }, 0), desc = o.pct ? Math.round(bruto * o.pct / 100 / 100) * 100 : 0;
+  $('pedidoPrev').innerHTML = '<p class="mini"><strong>' + esc(o.pedido || '(sin número)') + '</strong> · ' + o.items.reduce(function (s, i) { return s + i.cant; }, 0) + ' pieza(s)' + (o.cupon ? ' · cupón ' + esc(o.cupon) + ' −' + o.pct + '%' : '') + ' · total ' + plata(bruto - desc) + '</p>' +
+    o.items.map(function (i) { return '<div class="ped-item' + (i.p ? '' : ' malo') + '"><strong>' + i.cant + ' × ' + esc(i.nombre) + '</strong> <span class="meta">' + esc(i.ref) + '</span><div class="meta">' + esc([i.prenda, i.color, 'Talla ' + i.talla, i.version].filter(Boolean).join(' · ')) + ' · ' + plata(i.precio) + '</div></div>'; }).join('') +
+    (o.avisos.length ? '<p class="mini" style="color:var(--rojo)">' + o.avisos.map(esc).join('<br>') + '</p>' : '') +
+    '<div class="row"><div style="flex:1"><label>Fecha</label><input type="date" id="pedidoFecha" value="' + hoyLocal() + '"></div><div style="flex:1"><label>Canal</label><select id="pedidoCanal"><option>WhatsApp</option><option>Instagram</option><option>TikTok</option><option>Referido</option><option>En persona</option><option>Otro</option></select></div></div>' +
+    '<button class="btn" id="btnRegistrarPedido" style="margin-top:10px">Registrar pedido</button>';
+});
+document.addEventListener('click', function (e) {
+  if (e.target.id !== 'btnRegistrarPedido' || !PEDIDO_LEIDO) return;
+  var o = PEDIDO_LEIDO;
+  if (o.pedido && VENTAS.some(function (v) { return v.pedido === o.pedido; }) && !confirm('Ese pedido ya está registrado. ¿Registrarlo otra vez?')) return;
+  var num = o.pedido || ('P-' + hoyLocal().slice(2).replace(/-/g, '') + '-' + Math.random().toString(36).slice(2, 5).toUpperCase());
+  var fecha = $('pedidoFecha').value || hoyLocal(), canal = $('pedidoCanal').value, base = Date.now(), n = 0, nuevas = [];
+  o.items.forEach(function (it) {
+    var vs = it.p ? YuzuMockup.versionesDe(it.p) : [], vi = -1;
+    if (it.version) vs.forEach(function (v, k) { if (v.nombre === it.version) vi = k; });
+    for (var c = 0; c < it.cant; c++) {
+      nuevas.push({ id: base + (n++), pedido: num, productoId: it.p ? it.p.id : null, ref: it.ref, nombre: it.p ? it.p.nombre : it.nombre, categoria: it.p ? it.p.categoria || '' : '', prenda: it.prenda, version: it.version || '', versionI: vi, talla: it.talla, color: it.color, precioLista: it.precio, precio: Math.round(it.precio * (100 - o.pct) / 100), cupon: o.cupon || '', costo: costoUnitario(), canal: canal, fecha: fecha, nota: '', estado: 'pendiente' });
+    }
+  });
+  VENTAS = nuevas.concat(VENTAS);
+  PEDIDO_LEIDO = null; $('pedidoTexto').value = ''; $('pedidoPrev').innerHTML = '';
+  guardarVentas('Pedido ' + num, 'statusPedido');
+});
+var ESTADOS = ['pendiente', 'producido', 'entregado'];
+function estadoDe(v) { return v.estado || 'entregado'; }
+$('listaVentas').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-estado-venta]'); if (!b) return;
+  var v = VENTAS[parseInt(b.getAttribute('data-estado-venta'), 10)];
+  var mismo = v.pedido ? VENTAS.filter(function (x) { return x.pedido === v.pedido; }) : [v];
+  var sig = ESTADOS[(ESTADOS.indexOf(estadoDe(v)) + 1) % ESTADOS.length];
+  mismo.forEach(function (x) { x.estado = sig; });
+  renderListaVentas(); guardarVentas('Estado ' + (v.pedido || v.nombre) + ': ' + sig);
+});
+
+// ============================================================
+// 5c. PRODUCCIÓN: lista de compras + lámina DTF
+// ============================================================
+function pendientes() { return VENTAS.filter(function (v) { return estadoDe(v) === 'pendiente'; }); }
+function statusProd(id, t, m) { var el = $(id); el.className = 'status show ' + t; el.textContent = m; }
+function cargarProduccion() {
+  ghGet('data/ventas.json').then(function (r) { var d = r && r.content ? r.content : {}; VENTAS = d.ventas || []; if (d.costos) COSTOS = d.costos; renderProduccion(); })
+    .catch(function () { VENTAS = []; renderProduccion(); });
+}
+function renderProduccion() {
+  var pen = pendientes();
+  if (!pen.length) { $('prodResumen').innerHTML = '<p class="mini">No hay pedidos pendientes. Cuando registrés un pedido en Ventas aparece acá.</p>'; $('prodCompras').innerHTML = ''; return; }
+  var porPedido = {};
+  pen.forEach(function (v) { var k = v.pedido || 'Sin número'; (porPedido[k] = porPedido[k] || []).push(v); });
+  $('prodResumen').innerHTML = '<p class="mini" style="margin-top:0">' + pen.length + ' pieza(s) en ' + Object.keys(porPedido).length + ' pedido(s).</p>' +
+    Object.keys(porPedido).map(function (k) { var l = porPedido[k]; return '<div class="ped-item"><strong>' + esc(k) + '</strong> <span class="meta">' + esc(l[0].fecha || '') + '</span>' + l.map(function (v) { return '<div class="meta">' + esc(v.nombre) + ' · ' + esc([v.prenda || 'Boxy oversize', v.color, 'Talla ' + v.talla, v.version].filter(Boolean).join(' · ')) + '</div>'; }).join('') + '</div>'; }).join('');
+  var grupos = {};
+  pen.forEach(function (v) { var k = (v.prenda || 'Boxy oversize') + '|' + v.color + '|' + v.talla; grupos[k] = (grupos[k] || 0) + 1; });
+  var orden = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
+  var claves = Object.keys(grupos).sort(function (a, b) { var A = a.split('|'), B = b.split('|'); return A[0].localeCompare(B[0]) || A[1].localeCompare(B[1]) || orden.indexOf(A[2]) - orden.indexOf(B[2]); });
+  $('prodCompras').innerHTML = '<table class="compras"><tr><th>Prenda</th><th>Color</th><th>Talla</th><th style="text-align:right">Cant.</th></tr>' + claves.map(function (k) { var a = k.split('|'); return '<tr><td>' + esc(a[0]) + '</td><td>' + esc(a[1]) + '</td><td>' + esc(a[2]) + '</td><td class="n">' + grupos[k] + '</td></tr>'; }).join('') + '</table>';
+  $('btnCopiarCompras').onclick = function () {
+    var t = 'Pedido de prendas Yuzu\n' + claves.map(function (k) { var a = k.split('|'); return '- ' + grupos[k] + ' × ' + a[0] + ' ' + a[1] + ' talla ' + a[2]; }).join('\n');
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { $('btnCopiarCompras').textContent = 'Copiada'; setTimeout(function () { $('btnCopiarCompras').textContent = 'Copiar lista'; }, 1600); }).catch(function () { prompt('Copiá la lista:', t); });
+  };
+}
+$('btnProdRecargar').addEventListener('click', cargarProduccion);
+$('btnProdHechos').addEventListener('click', function () {
+  var pen = pendientes(); if (!pen.length) return;
+  if (!confirm('¿Marcar ' + pen.length + ' pieza(s) como producidas?')) return;
+  pen.forEach(function (v) { v.estado = 'producido'; });
+  guardarVentas('Producción lista', 'statusProd'); renderProduccion();
+});
+
+var CACHE_PRINT = {};
+function cargarPrint(ruta, recortar) {
+  var k = ruta + (recortar ? '#r' : '');
+  if (CACHE_PRINT[k]) return CACHE_PRINT[k];
+  var cfg = getConfig();
+  var intentar = function (src) { return new Promise(function (ok, mal) { var im = new Image(); im.crossOrigin = 'anonymous'; im.onload = function () { ok(im); }; im.onerror = mal; im.src = src; }); };
+  CACHE_PRINT[k] = intentar(ruta + '?t=' + Date.now()).catch(function () { return intentar('https://raw.githubusercontent.com/' + cfg.owner + '/' + cfg.repo + '/HEAD/' + ruta); }).then(function (im) {
+    if (!recortar) return im;
+    var c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight;
+    var x = c.getContext('2d'); x.drawImage(im, 0, 0);
+    var d = x.getImageData(0, 0, c.width, c.height).data, W = c.width, H = c.height, x0 = W, y0 = H, x1 = -1, y1 = -1;
+    for (var y = 0; y < H; y++) for (var i = 0; i < W; i++) if (d[(y * W + i) * 4 + 3] > 8) { if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    if (x1 < 0) return im;
+    var o = document.createElement('canvas'); o.width = x1 - x0 + 1; o.height = y1 - y0 + 1;
+    o.getContext('2d').drawImage(c, x0, y0, o.width, o.height, 0, 0, o.width, o.height);
+    o.naturalWidth = o.width; o.naturalHeight = o.height;
+    return o;
+  });
+  return CACHE_PRINT[k];
+}
+function piezasLamina() {
+  var cajas = { espalda: [+$('dtfEspW').value, +$('dtfEspH').value], pecho: [+$('dtfPecW').value, +$('dtfPecH').value], manga: [+$('dtfManW').value, +$('dtfManH').value] };
+  var piezas = [], faltan = [];
+  pendientes().forEach(function (v) {
+    var p = PRODUCTOS.filter(function (x) { return x.id === v.productoId; })[0];
+    if (!p) { faltan.push((v.pedido || '') + ' ' + v.nombre + ': no está en el catálogo'); return; }
+    var vs = YuzuMockup.versionesDe(p); if (!vs.length) { faltan.push(p.nombre + ': no tiene PNG de diseño'); return; }
+    var vi = v.versionI >= 0 && vs[v.versionI] ? v.versionI : -1;
+    if (vi < 0 && v.version) vs.forEach(function (x, k) { if (x.nombre === v.version) vi = k; });
+    if (vi < 0) vi = YuzuMockup.recomendada(vs, v.color);
+    var ver = vs[vi], sinManga = /sin mangas/i.test(v.prenda || '');
+    ['espalda', 'pecho', 'manga'].forEach(function (campo) {
+      if (campo === 'manga' && sinManga) return;
+      var ruta = (ver.print || {})[campo] || ver[campo];
+      if (!ruta && campo !== 'espalda') vs.forEach(function (x) { if (!ruta) ruta = (x.print || {})[campo] || x[campo]; });
+      if (ruta) piezas.push({ ruta: ruta, caja: cajas[campo], etiqueta: (v.pedido || '') + ' ' + p.nombre + ' ' + campo });
+    });
+  });
+  return { piezas: piezas, faltan: faltan };
+}
+function empacar(items, W, H, g, girar) {
+  // Skyline "abajo-izquierda": cada diseño va lo más arriba posible; solo se gira 90° si derecho ya no cabe.
+  var m = Math.round(g / 2), AW = W - 2 * m + g, AH = H - 2 * m + g;
+  items.sort(function (a, b) { return Math.max(b.w, b.h) * Math.min(b.w, b.h) - Math.max(a.w, a.h) * Math.min(a.w, a.h); });
+  items.forEach(function (it) {
+    var f = Math.min(1, (W - 2 * m) / it.w, (H - 2 * m) / it.h); it.w *= f; it.h *= f;
+  });
+  var hojas = [];
+  function hojaNueva() { var h = { sky: [{ x: 0, y: 0, w: AW }], items: [] }; hojas.push(h); return h; }
+  function probar(h, w, hh) {
+    var mejor = null;
+    for (var i = 0; i < h.sky.length; i++) {
+      var x = h.sky[i].x; if (x + w > AW + 2) break;
+      var y = 0, fin = x + w;
+      for (var k = i; k < h.sky.length && h.sky[k].x < fin; k++) y = Math.max(y, h.sky[k].y);
+      if (y + hh > AH + 2) continue;
+      if (!mejor || y < mejor.y || (y === mejor.y && x < mejor.x)) mejor = { x: x, y: y };
+    }
+    return mejor;
+  }
+  function poner(h, x, y, w, hh) {
+    var nuevo = [], fin = x + w;
+    h.sky.forEach(function (s) {
+      var a = s.x, b = s.x + s.w;
+      if (b <= x || a >= fin) { nuevo.push(s); return; }
+      if (a < x) nuevo.push({ x: a, y: s.y, w: x - a });
+      if (b > fin) nuevo.push({ x: fin, y: s.y, w: b - fin });
+    });
+    nuevo.push({ x: x, y: y + hh, w: w });
+    nuevo.sort(function (p, q) { return p.x - q.x; });
+    h.sky = nuevo.filter(function (s) { return s.w > 0; });
+  }
+  items.forEach(function (it) {
+    var fw = it.w + g, fh = it.h + g, colocado = false;
+    for (var n = 0; n <= hojas.length && !colocado; n++) {
+      var h = hojas[n] || hojaNueva();
+      var a = probar(h, fw, fh), b = girar ? probar(h, fh, fw) : null, rot = false, pos = a;
+      if (!a && b) { pos = b; rot = true; }
+      if (!pos) continue;
+      it.rot = rot; it.x = m + pos.x; it.y = m + pos.y;
+      poner(h, pos.x, pos.y, rot ? fh : fw, rot ? fw : fh);
+      h.items.push(it); colocado = true;
+    }
+  });
+  return hojas.map(function (h) { return h.items; }).filter(function (l) { return l.length; });
+}
+$('btnArmarLamina').addEventListener('click', function () {
+  var r = piezasLamina();
+  if (!r.piezas.length) { statusProd('statusLamina', 'err', r.faltan.length ? r.faltan.join(' · ') : 'No hay pedidos pendientes con diseños.'); return; }
+  statusProd('statusLamina', '', 'Cargando ' + r.piezas.length + ' diseño(s)…'); $('laminas').innerHTML = '';
+  var dpi = +$('dtfDpi').value, cm = dpi / 2.54, W = Math.round(+$('dtfAncho').value * cm), H = Math.round(+$('dtfAlto').value * cm), g = Math.round(+$('dtfGap').value * cm), rec = $('dtfRecortar').checked;
+  var errores = r.faltan.slice();
+  Promise.all(r.piezas.map(function (pz) {
+    return cargarPrint(pz.ruta, rec).then(function (im) {
+      var iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height, bw = pz.caja[0] * cm, bh = pz.caja[1] * cm, s = Math.min(bw / iw, bh / ih);
+      return { im: im, w: iw * s, h: ih * s, etiqueta: pz.etiqueta };
+    }).catch(function () { errores.push('No pude cargar ' + pz.ruta); return null; });
+  })).then(function (items) {
+    items = items.filter(Boolean);
+    var hojas = empacar(items, W, H, g, $('dtfGirar').checked);
+    $('laminas').innerHTML = hojas.map(function (h, i) {
+      var usado = h.reduce(function (s, it) { return Math.max(s, it.y + (it.rot ? it.w : it.h)); }, 0);
+      return '<div class="lamina"><p class="mini">Lámina ' + (i + 1) + ' de ' + hojas.length + ' · ' + h.length + ' diseño(s) · ocupa ' + (usado / cm).toFixed(1) + ' de ' + $('dtfAlto').value + ' cm</p><canvas id="lam' + i + '"></canvas><div class="row"><button class="btn btn-sec" data-bajar-lamina="' + i + '">Descargar PNG</button></div></div>';
+    }).join('');
+    hojas.forEach(function (h, i) {
+      var c = $('lam' + i); c.width = W; c.height = H;
+      var x = c.getContext('2d'); x.imageSmoothingQuality = 'high';
+      h.forEach(function (it) {
+        if (!it.rot) { x.drawImage(it.im, Math.round(it.x), Math.round(it.y), Math.round(it.w), Math.round(it.h)); return; }
+        x.save(); x.translate(Math.round(it.x + it.h), Math.round(it.y)); x.rotate(Math.PI / 2); x.drawImage(it.im, 0, 0, Math.round(it.w), Math.round(it.h)); x.restore();
+      });
+    });
+    statusProd('statusLamina', errores.length ? 'err' : 'ok', items.length + ' diseño(s) en ' + hojas.length + ' lámina(s) de ' + $('dtfAncho').value + ' × ' + $('dtfAlto').value + ' cm a ' + dpi + ' dpi.' + (errores.length ? ' Ojo: ' + errores.join(' · ') : ''));
+  });
+});
+$('laminas').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-bajar-lamina]'); if (!b) return;
+  var i = b.getAttribute('data-bajar-lamina'), c = $('lam' + i), dpi = $('dtfDpi').value;
+  b.textContent = 'Preparando…';
+  c.toBlob(function (blob) {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = 'yuzu-dtf-' + hoyLocal() + '-' + (+i + 1) + '-' + $('dtfAncho').value + 'x' + $('dtfAlto').value + '-' + dpi + 'dpi.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+    b.textContent = 'Descargar PNG';
+  }, 'image/png');
+});
+
 $('btnRecargarVentas').addEventListener('click', cargarVentas);
 function ventasEnRango(){ var dias=parseInt($('ventaRango').value,10); if(!dias) return VENTAS; var limite=Date.now()-dias*86400000; return VENTAS.filter(function(v){ var t=new Date(v.fecha).getTime(); return isNaN(t)?true:t>=limite; }); }
 function contar(lista,campo){ var m={}; lista.forEach(function(v){ var k=v[campo]||'—'; m[k]=(m[k]||0)+1; }); return Object.keys(m).map(function(k){ return {k:k,n:m[k]}; }).sort(function(a,b){ return b.n-a.n; }); }
 function bloqueRank(tit,filas,total){ if(!filas.length) return ''; var html='<label style="margin-top:18px;">'+tit+'</label><div class="rank">'; filas.slice(0,6).forEach(function(f){ var pct=total?Math.round(f.n/total*100):0; html+='<div class="rank-fila"><span>'+f.k+'</span><span>'+f.n+' · '+pct+'%</span><div class="rank-barra"><i style="width:'+pct+'%"></i></div></div>'; }); return html+'</div>'; }
 function renderTablero(){ var lista=ventasEnRango(); if(!lista.length){ $('tablero').innerHTML='<p class="mini">Sin ventas en este rango.</p>'; return; } var ingreso=lista.reduce(function(s,v){ return s+(v.precio||0); },0); var costo=lista.reduce(function(s,v){ return s+(v.costo||costoUnitario()); },0); var ganancia=ingreso-costo; var margen=ingreso?Math.round(ganancia/ingreso*100):0; var ticket=Math.round(ingreso/lista.length); var html='<div class="kpis">'+'<div class="kpi"><div class="n">'+lista.length+'</div><div class="q">Piezas</div></div>'+'<div class="kpi"><div class="n">'+plata(ingreso)+'</div><div class="q">Ingreso</div></div>'+'<div class="kpi"><div class="n '+(ganancia>=0?'bueno':'malo')+'">'+plata(ganancia)+'</div><div class="q">Ganancia</div></div>'+'<div class="kpi"><div class="n '+(margen>=30?'bueno':'malo')+'">'+margen+'%</div><div class="q">Margen</div></div>'+'<div class="kpi"><div class="n">'+plata(ticket)+'</div><div class="q">Ticket promedio</div></div>'+'<div class="kpi"><div class="n">'+plata(costoUnitario())+'</div><div class="q">Costo por prenda</div></div>'+'</div>'; html+=bloqueRank('Diseños más vendidos', contar(lista,'nombre'), lista.length); html+=bloqueRank('Tallas', contar(lista,'talla'), lista.length); html+=bloqueRank('Colores', contar(lista,'color'), lista.length); html+=bloqueRank('Canales', contar(lista,'canal'), lista.length); $('tablero').innerHTML=html; }
-function renderListaVentas(){ if(!VENTAS.length){ $('listaVentas').innerHTML='<p class="mini">Sin ventas.</p>'; return; } $('listaVentas').innerHTML=VENTAS.slice(0,40).map(function(v,i){ return '<div class="venta-fila"><div><strong>'+v.nombre+'</strong><div class="meta">'+v.fecha+' · Talla '+v.talla+' · '+v.color+' · '+v.canal+(v.nota?' · '+v.nota:'')+'</div></div><div style="display:flex;align-items:center;gap:6px;"><span>'+plata(v.precio)+'</span><button data-borrar-venta="'+i+'">✕</button></div></div>'; }).join(''); }
-$('btnCsv').addEventListener('click', function(){ if(!VENTAS.length){ alert('Sin ventas.'); return; } var cab=['fecha','producto','categoria','talla','color','precio','costo','ganancia','canal','nota']; var filas=VENTAS.map(function(v){ return [v.fecha,v.nombre,v.categoria,v.talla,v.color,v.precio,v.costo,(v.precio-v.costo),v.canal,(v.nota||'').replace(/[",\n]/g,' ')]; }); var csv=cab.join(',')+'\n'+filas.map(function(f){ return f.map(function(c){ return '"'+String(c==null?'':c)+'"'; }).join(','); }).join('\n'); var url=URL.createObjectURL(new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'})); var a=document.createElement('a'); a.href=url; a.download='yuzu-ventas-'+new Date().toISOString().slice(0,10)+'.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); });
+function renderListaVentas(){ if(!VENTAS.length){ $('listaVentas').innerHTML='<p class="mini">Sin ventas.</p>'; return; } $('listaVentas').innerHTML=VENTAS.slice(0,40).map(function(v,i){ return '<div class="venta-fila"><div><strong>'+esc(v.nombre)+'</strong>'+(v.pedido?' <span class="meta" style="display:inline">'+esc(v.pedido)+'</span>':'')+'<div class="meta">'+v.fecha+' · '+(v.prenda?esc(v.prenda)+' · ':'')+'Talla '+v.talla+' · '+v.color+(v.version?' · '+esc(v.version):'')+' · '+v.canal+(v.cupon?' · '+esc(v.cupon):'')+(v.nota?' · '+esc(v.nota):'')+'</div></div><div style="display:flex;align-items:center;gap:6px;"><button class="estado '+estadoDe(v)+'" data-estado-venta="'+i+'" title="Cambiar estado">'+estadoDe(v)+'</button><span>'+plata(v.precio)+'</span><button data-borrar-venta="'+i+'">✕</button></div></div>'; }).join(''); }
+$('btnCsv').addEventListener('click', function(){ if(!VENTAS.length){ alert('Sin ventas.'); return; } var cab=['fecha','pedido','estado','producto','categoria','talla','color','precio','costo','ganancia','canal','nota']; var filas=VENTAS.map(function(v){ return [v.fecha,v.pedido||'',estadoDe(v),v.nombre,v.categoria,v.talla,v.color,v.precio,v.costo,(v.precio-v.costo),v.canal,(v.nota||'').replace(/[",\n]/g,' ')]; }); var csv=cab.join(',')+'\n'+filas.map(function(f){ return f.map(function(c){ return '"'+String(c==null?'':c)+'"'; }).join(','); }).join('\n'); var url=URL.createObjectURL(new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'})); var a=document.createElement('a'); a.href=url; a.download='yuzu-ventas-'+new Date().toISOString().slice(0,10)+'.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); });
 
 // ============================================================
 // 5b. TIENDA (imágenes, drops, nombres, reseñas)
 // ============================================================
-var TIENDA = { nombres: {}, drops: null, banners: [], precios: {} };
+var TIENDA = { nombres: {}, drops: null, banners: [], precios: {}, mockup: {} };
 var RESENAS = [], resEditando = -1, resImagenNueva = null;
 
 function hoyLocal() { var d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); }
@@ -1604,6 +2031,7 @@ function leerJSON(path, porDefecto) {
   return ghGet(path).then(function (r) { return r; }).catch(function () { return { content: porDefecto, sha: null }; });
 }
 function guardarJSON(path, obj, msg) {
+  if (obj && typeof obj === 'object' && !Array.isArray(obj)) { var l = {}; Object.keys(obj).forEach(function (k) { if (k.charAt(0) !== '_') l[k] = obj[k]; }); obj = l; }
   return fetch(urlDe(path), { headers: { Authorization: 'token ' + getConfig().token } })
     .then(function (res) { return res.ok ? res.json() : null; })
     .then(function (d) { return ghPut(path, obj, d ? d.sha : null, msg); });
@@ -1654,7 +2082,9 @@ function cargarTienda() {
     return Promise.all([leerJSON('data/tienda.json', {}), leerJSON('data/resenas.json', [])]);
   }).then(function (r) {
     var t = r[0].content || {};
-    TIENDA = { nombres: t.nombres || {}, drops: t.drops || null, banners: t.banners || [], precios: t.precios || {} };
+    var bolFs = (BOLETINES.filter(function (b) { return b.activo && b.formspree; })[0] || {}).formspree || '';
+    TIENDA = t; ['nombres', 'precios', 'mockup'].forEach(function (k) { TIENDA[k] = TIENDA[k] || {}; }); TIENDA.banners = TIENDA.banners || []; TIENDA.drops = TIENDA.drops || null; TIENDA._formspreeBol = bolFs;
+    aplicarCfgMockup(); initZonas(); initPlantillas(); renderDescuentos(); renderCorte(); renderColPrendas();
     RESENAS = Array.isArray(r[1].content) ? r[1].content : [];
     renderImgsFijas(); renderPrecios(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
   });
@@ -1726,6 +2156,540 @@ $('btnGuardarDrops').addEventListener('click', function () {
   statusDe('statusDrops', 'loading', 'Guardando...');
   guardarJSON('data/tienda.json', TIENDA, 'Drops y banners').then(function () { statusDe('statusDrops', 'ok', 'Guardado.'); })
     .catch(function (err) { statusDe('statusDrops', 'err', err.message); });
+});
+
+// ---------- Mockup automático: configuración ----------
+var ZONAS_BASE = JSON.parse(JSON.stringify(YuzuMockup.ZONAS));
+var PLANTILLAS_BASE = JSON.parse(JSON.stringify(YuzuMockup.PLANTILLAS));
+function aplicarCfgMockup() {
+  TIENDA.mockup = TIENDA.mockup || {};
+  YuzuMockup.configurar(TIENDA.mockup);
+}
+function cargarCfgMockup() {
+  return ghGet('data/tienda.json').then(function (r) {
+    var t = r.content || {};
+    TIENDA.mockup = t.mockup || {};
+    aplicarCfgMockup();
+    if (window.EDN) EDN.preview();
+  }).catch(function () {});
+}
+
+// ---------- Mockup automático: editor de versiones (producto nuevo y edición) ----------
+var COLORES_TELA = (function () { var s = {}; COLORES.forEach(function (c) { s[c.name] = 1; }); Object.keys(YuzuMockup.HEX).forEach(function (c) { s[c] = 1; }); return Object.keys(s); })();
+var PRENDAS_IDS = Object.keys(YuzuMockup.PRENDAS);
+var CAMPOS_V = [['espalda', 'Espalda'], ['pecho', 'Pecho'], ['manga', 'Manga']];
+var MAX_VERSIONES = 6;
+
+function escalarA(im, max, tipo) {
+  var w = im.width, h = im.height, e = Math.min(1, max / Math.max(w, h));
+  var cv = document.createElement('canvas'); cv.width = Math.round(w * e); cv.height = Math.round(h * e);
+  var ctx = cv.getContext('2d'); ctx.imageSmoothingQuality = 'high'; ctx.drawImage(im, 0, 0, cv.width, cv.height);
+  return cv.toDataURL(tipo || 'image/png');
+}
+// Lee un PNG: versión liviana (1400 px) para mockups + versión de impresión (hasta 3600 px)
+function leerPNG(file) {
+  return new Promise(function (ok, mal) {
+    var rd = new FileReader();
+    rd.onload = function () {
+      var im = new Image();
+      im.onload = function () {
+        var url = escalarA(im, 1400), print = escalarA(im, 3600);
+        var out = new Image(); out.onload = function () { ok({ img: out, base64: url.split(',')[1], preview: url, print: print.split(',')[1], printPx: [im.width, im.height] }); }; out.src = url;
+      };
+      im.onerror = function () { mal(new Error('No pude leer la imagen.')); };
+      im.src = rd.result;
+    };
+    rd.readAsDataURL(file);
+  });
+}
+
+function EditorDisenos(cont, op) {
+  this.cont = cont; this.op = op || {};
+  this.limpiar();
+  var self = this;
+  cont.addEventListener('change', function (e) { self._cambio(e); });
+  cont.addEventListener('click', function (e) { self._click(e); });
+  cont.addEventListener('input', function (e) {
+    if (e.target.matches('[data-v-nombre]')) self.e.versiones[+e.target.getAttribute('data-v-nombre')].nombre = e.target.value;
+    if (e.target.matches('[data-aj]')) { self._leerAjuste(); self.preview(); }
+  });
+}
+EditorDisenos.prototype.limpiar = function () {
+  this.e = { versiones: [{ nombre: 'Versión 1', colores: [], archivos: {} }], prendas: PRENDAS_IDS.slice(), ajuste: { espalda: { escala: 1, dy: 0 }, frente: { escala: 1 }, lado: { escala: 1 } }, colorPrev: 'Negro' };
+  this.render();
+};
+EditorDisenos.prototype.cargar = function (p) {
+  var vs = YuzuMockup.versionesDe(p);
+  this.e = {
+    versiones: vs.length ? vs.map(function (v) {
+      var a = {};
+      CAMPOS_V.forEach(function (c) { var r = v[c[0]]; if (r) a[c[0]] = { ruta: r, preview: r, rutaPrint: (v.print || {})[c[0]] || null }; });
+      return { nombre: v.nombre || '', colores: (v.colores || []).slice(), archivos: a };
+    }) : [{ nombre: 'Versión 1', colores: [], archivos: {} }],
+    prendas: (p.prendas && p.prendas.length ? p.prendas : PRENDAS_IDS).slice(),
+    ajuste: JSON.parse(JSON.stringify(p.ajuste || { espalda: { escala: 1, dy: 0 }, frente: { escala: 1 }, lado: { escala: 1 } })),
+    colorPrev: (p.colores || [])[0] || 'Negro'
+  };
+  this.render();
+  var self = this;
+  // Cargar las imágenes existentes para poder generar mockups
+  this.e.versiones.forEach(function (v) {
+    Object.keys(v.archivos).forEach(function (k) {
+      var a = v.archivos[k];
+      YuzuMockup.cargar(a.ruta + '?v=' + Date.now()).then(function (im) { a.img = im; self.preview(); }).catch(function () {});
+    });
+  });
+};
+EditorDisenos.prototype.tieneArchivos = function () {
+  return this.e.versiones.some(function (v) { return Object.keys(v.archivos).length; });
+};
+EditorDisenos.prototype.versionesImg = function () {
+  return this.e.versiones.map(function (v) {
+    var o = { nombre: v.nombre, colores: v.colores };
+    CAMPOS_V.forEach(function (c) { var a = v.archivos[c[0]]; if (a && a.img) o[c[0]] = a.img; });
+    return o;
+  });
+};
+EditorDisenos.prototype._leerAjuste = function () {
+  var q = function (s) { return Number(this.cont.querySelector('[data-aj="' + s + '"]').value); }.bind(this);
+  var pe = q('pec') / 100;
+  this.e.ajuste = { espalda: { escala: q('esp') / 100, dy: q('dy') }, frente: { escala: pe }, lado: { escala: pe } };
+  this.cont.querySelector('[data-ajn="esp"]').textContent = q('esp') + '%';
+  this.cont.querySelector('[data-ajn="dy"]').textContent = q('dy');
+  this.cont.querySelector('[data-ajn="pec"]').textContent = q('pec') + '%';
+};
+EditorDisenos.prototype.render = function () {
+  var e = this.e, aj = e.ajuste;
+  var h = '<p class="mini" style="margin-top:0">PNG con fondo transparente. Podés subir hasta ' + MAX_VERSIONES + ' versiones del mismo diseño (por ejemplo, detalles blancos y detalles negros) y marcar en qué telas se ve bien cada una. Sin marcar = todas.</p>';
+  e.versiones.forEach(function (v, i) {
+    h += '<div class="ver"><div class="ver-cab"><input type="text" data-v-nombre="' + i + '" value="' + esc(v.nombre) + '" placeholder="Nombre (ej: Detalles blancos)">' +
+      (e.versiones.length > 1 ? '<button type="button" class="prod-btn del" data-v-quitar="' + i + '" title="Quitar versión">✕</button>' : '') + '</div>' +
+      '<div class="png-grid" style="grid-template-columns:repeat(3,1fr)">' + CAMPOS_V.map(function (c) {
+        var a = v.archivos[c[0]];
+        return '<label class="png-slot' + (a ? ' lleno' : '') + '"><input type="file" accept="image/png" data-v-archivo="' + i + ':' + c[0] + '"><img alt=""' + (a ? ' src="' + esc(a.preview) + '"' : '') + '><span>' + c[1] + (i > 0 && c[0] !== 'espalda' ? '<br><small>(opcional)</small>' : '') + '</span><button type="button" class="x" data-v-borrar="' + i + ':' + c[0] + '">✕</button></label>';
+      }).join('') + '</div>' +
+      '<div class="mini">Se ve bien en:</div><div class="tela-chips">' + COLORES_TELA.map(function (c) {
+        return '<button type="button" class="tela' + (v.colores.indexOf(c) !== -1 ? ' on' : '') + '" data-v-tela="' + i + '" data-c="' + esc(c) + '" title="' + esc(c) + '" style="background:' + (YuzuMockup.HEX[c] || '#888') + '"></button>';
+      }).join('') + '</div></div>';
+  });
+  if (e.versiones.length < MAX_VERSIONES) h += '<button type="button" class="btn btn-sec btn-sm" data-v-agregar style="margin-top:8px">+ Agregar versión</button>';
+  h += '<div class="mini" style="margin-top:14px">Prendas en las que se vende:</div><div class="check-lista">' + PRENDAS_IDS.map(function (k) {
+    return '<label class="check-row"><input type="checkbox" data-v-prenda="' + k + '"' + (e.prendas.indexOf(k) !== -1 ? ' checked' : '') + '><span>' + YuzuMockup.PRENDAS[k].nombre + '</span></label>';
+  }).join('') + '</div>';
+  h += '<div class="rango-fila"><span>Espalda · tamaño</span><input type="range" data-aj="esp" min="50" max="130" value="' + Math.round(aj.espalda.escala * 100) + '"><span data-ajn="esp">' + Math.round(aj.espalda.escala * 100) + '%</span></div>' +
+    '<div class="rango-fila"><span>Espalda · altura</span><input type="range" data-aj="dy" min="-80" max="160" value="' + (aj.espalda.dy || 0) + '"><span data-ajn="dy">' + (aj.espalda.dy || 0) + '</span></div>' +
+    '<div class="rango-fila"><span>Pecho y manga · tamaño</span><input type="range" data-aj="pec" min="50" max="160" value="' + Math.round(((aj.frente || {}).escala || 1) * 100) + '"><span data-ajn="pec">' + Math.round(((aj.frente || {}).escala || 1) * 100) + '%</span></div>';
+  h += '<div class="row" style="margin-top:10px;align-items:center"><span class="mini" style="margin:0">Vista previa en</span><select data-v-prev style="width:auto;flex:1">' +
+    PRENDAS_IDS.map(function (k) { return '<option value="' + k + '"' + (k === (e.prendaPrev || 'boxy') ? ' selected' : '') + '>' + YuzuMockup.PRENDAS[k].nombre + '</option>'; }).join('') + '</select>' +
+    '<select data-v-prevcolor style="width:auto;flex:1">' + COLORES_TELA.map(function (c) { return '<option' + (c === e.colorPrev ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '</select></div>';
+  h += '<div class="mk-prev" data-v-prevbox></div>';
+  if (this.op.botones) h += this.op.botones;
+  this.cont.innerHTML = h;
+  this.preview();
+};
+EditorDisenos.prototype._cambio = function (ev) {
+  var t = ev.target, self = this;
+  if (t.matches('[data-v-archivo]') && t.files.length) {
+    var par = t.getAttribute('data-v-archivo').split(':'), v = this.e.versiones[+par[0]];
+    leerPNG(t.files[0]).then(function (r) { v.archivos[par[1]] = r; self.render(); }).catch(function (err) { alert(err.message); });
+  } else if (t.matches('[data-v-prenda]')) {
+    var k = t.getAttribute('data-v-prenda'), i = this.e.prendas.indexOf(k);
+    if (t.checked && i === -1) this.e.prendas.push(k); if (!t.checked && i !== -1) this.e.prendas.splice(i, 1);
+  } else if (t.matches('[data-v-prev]') || t.matches('[data-v-prevcolor]')) {
+    if (t.matches('[data-v-prevcolor]')) this.e.colorPrev = t.value; else this.e.prendaPrev = t.value;
+    this.preview();
+  }
+};
+EditorDisenos.prototype._click = function (ev) {
+  var b = ev.target.closest('button'); if (!b) return;
+  if (b.hasAttribute('data-v-borrar')) { ev.preventDefault(); var p = b.getAttribute('data-v-borrar').split(':'); delete this.e.versiones[+p[0]].archivos[p[1]]; this.render(); }
+  else if (b.hasAttribute('data-v-quitar')) { this.e.versiones.splice(+b.getAttribute('data-v-quitar'), 1); this.render(); }
+  else if (b.hasAttribute('data-v-agregar')) { this.e.versiones.push({ nombre: 'Versión ' + (this.e.versiones.length + 1), colores: [], archivos: {} }); this.render(); }
+  else if (b.hasAttribute('data-v-tela')) {
+    var v = this.e.versiones[+b.getAttribute('data-v-tela')], c = b.getAttribute('data-c'), i = v.colores.indexOf(c);
+    if (i === -1) v.colores.push(c); else v.colores.splice(i, 1);
+    b.classList.toggle('on'); this.preview();
+  }
+};
+EditorDisenos.prototype.preview = function () {
+  var self = this; clearTimeout(this._t);
+  this._t = setTimeout(function () {
+    var box = self.cont.querySelector('[data-v-prevbox]'); if (!box) return;
+    var sel = self.cont.querySelector('[data-v-prev]'), prenda = sel ? sel.value : 'boxy', color = self.e.colorPrev;
+    if (!self.tieneArchivos()) { box.innerHTML = ''; return; }
+    if (!YuzuMockup.disponible(prenda, color)) { box.innerHTML = '<p class="mini">No hay foto de ' + esc(YuzuMockup.PRENDAS[prenda].nombre.toLowerCase()) + ' en ' + esc(color.toLowerCase()) + '.</p>'; return; }
+    var vs = self.versionesImg(), iv = YuzuMockup.recomendada(vs, color);
+    YuzuMockup.generarTodas(prenda, color, vs, iv, self.e.ajuste).then(function (cvs) {
+      box.innerHTML = ''; cvs.forEach(function (cv) { box.appendChild(cv); });
+    });
+  }, 150);
+};
+// Genera los mockups de la boxy para los colores dados → [{color, base64, preview}]
+EditorDisenos.prototype.generarBoxy = function (colores) {
+  var vs = this.versionesImg(), aj = this.e.ajuste, out = [], cadena = Promise.resolve();
+  colores.filter(function (c) { return YuzuMockup.disponible('boxy', c); }).forEach(function (c) {
+    cadena = cadena.then(function () {
+      return YuzuMockup.generarTodas('boxy', c, vs, YuzuMockup.recomendada(vs, c), aj).then(function (cvs) {
+        cvs.forEach(function (cv) { var url = cv.toDataURL('image/jpeg', 0.9); out.push({ color: c, base64: url.split(',')[1], preview: url }); });
+      });
+    });
+  });
+  return cadena.then(function () { return out; });
+};
+// Sube los PNG nuevos y devuelve { versiones, prendas, ajuste } listos para guardar en el producto
+EditorDisenos.prototype.subir = function (base, avisar) {
+  var e = this.e, cadena = Promise.resolve(), res = [];
+  e.versiones.forEach(function (v, i) {
+    var o = { nombre: v.nombre.trim() || ('Versión ' + (i + 1)), colores: v.colores.slice(), print: {} };
+    res.push(o);
+    CAMPOS_V.forEach(function (c) {
+      var a = v.archivos[c[0]]; if (!a) return;
+      if (a.ruta) { o[c[0]] = a.ruta; if (a.rutaPrint) o.print[c[0]] = a.rutaPrint; return; }
+      cadena = cadena.then(function () {
+        if (avisar) avisar('Subiendo ' + c[1].toLowerCase() + ' (versión ' + (i + 1) + ')...');
+        var ruta = 'images/disenos/' + base + '-v' + (i + 1) + '-' + c[0] + '.png', rp = 'images/disenos/print/' + base + '-v' + (i + 1) + '-' + c[0] + '.png';
+        return ghPutImage(ruta, a.base64, 'Diseño ' + base).then(function () {
+          o[c[0]] = ruta; a.ruta = ruta;
+          return ghPutImage(rp, a.print, 'Diseño para imprimir ' + base).then(function () { o.print[c[0]] = rp; a.rutaPrint = rp; }).catch(function () { /* si el archivo es muy pesado, la lámina usa la versión liviana */ });
+        });
+      });
+    });
+  });
+  return cadena.then(function () {
+    return { versiones: res.filter(function (v) { return v.espalda || v.pecho || v.manga; }), prendas: e.prendas.slice(), ajuste: JSON.parse(JSON.stringify(e.ajuste)) };
+  });
+};
+
+var EDN = new EditorDisenos($('evNuevo'), { botones: '<button type="button" class="btn btn-sec" id="btnGenerarMk">Generar mockups de la boxy</button><div class="status" id="statusMk"></div>' });
+$('colorCheckGrid').addEventListener('change', function () { EDN.preview(); });
+$('evNuevo').addEventListener('click', function (e) {
+  if (!e.target.closest('#btnGenerarMk')) return;
+  if (!EDN.tieneArchivos()) { statusDe('statusMk', 'err', 'Subí al menos un PNG.'); return; }
+  var cols = coloresMarcados();
+  if (!cols.length) { statusDe('statusMk', 'err', 'Marcá al menos un color.'); return; }
+  var faltan = cols.filter(function (c) { return !YuzuMockup.disponible('boxy', c); });
+  statusDe('statusMk', 'loading', 'Generando...');
+  var btn = e.target; btn.disabled = true;
+  EDN.generarBoxy(cols).then(function (lista) {
+    var nuevos = lista.map(function (x) { return { base64: x.base64, ext: 'jpg', preview: x.preview, nombre: 'auto', color: x.color, peso: Math.round(x.base64.length * 0.75 / 1024), auto: true }; });
+    mockups = mockups.filter(function (m) { return !m.auto; }).concat(nuevos);
+    renderMockups();
+    statusDe('statusMk', 'ok', '✓ ' + nuevos.length + ' mockups agregados a "Mockups por color".' + (faltan.length ? ' Sin foto: ' + faltan.join(', ') + '.' : ''));
+  }).catch(function (err) { statusDe('statusMk', 'err', err.message); }).then(function () { btn.disabled = false; });
+});
+
+// ---------- Editar diseños de un producto existente ----------
+var EDE = null, EDE_I = -1;
+function abrirDisenosProducto(i) {
+  EDE_I = i;
+  var p = PRODUCTOS[i];
+  $('modalDisTit').textContent = 'Diseños · ' + p.nombre;
+  if (!EDE) EDE = new EditorDisenos($('evEditar'));
+  EDE.cargar(p);
+  $('statusDis').className = 'status';
+  $('modalDis').classList.add('abierto');
+}
+function cerrarDisenos() { $('modalDis').classList.remove('abierto'); }
+function guardarDisenos(regenerar) {
+  var p = PRODUCTOS[EDE_I]; if (!p) return;
+  if (regenerar && !confirm('Esto reemplaza los mockups de la boxy de "' + p.nombre + '" por mockups generados. ¿Seguir?')) return;
+  var base = slugify(p.nombre) + '-' + p.id, aviso = function (m) { statusDe('statusDis', 'loading', m); };
+  aviso('Guardando...');
+  EDE.subir(base, aviso).then(function (r) {
+    p.versiones = r.versiones; p.prendas = r.prendas; p.ajuste = r.ajuste; delete p.disenos;
+    if (!regenerar) return;
+    aviso('Generando mockups...');
+    return EDE.generarBoxy(p.colores || []).then(function (lista) {
+      var stamp = Date.now(), nuevo = {}, viejos = [], cad = Promise.resolve();
+      Object.keys(p.mockups || {}).forEach(function (c) { (p.mockups[c] || []).forEach(function (r2) { viejos.push(r2); }); });
+      lista.forEach(function (x, n) {
+        cad = cad.then(function () {
+          aviso('Subiendo mockup ' + (n + 1) + ' de ' + lista.length + '...');
+          var ruta = 'images/' + slugify(p.nombre) + '-' + slugify(x.color) + '-' + stamp + '-' + n + '.jpg';
+          return ghPutImage(ruta, x.base64, 'Mockup ' + x.color + ': ' + p.nombre).then(function () { (nuevo[x.color] = nuevo[x.color] || []).push(ruta); });
+        });
+      });
+      return cad.then(function () {
+        p.mockups = nuevo;
+        viejos.forEach(function (r3) { ghBorrarArchivo(r3, 'Borra mockup viejo'); });
+      });
+    });
+  }).then(function () {
+    return guardarProductos('Diseños: ' + p.nombre).then(function () { return escribirPaginaProducto(p); });
+  }).then(function () {
+    statusDe('statusDis', 'ok', '✓ Guardado. Se ve en la tienda en 1–2 minutos.');
+  }).catch(function (err) { statusDe('statusDis', 'err', err.message); });
+}
+
+$('btnCerrarDis').addEventListener('click', cerrarDisenos);
+$('btnDisGuardar').addEventListener('click', function () { guardarDisenos(false); });
+$('btnDisRegenerar').addEventListener('click', function () { guardarDisenos(true); });
+
+// ---------- Vista previa al compartir (páginas p/YZ-xxxx.html) ----------
+function urlTienda() { var c = getConfig(); return 'https://' + String(c.owner).toLowerCase() + '.github.io/' + c.repo + '/'; }
+function refDeP(p) { return 'YZ-' + String(p.id).slice(-4); }
+function htmlAttr(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+function escribirPaginaProducto(p) {
+  if (!p || !p.id) return Promise.resolve();
+  var r = refDeP(p), base = urlTienda();
+  var foto = (function () { var m = p.mockups || {}, c = (p.colores || [])[0]; var l = (c && m[c]) || m[Object.keys(m)[0]] || []; return l[0] || (p.imagenes || [])[0] || 'images/portada.jpg'; })();
+  var precio = (p.enDescuento && p.precioDescuento) ? p.precioDescuento : p.precio;
+  var titulo = p.nombre + ' — Yuzu', desc = (p.subcategoria ? p.subcategoria + ' · ' : '') + plata(precio) + ' · Envío incluido a todo Costa Rica';
+  var destino = '../index.html#/p/' + r;
+  var html = '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<title>' + htmlAttr(titulo) + '</title>' +
+    '<meta name="description" content="' + htmlAttr(desc) + '">' +
+    '<meta property="og:type" content="product"><meta property="og:site_name" content="Yuzu">' +
+    '<meta property="og:title" content="' + htmlAttr(titulo) + '">' +
+    '<meta property="og:description" content="' + htmlAttr(desc) + '">' +
+    '<meta property="og:image" content="' + htmlAttr(base + foto) + '">' +
+    '<meta property="og:url" content="' + htmlAttr(base + 'p/' + r + '.html') + '">' +
+    '<meta name="twitter:card" content="summary_large_image">' +
+    '<meta http-equiv="refresh" content="0; url=' + htmlAttr(destino) + '">' +
+    '<script>location.replace(' + JSON.stringify(destino) + ');<\/script></head>' +
+    '<body style="background:#0b0b0a;color:#ece7db;font-family:sans-serif;text-align:center;padding:40px"><a style="color:#c3c24d" href="' + htmlAttr(destino) + '">Ver ' + htmlAttr(p.nombre) + ' en Yuzu</a></body></html>';
+  var b64 = btoa(unescape(encodeURIComponent(html)));
+  return subirArchivoFijo('p/' + r + '.html', b64, 'Vista previa: ' + p.nombre).catch(function () {});
+}
+function regenerarPaginas() {
+  if (!PRODUCTOS.length) return;
+  statusEdit('loading', 'Generando vistas previas...');
+  var cad = Promise.resolve(), n = 0;
+  PRODUCTOS.forEach(function (p) { cad = cad.then(function () { n++; statusEdit('loading', 'Vista previa ' + n + ' de ' + PRODUCTOS.length + '...'); return escribirPaginaProducto(p); }); });
+  cad.then(function () { statusEdit('ok', '✓ ' + n + ' vistas previas listas. Al compartir el link de una pieza ahora sale su foto.'); });
+}
+
+// ---------- Descuentos ----------
+var CAP_BASE = { activo: true, boton: '10% OFF', pctCorreo: 10, codCorreo: 'BIENVENIDA10', pctTel: 15, codTel: 'VIP15', formspree: '' };
+function renderDescuentos() {
+  var c = Object.assign({}, CAP_BASE, TIENDA.captura || {});
+  if (!TIENDA.captura && TIENDA._formspreeBol) c.formspree = TIENDA._formspreeBol;
+  $('capActivo').checked = !!c.activo; $('capBoton').value = c.boton; $('capPctCorreo').value = c.pctCorreo; $('capCodCorreo').value = c.codCorreo;
+  $('capPctTel').value = c.pctTel; $('capCodTel').value = c.codTel; $('capFormspree').value = c.formspree || '';
+  renderCupones();
+}
+function renderCupones() {
+  var l = TIENDA.cupones || [];
+  $('cupLista').innerHTML = l.length ? l.map(function (k, i) {
+    return '<div class="bol-fila"><div><strong>' + esc(k.codigo) + '</strong> <span class="mini" style="margin:0">' + k.pct + '%</span>' + (k.activo ? '<span class="chip dest">activo</span>' : '<span class="chip">apagado</span>') + '</div>' +
+      '<div class="acciones"><button data-cup-act="' + i + '">' + (k.activo ? '●' : '○') + '</button><button data-cup-del="' + i + '">✕</button></div></div>';
+  }).join('') : '<p class="mini">Sin códigos extra.</p>';
+}
+$('cupLista').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return;
+  var l = TIENDA.cupones || [];
+  if (b.hasAttribute('data-cup-act')) l[+b.getAttribute('data-cup-act')].activo = !l[+b.getAttribute('data-cup-act')].activo;
+  if (b.hasAttribute('data-cup-del')) l.splice(+b.getAttribute('data-cup-del'), 1);
+  renderCupones();
+});
+$('btnCupAgregar').addEventListener('click', function () {
+  var cod = $('cupNuevoCod').value.trim().toUpperCase().replace(/\s+/g, ''), pct = parseInt($('cupNuevoPct').value, 10);
+  if (!cod || !pct || pct <= 0 || pct >= 100) { statusDe('statusDesc', 'err', 'Poné código y un % entre 1 y 99.'); return; }
+  TIENDA.cupones = TIENDA.cupones || [];
+  if (TIENDA.cupones.some(function (k) { return k.codigo === cod; })) { statusDe('statusDesc', 'err', 'Ese código ya existe.'); return; }
+  TIENDA.cupones.push({ codigo: cod, pct: pct, activo: true });
+  $('cupNuevoCod').value = ''; $('cupNuevoPct').value = '';
+  renderCupones();
+  statusDe('statusDesc', 'loading', 'Tocá "Guardar descuentos" para publicarlo.');
+});
+$('btnGuardarDesc').addEventListener('click', function () {
+  var n = function (id, d) { var v = parseInt($(id).value, 10); return isNaN(v) ? d : v; };
+  TIENDA.captura = {
+    activo: $('capActivo').checked, boton: $('capBoton').value.trim() || CAP_BASE.boton,
+    pctCorreo: n('capPctCorreo', 10), codCorreo: ($('capCodCorreo').value.trim() || CAP_BASE.codCorreo).toUpperCase(),
+    pctTel: n('capPctTel', 15), codTel: ($('capCodTel').value.trim() || CAP_BASE.codTel).toUpperCase(),
+    formspree: $('capFormspree').value.trim()
+  };
+  statusDe('statusDesc', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Descuentos').then(function () {
+    statusDe('statusDesc', 'ok', '✓ Guardado.' + (TIENDA.captura.formspree ? '' : ' Ojo: sin Formspree, los correos y teléfonos no te llegan.'));
+  }).catch(function (err) { statusDe('statusDesc', 'err', err.message); });
+});
+
+// ---------- Fecha de corte ----------
+function renderCorte() {
+  var c = Object.assign({ activo: true, dia: 2, hora: '23:59', prod: 3 }, TIENDA.corte || {});
+  $('corteActivo').checked = !!c.activo; $('corteDia').value = c.dia; $('corteHora').value = c.hora; $('corteProd').value = c.prod;
+}
+$('btnGuardarCorte').addEventListener('click', function () {
+  TIENDA.corte = { activo: $('corteActivo').checked, dia: +$('corteDia').value, hora: $('corteHora').value || '23:59', prod: +$('corteProd').value };
+  statusDe('statusCorte', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Fecha de corte').then(function () { statusDe('statusCorte', 'ok', '✓ Guardado.'); })
+    .catch(function (err) { statusDe('statusCorte', 'err', err.message); });
+});
+
+// ---------- Colores por prenda ----------
+function renderColPrendas() {
+  var act = TIENDA.coloresPrenda || {};
+  $('colPrendas').innerHTML = ['sinmangas', 'mangalarga', 'hoodie'].map(function (k) {
+    var todos = YuzuMockup.COLORES_PRENDA[k], on = act[k] || todos;
+    return '<div style="margin-top:12px"><strong style="font-size:13px">' + YuzuMockup.PRENDAS[k].nombre + '</strong><div class="check-lista">' + todos.map(function (c) {
+      var foto = YuzuMockup.disponible(k, c);
+      return '<label class="check-row"><input type="checkbox" data-colp="' + k + '" value="' + esc(c) + '"' + (on.indexOf(c) !== -1 ? ' checked' : '') + '><span>' + esc(c) + (foto ? '' : ' <small style="color:var(--mudo)">(sin foto)</small>') + '</span></label>';
+    }).join('') + '</div></div>';
+  }).join('');
+}
+$('btnGuardarColPrendas').addEventListener('click', function () {
+  var out = {};
+  ['sinmangas', 'mangalarga', 'hoodie'].forEach(function (k) {
+    out[k] = Array.prototype.filter.call(document.querySelectorAll('[data-colp="' + k + '"]'), function (i) { return i.checked; }).map(function (i) { return i.value; });
+  });
+  TIENDA.coloresPrenda = out;
+  statusDe('statusColPrendas', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Colores por prenda').then(function () { statusDe('statusColPrendas', 'ok', '✓ Guardado.'); })
+    .catch(function (err) { statusDe('statusColPrendas', 'err', err.message); });
+});
+
+// ---------- Zonas de impresión (editor) ----------
+var ZE = { prenda: 'boxy', vista: 'espalda', color: 'Negro', zona: null, prueba: null };
+function llenarSelect(id, pares, val) {
+  $(id).innerHTML = pares.map(function (p) { return '<option value="' + esc(p[0]) + '"' + (p[0] === val ? ' selected' : '') + '>' + esc(p[1]) + '</option>'; }).join('');
+}
+function initZonas() {
+  llenarSelect('zPrenda', Object.keys(YuzuMockup.PRENDAS).map(function (k) { return [k, YuzuMockup.PRENDAS[k].nombre]; }), ZE.prenda);
+  llenarSelect('zVista', YuzuMockup.VISTAS.map(function (v) { return [v, YuzuMockup.NOMBRE_VISTA[v]]; }), ZE.vista);
+  cambiarZonaSel();
+}
+function cambiarZonaSel() {
+  ZE.prenda = $('zPrenda').value; ZE.vista = $('zVista').value;
+  var cols = YuzuMockup.PLANTILLAS[ZE.prenda] || [];
+  if (cols.indexOf(ZE.color) === -1) ZE.color = cols.indexOf('Negro') !== -1 ? 'Negro' : cols[0];
+  llenarSelect('zColor', cols.map(function (c) { return [c, c]; }), ZE.color);
+  ZE.color = $('zColor').value;
+  var z = YuzuMockup.ZONAS[ZE.prenda][ZE.vista];
+  ZE.zona = { x: z.x, y: z.y, w: z.w, h: z.h, alinear: z.alinear };
+  renderZona();
+}
+['zPrenda', 'zVista'].forEach(function (id) { $(id).addEventListener('change', cambiarZonaSel); });
+$('zColor').addEventListener('change', function () { ZE.color = this.value; renderZona(); });
+function pruebaZona() {
+  if (ZE.prueba) return Promise.resolve(ZE.prueba);
+  var src = YuzuMockup.RUTA + (ZE.vista === 'espalda' ? (YuzuMockup.esOscuro(ZE.color) ? 'prueba-espalda-oscura.png' : 'prueba-espalda-clara.png') : 'prueba-pecho.png');
+  return YuzuMockup.cargar(src);
+}
+function pintarCaja() {
+  var esc2 = $('zEscena').clientWidth / 1080, z = ZE.zona, c = $('zCaja');
+  c.style.left = z.x * esc2 + 'px'; c.style.top = z.y * esc2 + 'px';
+  c.style.width = z.w * esc2 + 'px'; c.style.height = z.h * esc2 + 'px';
+}
+function renderZona() {
+  pintarCaja();
+  var f = YuzuMockup.fuente(ZE.prenda, ZE.color, ZE.vista);
+  if (!f) { $('zImg').removeAttribute('src'); return; }
+  Promise.all([YuzuMockup.cargar(f.foto), pruebaZona()]).then(function (r) {
+    var cv = YuzuMockup.componer(r[0], f.tinte, [{ img: r[1], zona: ZE.zona }]);
+    $('zImg').src = cv.toDataURL('image/jpeg', 0.85);
+    var enc = YuzuMockup.encajar(r[1], ZE.zona), cm = YuzuMockup.PRENDAS[ZE.prenda].cmPx;
+    $('zMedida').textContent = 'Diseño ≈ ' + Math.round(enc.w * cm) + ' × ' + Math.round(enc.h * cm) + ' cm  ·  recuadro ' + Math.round(ZE.zona.w * cm) + ' × ' + Math.round(ZE.zona.h * cm) + ' cm';
+  }).catch(function (e) { statusDe('statusZona', 'err', e.message + ' — ¿subiste la carpeta images/plantillas?'); });
+}
+(function () {
+  var modo = null, ini = null;
+  function punto(e) { return { x: e.clientX, y: e.clientY }; }
+  $('zCaja').addEventListener('pointerdown', function (e) {
+    modo = e.target === $('zAsa') ? 'estirar' : 'mover';
+    ini = { p: punto(e), z: JSON.parse(JSON.stringify(ZE.zona)) };
+    this.setPointerCapture(e.pointerId); e.preventDefault();
+  });
+  $('zCaja').addEventListener('pointermove', function (e) {
+    if (!modo) return;
+    var esc2 = $('zEscena').clientWidth / 1080, p = punto(e);
+    var dx = (p.x - ini.p.x) / esc2, dy = (p.y - ini.p.y) / esc2, z = ZE.zona;
+    if (modo === 'mover') { z.x = Math.round(Math.max(0, Math.min(1080 - z.w, ini.z.x + dx))); z.y = Math.round(Math.max(0, Math.min(1440 - z.h, ini.z.y + dy))); }
+    else { z.w = Math.round(Math.max(20, Math.min(1080 - z.x, ini.z.w + dx))); z.h = Math.round(Math.max(20, Math.min(1440 - z.y, ini.z.h + dy))); }
+    pintarCaja();
+  });
+  function soltar() { if (modo) { modo = null; renderZona(); } }
+  $('zCaja').addEventListener('pointerup', soltar);
+  $('zCaja').addEventListener('pointercancel', soltar);
+  window.addEventListener('resize', function () { if (ZE.zona) pintarCaja(); });
+})();
+$('zPrueba').addEventListener('change', function (e) {
+  if (!e.target.files.length) { ZE.prueba = null; renderZona(); return; }
+  leerPNG(e.target.files[0]).then(function (r) { ZE.prueba = r.img; renderZona(); });
+});
+$('btnZonaGuardar').addEventListener('click', function () {
+  TIENDA.mockup = TIENDA.mockup || {};
+  TIENDA.mockup.zonas = TIENDA.mockup.zonas || {};
+  TIENDA.mockup.zonas[ZE.prenda] = TIENDA.mockup.zonas[ZE.prenda] || {};
+  TIENDA.mockup.zonas[ZE.prenda][ZE.vista] = { x: ZE.zona.x, y: ZE.zona.y, w: ZE.zona.w, h: ZE.zona.h, alinear: ZE.zona.alinear };
+  aplicarCfgMockup();
+  statusDe('statusZona', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Zona ' + ZE.prenda + ' ' + ZE.vista).then(function () {
+    statusDe('statusZona', 'ok', '✓ Zona de ' + YuzuMockup.PRENDAS[ZE.prenda].nombre.toLowerCase() + ' · ' + YuzuMockup.NOMBRE_VISTA[ZE.vista].toLowerCase() + ' guardada.');
+    EDN.preview();
+  }).catch(function (err) { statusDe('statusZona', 'err', err.message); });
+});
+$('btnZonaReset').addEventListener('click', function () {
+  var z = ZONAS_BASE[ZE.prenda][ZE.vista];
+  ZE.zona = { x: z.x, y: z.y, w: z.w, h: z.h, alinear: z.alinear };
+  renderZona();
+  statusDe('statusZona', 'ok', 'Restablecida. Tocá "Guardar zona" para confirmar.');
+});
+
+// ---------- Plantillas por color ----------
+var PL_ARCHIVOS = {};
+function initPlantillas() {
+  $('plantLista').innerHTML = Object.keys(YuzuMockup.PRENDAS).map(function (k) {
+    var cols = YuzuMockup.PLANTILLAS[k] || [];
+    return '<div><strong>' + YuzuMockup.PRENDAS[k].nombre + ':</strong> ' + (cols.length ? cols.join(', ') : 'sin fotos') + '</div>';
+  }).join('');
+  llenarSelect('plPrenda', Object.keys(YuzuMockup.PRENDAS).map(function (k) { return [k, YuzuMockup.PRENDAS[k].nombre]; }), $('plPrenda').value || 'boxy');
+  llenarSelect('plColor', Object.keys(YuzuMockup.HEX).map(function (c) { return [c, c]; }), $('plColor').value || 'Crema');
+}
+function a1080(file) {
+  return new Promise(function (ok, mal) {
+    var rd = new FileReader();
+    rd.onload = function () {
+      var im = new Image();
+      im.onload = function () {
+        var cv = document.createElement('canvas'); cv.width = 1080; cv.height = 1440;
+        var ctx = cv.getContext('2d');
+        var tmp = document.createElement('canvas'); tmp.width = 1; tmp.height = 1; tmp.getContext('2d').drawImage(im, 0, 0, 1, 1, 0, 0, 1, 1);
+        var px = tmp.getContext('2d').getImageData(0, 0, 1, 1).data;
+        ctx.fillStyle = 'rgb(' + px[0] + ',' + px[1] + ',' + px[2] + ')'; ctx.fillRect(0, 0, 1080, 1440);
+        var e = Math.min(1080 / im.width, 1440 / im.height), w = im.width * e, h = im.height * e;
+        ctx.imageSmoothingQuality = 'high'; ctx.drawImage(im, (1080 - w) / 2, (1440 - h) / 2, w, h);
+        var url = cv.toDataURL('image/jpeg', 0.92);
+        ok({ base64: url.split(',')[1], preview: url, exacta: im.width === 1080 && im.height === 1440 });
+      };
+      im.onerror = function () { mal(new Error('No pude leer la imagen.')); };
+      im.src = rd.result;
+    };
+    rd.readAsDataURL(file);
+  });
+}
+$('plGrid').addEventListener('change', function (e) {
+  var slot = e.target.closest('[data-pl]'); if (!slot || !e.target.files.length) return;
+  var v = slot.getAttribute('data-pl');
+  a1080(e.target.files[0]).then(function (r) {
+    PL_ARCHIVOS[v] = r; slot.querySelector('img').src = r.preview; slot.classList.add('lleno');
+    if (!r.exacta) statusDe('statusPl', 'loading', 'Ojo: la foto de ' + v + ' no era 1080 × 1440; la ajusté, revisá que el encuadre coincida.');
+  });
+  e.target.value = '';
+});
+$('btnPlSubir').addEventListener('click', function () {
+  var prenda = $('plPrenda').value, color = $('plColor').value;
+  var vistas = Object.keys(PL_ARCHIVOS);
+  if (vistas.length < 3) { statusDe('statusPl', 'err', 'Subí las tres fotos: frente, espalda y lado.'); return; }
+  statusDe('statusPl', 'loading', 'Subiendo...');
+  var cadena = Promise.resolve();
+  vistas.forEach(function (v) {
+    cadena = cadena.then(function () { return subirArchivoFijo(YuzuMockup.RUTA + prenda + '-' + YuzuMockup.slug(color) + '-' + v + '.jpg', PL_ARCHIVOS[v].base64, 'Plantilla ' + prenda + ' ' + color + ' ' + v); });
+  });
+  cadena.then(function () {
+    TIENDA.mockup = TIENDA.mockup || {};
+    TIENDA.mockup.plantillas = TIENDA.mockup.plantillas || JSON.parse(JSON.stringify(YuzuMockup.PLANTILLAS));
+    var l = TIENDA.mockup.plantillas[prenda] = TIENDA.mockup.plantillas[prenda] || [];
+    if (l.indexOf(color) === -1) l.push(color);
+    aplicarCfgMockup();
+    return guardarJSON('data/tienda.json', TIENDA, 'Plantilla ' + prenda + ' ' + color);
+  }).then(function () {
+    statusDe('statusPl', 'ok', '✓ ' + color + ' listo para ' + YuzuMockup.PRENDAS[prenda].nombre.toLowerCase() + '. Se ve en 1–2 minutos.');
+    PL_ARCHIVOS = {};
+    Array.prototype.forEach.call(document.querySelectorAll('#plGrid .png-slot'), function (s) { s.classList.remove('lleno'); s.querySelector('img').removeAttribute('src'); });
+    initPlantillas(); initZonas();
+  }).catch(function (err) { statusDe('statusPl', 'err', err.message); });
 });
 
 // ---------- Precios ----------
