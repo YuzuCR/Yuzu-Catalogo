@@ -341,6 +341,12 @@
         <button class="btn btn-sec" id="btnPrecioTodos">Precio a todos</button>
         <button class="btn btn-sec" id="btnPaginas">Vistas previas al compartir</button>
         <button class="btn btn-sec" id="btnBorrarLote" style="color:var(--rojo);border-color:var(--rojo);">Borrar en lote</button>
+        <button class="btn btn-sec" id="btnLimpiar">Limpiar archivos sin usar</button>
+      </div>
+      <div id="limpieza" style="display:none;margin-top:12px;border:1px solid var(--linea);border-radius:8px;padding:12px;">
+        <div class="status" id="statusLimp"></div>
+        <div id="limpLista" style="max-height:340px;overflow:auto"></div>
+        <div class="row" style="margin-top:10px"><button class="btn" id="btnLimpBorrar" style="display:none;background:var(--rojo);border-color:var(--rojo);">Borrar seleccionados</button><button class="btn btn-sec" id="btnLimpCerrar">Cerrar</button></div>
       </div>
       <div id="listaProductos" style="margin-top:14px;"></div>
       <div class="status" id="statusEdit"></div>
@@ -451,6 +457,18 @@
         <button class="btn btn-sec" id="btnZonaReset" style="flex:1">Restablecer</button>
       </div>
       <div class="status" id="statusZona"></div>
+    </div>
+
+    <div class="card">
+      <h2>Logo en el pecho</h2>
+      <p class="mini" style="margin-top:0">Si un diseño no trae PNG de pecho, el mockup lleva este logo en el frente (y entra en la lámina DTF). PNG transparente, recortado al borde.</p>
+      <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="logoActivo" checked> Usar logo cuando no hay diseño de pecho</label>
+      <div class="png-grid" style="grid-template-columns:repeat(2,1fr);margin-top:10px" id="logoGrid">
+        <label class="png-slot" data-logo="claro" style="background:#111"><input type="file" accept="image/png"><img alt=""><span>Logo claro<br><small>(va en telas oscuras)</small></span></label>
+        <label class="png-slot" data-logo="oscuro" style="background:#eee;color:#333"><input type="file" accept="image/png"><img alt=""><span>Logo oscuro<br><small>(va en telas claras)</small></span></label>
+      </div>
+      <button class="btn btn-sec" id="btnLogoGuardar">Guardar logo</button>
+      <div class="status" id="statusLogo"></div>
     </div>
 
     <div class="card">
@@ -1728,6 +1746,72 @@ $('btnAgregarBloque').addEventListener('click', function() {
 });
 
 // ============================================================
+// LIMPIAR ARCHIVOS SIN USAR (imágenes y páginas huérfanas)
+// ============================================================
+var HUERFANOS = [];
+function statusLimp(t, m) { var el = $('statusLimp'); el.className = 'status show ' + t; el.textContent = m; }
+function buscarHuerfanos() {
+  var cfg = getConfig(), H = { Authorization: 'token ' + cfg.token };
+  $('limpieza').style.display = 'block'; $('limpLista').innerHTML = ''; $('btnLimpBorrar').style.display = 'none';
+  statusLimp('', 'Revisando el repo…');
+  var arbol = fetch('https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo + '/git/trees/HEAD?recursive=1', { headers: H })
+    .then(function (r) { if (!r.ok) throw new Error('No pude leer la lista de archivos (' + r.status + ')'); return r.json(); });
+  var datos = ['products', 'categorias', 'tienda', 'resenas', 'boletines', 'ventas', 'estudio'].map(function (n) {
+    return ghGet('data/' + n + '.json').then(function (r) { return JSON.stringify(r.content); }).catch(function () { return ''; });
+  });
+  var paginas = ['index.html', 'estudio.html'].map(function (f) {
+    return ghGet0(f).catch(function () { return ''; });
+  });
+  Promise.all([arbol, Promise.all(datos), Promise.all(paginas)]).then(function (r) {
+    var texto = r[1].join('\n') + '\n' + r[2].join('\n');
+    var refs = {}; PRODUCTOS.forEach(function (p) { refs['p/YZ-' + String(p.id).slice(-4) + '.html'] = 1; });
+    var fijas = {}; IMGS_FIJAS.forEach(function (f) { fijas[f.ruta] = 1; });
+    HUERFANOS = (r[0].tree || []).filter(function (f) {
+      if (f.type !== 'blob') return false;
+      var p = f.path;
+      if (/^p\/YZ-[^/]+\.html$/.test(p)) return !refs[p];
+      if (p.indexOf('images/') !== 0) return false;
+      if (p.indexOf('images/plantillas/') === 0 || fijas[p]) return false;
+      return texto.indexOf(p) === -1;
+    });
+    if (!HUERFANOS.length) { statusLimp('ok', 'Todo limpio: no hay archivos sin usar.'); return; }
+    var peso = HUERFANOS.reduce(function (s, f) { return s + (f.size || 0); }, 0);
+    statusLimp('', HUERFANOS.length + ' archivo(s) que ningún producto, reseña, banner ni página usa (' + (peso / 1048576).toFixed(1) + ' MB). Desmarcá los que querás conservar.');
+    $('limpLista').innerHTML = '<label style="display:flex;gap:8px;align-items:center;font-size:12px;margin:8px 0"><input type="checkbox" id="limpTodos" checked> Marcar todos</label>' +
+      HUERFANOS.map(function (f, i) { return '<label style="display:flex;gap:8px;align-items:center;font-size:11px;padding:4px 0;border-bottom:1px solid var(--linea);word-break:break-all"><input type="checkbox" data-huerfano="' + i + '" checked>' + esc(f.path) + ' <span style="color:var(--mudo);margin-left:auto;white-space:nowrap">' + Math.round((f.size || 0) / 1024) + ' KB</span></label>'; }).join('');
+    $('btnLimpBorrar').style.display = 'inline-block';
+  }).catch(function (e) { statusLimp('err', 'Error: ' + e.message); });
+}
+function ghGet0(path) {
+  return fetch(urlDe(path), { headers: { Authorization: 'token ' + getConfig().token } }).then(function (r) { return r.ok ? r.json() : { content: '' }; })
+    .then(function (d) { return d.content ? decodeURIComponent(escape(atob(d.content.replace(/\n/g, '')))) : ''; });
+}
+$('btnLimpiar').addEventListener('click', buscarHuerfanos);
+$('btnLimpCerrar').addEventListener('click', function () { $('limpieza').style.display = 'none'; });
+$('limpLista').addEventListener('change', function (e) {
+  if (e.target.id === 'limpTodos') Array.prototype.forEach.call($('limpLista').querySelectorAll('[data-huerfano]'), function (c) { c.checked = e.target.checked; });
+});
+$('btnLimpBorrar').addEventListener('click', function () {
+  var sel = Array.prototype.filter.call($('limpLista').querySelectorAll('[data-huerfano]'), function (c) { return c.checked; }).map(function (c) { return HUERFANOS[+c.getAttribute('data-huerfano')]; });
+  if (!sel.length) return;
+  var escrito = prompt('Vas a borrar ' + sel.length + ' archivo(s) del repo. No se puede deshacer.\n\nEscribí BORRAR para confirmar:');
+  if (!escrito || escrito.trim().toUpperCase() !== 'BORRAR') return;
+  var cfg = getConfig(), hechas = 0, fallos = 0, cadena = Promise.resolve();
+  $('btnLimpBorrar').style.display = 'none';
+  sel.forEach(function (f) {
+    cadena = cadena.then(function () {
+      statusLimp('', 'Borrando ' + (hechas + fallos + 1) + ' de ' + sel.length + '…');
+      return fetch(urlDe(f.path), { method: 'DELETE', headers: { Authorization: 'token ' + cfg.token, 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'Limpieza: ' + f.path, sha: f.sha }) })
+        .then(function (r) { if (r.ok) hechas++; else fallos++; }).catch(function () { fallos++; });
+    });
+  });
+  cadena.then(function () {
+    $('limpLista').innerHTML = '';
+    statusLimp(fallos ? 'err' : 'ok', '✓ ' + hechas + ' archivo(s) borrados' + (fallos ? ', ' + fallos + ' fallaron (volvé a buscar e intentá otra vez)' : '') + '.');
+  });
+});
+
+// ============================================================
 // 3. TABS
 // ============================================================
 $('tabs').addEventListener('click', function(e) {
@@ -1917,6 +2001,7 @@ function piezasLamina() {
       if (campo === 'manga' && sinManga) return;
       var ruta = (ver.print || {})[campo] || ver[campo];
       if (!ruta && campo !== 'espalda') vs.forEach(function (x) { if (!ruta) ruta = (x.print || {})[campo] || x[campo]; });
+      if (!ruta && campo === 'pecho' && !ver.sinLogo) ruta = YuzuMockup.logoPara(v.color);
       if (ruta) piezas.push({ ruta: ruta, caja: cajas[campo], etiqueta: (v.pedido || '') + ' ' + p.nombre + ' ' + campo });
     });
   });
@@ -2084,7 +2169,7 @@ function cargarTienda() {
     var t = r[0].content || {};
     var bolFs = (BOLETINES.filter(function (b) { return b.activo && b.formspree; })[0] || {}).formspree || '';
     TIENDA = t; ['nombres', 'precios', 'mockup'].forEach(function (k) { TIENDA[k] = TIENDA[k] || {}; }); TIENDA.banners = TIENDA.banners || []; TIENDA.drops = TIENDA.drops || null; TIENDA._formspreeBol = bolFs;
-    aplicarCfgMockup(); initZonas(); initPlantillas(); renderDescuentos(); renderCorte(); renderColPrendas();
+    aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); renderDescuentos(); renderCorte(); renderColPrendas();
     RESENAS = Array.isArray(r[1].content) ? r[1].content : [];
     renderImgsFijas(); renderPrecios(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
   });
@@ -2629,6 +2714,37 @@ $('btnZonaReset').addEventListener('click', function () {
 
 // ---------- Plantillas por color ----------
 var PL_ARCHIVOS = {};
+var LOGO_NUEVO = {};
+function initLogo() {
+  var l = (TIENDA.mockup && TIENDA.mockup.logoPecho) || {};
+  $('logoActivo').checked = l.activo !== false;
+  ['claro', 'oscuro'].forEach(function (k) {
+    var slot = document.querySelector('[data-logo="' + k + '"]'), img = slot.querySelector('img');
+    if (l[k]) { img.src = l[k] + '?t=' + Date.now(); slot.classList.add('lleno'); } else { img.removeAttribute('src'); slot.classList.remove('lleno'); }
+  });
+}
+$('logoGrid').addEventListener('change', function (e) {
+  var slot = e.target.closest('[data-logo]'); if (!slot || !e.target.files.length) return;
+  var k = slot.getAttribute('data-logo');
+  leerPNG(e.target.files[0]).then(function (r) { LOGO_NUEVO[k] = r; slot.querySelector('img').src = r.preview; slot.classList.add('lleno'); })
+    .catch(function (err) { statusDe('statusLogo', 'err', err.message); });
+  e.target.value = '';
+});
+$('btnLogoGuardar').addEventListener('click', function () {
+  TIENDA.mockup = TIENDA.mockup || {};
+  var l = TIENDA.mockup.logoPecho = TIENDA.mockup.logoPecho || {};
+  l.activo = $('logoActivo').checked;
+  statusDe('statusLogo', 'loading', 'Guardando...');
+  var cadena = Promise.resolve();
+  Object.keys(LOGO_NUEVO).forEach(function (k) {
+    var ruta = 'images/disenos/logo-pecho-' + k + '.png';
+    cadena = cadena.then(function () { return subirArchivoFijo(ruta, LOGO_NUEVO[k].base64, 'Logo pecho ' + k); }).then(function () { l[k] = ruta; });
+  });
+  cadena.then(function () { return guardarJSON('data/tienda.json', TIENDA, 'Logo de pecho'); }).then(function () {
+    LOGO_NUEVO = {}; aplicarCfgMockup(); if (window.EDN) EDN.preview();
+    statusDe('statusLogo', 'ok', '✓ Guardado. Los productos sin pecho ya muestran el logo (regenerá con ◐ los que tengan mockups guardados).');
+  }).catch(function (err) { statusDe('statusLogo', 'err', err.message); });
+});
 function initPlantillas() {
   $('plantLista').innerHTML = Object.keys(YuzuMockup.PRENDAS).map(function (k) {
     var cols = YuzuMockup.PLANTILLAS[k] || [];
