@@ -1,1 +1,114 @@
-[]
+[
+  {
+    "id": 1790904455558,
+    "nombre": "Eren 001",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "imagenes": [
+      "images/eren-001-gal-1790904455558-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/eren-001-blanco-1790904455558-0.jpg",
+        "images/eren-001-blanco-1790904455558-1.jpg"
+      ],
+      "Negro": [
+        "images/eren-001-negro-1790904455558-2.jpg",
+        "images/eren-001-negro-1790904455558-3.jpg"
+      ],
+      "Crema": [
+        "images/eren-001-crema-1790904455558-4.jpg",
+        "images/eren-001-crema-1790904455558-5.jpg"
+      ],
+      "Café": [
+        "images/eren-001-cafe-1790904455558-6.jpg",
+        "images/eren-001-cafe-1790904455558-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/eren-001-gris-grafito-1790904455558-8.jpg",
+        "images/eren-001-gris-grafito-1790904455558-9.jpg"
+      ],
+      "Azul marino": [
+        "images/eren-001-azul-marino-1790904455558-10.jpg",
+        "images/eren-001-azul-marino-1790904455558-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/eren-001-verde-musgo-1790904455558-12.jpg",
+        "images/eren-001-verde-musgo-1790904455558-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 18900,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro"
+        ],
+        "print": {
+          "espalda": "images/disenos/print/eren-001-1790904455558-v1-espalda.png",
+          "pecho": "images/disenos/print/eren-001-1790904455558-v1-pecho.png"
+        },
+        "espalda": "images/disenos/eren-001-1790904455558-v1-espalda.png",
+        "pecho": "images/disenos/eren-001-1790904455558-v1-pecho.png"
+      },
+      {
+        "nombre": "Versión 2",
+        "colores": [
+          "Blanco",
+          "Crema",
+          "Café",
+          "Gris grafito",
+          "Azul marino",
+          "Verde musgo",
+          "Gris jaspeado",
+          "Rojo",
+          "Azul navy",
+          "Azul royal",
+          "Amarillo",
+          "Verde perico"
+        ],
+        "print": {
+          "espalda": "images/disenos/print/eren-001-1790904455558-v2-espalda.png",
+          "pecho": "images/disenos/print/eren-001-1790904455558-v2-pecho.png"
+        },
+        "espalda": "images/disenos/eren-001-1790904455558-v2-espalda.png",
+        "pecho": "images/disenos/eren-001-1790904455558-v2-pecho.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 541.3,
+          "cy": 753.6,
+          "w": 425.6
+        },
+        "frente": {
+          "cx": 652.5,
+          "cy": 557.3,
+          "w": 61.4
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
+  }
+]
