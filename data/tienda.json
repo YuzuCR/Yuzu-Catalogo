@@ -48,6 +48,15 @@
           "h": 366,
           "alinear": "centro"
         }
+      },
+      "sinmangas": {
+        "espalda": {
+          "x": 269,
+          "y": 357,
+          "w": 549,
+          "h": 711,
+          "alinear": "arriba"
+        }
       }
     }
   }
