@@ -7,9 +7,13 @@
 var YuzuMockup = (function () {
   var RUTA = 'images/plantillas/';
   var VISTAS = ['espalda', 'frente', 'lado'];
-  var NOMBRE_VISTA = { espalda: 'Espalda', frente: 'Frente', lado: 'Lado / manga' };
-  // Qué diseño va en cada vista
-  var DISENO_DE_VISTA = { espalda: 'espalda', frente: 'pecho', lado: 'manga' };
+  var NOMBRE_VISTA = { espalda: 'Espalda', frente: 'Frente', lado: 'Lado' };
+  // Piezas de diseño: cada una tiene su archivo, su zona y su posición, y se pinta sobre una de las fotos (vistas).
+  // La foto de lado lleva dos piezas: la manga y el costado (abdomen, o donde lo arrastres: gorro del hoodie, etc.)
+  var PIEZAS = ['espalda', 'frente', 'lado', 'costado'];
+  var NOMBRE_PIEZA = { espalda: 'Espalda', frente: 'Pecho', lado: 'Manga', costado: 'Costado' };
+  var FOTO_DE = { espalda: 'espalda', frente: 'frente', lado: 'lado', costado: 'lado' };
+  var DISENO_DE_VISTA = { espalda: 'espalda', frente: 'pecho', lado: 'manga', costado: 'costado' };
 
   // cmPx = centímetros por píxel en la foto (aprox., talla L) para mostrar medidas reales
   var PRENDAS = {
@@ -33,22 +37,26 @@ var YuzuMockup = (function () {
     boxy: {
       espalda: { x: 420, y: 330, w: 240, h: 345, alinear: 'arriba' },
       frente: { x: 627, y: 350, w: 82, h: 90, alinear: 'centro' },
-      lado: { x: 580, y: 613, w: 64, h: 70, alinear: 'centro' }
+      lado: { x: 580, y: 613, w: 64, h: 70, alinear: 'centro' },
+      costado: { x: 470, y: 900, w: 120, h: 160, alinear: 'centro' }
     },
     sinmangas: {
       espalda: { x: 400, y: 300, w: 280, h: 400, alinear: 'arriba' },
       frente: { x: 610, y: 330, w: 80, h: 85, alinear: 'centro' },
-      lado: { x: 505, y: 560, w: 70, h: 80, alinear: 'centro' }
+      lado: { x: 505, y: 560, w: 70, h: 80, alinear: 'centro' },
+      costado: { x: 430, y: 820, w: 130, h: 180, alinear: 'centro' }
     },
     mangalarga: {
       espalda: { x: 400, y: 290, w: 280, h: 400, alinear: 'arriba' },
       frente: { x: 615, y: 330, w: 80, h: 85, alinear: 'centro' },
-      lado: { x: 470, y: 520, w: 70, h: 240, alinear: 'centro' }
+      lado: { x: 470, y: 520, w: 70, h: 240, alinear: 'centro' },
+      costado: { x: 560, y: 900, w: 100, h: 160, alinear: 'centro' }
     },
     hoodie: {
       espalda: { x: 400, y: 480, w: 280, h: 400, alinear: 'arriba' },
       frente: { x: 600, y: 420, w: 85, h: 90, alinear: 'centro' },
-      lado: { x: 500, y: 560, w: 80, h: 200, alinear: 'centro' }
+      lado: { x: 500, y: 560, w: 80, h: 200, alinear: 'centro' },
+      costado: { x: 600, y: 850, w: 120, h: 160, alinear: 'centro' }
     }
   };
 
@@ -61,7 +69,7 @@ var YuzuMockup = (function () {
   };
 
   var HEX = {
-    'Blanco': '#f2f0eb', 'Negro': '#1a1a1a', 'Crema': '#efe4cc', 'Café': '#6b4a35',
+    'Blanco': '#f2f0eb', 'Negro': '#1a1a1a', 'Crema': '#c6a88d', 'Café': '#6b4a35',
     'Gris grafito': '#4a4a4a', 'Azul marino': '#1f2f4f', 'Verde musgo': '#55634a',
     'Gris jaspeado': '#b4b4b1', 'Rojo': '#c62828', 'Azul navy': '#1f2a44',
     'Azul royal': '#1e4fb5', 'Amarillo': '#f2c318', 'Verde perico': '#1f9e3a'
@@ -147,6 +155,13 @@ var YuzuMockup = (function () {
     var c = !sinColor && pp.colores && pp.colores[color] && pp.colores[color][vista];
     return c || pp[vista] || null;
   }
+  // Lo heredado nunca se sale de la prenda: como máximo, la zona agrandada un 30% a lo ancho y 25% a lo alto
+  function limitar(r, z) {
+    var L = { x: z.x - z.w * 0.15, y: z.y - z.h * 0.12, w: z.w * 1.3, h: z.h * 1.25 };
+    var e = Math.min(1, L.w / r.w, L.h / r.h), cx = r.x + r.w / 2, cy = r.y + r.h / 2, w = r.w * e, h = r.h * e;
+    var x = Math.min(Math.max(cx - w / 2, L.x), L.x + L.w - w), y = Math.min(Math.max(cy - h / 2, L.y), L.y + L.h - h);
+    return { x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h) };
+  }
   // De dónde sale la posición: 'color' | 'prenda' | 'boxy' (heredada) | 'inicial'
   function origenPos(ajuste, prenda, color, vista) {
     if (!ajuste || ajuste.v !== 2) return 'inicial';
@@ -165,7 +180,7 @@ var YuzuMockup = (function () {
       if (prenda !== 'boxy' && ajuste.boxy && ajuste.boxy[vista] && ZONAS.boxy[vista]) {
         // Heredar de la boxy, adaptado a la zona de esta prenda
         var zo = ZONAS.boxy[vista], q = ajuste.boxy[vista];
-        return aRect(img, { cx: z.x + (q.cx - zo.x) / zo.w * z.w, cy: z.y + (q.cy - zo.y) / zo.h * z.h, w: q.w / zo.w * z.w });
+        return limitar(aRect(img, { cx: z.x + (q.cx - zo.x) / zo.w * z.w, cy: z.y + (q.cy - zo.y) / zo.h * z.h, w: q.w / zo.w * z.w }), z);
       }
       return encajar(img, z);
     }
@@ -274,17 +289,20 @@ var YuzuMockup = (function () {
 
   // Genera una vista → canvas (o null si no hay diseño para esa vista)
   function generar(prenda, color, vista, versiones, iVersion, ajuste) {
-    var src = disenoDe(versiones, iVersion, vista, color);
     var f = fuente(prenda, color, vista);
-    if (!src || !f) return Promise.resolve(null);
-    if (!(ZONAS[prenda] || {})[vista]) return Promise.resolve(null);
-    return Promise.all([cargar(f.foto), typeof src === 'string' ? cargar(src) : Promise.resolve(src)]).then(function (r) {
-      return componer(r[0], f.tinte, [{ img: r[1], rect: rectDiseno(prenda, color, vista, r[1], ajuste) }]);
+    if (!f) return Promise.resolve(null);
+    var piezas = PIEZAS.filter(function (pz) { return FOTO_DE[pz] === vista && (ZONAS[prenda] || {})[pz] && disenoDe(versiones, iVersion, pz, color); });
+    if (!piezas.length) return Promise.resolve(null);
+    return Promise.all([cargar(f.foto)].concat(piezas.map(function (pz) {
+      var src = disenoDe(versiones, iVersion, pz, color);
+      return typeof src === 'string' ? cargar(src) : Promise.resolve(src);
+    }))).then(function (r) {
+      return componer(r[0], f.tinte, piezas.map(function (pz, k) { return { img: r[k + 1], rect: rectDiseno(prenda, color, pz, r[k + 1], ajuste) }; }));
     });
   }
   // Solo la prenda (sin diseño), para el editor de posición
   function base(prenda, color, vista) {
-    var f = fuente(prenda, color, vista); if (!f) return Promise.resolve(null);
+    var f = fuente(prenda, color, FOTO_DE[vista] || vista); if (!f) return Promise.resolve(null);
     return cargar(f.foto).then(function (foto) { return componer(foto, f.tinte, []); });
   }
   // Todas las vistas con diseño, en orden espalda → frente → lado
@@ -294,7 +312,7 @@ var YuzuMockup = (function () {
   }
 
   return {
-    RUTA: RUTA, VISTAS: VISTAS, NOMBRE_VISTA: NOMBRE_VISTA, PRENDAS: PRENDAS, PLANTILLAS: PLANTILLAS, ZONAS: ZONAS, HEX: HEX,
+    RUTA: RUTA, VISTAS: VISTAS, NOMBRE_VISTA: NOMBRE_VISTA, PIEZAS: PIEZAS, NOMBRE_PIEZA: NOMBRE_PIEZA, FOTO_DE: FOTO_DE, PRENDAS: PRENDAS, PLANTILLAS: PLANTILLAS, ZONAS: ZONAS, HEX: HEX,
     slug: slug, configurar: configurar, cargar: cargar, fuente: fuente, disponible: disponible, esOscuro: esOscuro,
     zonaAjustada: zonaAjustada, encajar: encajar, componer: componer, generar: generar, generarTodas: generarTodas,
     COLORES_PRENDA: COLORES_PRENDA, versionesDe: versionesDe, recomendada: recomendada, recomendadaPara: recomendadaPara, archivoDe: archivoDe, LOGO: LOGO, logoPara: logoPara, ajusteDe: ajusteDe, disenoDe: disenoDe, rectDiseno: rectDiseno, aRect: aRect, deRect: deRect, posGuardada: posGuardada, origenPos: origenPos, base: base, DISENO_DE_VISTA: DISENO_DE_VISTA

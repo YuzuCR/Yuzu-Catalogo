@@ -503,6 +503,14 @@
     </div>
 
     <div class="card">
+      <h2>Archivos de impresión (privados)</h2>
+      <p class="mini" style="margin-top:0">Tu repo de la tienda es público: cualquiera puede bajar lo que hay ahí. Los PNG en calidad de imprenta van en un repo <strong>privado</strong> aparte; la tienda solo usa una versión liviana (1000 px) que sirve para ver, no para imprimir.<br>1) En GitHub creá un repo nuevo, privado (ej: <em>Yuzu-Privado</em>). 2) En tu token agregá ese repo con permiso Contents: lectura y escritura. 3) Escribí el nombre acá.</p>
+      <label>Repo privado</label><input type="text" id="privRepo" placeholder="Yuzu-Privado">
+      <div class="row"><button class="btn btn-sec" id="btnPrivProbar">Guardar y probar</button><button class="btn btn-sec" id="btnPrivMover">Mover los que están en el público</button></div>
+      <div class="status" id="statusPriv"></div>
+    </div>
+
+    <div class="card">
       <h2>Logo en el pecho</h2>
       <p class="mini" style="margin-top:0">Si un diseño no trae PNG de pecho, el mockup lleva este logo en el frente (y entra en la lámina DTF). PNG transparente, recortado al borde.</p>
       <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="logoActivo" checked> Usar logo cuando no hay diseño de pecho</label>
@@ -744,7 +752,7 @@ function plata(n) { return '₡' + Number(n).toLocaleString('es-CR'); }
 var COLORES = [
   { name: 'Blanco', hex: '#ffffff' },
   { name: 'Negro', hex: '#1a1a1a' },
-  { name: 'Crema', hex: '#f0e6d2' },
+  { name: 'Crema', hex: '#c9ab8f' },
   { name: 'Café', hex: '#6b4a35' },
   { name: 'Gris grafito', hex: '#4a4a4a' },
   { name: 'Azul marino', hex: '#1b3a5c' },
@@ -2016,7 +2024,10 @@ function cargarPrint(ruta, recortar) {
   if (CACHE_PRINT[k]) return CACHE_PRINT[k];
   var cfg = getConfig();
   var intentar = function (src) { return new Promise(function (ok, mal) { var im = new Image(); im.crossOrigin = 'anonymous'; im.onload = function () { ok(im); }; im.onerror = mal; im.src = src; }); };
-  CACHE_PRINT[k] = intentar(ruta + '?t=' + Date.now()).catch(function () { return intentar('https://raw.githubusercontent.com/' + cfg.owner + '/' + cfg.repo + '/HEAD/' + ruta); }).then(function (im) {
+  var carga = String(ruta).indexOf('privado:') === 0
+    ? rawBlob(urlPriv(ruta.slice(8))).then(function (b) { return intentar(URL.createObjectURL(b)); })
+    : intentar(ruta + '?t=' + Date.now()).catch(function () { return intentar('https://raw.githubusercontent.com/' + cfg.owner + '/' + cfg.repo + '/HEAD/' + ruta); });
+  CACHE_PRINT[k] = carga.then(function (im) {
     im._ow = im.naturalWidth; im._oh = im.naturalHeight;
     if (!recortar) return im;
     var c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight;
@@ -2032,7 +2043,7 @@ function cargarPrint(ruta, recortar) {
   return CACHE_PRINT[k];
 }
 function piezasLamina() {
-  var cajas = { espalda: [+$('dtfEspW').value, +$('dtfEspH').value], pecho: [+$('dtfPecW').value, +$('dtfPecH').value], manga: [+$('dtfManW').value, +$('dtfManH').value] };
+  var cajas = { espalda: [+$('dtfEspW').value, +$('dtfEspH').value], pecho: [+$('dtfPecW').value, +$('dtfPecH').value], manga: [+$('dtfManW').value, +$('dtfManH').value], costado: [+$('dtfManW').value, +$('dtfManH').value] };
   var piezas = [], faltan = [];
   pendientes().forEach(function (v) {
     var p = PRODUCTOS.filter(function (x) { return x.id === v.productoId; })[0];
@@ -2043,12 +2054,12 @@ function piezasLamina() {
     if (vi < 0) vi = YuzuMockup.recomendada(vs, v.color);
     var ver = vs[vi], sinManga = /sin mangas/i.test(v.prenda || '');
     var prendaId = 'boxy'; Object.keys(YuzuMockup.PRENDAS).forEach(function (k) { if (YuzuMockup.PRENDAS[k].nombre === v.prenda) prendaId = k; });
-    ['espalda', 'pecho', 'manga'].forEach(function (campo) {
+    ['espalda', 'pecho', 'manga', 'costado'].forEach(function (campo) {
       if (campo === 'manga' && sinManga) return;
       var ruta = (ver.print || {})[campo] || ver[campo];
       if (!ruta && campo !== 'espalda') vs.forEach(function (x) { if (!ruta) ruta = (x.print || {})[campo] || x[campo]; });
       if (!ruta && campo === 'pecho' && !ver.sinLogo) ruta = YuzuMockup.logoPara(v.color);
-      if (ruta) piezas.push({ ruta: ruta, caja: cajas[campo], etiqueta: (v.pedido || '') + ' ' + p.nombre + ' ' + campo, prenda: prendaId, color: v.color, vista: { espalda: 'espalda', pecho: 'frente', manga: 'lado' }[campo], ajuste: p.ajuste || null });
+      if (ruta) piezas.push({ baja: !((ver.print || {})[campo]) && String(ruta).indexOf('print') === -1 && String(ruta).indexOf('logo-pecho') === -1, ruta: ruta, caja: cajas[campo], etiqueta: (v.pedido || '') + ' ' + p.nombre + ' ' + campo, prenda: prendaId, color: v.color, vista: { espalda: 'espalda', pecho: 'frente', manga: 'lado', costado: 'costado' }[campo], ajuste: p.ajuste || null });
     });
   });
   return { piezas: piezas, faltan: faltan };
@@ -2111,6 +2122,7 @@ $('btnArmarLamina').addEventListener('click', function () {
       var r = $('dtfReal').checked ? YuzuMockup.rectDiseno(pz.prenda, pz.color, pz.vista, { width: im._ow || iw, height: im._oh || ih }, pz.ajuste) : null;
       if (r) s = r.w * (YuzuMockup.PRENDAS[pz.prenda].cmPx || 0.1) * cm / (im._ow || iw);
       else s = Math.min(pz.caja[0] * cm / iw, pz.caja[1] * cm / ih);
+      if (pz.baja) errores.push(pz.etiqueta.trim() + ': sin archivo de impresión, sale en baja resolución');
       return { im: im, w: iw * s, h: ih * s, etiqueta: pz.etiqueta };
     }).catch(function () { errores.push('No pude cargar ' + pz.ruta); return null; });
   })).then(function (items) {
@@ -2218,7 +2230,7 @@ function cargarTienda() {
     var t = r[0].content || {};
     var bolFs = (BOLETINES.filter(function (b) { return b.activo && b.formspree; })[0] || {}).formspree || '';
     TIENDA = t; ['nombres', 'precios', 'mockup'].forEach(function (k) { TIENDA[k] = TIENDA[k] || {}; }); TIENDA.banners = TIENDA.banners || []; TIENDA.drops = TIENDA.drops || null; TIENDA._formspreeBol = bolFs;
-    aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); renderDescuentos(); renderCorte(); renderColPrendas();
+    aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); initPriv(); renderDescuentos(); renderCorte(); renderColPrendas();
     RESENAS = Array.isArray(r[1].content) ? r[1].content : [];
     renderImgsFijas(); renderPrecios(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
   });
@@ -2303,6 +2315,7 @@ function cargarCfgMockup() {
   return ghGet('data/tienda.json').then(function (r) {
     var t = r.content || {};
     TIENDA.mockup = t.mockup || {};
+    if (t.privado) TIENDA.privado = t.privado;
     aplicarCfgMockup();
     if (window.EDN) EDN.preview();
   }).catch(function () {});
@@ -2311,7 +2324,7 @@ function cargarCfgMockup() {
 // ---------- Mockup automático: editor de versiones (producto nuevo y edición) ----------
 var COLORES_TELA = (function () { var s = {}; COLORES.forEach(function (c) { s[c.name] = 1; }); Object.keys(YuzuMockup.HEX).forEach(function (c) { s[c] = 1; }); return Object.keys(s); })();
 var PRENDAS_IDS = Object.keys(YuzuMockup.PRENDAS);
-var CAMPOS_V = [['espalda', 'Espalda'], ['pecho', 'Pecho'], ['manga', 'Manga']];
+var CAMPOS_V = [['espalda', 'Espalda'], ['pecho', 'Pecho'], ['manga', 'Manga'], ['costado', 'Costado']];
 var MAX_VERSIONES = 6;
 
 function escalarA(im, max, tipo) {
@@ -2340,7 +2353,7 @@ function leerPNG(file, recortar) {
       var im = new Image();
       im.onload = function () {
         if (recortar !== false) im = recortarTransparente(im);
-        var url = escalarA(im, 1400), print = escalarA(im, 3600);
+        var url = escalarA(im, 1000), print = escalarA(im, 3600);
         var out = new Image(); out.onload = function () { ok({ img: out, base64: url.split(',')[1], preview: url, print: print.split(',')[1], printPx: [im.width, im.height] }); }; out.src = url;
       };
       im.onerror = function () { mal(new Error('No pude leer la imagen.')); };
@@ -2406,7 +2419,7 @@ EditorDisenos.prototype.render = function () {
   e.versiones.forEach(function (v, i) {
     h += '<div class="ver"><div class="ver-cab"><input type="text" data-v-nombre="' + i + '" value="' + esc(v.nombre) + '" placeholder="Nombre (ej: Detalles blancos)">' +
       (e.versiones.length > 1 ? '<button type="button" class="prod-btn del" data-v-quitar="' + i + '" title="Quitar versión">✕</button>' : '') + '</div>' +
-      '<div class="png-grid" style="grid-template-columns:repeat(3,1fr)">' + CAMPOS_V.map(function (c) {
+      '<div class="png-grid" style="grid-template-columns:repeat(4,1fr)">' + CAMPOS_V.map(function (c) {
         var a = v.archivos[c[0]];
         return '<label class="png-slot' + (a ? ' lleno' : '') + '"><input type="file" accept="image/png" data-v-archivo="' + i + ':' + c[0] + '"><img alt=""' + (a ? ' src="' + esc(a.preview) + '"' : '') + '><span>' + c[1] + (i > 0 && c[0] !== 'espalda' ? '<br><small>(opcional)</small>' : '') + '</span><button type="button" class="x" data-v-borrar="' + i + ':' + c[0] + '">✕</button></label>';
       }).join('') + '</div>' +
@@ -2469,7 +2482,7 @@ function ajusteEsInicial(aj) {
   if (!aj) return true;
   if (aj.v === 2) return false;
   if (aj.porPrenda && Object.keys(aj.porPrenda).length) return false;
-  return YuzuMockup.VISTAS.every(function (v) { var o = aj[v]; return !o || ((o.escala || 1) === 1 && !o.dy && !o.px && !o.py); });
+  return YuzuMockup.PIEZAS.every(function (v) { var o = aj[v]; return !o || ((o.escala || 1) === 1 && !o.dy && !o.px && !o.py); });
 }
 // Pasa el ajuste viejo al formato nuevo, conservando dónde quedaba cada diseño
 EditorDisenos.prototype._v2 = function () {
@@ -2478,7 +2491,7 @@ EditorDisenos.prototype._v2 = function () {
   if (ajusteEsInicial(aj)) { this.e.ajuste = { v: 2 }; return true; }
   var vs = this.versionesImg(), nuevo = { v: 2 }, faltan = false;
   PRENDAS_IDS.forEach(function (pr) {
-    YuzuMockup.VISTAS.forEach(function (vi) {
+    YuzuMockup.PIEZAS.forEach(function (vi) {
       var img = YuzuMockup.archivoDe(vs, 0, vi);
       if (!img) return;
       if (typeof img === 'string') { faltan = true; return; }
@@ -2498,20 +2511,23 @@ EditorDisenos.prototype.preview = function () {
     if (!YuzuMockup.disponible(prenda, color)) { box.innerHTML = '<p class="mini">No hay foto de ' + esc(YuzuMockup.PRENDAS[prenda].nombre.toLowerCase()) + ' en ' + esc(color.toLowerCase()) + '.</p>'; return; }
     var vs = self.versionesImg(), iv = YuzuMockup.recomendada(vs, color), vistas = YuzuMockup.VISTAS, turno = (self._turno = (self._turno || 0) + 1);
     var cmPx = YuzuMockup.PRENDAS[prenda].cmPx || 0.1;
+    var piezasDe = function (v) { return YuzuMockup.PIEZAS.filter(function (pz) { return YuzuMockup.FOTO_DE[pz] === v && YuzuMockup.disenoDe(vs, iv, pz, color); }); };
     Promise.all(vistas.map(function (v) {
-      var src = YuzuMockup.disenoDe(vs, iv, v, color);
-      if (!src) return null;
-      return Promise.all([YuzuMockup.generar(prenda, color, v, vs, iv, aj), typeof src === 'string' ? YuzuMockup.cargar(src) : Promise.resolve(src)]).catch(function () { return null; });
+      var pzs = piezasDe(v); if (!pzs.length) return null;
+      return Promise.all([YuzuMockup.generar(prenda, color, v, vs, iv, aj)].concat(pzs.map(function (pz) {
+        var src = YuzuMockup.disenoDe(vs, iv, pz, color);
+        return (typeof src === 'string' ? YuzuMockup.cargar(src) : Promise.resolve(src)).then(function (im) { return { pz: pz, r: YuzuMockup.rectDiseno(prenda, color, pz, im, aj) }; });
+      }))).catch(function () { return null; });
     })).then(function (res) {
       if (turno !== self._turno) return;
       box.innerHTML = '';
       res.forEach(function (r, k) {
         if (!r || !r[0]) return;
-        var rect = YuzuMockup.rectDiseno(prenda, color, vistas[k], r[1], aj);
-        var t = document.createElement('button'); t.type = 'button'; t.className = 'mk-tile'; t.setAttribute('data-tf-abrir', vistas[k]);
+        var medidas = r.slice(1).filter(function (x) { return x.r; }).map(function (x) { return (r.length > 2 ? YuzuMockup.NOMBRE_PIEZA[x.pz] + ' ' : '') + (x.r.w * cmPx).toFixed(1) + ' × ' + (x.r.h * cmPx).toFixed(1) + ' cm'; }).join(' · ');
+        var t = document.createElement('button'); t.type = 'button'; t.className = 'mk-tile'; t.setAttribute('data-tf-abrir', r[1].pz);
         t.title = 'Tocá para ubicar el diseño';
         t.appendChild(r[0]);
-        t.insertAdjacentHTML('beforeend', '<span class="vnom">' + YuzuMockup.NOMBRE_VISTA[vistas[k]] + '</span>' + (rect ? '<span class="mk-cm">' + (rect.w * cmPx).toFixed(1) + ' × ' + (rect.h * cmPx).toFixed(1) + ' cm</span>' : '') + '<span class="mk-edit">Ajustar</span>');
+        t.insertAdjacentHTML('beforeend', '<span class="vnom">' + YuzuMockup.NOMBRE_VISTA[vistas[k]] + '</span>' + (medidas ? '<span class="mk-cm">' + medidas + '</span>' : '') + '<span class="mk-edit">Ajustar</span>');
         box.appendChild(t);
       });
     });
@@ -2630,19 +2646,19 @@ function tfCargar() {
   var ed = TF.ed, vs = ed.versionesImg(), iv = YuzuMockup.recomendada(vs, TF.color), turno = TF.turno = (TF.turno || 0) + 1;
   TF.cmPx = YuzuMockup.PRENDAS[TF.prenda].cmPx || 0.1;
   TF.z = (YuzuMockup.ZONAS[TF.prenda] || {})[TF.vista];
-  $('tfTabs').innerHTML = YuzuMockup.VISTAS.map(function (v) {
+  $('tfTabs').innerHTML = YuzuMockup.PIEZAS.map(function (v) {
     var hay = !!YuzuMockup.disenoDe(vs, iv, v, TF.color);
-    return '<button type="button" data-tf-vista="' + v + '"' + (v === TF.vista ? ' class="on"' : '') + (hay ? '' : ' disabled title="Sin diseño para esta vista"') + '>' + YuzuMockup.NOMBRE_VISTA[v] + '</button>';
+    return '<button type="button" data-tf-vista="' + v + '"' + (v === TF.vista ? ' class="on"' : '') + (hay ? '' : ' disabled title="Sin diseño para esta pieza"') + '>' + YuzuMockup.NOMBRE_PIEZA[v] + '</button>';
   }).join('');
   $('tfPrenda').innerHTML = PRENDAS_IDS.map(function (k) { return '<option value="' + k + '"' + (k === TF.prenda ? ' selected' : '') + '>' + YuzuMockup.PRENDAS[k].nombre + '</option>'; }).join('');
   var cols = COLORES_TELA.filter(function (c) { return YuzuMockup.disponible(TF.prenda, c); });
   if (cols.indexOf(TF.color) === -1) TF.color = cols.indexOf('Negro') !== -1 ? 'Negro' : cols[0];
   $('tfColor').innerHTML = cols.map(function (c) { return '<option' + (c === TF.color ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('');
-  $('tfTit').textContent = YuzuMockup.NOMBRE_VISTA[TF.vista] + ' · ' + YuzuMockup.PRENDAS[TF.prenda].nombre + ' · ' + TF.color;
+  $('tfTit').textContent = YuzuMockup.NOMBRE_PIEZA[TF.vista] + ' · ' + YuzuMockup.PRENDAS[TF.prenda].nombre + ' · ' + TF.color;
   $('tfSoloTxt').textContent = 'Posición distinta solo para ' + TF.color.toLowerCase() + ' (sin marcar: vale para todos los colores de ' + YuzuMockup.PRENDAS[TF.prenda].nombre.toLowerCase() + ')';
   $('tfCargando').style.display = 'block'; $('tfCaja').style.display = 'none';
   var src = YuzuMockup.disenoDe(vs, iv, TF.vista, TF.color);
-  if (!src || !TF.z) { $('tfCargando').textContent = 'Esta vista no tiene diseño.'; return; }
+  if (!src || !TF.z) { $('tfCargando').textContent = 'Esta pieza no tiene diseño.'; return; }
   Promise.all([YuzuMockup.base(TF.prenda, TF.color, TF.vista), typeof src === 'string' ? YuzuMockup.cargar(src) : Promise.resolve(src)]).then(function (r) {
     if (turno !== TF.turno) return;
     var cv = $('tfBase'), ctx = cv.getContext('2d'); ctx.clearRect(0, 0, 1080, 1440);
@@ -2707,7 +2723,8 @@ EditorDisenos.prototype.subir = function (base, avisar) {
         var ruta = 'images/disenos/' + base + '-v' + (i + 1) + '-' + c[0] + '.png', rp = 'images/disenos/print/' + base + '-v' + (i + 1) + '-' + c[0] + '.png';
         return ghPutImage(ruta, a.base64, 'Diseño ' + base).then(function () {
           o[c[0]] = ruta; a.ruta = ruta;
-          return ghPutImage(rp, a.print, 'Diseño para imprimir ' + base).then(function () { o.print[c[0]] = rp; a.rutaPrint = rp; }).catch(function () { /* si el archivo es muy pesado, la lámina usa la versión liviana */ });
+          if (!repoPrivado()) { if (avisar) avisar('Ojo: sin repo privado configurado (Tienda → Archivos de impresión) no se guarda la versión para imprimir.'); return; }
+          return privPut(rp, a.print, 'Diseño para imprimir ' + base).then(function () { o.print[c[0]] = 'privado:' + rp; a.rutaPrint = 'privado:' + rp; }).catch(function (err) { if (avisar) avisar('No pude subir la versión para imprimir: ' + err.message); });
         });
       });
     });
@@ -2715,7 +2732,7 @@ EditorDisenos.prototype.subir = function (base, avisar) {
   var self = this;
   return cadena.then(function () {
     self._v2();
-    return { versiones: res.filter(function (v) { return v.espalda || v.pecho || v.manga; }), prendas: e.prendas.slice(), ajuste: JSON.parse(JSON.stringify(self.e.ajuste)) };
+    return { versiones: res.filter(function (v) { return v.espalda || v.pecho || v.manga || v.costado; }), prendas: e.prendas.slice(), ajuste: JSON.parse(JSON.stringify(self.e.ajuste)) };
   });
 };
 
@@ -2906,7 +2923,7 @@ function llenarSelect(id, pares, val) {
 }
 function initZonas() {
   llenarSelect('zPrenda', Object.keys(YuzuMockup.PRENDAS).map(function (k) { return [k, YuzuMockup.PRENDAS[k].nombre]; }), ZE.prenda);
-  llenarSelect('zVista', YuzuMockup.VISTAS.map(function (v) { return [v, YuzuMockup.NOMBRE_VISTA[v]]; }), ZE.vista);
+  llenarSelect('zVista', YuzuMockup.PIEZAS.map(function (v) { return [v, YuzuMockup.NOMBRE_PIEZA[v] + (v === 'costado' ? ' (foto de lado)' : '')]; }), ZE.vista);
   cambiarZonaSel();
 }
 function cambiarZonaSel() {
@@ -2933,7 +2950,7 @@ function pintarCaja() {
 }
 function renderZona() {
   pintarCaja();
-  var f = YuzuMockup.fuente(ZE.prenda, ZE.color, ZE.vista);
+  var f = YuzuMockup.fuente(ZE.prenda, ZE.color, YuzuMockup.FOTO_DE[ZE.vista] || ZE.vista);
   if (!f) { $('zImg').removeAttribute('src'); return; }
   Promise.all([YuzuMockup.cargar(f.foto), pruebaZona()]).then(function (r) {
     var cv = YuzuMockup.componer(r[0], f.tinte, [{ img: r[1], zona: ZE.zona }]);
@@ -2975,7 +2992,7 @@ $('btnZonaGuardar').addEventListener('click', function () {
   aplicarCfgMockup();
   statusDe('statusZona', 'loading', 'Guardando...');
   guardarJSON('data/tienda.json', TIENDA, 'Zona ' + ZE.prenda + ' ' + ZE.vista).then(function () {
-    statusDe('statusZona', 'ok', '✓ Zona de ' + YuzuMockup.PRENDAS[ZE.prenda].nombre.toLowerCase() + ' · ' + YuzuMockup.NOMBRE_VISTA[ZE.vista].toLowerCase() + ' guardada.');
+    statusDe('statusZona', 'ok', '✓ Zona de ' + YuzuMockup.PRENDAS[ZE.prenda].nombre.toLowerCase() + ' · ' + YuzuMockup.NOMBRE_PIEZA[ZE.vista].toLowerCase() + ' guardada.');
     EDN.preview();
   }).catch(function (err) { statusDe('statusZona', 'err', err.message); });
 });
@@ -2988,6 +3005,59 @@ $('btnZonaReset').addEventListener('click', function () {
 
 // ---------- Plantillas por color ----------
 var PL_ARCHIVOS = {};
+// ---------- Archivos de impresión en un repo privado ----------
+function repoPrivado() { return (TIENDA.privado && TIENDA.privado.repo) || ''; }
+function urlPriv(path) { var c = getConfig(); return 'https://api.github.com/repos/' + c.owner + '/' + repoPrivado() + '/contents/' + path; }
+function privPut(path, base64, msg) {
+  var h = { Authorization: 'token ' + getConfig().token };
+  return fetch(urlPriv(path), { headers: h }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+    var body = { message: msg, content: base64 }; if (d && d.sha) body.sha = d.sha;
+    return fetch(urlPriv(path), { method: 'PUT', headers: { Authorization: h.Authorization, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  }).then(function (r) { if (!r.ok) return errorDeRespuesta(r, 'Error subiendo al repo privado ' + path); return r.json(); });
+}
+function rawBlob(url) {
+  return fetch(url, { headers: { Authorization: 'token ' + getConfig().token, Accept: 'application/vnd.github.raw' } })
+    .then(function (r) { if (!r.ok) return errorDeRespuesta(r, 'No pude leer ' + url.split('/contents/')[1]); return r.blob(); });
+}
+function blobABase64(b) { return new Promise(function (ok) { var fr = new FileReader(); fr.onload = function () { ok(String(fr.result).split(',')[1]); }; fr.readAsDataURL(b); }); }
+function initPriv() { $('privRepo').value = repoPrivado(); }
+$('btnPrivProbar').addEventListener('click', function () {
+  var nombre = $('privRepo').value.trim(), c = getConfig();
+  if (!nombre) { statusDe('statusPriv', 'err', 'Escribí el nombre del repo privado.'); return; }
+  if (nombre === c.repo) { statusDe('statusPriv', 'err', 'Tiene que ser otro repo, no el de la tienda.'); return; }
+  statusDe('statusPriv', 'loading', 'Probando acceso...');
+  fetch('https://api.github.com/repos/' + c.owner + '/' + nombre, { headers: { Authorization: 'token ' + c.token } }).then(function (r) {
+    if (r.status === 404) throw new Error('No encuentro ' + c.owner + '/' + nombre + '. Crealo en GitHub como privado y agregalo a los repos de tu token (permiso Contents: lectura y escritura).');
+    if (!r.ok) return errorDeRespuesta(r, 'No pude revisar el repo');
+    return r.json();
+  }).then(function (info) {
+    if (!info.private) throw new Error('Ese repo es público. Cambialo a privado en Settings → General → Danger Zone → Change visibility.');
+    if (info.permissions && info.permissions.push === false) throw new Error('Tu token puede ver el repo pero no escribir en él. Dale permiso Contents: lectura y escritura.');
+    TIENDA.privado = { repo: nombre };
+    return guardarJSON('data/tienda.json', TIENDA, 'Repo privado de impresión');
+  }).then(function () {
+    statusDe('statusPriv', 'ok', '✓ Listo. Los archivos de impresión nuevos se guardan en ' + nombre + ' (privado).');
+  }).catch(function (e) { statusDe('statusPriv', 'err', e.message); });
+});
+$('btnPrivMover').addEventListener('click', function () {
+  if (!repoPrivado()) { statusDe('statusPriv', 'err', 'Primero guardá y probá el repo privado.'); return; }
+  var tareas = [];
+  PRODUCTOS.forEach(function (p) { (p.versiones || []).forEach(function (v) { Object.keys(v.print || {}).forEach(function (k) { if (String(v.print[k]).indexOf('privado:') !== 0) tareas.push({ v: v, k: k, ruta: v.print[k] }); }); }); });
+  if (!tareas.length) { statusDe('statusPriv', 'ok', 'No hay archivos de impresión en el repo público. Todo está en el privado.'); return; }
+  if (!confirm('Mover ' + tareas.length + ' archivo(s) de impresión al repo privado y borrarlos del público?')) return;
+  var hechos = 0, cad = Promise.resolve();
+  tareas.forEach(function (t) {
+    cad = cad.then(function () {
+      statusDe('statusPriv', 'loading', 'Moviendo ' + (hechos + 1) + ' de ' + tareas.length + '...');
+      return rawBlob(urlDe(t.ruta)).then(blobABase64).then(function (b64) { return privPut(t.ruta, b64, 'Archivo de impresión'); })
+        .then(function () { t.v.print[t.k] = 'privado:' + t.ruta; hechos++; return ghBorrarArchivo(t.ruta, 'Mover archivo de impresión al repo privado'); })
+        .catch(function (e) { console.warn(e); });
+    });
+  });
+  cad.then(function () { return ghGet('data/products.json'); }).then(function (r) { return ghPut('data/products.json', PRODUCTOS, r.sha, 'Archivos de impresión al repo privado'); })
+    .then(function () { statusDe('statusPriv', hechos === tareas.length ? 'ok' : 'err', '✓ ' + hechos + ' de ' + tareas.length + ' movidos al repo privado.' + (hechos < tareas.length ? ' Algunos no se pudieron mover; probá otra vez.' : '')); })
+    .catch(function (e) { statusDe('statusPriv', 'err', e.message); });
+});
 var LOGO_NUEVO = {};
 function initLogo() {
   var l = (TIENDA.mockup && TIENDA.mockup.logoPecho) || {};
