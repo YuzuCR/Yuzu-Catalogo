@@ -16,5 +16,18 @@
       "otro": 6000,
       "uniformes": 6500
     }
+  },
+  "mockup": {
+    "zonas": {
+      "boxy": {
+        "espalda": {
+          "x": 177,
+          "y": 259,
+          "w": 732,
+          "h": 927,
+          "alinear": "arriba"
+        }
+      }
+    }
   }
 }
