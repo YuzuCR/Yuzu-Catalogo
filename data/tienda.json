@@ -66,6 +66,15 @@
           "h": 720,
           "alinear": "arriba"
         }
+      },
+      "hoodie": {
+        "espalda": {
+          "x": 285,
+          "y": 405,
+          "w": 491,
+          "h": 649,
+          "alinear": "arriba"
+        }
       }
     }
   }
