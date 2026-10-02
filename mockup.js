@@ -195,25 +195,37 @@ var YuzuMockup = (function () {
     return { x: Math.round(z.x + (z.w - w) / 2), y: Math.round(z.alinear === 'arriba' ? z.y : z.y + (z.h - h) / 2), w: w, h: h };
   }
 
+  var cacheTela = new Map(); // últimas 8 fotos teñidas
   // foto: Image; tinte: '#hex' | null; capas: [{ img, zona }]
   function componer(foto, tinte, capas) {
     var W = foto.naturalWidth || foto.width, H = foto.naturalHeight || foto.height;
     var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
     var ctx = cv.getContext('2d');
-    ctx.drawImage(foto, 0, 0, W, H);
-    var base = ctx.getImageData(0, 0, W, H), bd = base.data;
-    var orig = new Uint8ClampedArray(bd); // luz original (para pliegues y máscara)
+    // La foto teñida se guarda en memoria: cambiar de versión o mover el diseño no vuelve a teñir
+    var clave = foto.src ? foto.src + '|' + (tinte || '') : null, guardada = clave && cacheTela.get(clave);
+    var base, bd, orig;
+    if (guardada) {
+      base = new ImageData(new Uint8ClampedArray(guardada.base), W, H); bd = base.data; orig = guardada.orig;
+    } else {
+      ctx.drawImage(foto, 0, 0, W, H);
+      base = ctx.getImageData(0, 0, W, H); bd = base.data;
+      orig = new Uint8ClampedArray(bd); // luz original (para pliegues y máscara)
+    }
     var fondo = lum(orig[0], orig[1], orig[2]);
     function tela(k) { return clamp((Math.abs(lum(orig[k], orig[k + 1], orig[k + 2]) - fondo) - 12) / 20, 0, 1); }
 
     // Teñido desde la foto blanca
-    if (tinte) {
+    if (tinte && !guardada) {
       var t = hexRGB(tinte);
       for (var k = 0; k < bd.length; k += 4) {
         var m = tela(k); if (!m) continue;
         var L = lum(orig[k], orig[k + 1], orig[k + 2]) / 235;
         for (var c = 0; c < 3; c++) bd[k + c] = orig[k + c] * (1 - m) + clamp(t[c] * L, 0, 255) * m;
       }
+    }
+    if (clave && !guardada) {
+      cacheTela.set(clave, { base: new Uint8ClampedArray(bd), orig: orig });
+      if (cacheTela.size > 8) cacheTela.delete(cacheTela.keys().next().value);
     }
     var luzTela = function (k) { return lum(orig[k], orig[k + 1], orig[k + 2]); };
     var oscura = tinte ? esOscuroHex(tinte) : null;

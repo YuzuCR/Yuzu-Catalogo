@@ -64,10 +64,6 @@
   .aviso { border: 1px solid var(--yuzu); border-radius: 8px; padding: 11px; font-size: 11px; color: var(--mudo); line-height: 1.6; margin-top: 12px; }
 
   textarea { width: 100%; background: var(--sup); border: 1px solid var(--linea); border-radius: 8px; color: var(--tinta); font-family: var(--font); font-size: 14px; padding: 11px; resize: vertical; }
-  .drop-zone { background: var(--sup); border: 2px dashed var(--linea); border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: all .3s; font-size: 13px; color: var(--mudo); min-height: 60px; display: flex; align-items: center; justify-content: center; }
-  .drop-zone:hover { border-color: var(--yuzu); background: rgba(111,109,36,.05); }
-  .drop-zone.over { border-color: var(--yuzu); background: rgba(111,109,36,.1); }
-  .drop-zone input[type=file] { display: none; }
   textarea:focus { outline: none; border-color: var(--yuzu); }
 
   label { display: block; font-size: 11px; color: var(--mudo); margin: 16px 0 6px; letter-spacing: .04em; }
@@ -167,21 +163,16 @@
   .png-slot.lleno img { display: block; }
   .png-slot .x { position: absolute; top: 4px; right: 4px; display: none; background: rgba(0,0,0,.8); color: #fff; border: none; border-radius: 50%; width: 19px; height: 19px; font-size: 10px; cursor: pointer; }
   .png-slot.lleno .x { display: block; }
-  .rango-fila { display: grid; grid-template-columns: 110px 1fr 46px; gap: 8px; align-items: center; font-size: 11px; color: var(--mudo); margin-top: 10px; }
-  .rango-fila input[type=range] { width: 100%; accent-color: var(--yuzu); }
   .mk-prev { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
   .mk-prev canvas, .mk-prev img { width: 100%; border-radius: 6px; background: var(--bg); display: block; }
   .mk-tile { position: relative; touch-action: none; user-select: none; overflow: hidden; border-radius: 6px; }
   .mk-tile .vnom { position: absolute; left: 6px; top: 6px; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; background: rgba(0,0,0,.6); color: #fff; padding: 2px 6px; border-radius: 8px; pointer-events: none; }
-  .mk-caja { position: absolute; border: 1.5px dashed var(--yuzu); cursor: move; box-sizing: border-box; }
-  .mk-caja img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; display: block; border-radius: 0; background: none; }
-  .mk-tile.arrastrando .mk-caja img { opacity: .9; }
-  .mk-tile.arrastrando canvas { filter: brightness(.75); }
   .mk-asa { position: absolute; width: 14px; height: 14px; background: var(--yuzu); border: 2px solid #111; border-radius: 3px; }
   .mk-asa[data-asa="nw"] { left: -7px; top: -7px; cursor: nwse-resize; } .mk-asa[data-asa="ne"] { right: -7px; top: -7px; cursor: nesw-resize; }
   .mk-asa[data-asa="sw"] { left: -7px; bottom: -7px; cursor: nesw-resize; } .mk-asa[data-asa="se"] { right: -7px; bottom: -7px; cursor: nwse-resize; }
   .mk-cm { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); font-size: 10px; background: rgba(0,0,0,.7); color: var(--yuzu); padding: 2px 7px; border-radius: 8px; pointer-events: none; white-space: nowrap; }
   .png-slot.cargando { opacity: .5; }
+  .png-slot.encima { outline: 2px dashed var(--yuzu); outline-offset: -4px; }
   button.mk-tile { padding: 0; border: 1px solid var(--linea); background: none; cursor: pointer; display: block; width: 100%; }
   button.mk-tile:hover { border-color: var(--yuzu); }
   button.mk-tile canvas { display: block; width: 100%; height: auto; }
@@ -245,7 +236,6 @@
   .empty-msg { color: var(--mudo); font-size: 12px; padding: 10px 0; }
   .inline-flex { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
   .orden-num { font-size: 11px; color: var(--mudo); font-family: var(--mono); }
-  .badge-tipo { display: inline-block; font-size: 8px; text-transform: uppercase; background: var(--yuzu); color: #000; padding: 1px 8px; border-radius: 12px; margin-left: 6px; }
 
   /* ===== MODAL VISIBILIDAD ===== */
   .modal-fondo { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .3s; }
@@ -368,6 +358,9 @@
         <label>Precio con descuento</label>
         <input type="text" id="precioDescuentoInput" inputmode="numeric">
       </div>
+      <label>Disponible hasta (opcional)</label>
+      <input type="date" id="hastaInput">
+      <p class="mini" style="margin-top:4px">Para drops con cierre: después de esa fecha el diseño sale solo del archivo, y la última semana muestra "Últimos días".</p>
       <div class="banderas">
         <label class="check-row"><input type="checkbox" id="nuevoDestacado"><span>Destacado</span></label>
         <label class="check-row"><input type="checkbox" id="nuevoOculto"><span>Oculto</span></label>
@@ -407,7 +400,12 @@
 
     <div class="card">
       <h2>Precios de prendas</h2>
-      <p class="mini">Se usan en "Construí tu prenda". El precio de cada diseño del catálogo se cambia en Productos (o con "Precio a todos").</p>
+      <p class="mini">Se usan en "Construí tu prenda" y para la diferencia de precio entre prendas en cada diseño.</p>
+      <div class="row">
+        <div style="flex:1"><label>Producto nuevo del catálogo (boxy)</label><input type="text" inputmode="numeric" id="pProducto"></div>
+        <div style="flex:1"><label>Producto nuevo · solo pecho</label><input type="text" inputmode="numeric" id="pProductoPecho"></div>
+      </div>
+      <p class="mini" style="margin-top:2px">Es el precio que aparece solo al crear un producto. Los que ya existen se cambian en Productos o con "Precio a todos".</p>
       <div class="row">
         <div style="flex:1"><label>Boxy oversize</label><input type="text" inputmode="numeric" id="pBoxy"></div>
         <div style="flex:1"><label>Sin mangas</label><input type="text" inputmode="numeric" id="pSinmangas"></div>
@@ -473,6 +471,15 @@
       </div>
       <button class="btn" id="btnGuardarCorte">Guardar fecha de corte</button>
       <div class="status" id="statusCorte"></div>
+    </div>
+
+    <div class="card">
+      <h2>Pedidos reales en la tienda</h2>
+      <p class="mini" style="margin-top:0">Urgencia sin inventar nada: sale de las ventas que registrás. En cada producto: "Alguien la pidió hace 3 h" o "Pedida 4 veces este mes". En la marquesina: "12 pedidos esta semana", solo si llegás al mínimo. La tienda ve solo esos números, nunca nombres ni montos.</p>
+      <label class="check-row"><input type="checkbox" id="actActivo"><span>Mostrar pedidos reales</span></label>
+      <label>Mínimo de pedidos en la semana para mostrarlo en la marquesina</label><input type="number" id="actMinimo" min="1" style="max-width:120px">
+      <button class="btn btn-sec" id="btnGuardarAct">Guardar</button>
+      <div class="status" id="statusAct"></div>
     </div>
 
     <div class="card">
@@ -553,7 +560,7 @@
 
     <div class="card">
       <h2>Nombres de colecciones</h2>
-      <p class="mini">Formato de la tienda: <strong>SIGLA ⊹ TÍTULO</strong>. Lo que dejés vacío se llena solo (sigla automática y el nombre de la serie).</p>
+      <p class="mini">Formato de la tienda: <strong>SIGLA ⊹ TÍTULO</strong>. Lo que dejés vacío se llena solo (sigla automática y el nombre de la serie). Para que una colección no lleve sigla, escribí <strong>-</strong>.</p>
       <div id="tNombres"></div>
       <button class="btn" id="btnGuardarNombres">Guardar nombres</button>
       <div class="status" id="statusNombres"></div>
@@ -961,7 +968,7 @@ function crearSubcategoria() {
 $('btnNuevaCat').addEventListener('click', crearCategoria);
 $('btnNuevaSubcat').addEventListener('click', crearSubcategoria);
 $('impresionSelect').addEventListener('change', function () {
-  $('precioInput').value = this.value === 'pecho' ? '14900' : '18900';
+  $('precioInput').value = precioDefecto(this.value);
 });
 $('descuentoCheck').addEventListener('change', function () {
   $('rowDescuento').style.display = this.checked ? 'block' : 'none';
@@ -1044,6 +1051,7 @@ function subirProducto() {
         versiones: datosDisenos && datosDisenos.versiones.length ? datosDisenos.versiones : undefined,
         prendas: datosDisenos ? datosDisenos.prendas : undefined,
         ajuste: datosDisenos ? datosDisenos.ajuste : undefined,
+        hasta: $('hastaInput').value || undefined,
         destacado: $('nuevoDestacado').checked,
         oculto: $('nuevoOculto').checked
       };
@@ -1054,7 +1062,7 @@ function subirProducto() {
     escribirPaginaProducto(nuevoP);
     mostrarStatus('ok', '✓ "' + nombre + '" subido. Tarda 1-2 min en verse en la tienda.');
     $('nombreProducto').value = '';
-    $('precioInput').value = '18900';
+    $('precioInput').value = precioDefecto($('impresionSelect').value); $('hastaInput').value = '';
     $('descuentoCheck').checked = false;
     $('precioDescuentoInput').value = '';
     $('rowDescuento').style.display = 'none';
@@ -1069,7 +1077,15 @@ function subirProducto() {
     btn.disabled = false;
   });
 }
-$('btnSubir').addEventListener('click', subirProducto);
+$('btnSubir').addEventListener('click', function () {
+  // Con PNG cargados, los mockups de la boxy se rehacen siempre al subir (así reflejan la última posición)
+  if (!EDN.tieneArchivos()) { subirProducto(); return; }
+  if (!$('nombreProducto').value.trim()) { alert('Ponele nombre al diseño.'); return; }
+  var btn = $('btnSubir'); btn.disabled = true;
+  statusDe('status', 'loading', 'Generando los mockups de la boxy...');
+  generarMockupsNuevo().then(function () { subirProducto(); }).catch(function (err) { statusDe('status', 'err', err.message); }).then(function () { btn.disabled = false; });
+});
+$('precioInput').addEventListener('input', function () { PRODUCTO_TOCADO = true; });
 
 function cargarProductos() {
   statusEdit('loading', 'Cargando productos...');
@@ -1173,6 +1189,7 @@ function abrirEdicion(i) {
   html += '<label class="check-row"><input type="checkbox" id="e-desc-' + i + '"' + (p.enDescuento ? ' checked' : '') + '><span>Está en descuento</span></label>';
   html += '<label>Precio con descuento</label><input type="text" id="e-precdesc-' + i + '" value="' + (p.precioDescuento || '') + '" inputmode="numeric">';
 
+  html += '<label>Disponible hasta (opcional)</label><input type="date" id="e-hasta-' + i + '" value="' + esc(p.hasta || '') + '">';
   html += '<div class="banderas">' +
     '<label class="check-row"><input type="checkbox" id="e-dest-' + i + '"' + (p.destacado ? ' checked' : '') + '><span>Destacado</span></label>' +
     '<label class="check-row"><input type="checkbox" id="e-ocu-' + i + '"' + (p.oculto ? ' checked' : '') + '><span>Oculto</span></label>' +
@@ -1227,6 +1244,7 @@ function guardarEdicion(i) {
   p.precioDescuento = enDescuento ? precioDescuento : null;
   p.destacado = $('e-dest-' + i).checked;
   p.oculto = $('e-ocu-' + i).checked;
+  p.hasta = $('e-hasta-' + i).value || undefined;
 
   guardarProductos('Edita: ' + nombre, i);
 }
@@ -1897,14 +1915,14 @@ function limpiarFormBol(){ bolEditando=-1; bolImagenNueva=null; $('bolFormTitulo
 // 5. VENTAS
 // ============================================================
 function statusVenta(t,m){ var el=$('statusVenta'); el.className='status show '+t; el.textContent=m; }
-function cargarVentas(){ ghGet('data/ventas.json').then(function(r){ var d=r&&r.content?r.content:{}; VENTAS=d.ventas||[]; if(d.costos) COSTOS=d.costos; $('costoTela').value=COSTOS.tela; $('costoDtf').value=COSTOS.dtf; $('costoEmpaque').value=COSTOS.empaque; $('costoEnvio').value=COSTOS.envio; prepararFormVenta(); renderTablero(); renderListaVentas(); }).catch(function(){ VENTAS=[]; prepararFormVenta(); renderTablero(); renderListaVentas(); }); }
+function cargarVentas(){ leerVentasDatos().then(function(x){ var d=x.d; VENTAS=d.ventas||[]; if(d.costos) COSTOS=d.costos; $('costoTela').value=COSTOS.tela; $('costoDtf').value=COSTOS.dtf; $('costoEmpaque').value=COSTOS.empaque; $('costoEnvio').value=COSTOS.envio; prepararFormVenta(); renderTablero(); renderListaVentas(); }).catch(function(){ VENTAS=[]; prepararFormVenta(); renderTablero(); renderListaVentas(); }); }
 function prepararFormVenta(){ $('ventaProducto').innerHTML=PRODUCTOS.map(function(p){ return '<option value="'+p.id+'">'+p.nombre+'</option>'; }).join(''); $('ventaColor').innerHTML=COLORES.map(function(c){ return '<option value="'+c.name+'">'+c.name+'</option>'; }).join(''); if(!$('ventaFecha').value) $('ventaFecha').value=hoyLocal(); sincronizarPrecioVenta(); }
 function sincronizarPrecioVenta(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p) return; $('ventaPrecio').value=(p.enDescuento&&p.precioDescuento)?p.precioDescuento:(p.precio||18900); }
 $('ventaProducto').addEventListener('change', sincronizarPrecioVenta);
 $('btnGuardarCostos').addEventListener('click', function(){ COSTOS={ tela:parseInt(($('costoTela').value||'0').replace(/\D/g,''),10)||0, dtf:parseInt(($('costoDtf').value||'0').replace(/\D/g,''),10)||0, empaque:parseInt(($('costoEmpaque').value||'0').replace(/\D/g,''),10)||0, envio:parseInt(($('costoEnvio').value||'0').replace(/\D/g,''),10)||0 }; guardarVentas('Actualizar costos', 'statusCostos'); });
 $('btnGuardarVenta').addEventListener('click', function(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p){ statusVenta('err','Elegí producto.'); return; } var precio=parseInt(($('ventaPrecio').value||'0').replace(/\D/g,''),10); if(!precio){ statusVenta('err','Poné precio.'); return; } VENTAS.unshift({ id:Date.now(), productoId:id, nombre:p.nombre, categoria:p.categoria||'', talla:$('ventaTalla').value, color:$('ventaColor').value, precio:precio, costo:costoUnitario(), canal:$('ventaCanal').value, fecha:$('ventaFecha').value, nota:$('ventaNota').value.trim(), estado:'pendiente' }); $('ventaNota').value=''; guardarVentas('Registrar venta','statusVenta'); });
 function costoUnitario(){ return (COSTOS.tela||0)+(COSTOS.dtf||0)+(COSTOS.empaque||0)+(COSTOS.envio||0); }
-function guardarVentas(msg,cajaStatus){ var caja=$(cajaStatus||'statusVenta'); caja.className='status show'; caja.textContent='Guardando...'; ghGet('data/ventas.json').catch(function(){ return null; }).then(function(r){ return ghPut('data/ventas.json', {costos:COSTOS, ventas:VENTAS}, r?r.sha:null, msg); }).then(function(){ caja.className='status show ok'; caja.textContent='Guardado.'; renderTablero(); renderListaVentas(); }).catch(function(err){ caja.className='status show err'; caja.textContent='Error: '+err.message; }); }
+function guardarVentas(msg,cajaStatus){ var caja=$(cajaStatus||'statusVenta'); caja.className='status show'; caja.textContent='Guardando...'; escribirVentasDatos({costos:COSTOS, ventas:VENTAS}, msg).then(function(){ return escribirActividad(); }).then(function(){ caja.className='status show ok'; caja.textContent='Guardado.'+(repoPrivado()?'':' (Tip: configurá el repo privado en Tienda para que tus ventas no queden públicas.)'); renderTablero(); renderListaVentas(); }).catch(function(err){ caja.className='status show err'; caja.textContent='Error: '+err.message; }); }
 $('listaVentas').addEventListener('click', function(e){ var b=e.target.closest('[data-borrar-venta]'); if(!b) return; var i=parseInt(b.getAttribute('data-borrar-venta'),10); if(!confirm('¿Borrar?')) return; VENTAS.splice(i,1); guardarVentas('Borrar venta'); });
 $('ventaRango').addEventListener('change', renderTablero);
 // ============================================================
@@ -1990,7 +2008,7 @@ $('listaVentas').addEventListener('click', function (e) {
 function pendientes() { return VENTAS.filter(function (v) { return estadoDe(v) === 'pendiente'; }); }
 function statusProd(id, t, m) { var el = $(id); el.className = 'status show ' + t; el.textContent = m; }
 function cargarProduccion() {
-  ghGet('data/ventas.json').then(function (r) { var d = r && r.content ? r.content : {}; VENTAS = d.ventas || []; if (d.costos) COSTOS = d.costos; renderProduccion(); })
+  leerVentasDatos().then(function (x) { var d = x.d; VENTAS = d.ventas || []; if (d.costos) COSTOS = d.costos; renderProduccion(); })
     .catch(function () { VENTAS = []; renderProduccion(); });
 }
 function renderProduccion() {
@@ -2230,7 +2248,7 @@ function cargarTienda() {
     var t = r[0].content || {};
     var bolFs = (BOLETINES.filter(function (b) { return b.activo && b.formspree; })[0] || {}).formspree || '';
     TIENDA = t; ['nombres', 'precios', 'mockup'].forEach(function (k) { TIENDA[k] = TIENDA[k] || {}; }); TIENDA.banners = TIENDA.banners || []; TIENDA.drops = TIENDA.drops || null; TIENDA._formspreeBol = bolFs;
-    aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); initPriv(); renderDescuentos(); renderCorte(); renderColPrendas();
+    aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); initPriv(); renderDescuentos(); renderCorte(); renderActividad(); renderColPrendas();
     RESENAS = Array.isArray(r[1].content) ? r[1].content : [];
     renderImgsFijas(); renderPrecios(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
   });
@@ -2311,11 +2329,13 @@ function aplicarCfgMockup() {
   TIENDA.mockup = TIENDA.mockup || {};
   YuzuMockup.configurar(TIENDA.mockup);
 }
+var PRODUCTO_TOCADO = false;
 function cargarCfgMockup() {
   return ghGet('data/tienda.json').then(function (r) {
     var t = r.content || {};
     TIENDA.mockup = t.mockup || {};
     if (t.privado) TIENDA.privado = t.privado;
+    if (t.precios) { TIENDA.precios = t.precios; if (!PRODUCTO_TOCADO) $('precioInput').value = precioDefecto($('impresionSelect').value); }
     aplicarCfgMockup();
     if (window.EDN) EDN.preview();
   }).catch(function () {});
@@ -2372,9 +2392,59 @@ function EditorDisenos(cont, op) {
   cont.addEventListener('click', function (e) { self._click(e); });
   cont.addEventListener('input', function (e) {
     if (e.target.matches('[data-v-nombre]')) self.e.versiones[+e.target.getAttribute('data-v-nombre')].nombre = e.target.value;
-
+  });
+  // Arrastrar un PNG directo sobre la casilla
+  cont.addEventListener('dragover', function (e) { var sl = e.target.closest('.png-slot'); if (!sl || !sl.querySelector('[data-v-archivo]')) return; e.preventDefault(); sl.classList.add('encima'); });
+  cont.addEventListener('dragleave', function (e) { var sl = e.target.closest('.png-slot'); if (sl) sl.classList.remove('encima'); });
+  cont.addEventListener('drop', function (e) {
+    var sl = e.target.closest('.png-slot'), inp = sl && sl.querySelector('[data-v-archivo]'); if (!inp) return;
+    e.preventDefault(); sl.classList.remove('encima');
+    var f = e.dataTransfer.files && e.dataTransfer.files[0]; if (f) self._archivo(inp.getAttribute('data-v-archivo'), f);
   });
 }
+// "eren-001_espalda-final.png" → "Eren 001"
+function nombreDesdeArchivo(fn) {
+  var fuera = /^(espalda|pecho|manga|costado|frente|back|front|print|final|png|copia|copy|mockup|diseno|diseño|v\d+|\d{3,4}px)$/i;
+  var w = String(fn).replace(/\.[a-z0-9]+$/i, '').split(/[\s_\-.]+/).filter(function (x) { return x && !fuera.test(x); });
+  return w.map(function (x) { return x.charAt(0).toUpperCase() + x.slice(1); }).join(' ').trim();
+}
+// Luz promedio del arte (0 = negro, 255 = blanco), para sugerir en qué telas se ve bien
+function luzDe(img) {
+  var c = document.createElement('canvas'); c.width = 48; c.height = 48;
+  var x = c.getContext('2d'); x.drawImage(img, 0, 0, 48, 48);
+  var d = x.getImageData(0, 0, 48, 48).data, suma = 0, peso = 0;
+  for (var k = 0; k < d.length; k += 4) { var a = d[k + 3] / 255; suma += (0.2126 * d[k] + 0.7152 * d[k + 1] + 0.0722 * d[k + 2]) * a; peso += a; }
+  return peso ? suma / peso : 128;
+}
+EditorDisenos.prototype._archivo = function (clave, file) {
+  var self = this, par = clave.split(':'), v = this.e.versiones[+par[0]];
+  var inp0 = this.cont.querySelector('[data-v-archivo="' + clave + '"]'), slot = inp0 && inp0.closest('.png-slot');
+  if (slot) slot.classList.add('cargando');
+  leerPNG(file, this.e.recortar).then(function (r) {
+    v.archivos[par[1]] = r;
+    // Actualizar solo esa casilla (no redibujar todo, así no se pierde otro archivo que estés eligiendo)
+    var inp = self.cont.querySelector('[data-v-archivo="' + clave + '"]'), sl = inp && inp.closest('.png-slot');
+    if (sl) { sl.classList.remove('cargando'); sl.classList.add('lleno'); sl.querySelector('img').src = r.preview; }
+    else self.render();
+    if (par[1] === 'espalda') self._sugerirColores();
+    if (self.op.alNombre) self.op.alNombre(nombreDesdeArchivo(file.name));
+    self.preview();
+  }).catch(function (err) { if (slot) slot.classList.remove('cargando'); alert(err.message); });
+};
+// Con 2+ versiones: si una versión no tiene telas marcadas, se sugieren según qué tan claro es su arte
+EditorDisenos.prototype._sugerirColores = function () {
+  var vs = this.e.versiones, self = this;
+  if (vs.length < 2) return;
+  vs.forEach(function (v, i) {
+    var a = v.archivos.espalda; if (!a || !a.img || v.colores.length) return;
+    var luz = luzDe(a.img);
+    if (luz > 125) v.colores = COLORES_TELA.filter(YuzuMockup.esOscuro);
+    else if (luz < 100) v.colores = COLORES_TELA.filter(function (c) { return !YuzuMockup.esOscuro(c); });
+    else return;
+    Array.prototype.forEach.call(self.cont.querySelectorAll('[data-v-tela="' + i + '"]'), function (b) { b.classList.toggle('on', v.colores.indexOf(b.getAttribute('data-c')) !== -1); });
+    var n = self.cont.querySelector('[data-v-sug="' + i + '"]'); if (n) n.textContent = 'Sugerido según el diseño · tocá para cambiar';
+  });
+};
 EditorDisenos.prototype.limpiar = function () {
   this.e = { versiones: [{ nombre: 'Versión 1', colores: [], archivos: {} }], prendas: PRENDAS_IDS.slice(), ajuste: { v: 2 }, colorPrev: 'Negro', recortar: RECORTAR_PNG() };
   this.render();
@@ -2423,7 +2493,7 @@ EditorDisenos.prototype.render = function () {
         var a = v.archivos[c[0]];
         return '<label class="png-slot' + (a ? ' lleno' : '') + '"><input type="file" accept="image/png" data-v-archivo="' + i + ':' + c[0] + '"><img alt=""' + (a ? ' src="' + esc(a.preview) + '"' : '') + '><span>' + c[1] + (i > 0 && c[0] !== 'espalda' ? '<br><small>(opcional)</small>' : '') + '</span><button type="button" class="x" data-v-borrar="' + i + ':' + c[0] + '">✕</button></label>';
       }).join('') + '</div>' +
-      '<div class="mini">Se ve bien en:</div><div class="tela-chips">' + COLORES_TELA.map(function (c) {
+      '<div class="mini">Se ve bien en: <span data-v-sug="' + i + '" style="color:var(--yuzu)"></span></div><div class="tela-chips">' + COLORES_TELA.map(function (c) {
         return '<button type="button" class="tela' + (v.colores.indexOf(c) !== -1 ? ' on' : '') + '" data-v-tela="' + i + '" data-c="' + esc(c) + '" title="' + esc(c) + '" style="background:' + (YuzuMockup.HEX[c] || '#888') + '"></button>';
       }).join('') + '</div></div>';
   });
@@ -2443,17 +2513,8 @@ EditorDisenos.prototype.render = function () {
 EditorDisenos.prototype._cambio = function (ev) {
   var t = ev.target, self = this;
   if (t.matches('[data-v-archivo]') && t.files.length) {
-    var par = t.getAttribute('data-v-archivo').split(':'), v = this.e.versiones[+par[0]];
-    var clave = t.getAttribute('data-v-archivo'), slot = t.closest('.png-slot');
-    if (slot) slot.classList.add('cargando');
-    leerPNG(t.files[0], this.e.recortar).then(function (r) {
-      v.archivos[par[1]] = r;
-      // Actualizar solo esa casilla (no redibujar todo, así no se pierde otro archivo que estés eligiendo)
-      var inp = self.cont.querySelector('[data-v-archivo="' + clave + '"]'), sl = inp && inp.closest('.png-slot');
-      if (sl) { sl.classList.remove('cargando'); sl.classList.add('lleno'); sl.querySelector('img').src = r.preview; }
-      else self.render();
-      self.preview();
-    }).catch(function (err) { if (slot) slot.classList.remove('cargando'); alert(err.message); });
+    this._archivo(t.getAttribute('data-v-archivo'), t.files[0]);
+    t.value = '';
   } else if (t.matches('[data-v-recortar]')) {
     this.e.recortar = t.checked; localStorage.setItem('yuzu_recortar', t.checked ? '1' : '0');
   } else if (t.matches('[data-v-prenda]')) {
@@ -2736,22 +2797,30 @@ EditorDisenos.prototype.subir = function (base, avisar) {
   });
 };
 
-var EDN = new EditorDisenos($('evNuevo'), { botones: '<button type="button" class="btn btn-sec" id="btnGenerarMk">Generar mockups de la boxy</button><div class="status" id="statusMk"></div>' });
+var EDN = new EditorDisenos($('evNuevo'), {
+  botones: '<button type="button" class="btn btn-sec" id="btnGenerarMk">Ver los mockups de la boxy</button><p class="mini" style="margin-top:4px">No hace falta tocarlo: al subir el producto se generan solos con la posición que dejaste.</p><div class="status" id="statusMk"></div>',
+  alNombre: function (n) { if (n && !$('nombreProducto').value.trim()) $('nombreProducto').value = n; }
+});
+// Genera las fotos de la boxy (una por color marcado) y las pone en "Mockups por color"
+function generarMockupsNuevo() {
+  var cols = coloresMarcados();
+  if (!cols.length) return Promise.reject(new Error('Marcá al menos un color.'));
+  var faltan = cols.filter(function (c) { return !YuzuMockup.disponible('boxy', c); });
+  statusDe('statusMk', 'loading', 'Generando mockups...');
+  return EDN.generarBoxy(cols).then(function (lista) {
+    var nuevos = lista.map(function (x) { return { base64: x.base64, ext: 'jpg', preview: x.preview, nombre: 'auto', color: x.color, peso: Math.round(x.base64.length * 0.75 / 1024), auto: true }; });
+    mockups = mockups.filter(function (m) { return !m.auto; }).concat(nuevos);
+    renderMockups();
+    statusDe('statusMk', 'ok', '✓ ' + nuevos.length + ' mockups listos.' + (faltan.length ? ' Sin foto: ' + faltan.join(', ') + '.' : ''));
+    return nuevos;
+  });
+}
 $('colorCheckGrid').addEventListener('change', function () { EDN.preview(); });
 $('evNuevo').addEventListener('click', function (e) {
   if (!e.target.closest('#btnGenerarMk')) return;
   if (!EDN.tieneArchivos()) { statusDe('statusMk', 'err', 'Subí al menos un PNG.'); return; }
-  var cols = coloresMarcados();
-  if (!cols.length) { statusDe('statusMk', 'err', 'Marcá al menos un color.'); return; }
-  var faltan = cols.filter(function (c) { return !YuzuMockup.disponible('boxy', c); });
-  statusDe('statusMk', 'loading', 'Generando...');
   var btn = e.target; btn.disabled = true;
-  EDN.generarBoxy(cols).then(function (lista) {
-    var nuevos = lista.map(function (x) { return { base64: x.base64, ext: 'jpg', preview: x.preview, nombre: 'auto', color: x.color, peso: Math.round(x.base64.length * 0.75 / 1024), auto: true }; });
-    mockups = mockups.filter(function (m) { return !m.auto; }).concat(nuevos);
-    renderMockups();
-    statusDe('statusMk', 'ok', '✓ ' + nuevos.length + ' mockups agregados a "Mockups por color".' + (faltan.length ? ' Sin foto: ' + faltan.join(', ') + '.' : ''));
-  }).catch(function (err) { statusDe('statusMk', 'err', err.message); }).then(function () { btn.disabled = false; });
+  generarMockupsNuevo().catch(function (err) { statusDe('statusMk', 'err', err.message); }).then(function () { btn.disabled = false; });
 });
 
 // ---------- Editar diseños de un producto existente ----------
@@ -2892,6 +2961,14 @@ $('btnGuardarCorte').addEventListener('click', function () {
   statusDe('statusCorte', 'loading', 'Guardando...');
   guardarJSON('data/tienda.json', TIENDA, 'Fecha de corte').then(function () { statusDe('statusCorte', 'ok', '✓ Guardado.'); })
     .catch(function (err) { statusDe('statusCorte', 'err', err.message); });
+});
+
+// ---------- Pedidos reales ----------
+function renderActividad() { var a = Object.assign({ activo: true, minimo: 3 }, TIENDA.actividad || {}); $('actActivo').checked = !!a.activo; $('actMinimo').value = a.minimo; }
+$('btnGuardarAct').addEventListener('click', function () {
+  TIENDA.actividad = { activo: $('actActivo').checked, minimo: Math.max(1, parseInt($('actMinimo').value, 10) || 3) };
+  statusDe('statusAct', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Pedidos reales').then(function () { statusDe('statusAct', 'ok', '✓ Guardado.'); }).catch(function (err) { statusDe('statusAct', 'err', err.message); });
 });
 
 // ---------- Colores por prenda ----------
@@ -3058,6 +3135,30 @@ $('btnPrivMover').addEventListener('click', function () {
     .then(function () { statusDe('statusPriv', hechos === tareas.length ? 'ok' : 'err', '✓ ' + hechos + ' de ' + tareas.length + ' movidos al repo privado.' + (hechos < tareas.length ? ' Algunos no se pudieron mover; probá otra vez.' : '')); })
     .catch(function (e) { statusDe('statusPriv', 'err', e.message); });
 });
+// ---------- Ventas: privadas si hay repo privado; la tienda solo ve un resumen sin datos (data/actividad.json) ----------
+function leerVentasDatos() {
+  var publico = function () { return ghGet('data/ventas.json').then(function (r) { return { d: r && r.content ? r.content : {}, enPublico: true }; }).catch(function () { return { d: {}, enPublico: false }; }); };
+  if (!repoPrivado()) return publico();
+  return rawBlob(urlPriv('data/ventas.json')).then(function (b) { return b.text(); }).then(function (t) { return { d: JSON.parse(t), enPublico: false }; })
+    .catch(function () { return publico(); }); // primera vez: todavía están en el repo público
+}
+function escribirVentasDatos(obj, msg) {
+  if (!repoPrivado()) return ghGet('data/ventas.json').catch(function () { return null; }).then(function (r) { return ghPut('data/ventas.json', obj, r ? r.sha : null, msg); });
+  var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(obj, null, 2))));
+  return privPut('data/ventas.json', b64, msg).then(function () { return ghBorrarArchivo('data/ventas.json', 'Ventas al repo privado'); });
+}
+function escribirActividad() {
+  var ahora = Date.now(), semana = 0, prods = {};
+  VENTAS.forEach(function (v) {
+    var t = Number(v.id) || new Date(v.fecha).getTime(); if (!t) return;
+    if (ahora - t < 7 * 864e5) semana++;
+    if (ahora - t < 30 * 864e5 && v.productoId) {
+      var a = prods[v.productoId] = prods[v.productoId] || { mes: 0, ultimo: null };
+      a.mes++; var iso = new Date(t).toISOString(); if (!a.ultimo || iso > a.ultimo) a.ultimo = iso;
+    }
+  });
+  return subirArchivoFijo('data/actividad.json', btoa(unescape(encodeURIComponent(JSON.stringify({ actualizado: new Date().toISOString(), semana: semana, productos: prods })))), 'Actividad de pedidos').catch(function () {});
+}
 var LOGO_NUEVO = {};
 function initLogo() {
   var l = (TIENDA.mockup && TIENDA.mockup.logoPecho) || {};
@@ -3153,10 +3254,12 @@ $('btnPlSubir').addEventListener('click', function () {
 });
 
 // ---------- Precios ----------
-var PRECIOS_BASE = { boxy: 18900, sinmangas: 17900, mangalarga: 19900, hoodie: 23900, extra2xl: 1000, uniMinimo: 5, uniDescuento: 6000 };
+var PRECIOS_BASE = { boxy: 18900, sinmangas: 17900, mangalarga: 19900, hoodie: 23900, extra2xl: 1000, uniMinimo: 5, uniDescuento: 6000, producto: 18900, producto_pecho: 14900 };
 var ESTILOS_BASE = { minimalista: 4000, brutalista: 7000, otro: 5000, uniformes: 8000 };
 var CAMPOS_ESTILO = { minimalista: 'pEstMinimalista', brutalista: 'pEstBrutalista', otro: 'pEstOtro', uniformes: 'pEstUniformes' };
-var CAMPOS_PRECIO = { boxy: 'pBoxy', sinmangas: 'pSinmangas', mangalarga: 'pMangalarga', hoodie: 'pHoodie', uniMinimo: 'pUniMin' };
+var CAMPOS_PRECIO = { boxy: 'pBoxy', sinmangas: 'pSinmangas', mangalarga: 'pMangalarga', hoodie: 'pHoodie', uniMinimo: 'pUniMin', producto: 'pProducto', producto_pecho: 'pProductoPecho' };
+// Precio sugerido para un producto nuevo del catálogo (se cambia en Tienda → Precios)
+function precioDefecto(imp) { var P = TIENDA.precios || {}; return String(imp === 'pecho' ? (P.producto_pecho || 14900) : (P.producto || 18900)); }
 function precioActual(k) { var v = TIENDA.precios[k]; return (v === undefined || v === null || v === '') ? PRECIOS_BASE[k] : Number(v); }
 function leerPrecios() {
   var out = {};
@@ -3182,6 +3285,7 @@ Object.keys(CAMPOS_ESTILO).forEach(function (k) { $(CAMPOS_ESTILO[k]).addEventLi
 $('btnGuardarPrecios').addEventListener('click', function () {
   var p = leerPrecios();
   TIENDA.precios = p;
+  if (!PRODUCTO_TOCADO) $('precioInput').value = precioDefecto($('impresionSelect').value);
   statusDe('statusPrecios', 'loading', 'Guardando...');
   guardarJSON('data/tienda.json', TIENDA, 'Precios de prendas').then(function () { statusDe('statusPrecios', 'ok', 'Guardado. Se ve en la tienda en 1–2 minutos.'); })
     .catch(function (err) { statusDe('statusPrecios', 'err', err.message); });
@@ -3217,7 +3321,7 @@ $('tNombres').addEventListener('click', function (e) {
 
 // ---------- Nombres ----------
 function vistaNombre(sub, n) {
-  var s = (n && n.sigla) || siglaAuto(sub), t = (n && n.titulo) || sub;
+  var s = (n && n.sigla) ? (n.sigla === '-' ? '' : n.sigla) : siglaAuto(sub), t = (n && n.titulo) || sub;
   return (s ? s + ' ⊹ ' : '') + t;
 }
 function renderNombres() {
