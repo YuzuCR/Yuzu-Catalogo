@@ -57,6 +57,15 @@
           "h": 711,
           "alinear": "arriba"
         }
+      },
+      "mangalarga": {
+        "espalda": {
+          "x": 274,
+          "y": 341,
+          "w": 546,
+          "h": 720,
+          "alinear": "arriba"
+        }
       }
     }
   }
