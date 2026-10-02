@@ -26,6 +26,13 @@
           "w": 732,
           "h": 927,
           "alinear": "arriba"
+        },
+        "frente": {
+          "x": 641,
+          "y": 413,
+          "w": 153,
+          "h": 184,
+          "alinear": "centro"
         }
       }
     }
