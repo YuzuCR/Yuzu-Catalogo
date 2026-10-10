@@ -141,5 +141,54 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791632246433,
+    "nombre": "AoT 002",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "imagenes": [
+      "images/aot-002-gal-1791632246433-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-002-negro-1791632246433-0.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro"
+        ],
+        "print": {},
+        "espalda": "images/disenos/aot-002-1791632246433-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 530.3,
+          "cy": 723.3,
+          "w": 450.9
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
