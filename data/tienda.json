@@ -63,6 +63,13 @@
           "w": 125,
           "h": 269,
           "alinear": "centro"
+        },
+        "lado": {
+          "x": 493,
+          "y": 698,
+          "w": 127,
+          "h": 146,
+          "alinear": "centro"
         }
       },
       "mangalarga": {
