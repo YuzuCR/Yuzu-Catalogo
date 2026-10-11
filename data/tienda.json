@@ -70,6 +70,13 @@
           "w": 127,
           "h": 146,
           "alinear": "centro"
+        },
+        "frente": {
+          "x": 633,
+          "y": 484,
+          "w": 96,
+          "h": 119,
+          "alinear": "centro"
         }
       },
       "mangalarga": {
