@@ -81,6 +81,23 @@
       "activo": true,
       "claro": "images/disenos/logo-pecho-claro.png",
       "oscuro": "images/disenos/logo-pecho-oscuro.png"
+    },
+    "plantillas": {
+      "boxy": [
+        "Blanco",
+        "Negro"
+      ],
+      "sinmangas": [
+        "Blanco",
+        "Negro"
+      ],
+      "mangalarga": [
+        "Blanco",
+        "Negro"
+      ],
+      "hoodie": [
+        "Negro"
+      ]
     }
   }
 }
