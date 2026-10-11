@@ -3016,7 +3016,7 @@ function cambiarZonaSel() {
 ['zPrenda', 'zVista'].forEach(function (id) { $(id).addEventListener('change', cambiarZonaSel); });
 $('zColor').addEventListener('change', function () { ZE.color = this.value; renderZona(); });
 function pruebaZona() {
-  if (ZE.prueba) return Promise.resolve(ZE.prueba);
+  if (ZE.vista === 'frente' && YuzuMockup.logoPara(ZE.color)) return YuzuMockup.cargar(YuzuMockup.logoPara(ZE.color)); if (ZE.prueba) return Promise.resolve(ZE.prueba);
   var src = YuzuMockup.RUTA + (ZE.vista === 'espalda' ? (YuzuMockup.esOscuro(ZE.color) ? 'prueba-espalda-oscura.png' : 'prueba-espalda-clara.png') : 'prueba-pecho.png');
   return YuzuMockup.cargar(src);
 }
