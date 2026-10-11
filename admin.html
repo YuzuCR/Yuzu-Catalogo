@@ -3015,10 +3015,19 @@ function cambiarZonaSel() {
 }
 ['zPrenda', 'zVista'].forEach(function (id) { $(id).addEventListener('change', cambiarZonaSel); });
 $('zColor').addEventListener('change', function () { ZE.color = this.value; renderZona(); });
-function pruebaZona() {
+function placeholderZona() {
+  var oscuro = YuzuMockup.esOscuro(ZE.color), esEsp = ZE.vista === 'espalda', w = esEsp ? 800 : 400, h = esEsp ? 1000 : 400;
+  var cv = document.createElement('canvas'), c = cv.getContext('2d');
+  cv.width = w; cv.height = h;
+  c.fillStyle = oscuro ? '#f2f2f2' : '#1a1a1a'; c.fillRect(0, 0, w, h);
+  c.fillStyle = oscuro ? '#1a1a1a' : '#f2f2f2'; c.font = 'bold ' + Math.round(w / 6) + 'px sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillText('DISEÑO', w / 2, h / 2);
+  return Promise.resolve(cv);
+}
+ function pruebaZona() {
   if (ZE.vista === 'frente' && YuzuMockup.logoPara(ZE.color)) return YuzuMockup.cargar(YuzuMockup.logoPara(ZE.color)); if (ZE.prueba) return Promise.resolve(ZE.prueba);
   var src = YuzuMockup.RUTA + (ZE.vista === 'espalda' ? (YuzuMockup.esOscuro(ZE.color) ? 'prueba-espalda-oscura.png' : 'prueba-espalda-clara.png') : 'prueba-pecho.png');
-  return YuzuMockup.cargar(src);
+    return YuzuMockup.cargar(src).catch(function () { return placeholderZona(); });
 }
 function pintarCaja() {
   var esc2 = $('zEscena').clientWidth / 1080, z = ZE.zona, c = $('zCaja');
