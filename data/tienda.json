@@ -1,5 +1,11 @@
 {
-  "nombres": {},
+  "nombres": {
+    "AoT Collection": {
+      "sigla": "YUZU",
+      "titulo": "Attack on Titan",
+      "frase": "Originales"
+    }
+  },
   "drops": null,
   "banners": [],
   "precios": {
