@@ -76,6 +76,11 @@
           "alinear": "arriba"
         }
       }
+    },
+    "logoPecho": {
+      "activo": true,
+      "claro": "images/disenos/logo-pecho-claro.png",
+      "oscuro": "images/disenos/logo-pecho-oscuro.png"
     }
   }
 }
