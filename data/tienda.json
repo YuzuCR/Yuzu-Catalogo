@@ -56,6 +56,13 @@
           "w": 549,
           "h": 711,
           "alinear": "arriba"
+        },
+        "costado": {
+          "x": 410,
+          "y": 960,
+          "w": 125,
+          "h": 269,
+          "alinear": "centro"
         }
       },
       "mangalarga": {
