@@ -95,6 +95,13 @@
           "w": 411,
           "h": 516,
           "alinear": "arriba"
+        },
+        "frente": {
+          "x": 614,
+          "y": 615,
+          "w": 85,
+          "h": 90,
+          "alinear": "centro"
         }
       }
     },
