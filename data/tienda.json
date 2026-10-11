@@ -109,6 +109,13 @@
           "w": 130,
           "h": 435,
           "alinear": "centro"
+        },
+        "costado": {
+          "x": 641,
+          "y": 162,
+          "w": 97,
+          "h": 110,
+          "alinear": "centro"
         }
       }
     },
