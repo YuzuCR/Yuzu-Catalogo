@@ -145,7 +145,10 @@
       }
     },
     "destacado": false,
-    "oculto": false
+    "oculto": false,
+    "colecciones": [
+      "Yuzu Originals"
+    ]
   },
   {
     "id": 1791836316096,
