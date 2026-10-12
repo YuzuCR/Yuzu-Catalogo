@@ -1308,5 +1308,81 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791840106636,
+    "nombre": "AoT 017",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-017-gal-1791840106636-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-017-negro-1791840106636-0.jpg",
+        "images/aot-017-negro-1791840106636-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-017-crema-1791840106636-2.jpg",
+        "images/aot-017-crema-1791840106636-3.jpg"
+      ],
+      "Café": [
+        "images/aot-017-cafe-1791840106636-4.jpg",
+        "images/aot-017-cafe-1791840106636-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-017-gris-grafito-1791840106636-6.jpg",
+        "images/aot-017-gris-grafito-1791840106636-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-017-azul-marino-1791840106636-8.jpg",
+        "images/aot-017-azul-marino-1791840106636-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-017-verde-musgo-1791840106636-10.jpg",
+        "images/aot-017-verde-musgo-1791840106636-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 18900,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/aot-017-1791840106636-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2,
+      "mangalarga": {
+        "espalda": {
+          "cx": 550,
+          "cy": 613,
+          "w": 411.7
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
