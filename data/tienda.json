@@ -106,6 +106,13 @@
           "w": 70,
           "h": 240,
           "alinear": "centro"
+        },
+        "costado": {
+          "x": 518,
+          "y": 1069,
+          "w": 100,
+          "h": 160,
+          "alinear": "centro"
         }
       },
       "hoodie": {
