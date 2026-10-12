@@ -693,5 +693,78 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791838312721,
+    "nombre": "AoT 009",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-009-gal-1791838312721-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-009-negro-1791838312721-0.jpg",
+        "images/aot-009-negro-1791838312721-1.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-009-gris-grafito-1791838312721-2.jpg",
+        "images/aot-009-gris-grafito-1791838312721-3.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-009-azul-marino-1791838312721-4.jpg",
+        "images/aot-009-azul-marino-1791838312721-5.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-009-verde-musgo-1791838312721-6.jpg",
+        "images/aot-009-verde-musgo-1791838312721-7.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/aot-009-1791838312721-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2,
+      "sinmangas": {
+        "espalda": {
+          "cx": 539,
+          "cy": 597.8,
+          "w": 462
+        }
+      },
+      "mangalarga": {
+        "espalda": {
+          "cx": 550,
+          "cy": 587.1,
+          "w": 424
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
