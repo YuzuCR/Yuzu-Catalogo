@@ -245,5 +245,91 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791836585047,
+    "nombre": "AoT 003",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-003-gal-1791836585047-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/aot-003-blanco-1791836585047-0.jpg",
+        "images/aot-003-blanco-1791836585047-1.jpg"
+      ],
+      "Negro": [
+        "images/aot-003-negro-1791836585047-2.jpg",
+        "images/aot-003-negro-1791836585047-3.jpg"
+      ],
+      "Crema": [
+        "images/aot-003-crema-1791836585047-4.jpg",
+        "images/aot-003-crema-1791836585047-5.jpg"
+      ],
+      "Café": [
+        "images/aot-003-cafe-1791836585047-6.jpg",
+        "images/aot-003-cafe-1791836585047-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-003-gris-grafito-1791836585047-8.jpg",
+        "images/aot-003-gris-grafito-1791836585047-9.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-003-azul-marino-1791836585047-10.jpg",
+        "images/aot-003-azul-marino-1791836585047-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-003-verde-musgo-1791836585047-12.jpg",
+        "images/aot-003-verde-musgo-1791836585047-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17000,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/aot-003-1791836585047-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "frente": {
+          "cx": 646.9,
+          "cy": 610.1,
+          "w": 52.5
+        },
+        "espalda": {
+          "cx": 540.5,
+          "cy": 685.3,
+          "w": 413
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
