@@ -1240,5 +1240,73 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791839628868,
+    "nombre": "Aot 016",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-016-gal-1791839628868-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/aot-016-blanco-1791839628868-0.jpg",
+        "images/aot-016-blanco-1791839628868-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-016-crema-1791839628868-2.jpg",
+        "images/aot-016-crema-1791839628868-3.jpg"
+      ],
+      "Café": [
+        "images/aot-016-cafe-1791839628868-4.jpg",
+        "images/aot-016-cafe-1791839628868-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-016-gris-grafito-1791839628868-6.jpg",
+        "images/aot-016-gris-grafito-1791839628868-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-016-azul-marino-1791839628868-8.jpg",
+        "images/aot-016-azul-marino-1791839628868-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-016-verde-musgo-1791839628868-10.jpg",
+        "images/aot-016-verde-musgo-1791839628868-11.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": true,
+    "precioDescuento": 17000,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/aot-016-1791839628868-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
