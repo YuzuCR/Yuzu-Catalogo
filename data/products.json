@@ -1501,5 +1501,53 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791840674912,
+    "nombre": "AoT 020",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Manga"
+    ],
+    "imagenes": [
+      "images/aot-020-gal-1791840674912-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-020-negro-1791840674912-0.jpg",
+        "images/aot-020-negro-1791840674912-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/aot-020-1791840674912-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 610.3,
+          "cy": 906.6,
+          "w": 373
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
