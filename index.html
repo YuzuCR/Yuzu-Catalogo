@@ -290,6 +290,9 @@
   .col-cab .desc { margin-top: 14px; font-family: var(--dato); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--tinta-2); }
   .subcarpetas { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 22px; }
   .subcarpetas::-webkit-scrollbar { display: none; }
+  .subcarpetas.tipos { padding-top: 0; flex-wrap: wrap; overflow-x: visible; }
+  .subcarpetas.tipos.oculto { display: none; }
+  .chip .cnt { font-size: 9px; opacity: .6; letter-spacing: .04em; }
   .chip { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--linea); border-radius: 30px; padding: 8px 14px; font-family: var(--dato); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-2); transition: color .3s, border-color .3s, background .3s; white-space: nowrap; }
   .chip:hover { color: var(--tinta); border-color: var(--tinta); }
   .chip.on { background: var(--tinta); color: var(--papel); border-color: var(--tinta); }
@@ -864,6 +867,7 @@
       <p class="desc" id="colDesc"></p>
     </div>
     <div class="subcarpetas" id="colSubs"></div>
+    <div class="subcarpetas tipos oculto" id="colTipos"></div>
     <section class="aviso-manifiesto oculto" id="avisoManifiesto">
       <span class="dato">Línea Manifiesto</span>
       <div class="monto">₡5.555 por pieza</div>
@@ -1658,7 +1662,7 @@ document.addEventListener('click', function (e) {
 /* =====================================================================
    COLECCIÓN
    ===================================================================== */
-var COL = { clave: '', lista: [], filtros: { colores: [], impresion: '', min: '', max: '', ofertas: false }, orden: 'dest', pagina: 1 };
+var COL = { clave: '', lista: [], filtros: { colores: [], impresion: '', min: '', max: '', ofertas: false, tipo: '' }, orden: 'dest', pagina: 1 };
 
 function resolverColeccion(a, b) {
   var r = { titulo: '', tituloHTML: '', desc: '', migas: [['Inicio', '#/']], lista: [], cat: null, sub: null, cita: '' };
@@ -1700,7 +1704,7 @@ function mostrarColeccion(a, b, query) {
   var clave = location.hash;
   if (clave !== COL.clave) {
     COL.clave = clave; COL.pagina = 1; COL.orden = 'dest';
-    COL.filtros = { colores: [], impresion: '', min: '', max: '', ofertas: false };
+    COL.filtros = { colores: [], impresion: '', min: '', max: '', ofertas: false, tipo: '' };
   }
   if (query && query.color) COL.filtros.colores = [query.color];
   COL.r = r;
@@ -1728,8 +1732,20 @@ function mostrarColeccion(a, b, query) {
   $('citaTxt').textContent = r.cita || '«Cada diseño es un argumento antes de ser una prenda.»';
   if (art) { $('citaImg').src = fotoArte(art); $('citaImg').style.display = ''; } else $('citaImg').style.display = 'none';
 
+  pintarTipos();
   pintarPanelFiltros();
   pintarColeccion();
+}
+
+// Chips de colección (Prediseñadas, Originales, Manga…) dentro de una serie
+function pintarTipos() {
+  var cont = $('colTipos'), cuenta = {}, nombres = [];
+  COL.r.lista.forEach(function (p) { (p.colecciones || []).forEach(function (t) { if (!(t in cuenta)) { cuenta[t] = 0; nombres.push(t); } cuenta[t]++; }); });
+  if (!COL.r.sub || !nombres.length) { cont.classList.add('oculto'); cont.innerHTML = ''; return; }
+  nombres.sort(function (a, b) { return cuenta[b] - cuenta[a] || a.localeCompare(b, 'es'); });
+  cont.innerHTML = '<button class="chip' + (!COL.filtros.tipo ? ' on' : '') + '" data-f-tipo="">Todo <span class="cnt">' + COL.r.lista.length + '</span></button>' +
+    nombres.map(function (t) { return '<button class="chip' + (COL.filtros.tipo === t ? ' on' : '') + '" data-f-tipo="' + esc(t) + '">' + esc(t) + ' <span class="cnt">' + cuenta[t] + '</span></button>'; }).join('');
+  cont.classList.remove('oculto');
 }
 
 function aplicarFiltros(lista) {
@@ -1738,6 +1754,7 @@ function aplicarFiltros(lista) {
     if (f.colores.length && !(p.colores || []).some(function (c) { return f.colores.indexOf(c) !== -1; })) return false;
     if (f.impresion && (p.impresion === 'pecho' ? 'pecho' : 'espalda') !== f.impresion) return false;
     if (f.ofertas && !enOferta(p)) return false;
+    if (f.tipo && (p.colecciones || []).indexOf(f.tipo) === -1) return false;
     var pv = precioVigente(p);
     if (f.min !== '' && pv < Number(f.min)) return false;
     if (f.max !== '' && pv > Number(f.max)) return false;
@@ -1790,6 +1807,7 @@ function pintarColeccion(scroll) {
   f.colores.forEach(function (c) { act.push('<button class="chip" data-f-color="' + esc(c) + '">' + esc(c) + ' <span class="x">×</span></button>'); });
   if (f.impresion) act.push('<button class="chip" data-f-imp="' + f.impresion + '">Estampado en ' + f.impresion + ' <span class="x">×</span></button>');
   if (f.ofertas) act.push('<button class="chip" data-f-of="1">Solo ofertas <span class="x">×</span></button>');
+  if (f.tipo) act.push('<button class="chip" data-f-tipo="' + esc(f.tipo) + '">' + esc(f.tipo) + ' <span class="x">×</span></button>');
   if (f.min !== '' || f.max !== '') act.push('<button class="chip" data-f-precio>' + (f.min !== '' ? plata(f.min) : '₡0') + ' – ' + (f.max !== '' ? plata(f.max) : '∞') + ' <span class="x">×</span></button>');
   if (act.length) act.push('<button class="quitar-todo" data-f-limpiar>Quitar todo</button>');
   $('filtrosActivos').innerHTML = act.join('');
@@ -1824,10 +1842,12 @@ $('vColeccion').addEventListener('click', function (e) {
     var imp = b.getAttribute('data-f-imp'); f.impresion = f.impresion === imp ? '' : imp;
   } else if ((b = e.target.closest('[data-f-of]'))) { f.ofertas = !f.ofertas; }
   else if ((b = e.target.closest('[data-f-precio]'))) { f.min = ''; f.max = ''; }
-  else if ((b = e.target.closest('[data-f-limpiar]'))) { COL.filtros = { colores: [], impresion: '', min: '', max: '', ofertas: false }; }
+  else if ((b = e.target.closest('[data-f-limpiar]'))) { COL.filtros = { colores: [], impresion: '', min: '', max: '', ofertas: false, tipo: '' }; }
+  else if ((b = e.target.closest('[data-f-tipo]'))) { f.tipo = b.getAttribute('data-f-tipo') === f.tipo ? '' : b.getAttribute('data-f-tipo'); }
   else if ((b = e.target.closest('[data-pag]'))) { COL.pagina = Number(b.getAttribute('data-pag')); pintarColeccion(true); return; }
   else return;
   COL.pagina = 1;
+  pintarTipos();
   pintarPanelFiltros();
   pintarColeccion();
 });
