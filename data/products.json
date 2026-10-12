@@ -1017,24 +1017,24 @@
     ],
     "mockups": {
       "Negro": [
-        "images/aot-013-negro-1791839230598-0.jpg",
-        "images/aot-013-negro-1791839230598-1.jpg"
+        "images/aot-013-negro-1791839414193-0.jpg",
+        "images/aot-013-negro-1791839414193-1.jpg"
       ],
       "Café": [
-        "images/aot-013-cafe-1791839230598-2.jpg",
-        "images/aot-013-cafe-1791839230598-3.jpg"
+        "images/aot-013-cafe-1791839414193-2.jpg",
+        "images/aot-013-cafe-1791839414193-3.jpg"
       ],
       "Gris grafito": [
-        "images/aot-013-gris-grafito-1791839230598-4.jpg",
-        "images/aot-013-gris-grafito-1791839230598-5.jpg"
+        "images/aot-013-gris-grafito-1791839414193-4.jpg",
+        "images/aot-013-gris-grafito-1791839414193-5.jpg"
       ],
       "Azul marino": [
-        "images/aot-013-azul-marino-1791839230598-6.jpg",
-        "images/aot-013-azul-marino-1791839230598-7.jpg"
+        "images/aot-013-azul-marino-1791839414193-6.jpg",
+        "images/aot-013-azul-marino-1791839414193-7.jpg"
       ],
       "Verde musgo": [
-        "images/aot-013-verde-musgo-1791839230598-8.jpg",
-        "images/aot-013-verde-musgo-1791839230598-9.jpg"
+        "images/aot-013-verde-musgo-1791839414193-8.jpg",
+        "images/aot-013-verde-musgo-1791839414193-9.jpg"
       ]
     },
     "colores": [
@@ -1076,6 +1076,13 @@
           "cx": 550,
           "cy": 735.4,
           "w": 315
+        }
+      },
+      "hoodie": {
+        "espalda": {
+          "cx": 537.5,
+          "cy": 802.6,
+          "w": 288
         }
       }
     },
