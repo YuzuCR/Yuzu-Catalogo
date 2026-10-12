@@ -1453,5 +1453,53 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791840597954,
+    "nombre": "AoT 019",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Manga"
+    ],
+    "imagenes": [
+      "images/aot-019-gal-1791840597954-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-019-negro-1791840597954-0.jpg",
+        "images/aot-019-negro-1791840597954-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/aot-019-1791840597954-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 581.9,
+          "cy": 960,
+          "w": 428.8
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
