@@ -6,7 +6,10 @@
       "frase": "Mas allá de la muralla"
     }
   },
-  "drops": null,
+  "drops": {
+    "actual": "AoT Collection",
+    "pasados": []
+  },
   "banners": [],
   "precios": {
     "boxy": 13700,
