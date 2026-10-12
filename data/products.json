@@ -766,5 +766,85 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791838665632,
+    "nombre": "AoT 010",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-010-gal-1791838665632-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-010-negro-1791838665632-0.jpg",
+        "images/aot-010-negro-1791838665632-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-010-crema-1791838665632-2.jpg",
+        "images/aot-010-crema-1791838665632-3.jpg"
+      ],
+      "Café": [
+        "images/aot-010-cafe-1791838665632-4.jpg",
+        "images/aot-010-cafe-1791838665632-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-010-gris-grafito-1791838665632-6.jpg",
+        "images/aot-010-gris-grafito-1791838665632-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-010-azul-marino-1791838665632-8.jpg",
+        "images/aot-010-azul-marino-1791838665632-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-010-verde-musgo-1791838665632-10.jpg",
+        "images/aot-010-verde-musgo-1791838665632-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": true,
+    "precioDescuento": 17000,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Café",
+          "Gris grafito",
+          "Azul marino",
+          "Verde musgo",
+          "Gris jaspeado"
+        ],
+        "print": {},
+        "espalda": "images/disenos/aot-010-1791838665632-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 547.7,
+          "cy": 699.4,
+          "w": 432.3
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
