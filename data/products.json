@@ -146,5 +146,101 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791836316096,
+    "nombre": "AoT 002",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-002-gal-1791836316096-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/aot-002-blanco-1791836316096-0.jpg",
+        "images/aot-002-blanco-1791836316096-1.jpg"
+      ],
+      "Negro": [
+        "images/aot-002-negro-1791836316096-2.jpg",
+        "images/aot-002-negro-1791836316096-3.jpg"
+      ],
+      "Crema": [
+        "images/aot-002-crema-1791836316096-4.jpg",
+        "images/aot-002-crema-1791836316096-5.jpg"
+      ],
+      "Café": [
+        "images/aot-002-cafe-1791836316096-6.jpg",
+        "images/aot-002-cafe-1791836316096-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-002-gris-grafito-1791836316096-8.jpg",
+        "images/aot-002-gris-grafito-1791836316096-9.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-002-azul-marino-1791836316096-10.jpg",
+        "images/aot-002-azul-marino-1791836316096-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-002-verde-musgo-1791836316096-12.jpg",
+        "images/aot-002-verde-musgo-1791836316096-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17000,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Café",
+          "Gris grafito",
+          "Azul marino",
+          "Verde musgo",
+          "Azul navy",
+          "Azul royal"
+        ],
+        "print": {},
+        "espalda": "images/disenos/aot-002-1791836316096-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2,
+      "mangalarga": {
+        "espalda": {
+          "cx": 544.5,
+          "cy": 715.5,
+          "w": 440.2
+        }
+      },
+      "boxy": {
+        "frente": {
+          "cx": 654.3,
+          "cy": 579.6,
+          "w": 56.7
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
