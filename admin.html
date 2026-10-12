@@ -151,6 +151,9 @@
   .mock-block { border-top: 1px solid var(--linea); padding-top: 10px; margin-top: 10px; }
   .mock-head { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--mudo); }
   .mock-head .sw { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--linea); }
+  .col-sug { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 2px; }
+  .col-sug button { font-family: var(--mono); font-size: 11px; padding: 5px 10px; border: 1px solid var(--linea); border-radius: 20px; background: transparent; color: var(--mudo); cursor: pointer; }
+  .col-sug button.on { background: var(--yuzu); color: var(--bg); border-color: var(--yuzu); }
   .subtit { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--mudo); margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--linea); }
 
   /* ===== MOCKUP AUTOMÁTICO ===== */
@@ -344,6 +347,10 @@
         <input type="text" id="inputNuevaSubcat" placeholder="ej: Attack on Titan">
         <button class="btn btn-sec" id="btnNuevaSubcat">Crear</button>
       </div>
+      <label>Colecciones (opcional, separadas por coma)</label>
+      <input type="text" id="coleccionesInput" placeholder="ej: Prediseñadas, Manga">
+      <div class="col-sug" id="coleccionesSug" data-para="coleccionesInput"></div>
+      <p class="mini" style="margin-top:2px">Así la gente filtra dentro de la serie. Se queda marcada para el próximo producto.</p>
       <label>Colores disponibles</label>
       <div class="color-check-grid" id="colorCheckGrid"></div>
       <label>Tipo de impresión</label>
@@ -522,8 +529,8 @@
       <p class="mini" style="margin-top:0">Si un diseño no trae PNG de pecho, el mockup lleva este logo en el frente (y entra en la lámina DTF). PNG transparente, recortado al borde.</p>
       <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="logoActivo" checked> Usar logo cuando no hay diseño de pecho</label>
       <div class="png-grid" style="grid-template-columns:repeat(2,1fr);margin-top:10px" id="logoGrid">
-        <label class="png-slot" data-logo="claro" style="background:#111"><input type="file" accept="image/png"><img alt=""><span>Logo claro<br><small>(va en telas oscuras)</small></span></label>
-        <label class="png-slot" data-logo="oscuro" style="background:#eee;color:#333"><input type="file" accept="image/png"><img alt=""><span>Logo oscuro<br><small>(va en telas claras)</small></span></label>
+        <label class="png-slot" data-logo="claro" style="background:#111"><input type="file" accept="image/png,application/pdf,.pdf"><img alt=""><span>Logo claro<br><small>(va en telas oscuras)</small></span></label>
+        <label class="png-slot" data-logo="oscuro" style="background:#eee;color:#333"><input type="file" accept="image/png,application/pdf,.pdf"><img alt=""><span>Logo oscuro<br><small>(va en telas claras)</small></span></label>
       </div>
       <button class="btn btn-sec" id="btnLogoGuardar">Guardar logo</button>
       <div class="status" id="statusLogo"></div>
@@ -1045,6 +1052,7 @@ function subirProducto() {
     return ghGet('data/products.json').then(function (r) {
       nuevoP = {
         id: stamp, nombre: nombre, categoria: categoria, subcategoria: subcategoria || null,
+        colecciones: parseColecciones($('coleccionesInput').value),
         imagenes: rutasGaleria, mockups: mapaMockups, colores: colores,
         precio: precio, enDescuento: enDescuento, precioDescuento: precioDescuento,
         impresion: $('impresionSelect').value,
@@ -1087,11 +1095,50 @@ $('btnSubir').addEventListener('click', function () {
 });
 $('precioInput').addEventListener('input', function () { PRODUCTO_TOCADO = true; });
 
+// ---------- Colecciones por producto (etiquetas dentro de una serie) ----------
+function coleccionesUsadas() {
+  var cuenta = {};
+  PRODUCTOS.forEach(function (p) { (p.colecciones || []).forEach(function (c) { cuenta[c] = (cuenta[c] || 0) + 1; }); });
+  return Object.keys(cuenta).sort(function (a, b) { return cuenta[b] - cuenta[a] || a.localeCompare(b, 'es'); });
+}
+// Texto "a, b" → ["A", "B"]; si ya existe una con otra mayúscula, usa la existente
+function parseColecciones(txt) {
+  var usadas = coleccionesUsadas(), out = [];
+  String(txt || '').split(',').forEach(function (t) {
+    t = t.trim().replace(/\s+/g, ' ').slice(0, 40); if (!t) return;
+    var ya = usadas.filter(function (u) { return u.toLowerCase() === t.toLowerCase(); })[0];
+    t = ya || t;
+    if (out.indexOf(t) === -1) out.push(t);
+  });
+  return out;
+}
+function chipsColecciones(idInput) {
+  var actuales = parseColecciones($(idInput) ? $(idInput).value : '').map(function (c) { return c.toLowerCase(); });
+  return coleccionesUsadas().map(function (c) {
+    return '<button type="button" data-col-sug="' + esc(c) + '" class="' + (actuales.indexOf(c.toLowerCase()) !== -1 ? 'on' : '') + '">' + esc(c) + '</button>';
+  }).join('');
+}
+function pintarSugColecciones() {
+  document.querySelectorAll('.col-sug').forEach(function (d) { d.innerHTML = chipsColecciones(d.getAttribute('data-para')); });
+}
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-col-sug]'); if (!b) return;
+  var cont = b.parentNode, inp = $(cont.getAttribute('data-para')), c = b.getAttribute('data-col-sug');
+  var lista = parseColecciones(inp.value), k = lista.indexOf(c);
+  if (k === -1) lista.push(c); else lista.splice(k, 1);
+  inp.value = lista.join(', ');
+  cont.innerHTML = chipsColecciones(cont.getAttribute('data-para'));
+});
+document.addEventListener('input', function (e) {
+  if (e.target.id === 'coleccionesInput' || /^e-col-/.test(e.target.id)) { var d = e.target.nextElementSibling; if (d && d.classList.contains('col-sug')) d.innerHTML = chipsColecciones(e.target.id); }
+});
+
 function cargarProductos() {
   statusEdit('loading', 'Cargando productos...');
   return ghGet('data/products.json').then(function (r) {
     PRODUCTOS = r.content;
     renderLista();
+    pintarSugColecciones();
     $('statusEdit').className = 'status';
   }).catch(function (e) { statusEdit('err', e.message); });
 }
@@ -1171,6 +1218,9 @@ function abrirEdicion(i) {
 
   html += '<label>Subcategoría</label><input type="text" id="e-sub-' + i + '" value="' + (p.subcategoria || '') + '" placeholder="dejá vacío para ninguna">';
 
+  html += '<label>Colecciones (separadas por coma)</label><input type="text" id="e-col-' + i + '" value="' + esc((p.colecciones || []).join(', ')) + '" placeholder="ej: Prediseñadas, Manga">' +
+    '<div class="col-sug" data-para="e-col-' + i + '">' + chipsColecciones('e-col-' + i) + '</div>';
+
   html += '<label>Colores disponibles</label><div class="color-check-grid">';
   for (var k = 0; k < COLORES.length; k++) {
     var marcado = colores.indexOf(COLORES[k].name) !== -1 ? ' checked' : '';
@@ -1237,6 +1287,7 @@ function guardarEdicion(i) {
   p.nombre = nombre;
   p.categoria = $('e-cat-' + i).value;
   p.subcategoria = $('e-sub-' + i).value.trim() || null;
+  var cols = parseColecciones($('e-col-' + i).value); p.colecciones = cols.length ? cols : undefined;
   p.colores = colores;
   p.impresion = $('e-imp-' + i).value;
   p.precio = precio;
@@ -2366,16 +2417,42 @@ function recortarTransparente(im) {
   o.getContext('2d').drawImage(c, x0, y0, o.width, o.height, 0, 0, o.width, o.height);
   return o;
 }
+// PDF (ej. exportado de Photoshop sin fondo): se convierte a PNG transparente en el navegador con pdf.js
+var PDFJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+function cargarPdfJs() {
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  if (cargarPdfJs.p) return cargarPdfJs.p;
+  cargarPdfJs.p = new Promise(function (ok, mal) {
+    var sc = document.createElement('script'); sc.src = PDFJS_URL;
+    sc.onload = function () { window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_URL.replace('pdf.min.js', 'pdf.worker.min.js'); ok(window.pdfjsLib); };
+    sc.onerror = function () { cargarPdfJs.p = null; mal(new Error('No pude cargar el lector de PDF. Revisá tu conexión.')); };
+    document.head.appendChild(sc);
+  });
+  return cargarPdfJs.p;
+}
+function pdfACanvas(file) {
+  return cargarPdfJs().then(function (lib) { return file.arrayBuffer().then(function (buf) { return lib.getDocument({ data: buf }).promise; }); })
+    .then(function (doc) { return doc.getPage(1); })
+    .then(function (page) {
+      var v1 = page.getViewport({ scale: 1 }), vp = page.getViewport({ scale: Math.min(6, 3600 / Math.max(v1.width, v1.height)) });
+      var c = document.createElement('canvas'); c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+      return page.render({ canvasContext: c.getContext('2d'), viewport: vp, background: 'rgba(0,0,0,0)' }).promise.then(function () { return c; });
+    });
+}
+function esPDF(file) { return file && (file.type === 'application/pdf' || /\.pdf$/i.test(file.name || '')); }
+// Lee un PNG o PDF: versión liviana (1000 px) para mockups + versión de impresión (hasta 3600 px)
 function leerPNG(file, recortar) {
+  var procesar = function (im) {
+    if (recortar !== false) im = recortarTransparente(im);
+    var url = escalarA(im, 1000), print = escalarA(im, 3600);
+    return new Promise(function (ok) { var out = new Image(); out.onload = function () { ok({ img: out, base64: url.split(',')[1], preview: url, print: print.split(',')[1], printPx: [im.width, im.height] }); }; out.src = url; });
+  };
+  if (esPDF(file)) return pdfACanvas(file).then(procesar).catch(function (e) { throw new Error('No pude leer el PDF: ' + e.message); });
   return new Promise(function (ok, mal) {
     var rd = new FileReader();
     rd.onload = function () {
       var im = new Image();
-      im.onload = function () {
-        if (recortar !== false) im = recortarTransparente(im);
-        var url = escalarA(im, 1000), print = escalarA(im, 3600);
-        var out = new Image(); out.onload = function () { ok({ img: out, base64: url.split(',')[1], preview: url, print: print.split(',')[1], printPx: [im.width, im.height] }); }; out.src = url;
-      };
+      im.onload = function () { procesar(im).then(ok); };
       im.onerror = function () { mal(new Error('No pude leer la imagen.')); };
       im.src = rd.result;
     };
@@ -2484,14 +2561,14 @@ EditorDisenos.prototype.versionesImg = function () {
 };
 EditorDisenos.prototype.render = function () {
   var e = this.e, aj = e.ajuste;
-  var h = '<p class="mini" style="margin-top:0">PNG con fondo transparente. Podés subir hasta ' + MAX_VERSIONES + ' versiones del mismo diseño (por ejemplo, detalles blancos y detalles negros) y marcar en qué telas se ve bien cada una. Sin marcar = todas.</p>' +
+  var h = '<p class="mini" style="margin-top:0">PNG o PDF con fondo transparente (el PDF de Photoshop sirve si no tiene capa de fondo). Podés subir hasta ' + MAX_VERSIONES + ' versiones del mismo diseño (por ejemplo, detalles blancos y detalles negros) y marcar en qué telas se ve bien cada una. Sin marcar = todas.</p>' +
     '<label class="check-row" style="margin-bottom:8px"><input type="checkbox" data-v-recortar' + (e.recortar ? ' checked' : '') + '><span>Recortar el espacio transparente sobrante del PNG al subirlo (solo del diseño, la foto de la prenda no cambia)</span></label>';
   e.versiones.forEach(function (v, i) {
     h += '<div class="ver"><div class="ver-cab"><input type="text" data-v-nombre="' + i + '" value="' + esc(v.nombre) + '" placeholder="Nombre (ej: Detalles blancos)">' +
       (e.versiones.length > 1 ? '<button type="button" class="prod-btn del" data-v-quitar="' + i + '" title="Quitar versión">✕</button>' : '') + '</div>' +
       '<div class="png-grid" style="grid-template-columns:repeat(4,1fr)">' + CAMPOS_V.map(function (c) {
         var a = v.archivos[c[0]];
-        return '<label class="png-slot' + (a ? ' lleno' : '') + '"><input type="file" accept="image/png" data-v-archivo="' + i + ':' + c[0] + '"><img alt=""' + (a ? ' src="' + esc(a.preview) + '"' : '') + '><span>' + c[1] + (i > 0 && c[0] !== 'espalda' ? '<br><small>(opcional)</small>' : '') + '</span><button type="button" class="x" data-v-borrar="' + i + ':' + c[0] + '">✕</button></label>';
+        return '<label class="png-slot' + (a ? ' lleno' : '') + '"><input type="file" accept="image/png,application/pdf,.pdf" data-v-archivo="' + i + ':' + c[0] + '"><img alt=""' + (a ? ' src="' + esc(a.preview) + '"' : '') + '><span>' + c[1] + (i > 0 && c[0] !== 'espalda' ? '<br><small>(opcional)</small>' : '') + '</span><button type="button" class="x" data-v-borrar="' + i + ':' + c[0] + '">✕</button></label>';
       }).join('') + '</div>' +
       '<div class="mini">Se ve bien en: <span data-v-sug="' + i + '" style="color:var(--yuzu)"></span></div><div class="tela-chips">' + COLORES_TELA.map(function (c) {
         return '<button type="button" class="tela' + (v.colores.indexOf(c) !== -1 ? ' on' : '') + '" data-v-tela="' + i + '" data-c="' + esc(c) + '" title="' + esc(c) + '" style="background:' + (YuzuMockup.HEX[c] || '#888') + '"></button>';
@@ -3024,10 +3101,10 @@ function placeholderZona() {
   c.fillText('DISEÑO', w / 2, h / 2);
   return Promise.resolve(cv);
 }
- function pruebaZona() {
+function pruebaZona() {
   if (ZE.vista === 'frente' && YuzuMockup.logoPara(ZE.color)) return YuzuMockup.cargar(YuzuMockup.logoPara(ZE.color)); if (ZE.prueba) return Promise.resolve(ZE.prueba);
   var src = YuzuMockup.RUTA + (ZE.vista === 'espalda' ? (YuzuMockup.esOscuro(ZE.color) ? 'prueba-espalda-oscura.png' : 'prueba-espalda-clara.png') : 'prueba-pecho.png');
-    return YuzuMockup.cargar(src).catch(function () { return placeholderZona(); });
+  return YuzuMockup.cargar(src).catch(function () { return placeholderZona(); });
 }
 function pintarCaja() {
   var esc2 = $('zEscena').clientWidth / 1080, z = ZE.zona, c = $('zCaja');
