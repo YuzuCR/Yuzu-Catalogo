@@ -399,5 +399,85 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791836865984,
+    "nombre": "Aot 005",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-005-gal-1791836865984-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/aot-005-blanco-1791836865984-0.jpg",
+        "images/aot-005-blanco-1791836865984-1.jpg"
+      ],
+      "Negro": [
+        "images/aot-005-negro-1791836865984-2.jpg",
+        "images/aot-005-negro-1791836865984-3.jpg"
+      ],
+      "Crema": [
+        "images/aot-005-crema-1791836865984-4.jpg",
+        "images/aot-005-crema-1791836865984-5.jpg"
+      ],
+      "Café": [
+        "images/aot-005-cafe-1791836865984-6.jpg",
+        "images/aot-005-cafe-1791836865984-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-005-gris-grafito-1791836865984-8.jpg",
+        "images/aot-005-gris-grafito-1791836865984-9.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-005-azul-marino-1791836865984-10.jpg",
+        "images/aot-005-azul-marino-1791836865984-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-005-verde-musgo-1791836865984-12.jpg",
+        "images/aot-005-verde-musgo-1791836865984-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17000,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Café",
+          "Azul marino",
+          "Rojo",
+          "Azul navy"
+        ],
+        "print": {},
+        "espalda": "images/disenos/aot-005-1791836865984-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
