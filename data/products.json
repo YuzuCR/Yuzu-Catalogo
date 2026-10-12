@@ -9,32 +9,32 @@
     ],
     "mockups": {
       "Blanco": [
-        "images/eren-001-blanco-1790904455558-0.jpg",
-        "images/eren-001-blanco-1790904455558-1.jpg"
+        "images/aot-001-blanco-1791837312954-0.jpg",
+        "images/aot-001-blanco-1791837312954-1.jpg"
       ],
       "Negro": [
-        "images/eren-001-negro-1790904455558-2.jpg",
-        "images/eren-001-negro-1790904455558-3.jpg"
+        "images/aot-001-negro-1791837312954-2.jpg",
+        "images/aot-001-negro-1791837312954-3.jpg"
       ],
       "Crema": [
-        "images/eren-001-crema-1790904455558-4.jpg",
-        "images/eren-001-crema-1790904455558-5.jpg"
+        "images/aot-001-crema-1791837312954-4.jpg",
+        "images/aot-001-crema-1791837312954-5.jpg"
       ],
       "Café": [
-        "images/eren-001-cafe-1790904455558-6.jpg",
-        "images/eren-001-cafe-1790904455558-7.jpg"
+        "images/aot-001-cafe-1791837312954-6.jpg",
+        "images/aot-001-cafe-1791837312954-7.jpg"
       ],
       "Gris grafito": [
-        "images/eren-001-gris-grafito-1790904455558-8.jpg",
-        "images/eren-001-gris-grafito-1790904455558-9.jpg"
+        "images/aot-001-gris-grafito-1791837312954-8.jpg",
+        "images/aot-001-gris-grafito-1791837312954-9.jpg"
       ],
       "Azul marino": [
-        "images/eren-001-azul-marino-1790904455558-10.jpg",
-        "images/eren-001-azul-marino-1790904455558-11.jpg"
+        "images/aot-001-azul-marino-1791837312954-10.jpg",
+        "images/aot-001-azul-marino-1791837312954-11.jpg"
       ],
       "Verde musgo": [
-        "images/eren-001-verde-musgo-1790904455558-12.jpg",
-        "images/eren-001-verde-musgo-1790904455558-13.jpg"
+        "images/aot-001-verde-musgo-1791837312954-12.jpg",
+        "images/aot-001-verde-musgo-1791837312954-13.jpg"
       ]
     },
     "colores": [
@@ -102,9 +102,9 @@
           "w": 425.6
         },
         "frente": {
-          "cx": 652.5,
-          "cy": 557.3,
-          "w": 61.4
+          "cx": 649,
+          "cy": 622.7,
+          "w": 79
         }
       },
       "sinmangas": {
@@ -442,7 +442,6 @@
     },
     "colores": [
       "Negro",
-      "Crema",
       "Café",
       "Gris grafito",
       "Azul marino",
