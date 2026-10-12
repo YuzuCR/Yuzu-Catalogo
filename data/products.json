@@ -1384,5 +1384,74 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791840518450,
+    "nombre": "AoT 018",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Manga"
+    ],
+    "imagenes": [
+      "images/aot-018-gal-1791840518450-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-018-negro-1791840518450-0.jpg",
+        "images/aot-018-negro-1791840518450-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/aot-018-1791840518450-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 579.2,
+          "cy": 930.8,
+          "w": 434.4
+        }
+      },
+      "sinmangas": {
+        "espalda": {
+          "cx": 588.7,
+          "cy": 1023.7,
+          "w": 477
+        }
+      },
+      "mangalarga": {
+        "espalda": {
+          "cx": 598,
+          "cy": 1051.6,
+          "w": 437
+        }
+      },
+      "hoodie": {
+        "espalda": {
+          "cx": 584.5,
+          "cy": 974,
+          "w": 424
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
