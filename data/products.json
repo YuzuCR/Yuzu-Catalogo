@@ -1549,5 +1549,54 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791840792562,
+    "nombre": "Armin Arlert 5",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Manga"
+    ],
+    "imagenes": [
+      "images/armin-arlert-5-gal-1791840792562-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/armin-arlert-5-negro-1791840792562-0.jpg",
+        "images/armin-arlert-5-negro-1791840792562-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/armin-arlert-5-1791840792562-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "sinmangas",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 634.3,
+          "cy": 900.2,
+          "w": 333.1
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
