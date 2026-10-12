@@ -556,5 +556,69 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791837613945,
+    "nombre": "AoT 007",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-007-gal-1791837613945-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-007-negro-1791837613945-0.jpg",
+        "images/aot-007-negro-1791837613945-1.jpg"
+      ],
+      "Café": [
+        "images/aot-007-cafe-1791837613945-2.jpg",
+        "images/aot-007-cafe-1791837613945-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-007-gris-grafito-1791837613945-4.jpg",
+        "images/aot-007-gris-grafito-1791837613945-5.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-007-azul-marino-1791837613945-6.jpg",
+        "images/aot-007-azul-marino-1791837613945-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-007-verde-musgo-1791837613945-8.jpg",
+        "images/aot-007-verde-musgo-1791837613945-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 1700,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/aot-007-1791837600219-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
