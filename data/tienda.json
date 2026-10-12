@@ -92,6 +92,13 @@
           "w": 424,
           "h": 537,
           "alinear": "arriba"
+        },
+        "frente": {
+          "x": 620,
+          "y": 476,
+          "w": 80,
+          "h": 85,
+          "alinear": "centro"
         }
       },
       "hoodie": {
