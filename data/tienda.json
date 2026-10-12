@@ -94,10 +94,10 @@
           "alinear": "arriba"
         },
         "frente": {
-          "x": 622,
-          "y": 501,
-          "w": 98,
-          "h": 119,
+          "x": 638,
+          "y": 515,
+          "w": 75,
+          "h": 98,
           "alinear": "centro"
         },
         "lado": {
