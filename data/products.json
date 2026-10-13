@@ -2559,5 +2559,97 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791916098318,
+    "nombre": "AoT 036",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-036-gal-1791916098318-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-036-negro-1791916098318-0.jpg",
+        "images/aot-036-negro-1791916098318-1.jpg"
+      ],
+      "Café": [
+        "images/aot-036-cafe-1791916098318-2.jpg",
+        "images/aot-036-cafe-1791916098318-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-036-gris-grafito-1791916098318-4.jpg",
+        "images/aot-036-gris-grafito-1791916098318-5.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-036-azul-marino-1791916098318-6.jpg",
+        "images/aot-036-azul-marino-1791916098318-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-036-verde-musgo-1791916098318-8.jpg",
+        "images/aot-036-verde-musgo-1791916098318-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/aot-036-1791916098318-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2,
+      "hoodie": {
+        "espalda": {
+          "cx": 537.5,
+          "cy": 821.9,
+          "w": 400.5
+        }
+      },
+      "boxy": {
+        "espalda": {
+          "cx": 540.5,
+          "cy": 756,
+          "w": 407.7
+        }
+      },
+      "sinmangas": {
+        "espalda": {
+          "cx": 552.2,
+          "cy": 755,
+          "w": 473.3
+        }
+      },
+      "mangalarga": {
+        "espalda": {
+          "cx": 559.9,
+          "cy": 722.4,
+          "w": 457.9
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
