@@ -2417,5 +2417,79 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791915626656,
+    "nombre": "AoT 033",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-033-gal-1791915626656-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/aot-033-blanco-1791915626656-0.jpg",
+        "images/aot-033-blanco-1791915626656-1.jpg"
+      ],
+      "Negro": [
+        "images/aot-033-negro-1791915626656-2.jpg",
+        "images/aot-033-negro-1791915626656-3.jpg"
+      ],
+      "Crema": [
+        "images/aot-033-crema-1791915626656-4.jpg",
+        "images/aot-033-crema-1791915626656-5.jpg"
+      ],
+      "Café": [
+        "images/aot-033-cafe-1791915626656-6.jpg",
+        "images/aot-033-cafe-1791915626656-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-033-gris-grafito-1791915626656-8.jpg",
+        "images/aot-033-gris-grafito-1791915626656-9.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-033-azul-marino-1791915626656-10.jpg",
+        "images/aot-033-azul-marino-1791915626656-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-033-verde-musgo-1791915626656-12.jpg",
+        "images/aot-033-verde-musgo-1791915626656-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {},
+        "espalda": "images/disenos/aot-033-1791915626656-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
