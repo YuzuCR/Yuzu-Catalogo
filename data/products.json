@@ -2948,5 +2948,81 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791920903043,
+    "nombre": "AoT 041",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-041-gal-1791920903043-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-041-negro-1791920903043-0.jpg",
+        "images/aot-041-negro-1791920903043-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-041-crema-1791920903043-2.jpg",
+        "images/aot-041-crema-1791920903043-3.jpg"
+      ],
+      "Café": [
+        "images/aot-041-cafe-1791920903043-4.jpg",
+        "images/aot-041-cafe-1791920903043-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-041-gris-grafito-1791920903043-6.jpg",
+        "images/aot-041-gris-grafito-1791920903043-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-041-azul-marino-1791920903043-8.jpg",
+        "images/aot-041-azul-marino-1791920903043-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-041-verde-musgo-1791920903043-10.jpg",
+        "images/aot-041-verde-musgo-1791920903043-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Café",
+          "Gris grafito",
+          "Azul marino",
+          "Verde musgo",
+          "Azul navy"
+        ],
+        "print": {},
+        "espalda": "images/disenos/aot-041-1791920817382-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
