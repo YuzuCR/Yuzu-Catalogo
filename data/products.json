@@ -3378,5 +3378,83 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791934154778,
+    "nombre": "AoT 047",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-047-gal-1791934154778-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-047-negro-1791934154778-0.jpg",
+        "images/aot-047-negro-1791934154778-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-047-crema-1791934154778-2.jpg",
+        "images/aot-047-crema-1791934154778-3.jpg"
+      ],
+      "Café": [
+        "images/aot-047-cafe-1791934154778-4.jpg",
+        "images/aot-047-cafe-1791934154778-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-047-gris-grafito-1791934154778-6.jpg",
+        "images/aot-047-gris-grafito-1791934154778-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-047-azul-marino-1791934154778-8.jpg",
+        "images/aot-047-azul-marino-1791934154778-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-047-verde-musgo-1791934154778-10.jpg",
+        "images/aot-047-verde-musgo-1791934154778-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-047-1791934154778-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-047-1791934154778-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 540.5,
+          "cy": 763.8,
+          "w": 363.1
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
