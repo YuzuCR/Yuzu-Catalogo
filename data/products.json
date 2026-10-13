@@ -3456,5 +3456,53 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791934415174,
+    "nombre": "AoT 048",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-048-gal-1791934415174-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-048-negro-1791934415174-0.jpg",
+        "images/aot-048-negro-1791934415174-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro"
+        ],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-048-1791934415174-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-048-1791934415174-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
