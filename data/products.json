@@ -57,8 +57,8 @@
           "Negro"
         ],
         "print": {
-          "espalda": "images/disenos/print/eren-001-1790904455558-v1-espalda.png",
-          "pecho": "images/disenos/print/eren-001-1790904455558-v1-pecho.png"
+          "espalda": "privado:images/disenos/print/eren-001-1790904455558-v1-espalda.png",
+          "pecho": "privado:images/disenos/print/eren-001-1790904455558-v1-pecho.png"
         },
         "espalda": "images/disenos/eren-001-1790904455558-v1-espalda.png",
         "pecho": "images/disenos/eren-001-1790904455558-v1-pecho.png"
@@ -80,8 +80,8 @@
           "Verde perico"
         ],
         "print": {
-          "espalda": "images/disenos/print/eren-001-1790904455558-v2-espalda.png",
-          "pecho": "images/disenos/print/eren-001-1790904455558-v2-pecho.png"
+          "espalda": "privado:images/disenos/print/eren-001-1790904455558-v2-espalda.png",
+          "pecho": "privado:images/disenos/print/eren-001-1790904455558-v2-pecho.png"
         },
         "espalda": "images/disenos/eren-001-1790904455558-v2-espalda.png",
         "pecho": "images/disenos/eren-001-1790904455558-v2-pecho.png"
