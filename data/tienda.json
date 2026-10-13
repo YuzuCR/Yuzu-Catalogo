@@ -171,5 +171,8 @@
         "Negro"
       ]
     }
+  },
+  "privado": {
+    "repo": "Yuzu-Privado"
   }
 }
