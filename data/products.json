@@ -2651,5 +2651,85 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791916270807,
+    "nombre": "AoT 037",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-037-gal-1791916270807-0.jpg"
+    ],
+    "mockups": {
+      "Blanco": [
+        "images/aot-037-blanco-1791916270807-0.jpg",
+        "images/aot-037-blanco-1791916270807-1.jpg"
+      ],
+      "Negro": [
+        "images/aot-037-negro-1791916270807-2.jpg",
+        "images/aot-037-negro-1791916270807-3.jpg"
+      ],
+      "Crema": [
+        "images/aot-037-crema-1791916270807-4.jpg",
+        "images/aot-037-crema-1791916270807-5.jpg"
+      ],
+      "Café": [
+        "images/aot-037-cafe-1791916270807-6.jpg",
+        "images/aot-037-cafe-1791916270807-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-037-gris-grafito-1791916270807-8.jpg",
+        "images/aot-037-gris-grafito-1791916270807-9.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-037-azul-marino-1791916270807-10.jpg",
+        "images/aot-037-azul-marino-1791916270807-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-037-verde-musgo-1791916270807-12.jpg",
+        "images/aot-037-verde-musgo-1791916270807-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Azul marino",
+          "Azul navy",
+          "Gris jaspeado",
+          "Verde musgo"
+        ],
+        "print": {},
+        "espalda": "images/disenos/aot-037-1791916270807-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
