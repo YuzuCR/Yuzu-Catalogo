@@ -2804,5 +2804,71 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791920511324,
+    "nombre": "AoT 039",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-039-gal-1791920511324-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-039-negro-1791920511324-0.jpg",
+        "images/aot-039-negro-1791920511324-1.jpg"
+      ],
+      "Café": [
+        "images/aot-039-cafe-1791920511324-2.jpg",
+        "images/aot-039-cafe-1791920511324-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-039-gris-grafito-1791920511324-4.jpg",
+        "images/aot-039-gris-grafito-1791920511324-5.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-039-azul-marino-1791920511324-6.jpg",
+        "images/aot-039-azul-marino-1791920511324-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-039-verde-musgo-1791920511324-8.jpg",
+        "images/aot-039-verde-musgo-1791920511324-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": true,
+    "precioDescuento": 17000,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Azul navy",
+          "Gris grafito",
+          "Café"
+        ],
+        "print": {},
+        "espalda": "images/disenos/aot-039-1791920511324-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
