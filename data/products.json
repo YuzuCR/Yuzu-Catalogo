@@ -3779,5 +3779,55 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791938175939,
+    "nombre": "AoT 054",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-054-gal-1791938175939-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-054-negro-1791938175939-0.jpg",
+        "images/aot-054-negro-1791938175939-1.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-054-azul-marino-1791938175939-2.jpg",
+        "images/aot-054-azul-marino-1791938175939-3.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Azul marino"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro"
+        ],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-054-1791938175939-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-054-1791938175939-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
