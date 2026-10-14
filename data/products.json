@@ -3733,5 +3733,51 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791937993264,
+    "nombre": "AoT 053",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-053-gal-1791937993264-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-053-negro-1791937993264-0.jpg",
+        "images/aot-053-negro-1791937993264-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-053-1791937993264-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-053-1791937993264-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "mangalarga",
+      "sinmangas",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
