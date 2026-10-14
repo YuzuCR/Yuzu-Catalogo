@@ -3608,5 +3608,74 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791937677393,
+    "nombre": "AoT 051",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-051-gal-1791937677393-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-051-negro-1791937677393-0.jpg",
+        "images/aot-051-negro-1791937677393-1.jpg"
+      ],
+      "Café": [
+        "images/aot-051-cafe-1791937677393-2.jpg",
+        "images/aot-051-cafe-1791937677393-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-051-gris-grafito-1791937677393-4.jpg",
+        "images/aot-051-gris-grafito-1791937677393-5.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-051-azul-marino-1791937677393-6.jpg",
+        "images/aot-051-azul-marino-1791937677393-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-051-verde-musgo-1791937677393-8.jpg",
+        "images/aot-051-verde-musgo-1791937677393-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Azul navy"
+        ],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-051-1791937623816-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-051-1791937623816-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
