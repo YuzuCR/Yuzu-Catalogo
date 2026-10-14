@@ -4152,5 +4152,61 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791939775480,
+    "nombre": "AoT 061",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-061-gal-1791939775480-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-061-negro-1791939775480-0.jpg",
+        "images/aot-061-negro-1791939775480-1.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-061-gris-grafito-1791939775480-2.jpg",
+        "images/aot-061-gris-grafito-1791939775480-3.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-061-azul-marino-1791939775480-4.jpg",
+        "images/aot-061-azul-marino-1791939775480-5.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Gris grafito",
+      "Azul marino"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-061-1791939775480-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-061-1791939775480-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
