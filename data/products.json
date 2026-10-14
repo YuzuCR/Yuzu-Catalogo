@@ -3677,5 +3677,61 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791937862808,
+    "nombre": "AoT 052",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-052-gal-1791937862808-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-052-negro-1791937862808-0.jpg",
+        "images/aot-052-negro-1791937862808-1.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-052-azul-marino-1791937862808-2.jpg",
+        "images/aot-052-azul-marino-1791937862808-3.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-052-verde-musgo-1791937862808-4.jpg",
+        "images/aot-052-verde-musgo-1791937862808-5.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-052-1791937862808-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-052-1791937862808-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
