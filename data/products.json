@@ -4502,5 +4502,55 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791993481782,
+    "nombre": "AoT 067",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Manga"
+    ],
+    "imagenes": [
+      "images/aot-067-gal-1791993481782-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-067-negro-1791993481782-0.jpg",
+        "images/aot-067-negro-1791993481782-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-067-1791993481782-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-067-1791993481782-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "sinmangas"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 586.1,
+          "cy": 985.1,
+          "w": 421
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
