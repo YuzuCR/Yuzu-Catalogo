@@ -4402,5 +4402,55 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791992809768,
+    "nombre": "Aot 065",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Manga"
+    ],
+    "imagenes": [
+      "images/aot-065-gal-1791992809768-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-065-negro-1791992809768-0.jpg",
+        "images/aot-065-negro-1791992809768-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-065-1791992809768-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-065-1791992809768-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 644.1,
+          "cy": 898.8,
+          "w": 306
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
