@@ -4359,5 +4359,48 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791992586346,
+    "nombre": "AoT 0634",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-0634-gal-1791992586346-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-0634-negro-1791992586346-0.jpg",
+        "images/aot-0634-negro-1791992586346-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-0634-1791992586346-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-0634-1791992586346-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
