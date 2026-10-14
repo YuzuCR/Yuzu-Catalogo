@@ -4602,5 +4602,55 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791994324305,
+    "nombre": "AoT 069",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Manga"
+    ],
+    "imagenes": [
+      "images/aot-069-gal-1791994324305-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-069-negro-1791994324305-0.jpg",
+        "images/aot-069-negro-1791994324305-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-069-1791994324305-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-069-1791994324305-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 622,
+          "cy": 898.8,
+          "w": 335
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
