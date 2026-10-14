@@ -4804,5 +4804,55 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791995208959,
+    "nombre": "AoT 073",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Manga"
+    ],
+    "imagenes": [
+      "images/aot-073-gal-1791995208959-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-073-negro-1791995208959-0.jpg",
+        "images/aot-073-negro-1791995208959-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-073-1791995208959-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-073-1791995208959-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 540.5,
+          "cy": 745.1,
+          "w": 390
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
