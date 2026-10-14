@@ -4752,5 +4752,57 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791995065889,
+    "nombre": "AoT 072",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Manga"
+    ],
+    "imagenes": [
+      "images/aot-072-gal-1791995065889-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-072-negro-1791995065889-0.jpg",
+        "images/aot-072-negro-1791995065889-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro"
+        ],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-072-1791995065889-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-072-1791995065889-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 590.9,
+          "cy": 918,
+          "w": 421
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
