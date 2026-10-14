@@ -4285,5 +4285,79 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791992475132,
+    "nombre": "AoT 063",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-063-gal-1791992475132-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-063-negro-1791992475132-0.jpg",
+        "images/aot-063-negro-1791992475132-1.jpg"
+      ],
+      "Café": [
+        "images/aot-063-cafe-1791992475132-2.jpg",
+        "images/aot-063-cafe-1791992475132-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-063-gris-grafito-1791992475132-4.jpg",
+        "images/aot-063-gris-grafito-1791992475132-5.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-063-azul-marino-1791992475132-6.jpg",
+        "images/aot-063-azul-marino-1791992475132-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-063-verde-musgo-1791992475132-8.jpg",
+        "images/aot-063-verde-musgo-1791992475132-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Café",
+          "Azul marino",
+          "Azul navy",
+          "Azul royal",
+          "Amarillo",
+          "Rojo"
+        ],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-063-1791992475132-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-063-1791992475132-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
