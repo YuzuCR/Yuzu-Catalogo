@@ -4208,5 +4208,82 @@
     },
     "destacado": false,
     "oculto": false
+  },
+  {
+    "id": 1791992164445,
+    "nombre": "AoT 062",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Basics"
+    ],
+    "imagenes": [
+      "images/aot-062-gal-1791992164445-0.jpg"
+    ],
+    "mockups": {
+      "Negro": [
+        "images/aot-062-negro-1791992164445-0.jpg",
+        "images/aot-062-negro-1791992164445-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-062-crema-1791992164445-2.jpg",
+        "images/aot-062-crema-1791992164445-3.jpg"
+      ],
+      "Café": [
+        "images/aot-062-cafe-1791992164445-4.jpg",
+        "images/aot-062-cafe-1791992164445-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-062-gris-grafito-1791992164445-6.jpg",
+        "images/aot-062-gris-grafito-1791992164445-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-062-azul-marino-1791992164445-8.jpg",
+        "images/aot-062-azul-marino-1791992164445-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-062-verde-musgo-1791992164445-10.jpg",
+        "images/aot-062-verde-musgo-1791992164445-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Café",
+          "Gris grafito",
+          "Azul marino",
+          "Verde musgo",
+          "Azul navy",
+          "Rojo",
+          "Azul royal",
+          "Verde perico"
+        ],
+        "print": {},
+        "espalda": "images/disenos/aot-062-1791992164445-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
