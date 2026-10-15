@@ -151,6 +151,19 @@
   .mock-block { border-top: 1px solid var(--linea); padding-top: 10px; margin-top: 10px; }
   .mock-head { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--mudo); }
   .mock-head .sw { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--linea); }
+  .sub-panel { border: 1px solid var(--linea); border-radius: 10px; padding: 12px 14px; margin-top: 10px; background: var(--sup2); }
+  .sub-card { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--linea); align-items: flex-start; }
+  .sub-card .th { width: 64px; height: 86px; object-fit: cover; background: var(--sup2); border-radius: 6px; flex-shrink: 0; }
+  .sub-card .cu { flex: 1; min-width: 0; }
+  .sub-card.ok { opacity: .55; }
+  .sub-card.err .sub-est { color: var(--rojo); }
+  .sub-est { margin-top: 4px; word-break: break-word; }
+  .sub-det { margin-top: 8px; padding: 10px; border: 1px solid var(--linea); border-radius: 8px; }
+  .lo-bloque { border-top: 1px solid var(--linea); padding: 6px 0 10px; }
+  .lo-bloque .lo-campo { display: none; margin-top: 8px; }
+  .lo-bloque.on .lo-campo { display: block; }
+  .quitar-box { margin-top: 12px; padding: 10px; border: 1px dashed var(--linea); border-radius: 8px; }
+  .file-drop.encima { border-color: var(--yuzu); color: var(--tinta); }
   .col-sug { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 2px; }
   .col-sug button { font-family: var(--mono); font-size: 11px; padding: 5px 10px; border: 1px solid var(--linea); border-radius: 20px; background: transparent; color: var(--mudo); cursor: pointer; }
   .col-sug button.on { background: var(--yuzu); color: var(--bg); border-color: var(--yuzu); }
@@ -323,6 +336,7 @@
   <div class="panel on" id="panel-productos">
     <div class="card" id="formCard">
       <h2>Nuevo producto</h2>
+      <button class="btn btn-sec" id="btnSubidaLote" style="margin:0 0 6px">⇪ Subir varios diseños a la vez</button>
       <label>Fotos del diseño</label>
       <div class="file-drop" id="dropGaleria">Tocá para elegir fotos</div>
       <input type="file" id="inputGaleria" class="hidden-input" accept="image/*" multiple>
@@ -379,6 +393,7 @@
       <h2>Editar productos</h2>
       <div class="row">
         <button class="btn btn-sec" id="btnRecargar">Recargar lista</button>
+        <button class="btn btn-sec" id="btnEdLote">Editar en lote</button>
         <button class="btn btn-sec" id="btnGestionarVis">Gestionar visibilidad</button>
         <button class="btn btn-sec" id="btnQuitarDesc">Quitar descuentos</button>
         <button class="btn btn-sec" id="btnPrecioTodos">Precio a todos</button>
@@ -754,6 +769,121 @@
   </div>
 </div>
 
+<!-- MODAL SUBIDA EN LOTE -->
+<div class="modal-fondo" id="modalSubida">
+  <div class="modal" style="max-width:880px;max-height:94vh">
+    <div class="modal-cab"><h3>Subir varios diseños a la vez</h3><button id="btnSubCerrar">✕</button></div>
+    <div class="modal-lista" id="subCuerpo">
+      <div class="file-drop" id="subDrop">Tocá o arrastrá los PNG / PDF (todos los que quieras)</div>
+      <input type="file" id="subArchivos" class="hidden-input" accept="image/png,application/pdf,.pdf" multiple>
+      <p class="mini">Cada archivo es un diseño de espalda. El pecho lleva tu logo y el diseño queda en la zona de Tienda → Zonas de impresión. Lo que pongas en "Para todos" se copia a cada diseño; si cambiás algo en uno solo (⋯), ese ya no se toca.</p>
+      <div class="sub-panel">
+        <div class="subtit" style="margin-top:0;border-top:none;padding-top:0">Para todos</div>
+        <div class="row">
+          <div style="flex:1"><label>Categoría</label><select id="subCat"></select></div>
+          <div style="flex:1"><label>Subcategoría</label><select id="subSub"></select></div>
+        </div>
+        <input type="text" id="subSubNueva" placeholder="…o escribí una subcategoría nueva" style="margin-top:6px">
+        <label class="check-row"><input type="checkbox" id="subNumerar" class="sub-c" checked><span>Numerar los nombres automáticamente (si no, uso el nombre de cada archivo)</span></label>
+        <div class="row">
+          <div style="flex:2"><label>Prefijo</label><input type="text" id="subPrefijo" class="sub-c" placeholder="ej: AoT"></div>
+          <div style="flex:1"><label>Empezar en</label><input type="text" inputmode="numeric" id="subDesde" class="sub-c"></div>
+          <div style="flex:1"><label>Dígitos</label><input type="text" inputmode="numeric" id="subDigitos" class="sub-c"></div>
+        </div>
+        <p class="mini" id="subEjemplo" style="margin-top:4px"></p>
+        <label>Colecciones (opcional, separadas por coma)</label>
+        <input type="text" id="subColecciones" class="sub-c" placeholder="ej: Prediseñadas, Manga">
+        <div class="col-sug" data-para="subColecciones"></div>
+        <label>Colores disponibles</label>
+        <div class="color-check-grid" id="subColGrid"></div>
+        <label>Prendas en las que se vende</label>
+        <div class="check-lista" id="subPrendas"></div>
+        <div class="row">
+          <div style="flex:1"><label>Tipo de impresión</label><select id="subImpresion" class="sub-c"><option value="espalda">Espalda grande + pecho pequeño</option><option value="pecho">Solo pecho</option></select></div>
+          <div style="flex:1"><label>Precio</label><input type="text" inputmode="numeric" id="subPrecio" class="sub-c"></div>
+        </div>
+        <label class="check-row"><input type="checkbox" id="subDescCheck" class="sub-c"><span>Están en descuento</span></label>
+        <div id="subDescRow" style="display:none"><label>Precio con descuento</label><input type="text" inputmode="numeric" id="subPrecioDesc" class="sub-c"></div>
+        <label>Disponible hasta (opcional)</label><input type="date" id="subHasta" class="sub-c">
+        <div class="banderas">
+          <label class="check-row"><input type="checkbox" id="subDest" class="sub-c"><span>Destacados</span></label>
+          <label class="check-row"><input type="checkbox" id="subOculto" class="sub-c"><span>Ocultos</span></label>
+        </div>
+        <label>Se ve bien en (opcional · vacío = todas las telas)</label>
+        <div class="tela-chips" id="subTelas"></div>
+        <div class="quitar-box">
+          <div class="mini" style="margin:0 0 6px">Quitar un color del diseño (por ejemplo un fondo negro o blanco)</div>
+          <select id="subQModo"><option value="ninguno">No quitar nada</option><option value="negro">Quitar el negro</option><option value="blanco">Quitar el blanco</option><option value="esquina">Quitar el color de las esquinas</option></select>
+          <label class="mini" style="margin:8px 0 0">Tolerancia: <span id="subQTolV">40</span><input type="range" id="subQTol" min="5" max="120" step="5" value="40"></label>
+          <label class="check-row" style="margin-top:6px"><input type="checkbox" id="subQGlobal"><span>También dentro del diseño (si no, solo el fondo que toca los bordes)</span></label>
+        </div>
+        <label>Ver las miniaturas sobre</label>
+        <select id="subPrev"></select>
+      </div>
+      <div class="subtit" id="subTitCards">Diseños</div>
+      <div id="subCards"></div>
+    </div>
+    <div style="padding:0 20px"><div class="status" id="subStatus"></div></div>
+    <div class="modal-pie">
+      <button class="btn btn-sec" id="btnSubLimpiar">Quitar los ya subidos</button>
+      <button class="btn btn-sec" id="btnSubParar" style="display:none">Detener</button>
+      <button class="btn" id="btnSubSubir" disabled>Subir</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDICIÓN EN LOTE -->
+<div class="modal-fondo" id="modalLote">
+  <div class="modal" style="max-width:860px;max-height:94vh">
+    <div class="modal-cab"><h3>Editar en lote</h3><button id="btnLoCerrar">✕</button></div>
+    <div class="modal-tools">
+      <select id="loSerie" style="width:auto"></select>
+      <select id="loColeccion" style="width:auto"></select>
+      <input type="text" id="loBuscar" placeholder="Buscar nombre" style="width:130px">
+      <button id="loMarcar">Marcar los de la lista</button>
+      <button id="loDesmarcar">Desmarcar todos</button>
+      <span class="mini" id="loContador" style="margin:0 0 0 auto"></span>
+    </div>
+    <div class="modal-lista">
+      <div id="loLista" style="max-height:250px;overflow:auto"></div>
+      <div class="subtit">¿Qué querés cambiar en los marcados?</div>
+      <div id="loAcciones">
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="precio"><span>Precio</span></label>
+          <div class="lo-campo"><input type="text" inputmode="numeric" id="loPrecio" placeholder="ej: 18900"></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="descuento"><span>Descuento</span></label>
+          <div class="lo-campo"><select id="loDescModo"><option value="poner">Poner este precio con descuento</option><option value="quitar">Quitar el descuento</option></select><input type="text" inputmode="numeric" id="loDescPrecio" placeholder="precio con descuento" style="margin-top:6px"></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="colores"><span>Colores disponibles</span></label>
+          <div class="lo-campo"><select id="loColModo"><option value="reemplazar">Dejar exactamente estos</option><option value="agregar">Agregar estos</option><option value="quitar">Quitar estos</option></select><div class="color-check-grid" id="loColGrid"></div></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="prendas"><span>Prendas en las que se vende</span></label>
+          <div class="lo-campo"><div class="check-lista" id="loPrendas"></div></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="colecciones"><span>Colecciones</span></label>
+          <div class="lo-campo"><select id="loCoModo"><option value="agregar">Agregar estas</option><option value="quitar">Quitar estas</option><option value="reemplazar">Dejar exactamente estas (vacío = ninguna)</option></select><input type="text" id="loColecciones" placeholder="ej: Prediseñadas, Manga" style="margin-top:6px"><div class="col-sug" data-para="loColecciones"></div></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="serie"><span>Mover a otra categoría / subcategoría</span></label>
+          <div class="lo-campo"><select id="loCat"></select><input type="text" id="loSub" list="loSubList" placeholder="subcategoría (vacío = ninguna)" style="margin-top:6px"><datalist id="loSubList"></datalist></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="impresion"><span>Tipo de impresión</span></label>
+          <div class="lo-campo"><select id="loImpresion"><option value="espalda">Espalda grande + pecho pequeño</option><option value="pecho">Solo pecho</option></select></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="visib"><span>Visibilidad / destacado</span></label>
+          <div class="lo-campo"><select id="loOculto"><option value="">Visibilidad: no tocar</option><option value="visible">Visibles</option><option value="oculto">Ocultos</option></select><select id="loDest" style="margin-top:6px"><option value="">Destacado: no tocar</option><option value="si">Destacados</option><option value="no">No destacados</option></select></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="hasta"><span>Disponible hasta</span></label>
+          <div class="lo-campo"><input type="date" id="loHasta"><label class="check-row"><input type="checkbox" id="loHastaQuitar"><span>Quitar la fecha</span></label></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="telas"><span>"Se ve bien en" (solo diseños con una versión)</span></label>
+          <div class="lo-campo"><div class="tela-chips" id="loTelas"></div><p class="mini">Sin marcar = todas las telas.</p></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="nombre"><span>Renombrar con numeración</span></label>
+          <div class="lo-campo"><div class="row"><div style="flex:2"><label>Prefijo</label><input type="text" id="loPref" placeholder="ej: AoT"></div><div style="flex:1"><label>Desde</label><input type="text" inputmode="numeric" id="loDesde" value="1"></div><div style="flex:1"><label>Dígitos</label><input type="text" inputmode="numeric" id="loDig" value="3"></div></div><p class="mini" id="loNomEj"></p></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="reset"><span>Restablecer la posición del diseño (usar la zona de Tienda)</span></label>
+          <div class="lo-campo"><p class="mini">Borra los ajustes manuales de posición. Marcá también "Regenerar mockups" para que se note.</p></div></div>
+        <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="regen"><span>Regenerar los mockups de la boxy</span></label>
+          <div class="lo-campo"><p class="mini">Rehace las fotos con la zona y posición actuales. Tarda unos segundos por diseño. Las fotos viejas quedan sin usar (las borrás con "Limpiar archivos sin usar").</p></div></div>
+      </div>
+    </div>
+    <div style="padding:0 20px"><div class="status" id="loStatus"></div></div>
+    <div class="modal-pie">
+      <button class="btn btn-sec" id="btnLoCancelar">Cerrar</button>
+      <button class="btn" id="btnLoAplicar" disabled>Aplicar</button>
+    </div>
+  </div>
+</div>
+
 <script src="mockup.js"></script>
 <script>
 // ============================================================
@@ -807,8 +937,22 @@ $('btnBorrarConfig').addEventListener('click', borrarConfig);
 function urlDe(path) { var cfg = getConfig(); return 'https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + path; }
 function errorDeRespuesta(res, ctx) { return res.json().catch(function(){return{};}).then(function(err){ var d=err.message||''; if(err.errors&&err.errors.length&&err.errors[0].message) d+=' — '+err.errors[0].message; throw new Error(ctx+' ('+res.status+') '+d); }); }
 function ghGet(path) { return fetch(urlDe(path), { headers: { Authorization: 'token ' + getConfig().token } }).then(function(res){ if(!res.ok) return errorDeRespuesta(res,'No pude leer '+path); return res.json(); }).then(function(data){ var texto=decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))); return { content: JSON.parse(texto), sha: data.sha }; }); }
-function ghPut(path, obj, sha, msg) { var encoded=btoa(unescape(encodeURIComponent(JSON.stringify(obj,null,2)))); var body={message:msg, content:encoded}; if(sha) body.sha=sha; return fetch(urlDe(path), { method:'PUT', headers:{Authorization:'token '+getConfig().token,'Content-Type':'application/json'}, body:JSON.stringify(body) }).then(function(res){ if(!res.ok) return errorDeRespuesta(res,'Error guardando '+path); return res.json(); }); }
-function ghPutImage(path, base64, msg) { return fetch(urlDe(path), { method:'PUT', headers:{Authorization:'token '+getConfig().token,'Content-Type':'application/json'}, body:JSON.stringify({message:msg, content:base64}) }).then(function(res){ if(!res.ok) return errorDeRespuesta(res,'Error subiendo '+path); return res.json(); }); }
+// Envía un archivo; si GitHub responde con un error pasajero (límite de velocidad, "timed out validating the rule", 5xx) espera y reintenta
+function ghEnviar(path, body, ctx, intento) {
+  intento = intento || 0;
+  return fetch(urlDe(path), { method: 'PUT', headers: { Authorization: 'token ' + getConfig().token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(function (res) {
+    if (res.ok) return res.json();
+    return res.json().catch(function () { return {}; }).then(function (err) {
+      var d = err.message || ''; if (err.errors && err.errors.length && err.errors[0].message) d += ' — ' + err.errors[0].message;
+      var temporal = res.status >= 500 || res.status === 429 || (res.status === 403 && /rate limit|abuse|secondary/i.test(d)) || (res.status === 409 && /rule|timed out|validat/i.test(d));
+      if (temporal && intento < 4) return new Promise(function (ok) { setTimeout(ok, 2500 * (intento + 1)); }).then(function () { return ghEnviar(path, body, ctx, intento + 1); });
+      if (res.status === 422 && !body.sha && intento > 0 && /sha/i.test(d)) return { yaExistia: true };
+      throw new Error(ctx + ' (' + res.status + ') ' + d);
+    });
+  });
+}
+function ghPut(path, obj, sha, msg) { var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(obj, null, 2)))); var body = { message: msg, content: encoded }; if (sha) body.sha = sha; return ghEnviar(path, body, 'Error guardando ' + path); }
+function ghPutImage(path, base64, msg) { return ghEnviar(path, { message: msg, content: base64 }, 'Error subiendo ' + path); }
 function ghBorrarArchivo(path, msg) { return fetch(urlDe(path), { headers:{Authorization:'token '+getConfig().token}}).then(function(res){ return res.ok?res.json():null; }).then(function(data){ if(!data||!data.sha) return null; return fetch(urlDe(path), { method:'DELETE', headers:{Authorization:'token '+getConfig().token,'Content-Type':'application/json'}, body:JSON.stringify({message:msg, sha:data.sha}) }); }).catch(function(){return null;}); }
 
 // ========== PRODUCTOS ==========
@@ -1128,6 +1272,7 @@ document.addEventListener('click', function (e) {
   if (k === -1) lista.push(c); else lista.splice(k, 1);
   inp.value = lista.join(', ');
   cont.innerHTML = chipsColecciones(cont.getAttribute('data-para'));
+  inp.dispatchEvent(new Event('input', { bubbles: true }));
 });
 document.addEventListener('input', function (e) {
   if (e.target.id === 'coleccionesInput' || /^e-col-/.test(e.target.id)) { var d = e.target.nextElementSibling; if (d && d.classList.contains('col-sug')) d.innerHTML = chipsColecciones(e.target.id); }
@@ -1323,9 +1468,11 @@ function quitarTodosLosDescuentos() {
 
 function guardarProductos(mensaje, reabrir) {
   statusEdit('loading', 'Guardando...');
-  return ghGet('data/products.json').then(function (r) {
-    return ghPut('data/products.json', PRODUCTOS, r.sha, mensaje);
-  }).then(function () {
+  var intento = function (n) {
+    return (n ? ghFresco('data/products.json') : ghGet('data/products.json')).then(function (r) { return ghPut('data/products.json', PRODUCTOS, r.sha, mensaje); })
+      .catch(function (e) { if (n < 3 && /\(409\)/.test(e.message)) return pausa(1200 * (n + 1)).then(function () { return intento(n + 1); }); throw e; });
+  };
+  return intento(0).then(function () {
     statusEdit('ok', '✓ Guardado. Tarda 1-2 min en verse en la tienda.');
     renderLista(reabrir);
   }).catch(function (e) { statusEdit('err', e.message); });
@@ -2441,11 +2588,42 @@ function pdfACanvas(file) {
 }
 function esPDF(file) { return file && (file.type === 'application/pdf' || /\.pdf$/i.test(file.name || '')); }
 // Lee un PNG o PDF: versión liviana (1000 px) para mockups + versión de impresión (hasta 3600 px)
-function leerPNG(file, recortar) {
+// Quita un color (negro, blanco o el de las esquinas). Por defecto solo el que toca los bordes (así no se pierden negros dentro del diseño)
+function quitarColor(im, q) {
+  var W0 = im.naturalWidth || im.width, H0 = im.naturalHeight || im.height, e = Math.min(1, 3600 / Math.max(W0, H0)), W = Math.round(W0 * e), H = Math.round(H0 * e);
+  var c = document.createElement('canvas'); c.width = W; c.height = H;
+  var x = c.getContext('2d'); x.drawImage(im, 0, 0, W, H);
+  var img = x.getImageData(0, 0, W, H), d = img.data, ob;
+  if (q.modo === 'negro') ob = [0, 0, 0]; else if (q.modo === 'blanco') ob = [255, 255, 255];
+  else {
+    var s = [0, 0, 0], n = 0;
+    [[0, 0], [W - 1, 0], [0, H - 1], [W - 1, H - 1]].forEach(function (pt) { var i = (pt[1] * W + pt[0]) * 4; if (d[i + 3] > 200) { s[0] += d[i]; s[1] += d[i + 1]; s[2] += d[i + 2]; n++; } });
+    if (!n) return c; ob = [s[0] / n, s[1] / n, s[2] / n];
+  }
+  var t0 = q.tol, t1 = q.tol * 1.6 + 4;
+  function dist(i) { var a = d[i] - ob[0], b = d[i + 1] - ob[1], g = d[i + 2] - ob[2]; return Math.sqrt(a * a + b * b + g * g) / 1.732; }
+  function factor(i) { var v = dist(i); return v <= t0 ? 0 : v >= t1 ? 1 : (v - t0) / (t1 - t0); }
+  if (q.global) {
+    for (var i = 0; i < d.length; i += 4) { if (!d[i + 3]) continue; var f = factor(i); if (f < 1) d[i + 3] = Math.round(d[i + 3] * f); }
+  } else {
+    var vis = new Uint8Array(W * H), pila = new Int32Array(W * H), top = 0;
+    var empujar = function (px) { if (vis[px]) return; var i = px * 4; if (d[i + 3] > 8 && dist(i) >= t1) return; vis[px] = 1; pila[top++] = px; };
+    for (var a = 0; a < W; a++) { empujar(a); empujar((H - 1) * W + a); }
+    for (var b = 0; b < H; b++) { empujar(b * W); empujar(b * W + W - 1); }
+    while (top) {
+      var px = pila[--top], k = px * 4; if (d[k + 3] > 8) d[k + 3] = Math.round(d[k + 3] * factor(k));
+      var xx = px % W, yy = (px - xx) / W;
+      if (xx > 0) empujar(px - 1); if (xx < W - 1) empujar(px + 1); if (yy > 0) empujar(px - W); if (yy < H - 1) empujar(px + W);
+    }
+  }
+  x.putImageData(img, 0, 0); return c;
+}
+function leerPNG(file, recortar, quitar, liviano) {
   var procesar = function (im) {
+    if (quitar && quitar.modo && quitar.modo !== 'ninguno') im = quitarColor(im, quitar);
     if (recortar !== false) im = recortarTransparente(im);
-    var url = escalarA(im, 1000), print = escalarA(im, 3600);
-    return new Promise(function (ok) { var out = new Image(); out.onload = function () { ok({ img: out, base64: url.split(',')[1], preview: url, print: print.split(',')[1], printPx: [im.width, im.height] }); }; out.src = url; });
+    var url = escalarA(im, 1000), print = liviano ? null : escalarA(im, 3600);
+    return new Promise(function (ok) { var out = new Image(); out.onload = function () { ok({ img: out, base64: url.split(',')[1], preview: url, print: print ? print.split(',')[1] : null, printPx: [im.width, im.height] }); }; out.src = url; });
   };
   if (esPDF(file)) return pdfACanvas(file).then(procesar).catch(function (e) { throw new Error('No pude leer el PDF: ' + e.message); });
   return new Promise(function (ok, mal) {
@@ -2469,6 +2647,7 @@ function EditorDisenos(cont, op) {
   cont.addEventListener('click', function (e) { self._click(e); });
   cont.addEventListener('input', function (e) {
     if (e.target.matches('[data-v-nombre]')) self.e.versiones[+e.target.getAttribute('data-v-nombre')].nombre = e.target.value;
+    if (e.target.matches('[data-v-qtol]')) { var sp = cont.querySelector('[data-v-qtolv]'); if (sp) sp.textContent = e.target.value; }
   });
   // Arrastrar un PNG directo sobre la casilla
   cont.addEventListener('dragover', function (e) { var sl = e.target.closest('.png-slot'); if (!sl || !sl.querySelector('[data-v-archivo]')) return; e.preventDefault(); sl.classList.add('encima'); });
@@ -2497,8 +2676,8 @@ EditorDisenos.prototype._archivo = function (clave, file) {
   var self = this, par = clave.split(':'), v = this.e.versiones[+par[0]];
   var inp0 = this.cont.querySelector('[data-v-archivo="' + clave + '"]'), slot = inp0 && inp0.closest('.png-slot');
   if (slot) slot.classList.add('cargando');
-  leerPNG(file, this.e.recortar).then(function (r) {
-    v.archivos[par[1]] = r;
+  leerPNG(file, this.e.recortar, this.e.quitar).then(function (r) {
+    r.file = file; v.archivos[par[1]] = r;
     // Actualizar solo esa casilla (no redibujar todo, así no se pierde otro archivo que estés eligiendo)
     var inp = self.cont.querySelector('[data-v-archivo="' + clave + '"]'), sl = inp && inp.closest('.png-slot');
     if (sl) { sl.classList.remove('cargando'); sl.classList.add('lleno'); sl.querySelector('img').src = r.preview; }
@@ -2523,7 +2702,7 @@ EditorDisenos.prototype._sugerirColores = function () {
   });
 };
 EditorDisenos.prototype.limpiar = function () {
-  this.e = { versiones: [{ nombre: 'Versión 1', colores: [], archivos: {} }], prendas: PRENDAS_IDS.slice(), ajuste: { v: 2 }, colorPrev: 'Negro', recortar: RECORTAR_PNG() };
+  this.e = { versiones: [{ nombre: 'Versión 1', colores: [], archivos: {} }], prendas: PRENDAS_IDS.slice(), ajuste: { v: 2 }, colorPrev: 'Negro', recortar: RECORTAR_PNG(), quitar: { modo: 'ninguno', tol: 40, global: false } };
   this.render();
 };
 EditorDisenos.prototype.cargar = function (p) {
@@ -2536,7 +2715,7 @@ EditorDisenos.prototype.cargar = function (p) {
     }) : [{ nombre: 'Versión 1', colores: [], archivos: {} }],
     prendas: (p.prendas && p.prendas.length ? p.prendas : PRENDAS_IDS).slice(),
     ajuste: ajusteEsInicial(p.ajuste) ? { v: 2 } : JSON.parse(JSON.stringify(p.ajuste)),
-    recortar: RECORTAR_PNG(),
+    recortar: RECORTAR_PNG(), quitar: { modo: 'ninguno', tol: 40, global: false },
     colorPrev: (p.colores || [])[0] || 'Negro'
   };
   this.render();
@@ -2562,7 +2741,7 @@ EditorDisenos.prototype.versionesImg = function () {
 EditorDisenos.prototype.render = function () {
   var e = this.e, aj = e.ajuste;
   var h = '<p class="mini" style="margin-top:0">PNG o PDF con fondo transparente (el PDF de Photoshop sirve si no tiene capa de fondo). Podés subir hasta ' + MAX_VERSIONES + ' versiones del mismo diseño (por ejemplo, detalles blancos y detalles negros) y marcar en qué telas se ve bien cada una. Sin marcar = todas.</p>' +
-    '<label class="check-row" style="margin-bottom:8px"><input type="checkbox" data-v-recortar' + (e.recortar ? ' checked' : '') + '><span>Recortar el espacio transparente sobrante del PNG al subirlo (solo del diseño, la foto de la prenda no cambia)</span></label>';
+    '<label class="check-row" style="margin-bottom:8px"><input type="checkbox" data-v-recortar' + (e.recortar ? ' checked' : '') + '><span>Recortar el espacio transparente sobrante del PNG al subirlo (solo del diseño, la foto de la prenda no cambia)</span></label>' + quitarHTML(e.quitar);
   e.versiones.forEach(function (v, i) {
     h += '<div class="ver"><div class="ver-cab"><input type="text" data-v-nombre="' + i + '" value="' + esc(v.nombre) + '" placeholder="Nombre (ej: Detalles blancos)">' +
       (e.versiones.length > 1 ? '<button type="button" class="prod-btn del" data-v-quitar="' + i + '" title="Quitar versión">✕</button>' : '') + '</div>' +
@@ -2594,6 +2773,10 @@ EditorDisenos.prototype._cambio = function (ev) {
     t.value = '';
   } else if (t.matches('[data-v-recortar]')) {
     this.e.recortar = t.checked; localStorage.setItem('yuzu_recortar', t.checked ? '1' : '0');
+  } else if (t.matches('[data-v-qmodo],[data-v-qtol],[data-v-qglobal]')) {
+    var q = this.e.quitar;
+    if (t.matches('[data-v-qmodo]')) q.modo = t.value; else if (t.matches('[data-v-qtol]')) q.tol = +t.value; else q.global = t.checked;
+    this._reprocesar();
   } else if (t.matches('[data-v-prenda]')) {
     var k = t.getAttribute('data-v-prenda'), i = this.e.prendas.indexOf(k);
     if (t.checked && i === -1) this.e.prendas.push(k); if (!t.checked && i !== -1) this.e.prendas.splice(i, 1);
@@ -2601,6 +2784,11 @@ EditorDisenos.prototype._cambio = function (ev) {
     if (t.matches('[data-v-prevcolor]')) this.e.colorPrev = t.value; else this.e.prendaPrev = t.value;
     this.preview();
   }
+};
+// Si cambia la opción de quitar color, se vuelven a procesar los archivos que ya subiste
+EditorDisenos.prototype._reprocesar = function () {
+  var self = this;
+  this.e.versiones.forEach(function (v, i) { CAMPOS_V.forEach(function (c) { var a = v.archivos[c[0]]; if (a && a.file) self._archivo(i + ':' + c[0], a.file); }); });
 };
 EditorDisenos.prototype._click = function (ev) {
   var b = ev.target.closest('button'); if (!b) return;
@@ -3534,6 +3722,496 @@ $('listaResenas').addEventListener('click', function (e) {
 // 6. INICIO
 // ============================================================
 mostrarEstadoConfig();
+
+// ============================================================
+// QUITAR COLOR · SUBIDA EN LOTE · EDICIÓN EN LOTE
+// ============================================================
+function pausa(ms) { return new Promise(function (ok) { setTimeout(ok, ms); }); }
+// Lecturas sin caché (GitHub a veces devuelve una versión vieja del archivo y eso causa el error 409)
+function ghFresco(path) {
+  return fetch(urlDe(path) + '?t=' + Date.now(), { cache: 'no-store', headers: { Authorization: 'token ' + getConfig().token } })
+    .then(function (res) { if (!res.ok) return errorDeRespuesta(res, 'No pude leer ' + path); return res.json(); });
+}
+function ghLeerFresco(path) {
+  return ghFresco(path).then(function (d) { return { content: JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g, ''))))), sha: d.sha }; });
+}
+
+// ---------- Quitar un color (fondo negro, blanco…) ----------
+function quitarHTML(q) {
+  q = q || { modo: 'ninguno', tol: 40, global: false };
+  var ops = [['ninguno', 'No quitar nada'], ['negro', 'Quitar el negro'], ['blanco', 'Quitar el blanco'], ['esquina', 'Quitar el color de las esquinas']];
+  return '<div class="quitar-box"><div class="mini" style="margin:0 0 6px">Quitar un color del diseño (por ejemplo un fondo negro o blanco)</div>' +
+    '<select data-v-qmodo>' + ops.map(function (o) { return '<option value="' + o[0] + '"' + (q.modo === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>' +
+    '<label class="mini" style="margin:8px 0 0">Tolerancia: <span data-v-qtolv>' + q.tol + '</span><input type="range" min="5" max="120" step="5" value="' + q.tol + '" data-v-qtol></label>' +
+    '<label class="check-row" style="margin-top:6px"><input type="checkbox" data-v-qglobal' + (q.global ? ' checked' : '') + '><span>También dentro del diseño (si no, solo el fondo que toca los bordes)</span></label></div>';
+}
+
+// ---------- Subida en lote ----------
+var SUB = { cards: [], corriendo: false, parar: false, tv: 0, mini: false, sello: 0 };
+
+function subPad(n, d) { var s = String(n); while (s.length < d) s = '0' + s; return s; }
+// Mira los nombres que ya existen en esa serie ("AoT 075") para seguir la numeración
+function subDetectar(sub) {
+  var cuentas = {}, mejor = null;
+  PRODUCTOS.forEach(function (p) {
+    if (!sub || p.subcategoria !== sub) return;
+    var m = /^(.*?)[\s\-_]*(\d+)\s*$/.exec(String(p.nombre || '')); if (!m) return;
+    var pre = m[1].trim(), n = parseInt(m[2], 10), c = cuentas[pre] = cuentas[pre] || { pre: pre, n: 0, max: 0, dig: m[2].length };
+    c.n++; if (n > c.max) { c.max = n; c.dig = m[2].length; }
+  });
+  Object.keys(cuentas).forEach(function (k) { var c = cuentas[k]; if (!mejor || c.n > mejor.n || (c.n === mejor.n && c.max > mejor.max)) mejor = c; });
+  if (mejor) return { prefijo: mejor.pre, desde: mejor.max + 1, digitos: mejor.dig };
+  var nm = (TIENDA.nombres && TIENDA.nombres[sub]) || {}, sg = nm.sigla && nm.sigla !== '-' ? nm.sigla : '';
+  if (!sg && sub) sg = sub.split(/\s+/).filter(Boolean).map(function (w) { return w.charAt(0).toUpperCase(); }).join('');
+  return { prefijo: sg || sub || '', desde: 1, digitos: 3 };
+}
+function subSubActual() { var n = $('subSubNueva').value.trim(); return n || $('subSub').value || ''; }
+function subComun() {
+  var marcados = function (sel) { return Array.prototype.map.call(document.querySelectorAll(sel), function (i) { return i.value; }); };
+  return {
+    categoria: $('subCat').value, subcategoria: subSubActual(),
+    numerar: $('subNumerar').checked, prefijo: $('subPrefijo').value.trim(), desde: parseInt($('subDesde').value, 10) || 1, digitos: Math.max(1, Math.min(6, parseInt($('subDigitos').value, 10) || 3)),
+    colecciones: $('subColecciones').value,
+    colores: marcados('#subColGrid input:checked'), prendas: marcados('#subPrendas input:checked'),
+    telas: Array.prototype.map.call(document.querySelectorAll('#subTelas .tela.on'), function (b) { return b.getAttribute('data-c'); }),
+    impresion: $('subImpresion').value, precio: $('subPrecio').value.replace(/\D/g, ''),
+    enDescuento: $('subDescCheck').checked, precioDescuento: parseInt($('subPrecioDesc').value.replace(/\D/g, ''), 10) || 0,
+    hasta: $('subHasta').value, destacado: $('subDest').checked, oculto: $('subOculto').checked,
+    quitar: { modo: $('subQModo').value, tol: parseInt($('subQTol').value, 10) || 40, global: $('subQGlobal').checked },
+    prev: $('subPrev').value
+  };
+}
+function subLlenarSubs() {
+  var cat = $('subCat').value, subs = CATEGORIAS[cat] || [];
+  $('subSub').innerHTML = '<option value="">— ninguna —</option>' + subs.map(function (s) { return '<option value="' + htmlAttr(s) + '">' + esc(s) + '</option>'; }).join('');
+}
+function subAutoNombre() {
+  var d = subDetectar(subSubActual());
+  $('subPrefijo').value = d.prefijo; $('subDesde').value = d.desde; $('subDigitos').value = d.digitos;
+}
+function subNombreDe(c, i, k) {
+  if (!c.numerar) return nombreDesdeArchivo(k.file.name);
+  return (c.prefijo ? c.prefijo + ' ' : '') + subPad(c.desde + i, c.digitos);
+}
+function subPropagar() {
+  var c = subComun();
+  SUB.cards.forEach(function (k, i) {
+    var ov = k.ov;
+    if (!ov.nombre) k.nombre = subNombreDe(c, i, k);
+    if (!ov.precio) k.precio = c.precio;
+    if (!ov.colores) k.colores = c.colores.slice();
+    if (!ov.colecciones) k.colecciones = c.colecciones;
+    if (!ov.prendas) k.prendas = c.prendas.slice();
+    if (!ov.telas) k.telas = c.telas.slice();
+    if (!ov.hasta) k.hasta = c.hasta;
+  });
+  var n = SUB.cards.length;
+  $('subEjemplo').textContent = c.numerar && n ? 'Quedan así: ' + SUB.cards.slice(0, 3).map(function (k) { return k.nombre; }).join(', ') + (n > 3 ? ' … ' + SUB.cards[n - 1].nombre : '') : '';
+  $('subDescRow').style.display = c.enDescuento ? 'block' : 'none';
+  subRender();
+}
+function subDetalleHTML(k, i) {
+  return '<div class="sub-det"><div class="mini">Colores disponibles</div><div class="check-lista">' + COLORES.map(function (col) {
+    return '<label class="check-row"><input type="checkbox" data-sk-col value="' + htmlAttr(col.name) + '"' + (k.colores.indexOf(col.name) !== -1 ? ' checked' : '') + '><span>' + esc(col.name) + '</span></label>';
+  }).join('') + '</div><div class="mini">Prendas</div><div class="check-lista">' + PRENDAS_IDS.map(function (id) {
+    return '<label class="check-row"><input type="checkbox" data-sk-prenda value="' + id + '"' + (k.prendas.indexOf(id) !== -1 ? ' checked' : '') + '><span>' + esc(YuzuMockup.PRENDAS[id].nombre) + '</span></label>';
+  }).join('') + '</div><div class="mini">Colecciones</div><input type="text" id="sk-col-' + i + '" data-sk="colecciones" value="' + htmlAttr(k.colecciones) + '"><div class="col-sug" data-para="sk-col-' + i + '">' + chipsColecciones('sk-col-' + i) + '</div>' +
+    '<div class="mini">Se ve bien en</div><div class="tela-chips">' + COLORES_TELA.map(function (c) {
+      return '<button type="button" class="tela' + (k.telas.indexOf(c) !== -1 ? ' on' : '') + '" data-sk-tela data-c="' + htmlAttr(c) + '" title="' + htmlAttr(c) + '" style="background:' + (YuzuMockup.HEX[c] || '#888') + '"></button>';
+    }).join('') + '</div><div class="mini">Disponible hasta</div><input type="date" data-sk="hasta" value="' + htmlAttr(k.hasta || '') + '"></div>';
+}
+function subCardHTML(k, i) {
+  return '<div class="sub-card' + (k.estado === 'ok' ? ' ok' : k.estado === 'err' ? ' err' : '') + '" data-i="' + i + '">' +
+    '<img class="th" alt=""' + (k.thumb ? ' src="' + k.thumb + '"' : '') + '>' +
+    '<div class="cu"><input type="text" data-sk="nombre" value="' + htmlAttr(k.nombre) + '">' +
+    '<div class="row" style="gap:6px;margin-top:6px"><input type="text" inputmode="numeric" data-sk="precio" value="' + htmlAttr(k.precio) + '" style="max-width:110px">' +
+    '<button type="button" class="prod-btn" data-sk-det title="Más opciones">⋯</button><button type="button" class="prod-btn del" data-sk-quitar title="Quitar de la lista">✕</button></div>' +
+    '<div class="mini sub-est">' + esc(k.msg || k.file.name) + '</div>' + (k.abierto ? subDetalleHTML(k, i) : '') + '</div></div>';
+}
+function subRender() {
+  $('subCards').innerHTML = SUB.cards.map(subCardHTML).join('');
+  var pend = SUB.cards.filter(function (k) { return k.estado !== 'ok'; }).length;
+  $('subTitCards').textContent = SUB.cards.length ? 'Diseños (' + SUB.cards.length + ')' : 'Diseños';
+  $('btnSubSubir').textContent = pend ? 'Subir ' + pend + (pend === 1 ? ' diseño' : ' diseños') : 'Subir';
+  $('btnSubSubir').disabled = !pend || SUB.corriendo;
+}
+function subActualizarThumb(k) {
+  var i = SUB.cards.indexOf(k), el = $('subCards').querySelector('.sub-card[data-i="' + i + '"] .th');
+  if (el && k.thumb) el.src = k.thumb;
+}
+function subMiniatura(k) {
+  var c = subComun();
+  return leerPNG(k.file, RECORTAR_PNG(), c.quitar, true).then(function (r) {
+    var color = YuzuMockup.disponible('boxy', c.prev) ? c.prev : (c.colores.filter(function (x) { return YuzuMockup.disponible('boxy', x); })[0] || 'Negro');
+    return YuzuMockup.generarTodas('boxy', color, [{ nombre: 'V1', colores: [], espalda: r.img }], 0, { v: 2 }).then(function (cvs) {
+      var cv = cvs[0]; if (!cv) { k.thumb = r.preview; return; }
+      var t = document.createElement('canvas'); t.width = 220; t.height = Math.round(220 * cv.height / cv.width);
+      t.getContext('2d').drawImage(cv, 0, 0, t.width, t.height); k.thumb = t.toDataURL('image/jpeg', 0.75);
+    });
+  });
+}
+function subMiniaturas() {
+  if (SUB.mini) return;
+  var k = SUB.cards.filter(function (c) { return c.tv !== SUB.tv && c.estado !== 'ok'; })[0];
+  if (!k) return;
+  SUB.mini = true; var tv = SUB.tv;
+  subMiniatura(k).catch(function (e) { k.thumb = ''; k.msg = 'No pude leer este archivo: ' + e.message; k.estado = 'err'; })
+    .then(function () { k.tv = tv; subActualizarThumb(k); SUB.mini = false; subMiniaturas(); });
+}
+function subAgregar(files) {
+  var lista = Array.prototype.filter.call(files, function (f) { return /\.(png|pdf)$/i.test(f.name) || f.type === 'image/png' || f.type === 'application/pdf'; });
+  if (!lista.length) { statusDe('subStatus', 'err', 'Solo PNG o PDF.'); return; }
+  lista.sort(function (a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true }); });
+  var vistos = {}; SUB.cards.forEach(function (k) { vistos[k.file.name + '|' + k.file.size] = 1; });
+  lista.forEach(function (f) {
+    if (vistos[f.name + '|' + f.size]) return;
+    SUB.cards.push({ file: f, nombre: '', precio: '', colores: [], colecciones: '', prendas: [], telas: [], hasta: '', thumb: '', tv: -1, estado: '', msg: '', ov: {}, abierto: false });
+  });
+  $('subStatus').className = 'status';
+  subPropagar(); subMiniaturas();
+}
+function abrirSubida() {
+  if (SUB.corriendo) { $('modalSubida').classList.add('abierto'); return; }
+  var cats = Object.keys(CATEGORIAS), actual = $('categoriaSelect').value;
+  $('subCat').innerHTML = cats.map(function (c) { return '<option value="' + htmlAttr(c) + '">' + esc(c) + '</option>'; }).join('');
+  if (cats.indexOf(actual) !== -1) $('subCat').value = actual;
+  subLlenarSubs();
+  var sub = $('subcategoriaSelect').value; if (sub && sub !== '__nueva__') $('subSub').value = sub;
+  $('subSubNueva').value = '';
+  subAutoNombre();
+  $('subColGrid').innerHTML = COLORES.map(function (c) {
+    return '<label class="color-check"><input type="checkbox" class="sub-c" value="' + htmlAttr(c.name) + '" checked><span class="swatch" style="background:' + c.hex + ';' + (c.name === 'Blanco' ? 'box-shadow:inset 0 0 0 1px #444' : '') + '"></span><span class="lbl">' + esc(c.name) + '</span></label>';
+  }).join('');
+  $('subPrendas').innerHTML = PRENDAS_IDS.map(function (id) { return '<label class="check-row"><input type="checkbox" class="sub-c" value="' + id + '" checked><span>' + esc(YuzuMockup.PRENDAS[id].nombre) + '</span></label>'; }).join('');
+  $('subTelas').innerHTML = COLORES_TELA.map(function (c) { return '<button type="button" class="tela sub-c" data-c="' + htmlAttr(c) + '" title="' + htmlAttr(c) + '" style="background:' + (YuzuMockup.HEX[c] || '#888') + '"></button>'; }).join('');
+  $('subPrev').innerHTML = COLORES_TELA.filter(function (c) { return YuzuMockup.disponible('boxy', c); }).map(function (c) { return '<option' + (c === 'Negro' ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('');
+  $('subImpresion').value = 'espalda'; $('subPrecio').value = precioDefecto('espalda');
+  $('subColecciones').value = $('coleccionesInput').value;
+  $('subHasta').value = ''; $('subDescCheck').checked = false; $('subPrecioDesc').value = ''; $('subDest').checked = false; $('subOculto').checked = false;
+  $('subQModo').value = 'ninguno'; $('subQTol').value = 40; $('subQTolV').textContent = '40'; $('subQGlobal').checked = false;
+  $('subNumerar').checked = true;
+  SUB.cards = []; $('subStatus').className = 'status';
+  pintarSugColecciones(); subPropagar();
+  $('modalSubida').classList.add('abierto');
+}
+function cerrarSubida() {
+  if (SUB.corriendo) { alert('Hay una subida en curso. Esperá a que termine o presioná Detener.'); return; }
+  $('modalSubida').classList.remove('abierto');
+}
+function subValidar(c) {
+  if (!SUB.cards.length) return 'Elegí los archivos primero.';
+  if (!c.categoria) return 'Elegí una categoría.';
+  var pend = SUB.cards.filter(function (k) { return k.estado !== 'ok'; });
+  for (var i = 0; i < pend.length; i++) {
+    var k = pend[i], p = parseInt(k.precio, 10);
+    if (!k.nombre.trim()) return 'Hay un diseño sin nombre (' + k.file.name + ').';
+    if (!p || p <= 0) return 'Revisá el precio de ' + k.nombre + '.';
+    if (!k.colores.length) return k.nombre + ' no tiene colores disponibles.';
+    if (!k.prendas.length) return k.nombre + ' no tiene prendas marcadas.';
+    if (c.enDescuento && (!c.precioDescuento || c.precioDescuento >= p)) return 'El precio con descuento tiene que ser menor al precio de ' + k.nombre + '.';
+  }
+  return null;
+}
+function subAsegurarCategoria(cat, sub) {
+  return ghLeerFresco('data/categorias.json').then(function (r) {
+    var lista = r.content[cat], ya = lista && (!sub || lista.indexOf(sub) !== -1);
+    if (ya) return;
+    r.content[cat] = lista || []; if (sub && r.content[cat].indexOf(sub) === -1) r.content[cat].push(sub);
+    return ghPut('data/categorias.json', r.content, r.sha, 'Categorías: ' + cat);
+  });
+}
+function subSubirUno(k, c, aviso) {
+  if (k.producto) return Promise.resolve();
+  var stamp = (SUB.sello = Math.max(Date.now(), SUB.sello + 1)), nombre = k.nombre.trim(), base = slugify(nombre) + '-' + stamp;
+  var o = { nombre: 'Versión 1', colores: k.telas.slice(), print: {} }, mapa = {}, n = 0, rutaLiv = 'images/disenos/' + base + '-v1-espalda.png', rutaPrint = 'images/disenos/print/' + base + '-v1-espalda.png';
+  return leerPNG(k.file, RECORTAR_PNG(), c.quitar).then(function (r) {
+    aviso('Subiendo el diseño…');
+    return ghPutImage(rutaLiv, r.base64, 'Diseño ' + base).then(function () {
+      o.espalda = rutaLiv;
+      if (!repoPrivado()) return;
+      return privPut(rutaPrint, r.print, 'Diseño para imprimir ' + base).then(function () { o.print.espalda = 'privado:' + rutaPrint; }).catch(function () { k.msg = 'Ojo: no pude guardar la versión para imprimir.'; });
+    }).then(function () {
+      var vs = [{ nombre: o.nombre, colores: o.colores, espalda: r.img }], cols = k.colores.filter(function (x) { return YuzuMockup.disponible('boxy', x); }), cad = Promise.resolve();
+      cols.forEach(function (col, ci) {
+        cad = cad.then(function () {
+          aviso('Mockup ' + (ci + 1) + ' de ' + cols.length + '…');
+          return YuzuMockup.generarTodas('boxy', col, vs, YuzuMockup.recomendada(vs, col), { v: 2 }).then(function (cvs) {
+            var sub = Promise.resolve();
+            cvs.forEach(function (cv) {
+              sub = sub.then(function () {
+                var ruta = 'images/' + slugify(nombre) + '-' + slugify(col) + '-' + stamp + '-' + (n++) + '.jpg';
+                return ghPutImage(ruta, cv.toDataURL('image/jpeg', 0.9).split(',')[1], 'Mockup ' + col + ': ' + nombre).then(function () { (mapa[col] = mapa[col] || []).push(ruta); });
+              });
+            });
+            return sub;
+          });
+        });
+      });
+      return cad;
+    });
+  }).then(function () {
+    var p = parseInt(k.precio, 10), colec = parseColecciones(k.colecciones);
+    var np = {
+      id: stamp, nombre: nombre, categoria: c.categoria, subcategoria: c.subcategoria || null,
+      imagenes: [], mockups: mapa, colores: k.colores.slice(), precio: p, enDescuento: c.enDescuento, precioDescuento: c.enDescuento ? c.precioDescuento : null,
+      impresion: c.impresion, versiones: [o], prendas: k.prendas.slice(), ajuste: { v: 2 }, destacado: c.destacado, oculto: c.oculto
+    };
+    if (colec.length) np.colecciones = colec;
+    if (k.hasta) np.hasta = k.hasta;
+    k.producto = np; k.estado = 'subido';
+  });
+}
+function subVolcar() {
+  var lote = SUB.cards.filter(function (k) { return k.estado === 'subido' && k.producto; });
+  if (!lote.length) return Promise.resolve();
+  var intento = function (n) {
+    return ghLeerFresco('data/products.json').then(function (r) {
+      var ids = {}; r.content.forEach(function (p) { ids[p.id] = 1; });
+      var nuevos = lote.filter(function (k) { return !ids[k.producto.id]; });
+      if (!nuevos.length) return;
+      nuevos.forEach(function (k) { r.content.push(k.producto); });
+      return ghPut('data/products.json', r.content, r.sha, 'Subida en lote: ' + nuevos.length + ' diseño(s)');
+    }).catch(function (e) { if (n < 3 && /\(409\)/.test(e.message)) return pausa(1500 * (n + 1)).then(function () { return intento(n + 1); }); throw e; });
+  };
+  return intento(0).then(function () {
+    lote.forEach(function (k) { k.estado = 'ok'; k.msg = '✓ Subido'; if (PRODUCTOS.every(function (p) { return p.id !== k.producto.id; })) PRODUCTOS.push(k.producto); });
+    subRender();
+    var cad = Promise.resolve();
+    lote.forEach(function (k) { cad = cad.then(function () { return escribirPaginaProducto(k.producto); }); });
+    return cad;
+  });
+}
+function subSubir() {
+  var c = subComun(), err = subValidar(c);
+  if (err) { statusDe('subStatus', 'err', err); return; }
+  var pend = SUB.cards.filter(function (k) { return k.estado !== 'ok'; });
+  if (!confirm('Subir ' + pend.length + ' diseño(s) a ' + c.categoria + (c.subcategoria ? ' › ' + c.subcategoria : '') + '?\nDesde "' + pend[0].nombre + '" hasta "' + pend[pend.length - 1].nombre + '".\nLa pestaña tiene que quedar abierta hasta el final.')) return;
+  SUB.corriendo = true; SUB.parar = false;
+  $('btnSubParar').style.display = ''; $('btnSubSubir').disabled = true;
+  var hechos = 0, fallos = 0, cad = subAsegurarCategoria(c.categoria, c.subcategoria);
+  pend.forEach(function (k, idx) {
+    cad = cad.then(function () {
+      if (SUB.parar) return;
+      var aviso = function (m) { statusDe('subStatus', 'loading', 'Diseño ' + (idx + 1) + ' de ' + pend.length + ' (' + k.nombre + '): ' + m); };
+      return subSubirUno(k, c, aviso).then(function () { hechos++; k.msg = 'Subido, falta registrarlo…'; subRender(); })
+        .catch(function (e) { fallos++; k.estado = 'err'; k.msg = e.message; subRender(); })
+        .then(function () {
+          var porRegistrar = SUB.cards.filter(function (x) { return x.estado === 'subido'; }).length;
+          if (porRegistrar >= 5) { aviso('guardando en el catálogo…'); return subVolcar(); }
+        }).then(function () { return pausa(250); });
+    });
+  });
+  cad.then(function () { return subVolcar(); }).then(function () {
+    var ok = SUB.cards.filter(function (k) { return k.estado === 'ok'; }).length, mal = SUB.cards.filter(function (k) { return k.estado === 'err'; }).length;
+    statusDe('subStatus', mal ? 'err' : 'ok', '✓ ' + ok + ' subidos' + (mal ? ' · ' + mal + ' con error (están marcados, presioná Subir para reintentar)' : '') + (SUB.parar ? ' · detenido' : '') + '. Tardan 1–2 minutos en verse en la tienda.');
+  }).catch(function (e) {
+    statusDe('subStatus', 'err', 'Los diseños se subieron pero no pude registrarlos: ' + e.message + ' · Presioná Subir otra vez para reintentar.');
+  }).then(function () {
+    SUB.corriendo = false; $('btnSubParar').style.display = 'none'; subRender();
+    return cargarCategorias().then(cargarProductos);
+  });
+}
+
+$('btnSubidaLote').addEventListener('click', abrirSubida);
+$('btnSubCerrar').addEventListener('click', cerrarSubida);
+$('btnSubSubir').addEventListener('click', subSubir);
+$('btnSubParar').addEventListener('click', function () { SUB.parar = true; statusDe('subStatus', 'loading', 'Deteniendo después del diseño actual…'); });
+$('btnSubLimpiar').addEventListener('click', function () { SUB.cards = SUB.cards.filter(function (k) { return k.estado !== 'ok'; }); subPropagar(); });
+$('subDrop').addEventListener('click', function () { $('subArchivos').click(); });
+$('subArchivos').addEventListener('change', function () { subAgregar(this.files); this.value = ''; });
+$('subDrop').addEventListener('dragover', function (e) { e.preventDefault(); this.classList.add('encima'); });
+$('subDrop').addEventListener('dragleave', function () { this.classList.remove('encima'); });
+$('subDrop').addEventListener('drop', function (e) { e.preventDefault(); this.classList.remove('encima'); subAgregar(e.dataTransfer.files); });
+// Cambios en "Para todos"
+$('subCuerpo').addEventListener('change', function (e) {
+  var t = e.target;
+  if (t.id === 'subCat') { subLlenarSubs(); $('subSubNueva').value = ''; subAutoNombre(); subPropagar(); return; }
+  if (t.id === 'subSub' || t.id === 'subSubNueva') { subAutoNombre(); subPropagar(); return; }
+  if (t.id === 'subQTol') { $('subQTolV').textContent = t.value; }
+  if (t.id === 'subQModo' || t.id === 'subQTol' || t.id === 'subQGlobal' || t.id === 'subPrev') { SUB.tv++; subPropagar(); subMiniaturas(); return; }
+  if (t.classList.contains('sub-c')) subPropagar();
+});
+$('subCuerpo').addEventListener('input', function (e) {
+  var t = e.target;
+  if (t.classList.contains('sub-c') && /^(subPrefijo|subDesde|subDigitos|subPrecio|subPrecioDesc|subColecciones)$/.test(t.id)) subPropagar();
+  var card = t.closest && t.closest('.sub-card'), k = card && SUB.cards[+card.getAttribute('data-i')], key = t.getAttribute && t.getAttribute('data-sk');
+  if (k && key) { k[key] = key === 'precio' ? t.value.replace(/\D/g, '') : t.value; k.ov[key] = true; }
+});
+$('subCuerpo').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return;
+  if (b.classList.contains('tela') && b.classList.contains('sub-c')) { b.classList.toggle('on'); subPropagar(); return; }
+  var card = b.closest('.sub-card'), i = card ? +card.getAttribute('data-i') : -1, k = SUB.cards[i];
+  if (!k) return;
+  if (b.hasAttribute('data-sk-det')) { k.abierto = !k.abierto; subRender(); }
+  else if (b.hasAttribute('data-sk-quitar')) { SUB.cards.splice(i, 1); subPropagar(); }
+  else if (b.hasAttribute('data-sk-tela')) {
+    var c = b.getAttribute('data-c'), j = k.telas.indexOf(c); if (j === -1) k.telas.push(c); else k.telas.splice(j, 1);
+    k.ov.telas = true; b.classList.toggle('on');
+  }
+});
+$('subCards').addEventListener('change', function (e) {
+  var t = e.target, card = t.closest('.sub-card'), k = card && SUB.cards[+card.getAttribute('data-i')]; if (!k) return;
+  if (t.hasAttribute('data-sk-col')) { k.colores = Array.prototype.map.call(card.querySelectorAll('[data-sk-col]:checked'), function (x) { return x.value; }); k.ov.colores = true; }
+  else if (t.hasAttribute('data-sk-prenda')) { k.prendas = Array.prototype.map.call(card.querySelectorAll('[data-sk-prenda]:checked'), function (x) { return x.value; }); k.ov.prendas = true; }
+});
+
+// ---------- Edición en lote ----------
+var LO = { sel: {} };
+function loPorSerie(p, v) { return v === '' ? true : v === '__sin__' ? !p.subcategoria : p.subcategoria === v; }
+function loPorColeccion(p, v) { var l = p.colecciones || []; return v === '' ? true : v === '__sin__' ? !l.length : l.indexOf(v) !== -1; }
+function loVisibles() {
+  var s = $('loSerie').value, c = $('loColeccion').value, q = $('loBuscar').value.trim().toLowerCase();
+  return PRODUCTOS.filter(function (p) { return loPorSerie(p, s) && loPorColeccion(p, c) && (!q || String(p.nombre).toLowerCase().indexOf(q) !== -1); }).sort(function (a, b) { return a.id - b.id; });
+}
+function loContar() {
+  var n = Object.keys(LO.sel).filter(function (k) { return LO.sel[k]; }).length;
+  $('loContador').textContent = n + ' marcado' + (n === 1 ? '' : 's');
+  $('btnLoAplicar').textContent = n ? 'Aplicar a ' + n : 'Aplicar';
+  $('btnLoAplicar').disabled = !n;
+}
+function loRender() {
+  var l = loVisibles();
+  $('loLista').innerHTML = l.length ? l.map(function (p) {
+    var cols = (p.colecciones || []).join(', ');
+    return '<label class="modal-item"><img src="' + htmlAttr(portadaDe(p)) + '" alt="" loading="lazy"><div class="m-nombre">' + esc(p.nombre) + ' <small style="color:var(--mudo);font-weight:400">' + esc((p.subcategoria || '') + (cols ? ' · ' + cols : '')) + '</small></div>' +
+      '<span class="m-estado">' + plata(p.precio) + (p.enDescuento ? ' ▸ ' + plata(p.precioDescuento) : '') + ' · ' + (p.colores || []).length + ' col.' + (p.oculto ? ' · oculto' : '') + '</span>' +
+      '<input type="checkbox" data-lo-id="' + p.id + '"' + (LO.sel[p.id] ? ' checked' : '') + '></label>';
+  }).join('') : '<p class="mini" style="padding:16px 0">No hay productos con ese filtro.</p>';
+  loContar();
+}
+function loLlenarFiltros() {
+  var series = {}, cols = {};
+  PRODUCTOS.forEach(function (p) { if (p.subcategoria) series[p.subcategoria] = (series[p.subcategoria] || 0) + 1; (p.colecciones || []).forEach(function (c) { cols[c] = (cols[c] || 0) + 1; }); });
+  $('loSerie').innerHTML = '<option value="">Todas las series</option>' + Object.keys(series).sort(function (a, b) { return a.localeCompare(b, 'es'); }).map(function (s) { return '<option value="' + htmlAttr(s) + '">' + esc(s) + ' (' + series[s] + ')</option>'; }).join('') + '<option value="__sin__">Sin serie</option>';
+  $('loColeccion').innerHTML = '<option value="">Todas las colecciones</option><option value="__sin__">Sin colección</option>' + Object.keys(cols).sort(function (a, b) { return a.localeCompare(b, 'es'); }).map(function (c) { return '<option value="' + htmlAttr(c) + '">' + esc(c) + ' (' + cols[c] + ')</option>'; }).join('');
+}
+function abrirLote() {
+  LO.sel = {};
+  loLlenarFiltros();
+  $('loColGrid').innerHTML = COLORES.map(function (c) { return '<label class="color-check"><input type="checkbox" value="' + htmlAttr(c.name) + '"><span class="swatch" style="background:' + c.hex + ';' + (c.name === 'Blanco' ? 'box-shadow:inset 0 0 0 1px #444' : '') + '"></span><span class="lbl">' + esc(c.name) + '</span></label>'; }).join('');
+  $('loPrendas').innerHTML = PRENDAS_IDS.map(function (id) { return '<label class="check-row"><input type="checkbox" value="' + id + '" checked><span>' + esc(YuzuMockup.PRENDAS[id].nombre) + '</span></label>'; }).join('');
+  $('loTelas').innerHTML = COLORES_TELA.map(function (c) { return '<button type="button" class="tela" data-c="' + htmlAttr(c) + '" title="' + htmlAttr(c) + '" style="background:' + (YuzuMockup.HEX[c] || '#888') + '"></button>'; }).join('');
+  $('loCat').innerHTML = Object.keys(CATEGORIAS).map(function (c) { return '<option value="' + htmlAttr(c) + '">' + esc(c) + '</option>'; }).join('');
+  loSubLista();
+  document.querySelectorAll('#loAcciones [data-lo]').forEach(function (cb) { cb.checked = false; cb.closest('.lo-bloque').classList.remove('on'); });
+  $('loStatus').className = 'status';
+  loRender(); pintarSugColecciones();
+  $('modalLote').classList.add('abierto');
+}
+function loSubLista() { $('loSubList').innerHTML = (CATEGORIAS[$('loCat').value] || []).map(function (s) { return '<option value="' + htmlAttr(s) + '">'; }).join(''); }
+function loEjemploNombres() {
+  var d = parseInt($('loDesde').value, 10) || 1, dig = Math.max(1, Math.min(6, parseInt($('loDig').value, 10) || 3)), pre = $('loPref').value.trim();
+  var n = Object.keys(LO.sel).filter(function (k) { return LO.sel[k]; }).length;
+  $('loNomEj').textContent = 'Ej: ' + (pre ? pre + ' ' : '') + subPad(d, dig) + (n > 1 ? ', ' + (pre ? pre + ' ' : '') + subPad(d + 1, dig) + '…' : '') + ' (en el orden en que se subieron)';
+}
+function loRegenerar(p) {
+  var vers = YuzuMockup.versionesDe(p);
+  if (!vers.length || !vers.some(function (v) { return v.espalda || v.pecho || v.manga || v.costado; })) return Promise.resolve(false);
+  var cols = (p.colores || []).filter(function (c) { return YuzuMockup.disponible('boxy', c); }), stamp = Date.now(), nuevo = {}, n = 0, cad = Promise.resolve();
+  cols.forEach(function (c) {
+    cad = cad.then(function () {
+      return YuzuMockup.generarTodas('boxy', c, vers, YuzuMockup.recomendada(vers, c), p.ajuste).then(function (cvs) {
+        var sub = Promise.resolve();
+        cvs.forEach(function (cv) {
+          sub = sub.then(function () {
+            var ruta = 'images/' + slugify(p.nombre) + '-' + slugify(c) + '-' + stamp + '-' + (n++) + '.jpg';
+            return ghPutImage(ruta, cv.toDataURL('image/jpeg', 0.9).split(',')[1], 'Mockup ' + c + ': ' + p.nombre).then(function () { (nuevo[c] = nuevo[c] || []).push(ruta); });
+          });
+        });
+        return sub;
+      });
+    });
+  });
+  return cad.then(function () { if (!Object.keys(nuevo).length) return false; p.mockups = nuevo; return true; });
+}
+function loAplicar() {
+  var sel = PRODUCTOS.filter(function (p) { return LO.sel[p.id]; }).sort(function (a, b) { return a.id - b.id; });
+  var on = {}; document.querySelectorAll('#loAcciones [data-lo]:checked').forEach(function (cb) { on[cb.getAttribute('data-lo')] = true; });
+  if (!sel.length) return;
+  if (!Object.keys(on).length) { statusDe('loStatus', 'err', 'Marcá al menos una cosa para cambiar.'); return; }
+  var val = function (id) { return $(id).value; };
+  var precio = parseInt(val('loPrecio').replace(/\D/g, ''), 10), descPrecio = parseInt(val('loDescPrecio').replace(/\D/g, ''), 10);
+  var colSel = Array.prototype.map.call(document.querySelectorAll('#loColGrid input:checked'), function (i) { return i.value; });
+  var prSel = Array.prototype.map.call(document.querySelectorAll('#loPrendas input:checked'), function (i) { return i.value; });
+  var telSel = Array.prototype.map.call(document.querySelectorAll('#loTelas .tela.on'), function (b) { return b.getAttribute('data-c'); });
+  var colec = parseColecciones(val('loColecciones')), sub = val('loSub').trim();
+  if (on.precio && (!precio || precio < 1000)) { statusDe('loStatus', 'err', 'Poné un precio válido.'); return; }
+  if (on.descuento && val('loDescModo') === 'poner' && (!descPrecio || descPrecio < 1000)) { statusDe('loStatus', 'err', 'Poné el precio con descuento.'); return; }
+  if (on.colores && !colSel.length) { statusDe('loStatus', 'err', 'Marcá al menos un color.'); return; }
+  if (on.prendas && !prSel.length) { statusDe('loStatus', 'err', 'Marcá al menos una prenda.'); return; }
+  if (on.colecciones && !colec.length && val('loCoModo') !== 'reemplazar') { statusDe('loStatus', 'err', 'Escribí las colecciones.'); return; }
+  if (on.hasta && !val('loHasta') && !$('loHastaQuitar').checked) { statusDe('loStatus', 'err', 'Elegí la fecha o marcá "quitar la fecha".'); return; }
+  var resumen = Object.keys(on).map(function (k) { return { precio: 'precio', descuento: 'descuento', colores: 'colores', prendas: 'prendas', colecciones: 'colecciones', serie: 'serie', impresion: 'tipo de impresión', visib: 'visibilidad', hasta: 'fecha de cierre', telas: 'telas recomendadas', nombre: 'nombres', reset: 'posición del diseño', regen: 'mockups' }[k] || k; }).join(', ');
+  if (!confirm('Cambiar ' + resumen + ' en ' + sel.length + ' producto(s)?')) return;
+
+  var omitidos = 0, quitados = 0, tocaPagina = false, cambioCat = null;
+  sel.forEach(function (p, idx) {
+    if (on.precio) { p.precio = precio; tocaPagina = true; if (p.enDescuento && (!p.precioDescuento || p.precioDescuento >= precio)) { p.enDescuento = false; p.precioDescuento = null; quitados++; } }
+    if (on.descuento) {
+      if (val('loDescModo') === 'quitar') { p.enDescuento = false; p.precioDescuento = null; tocaPagina = true; }
+      else if (descPrecio < p.precio) { p.enDescuento = true; p.precioDescuento = descPrecio; tocaPagina = true; } else omitidos++;
+    }
+    if (on.colores) {
+      var m = val('loColModo'), act = (p.colores || []).slice(), nuevo = m === 'reemplazar' ? colSel.slice() : m === 'agregar' ? act.concat(colSel.filter(function (c) { return act.indexOf(c) === -1; })) : act.filter(function (c) { return colSel.indexOf(c) === -1; });
+      if (nuevo.length) p.colores = nuevo; else omitidos++;
+    }
+    if (on.prendas) p.prendas = prSel.slice();
+    if (on.colecciones) {
+      var mo = val('loCoModo'), a = (p.colecciones || []).slice(), res;
+      if (mo === 'reemplazar') res = colec; else if (mo === 'agregar') res = a.concat(colec.filter(function (c) { return a.indexOf(c) === -1; }));
+      else res = a.filter(function (c) { return colec.map(function (x) { return x.toLowerCase(); }).indexOf(c.toLowerCase()) === -1; });
+      p.colecciones = res.length ? res : undefined;
+    }
+    if (on.serie) { p.categoria = val('loCat'); p.subcategoria = sub || null; cambioCat = { cat: p.categoria, sub: sub }; tocaPagina = true; }
+    if (on.impresion) p.impresion = val('loImpresion');
+    if (on.visib) {
+      if (val('loOculto')) p.oculto = val('loOculto') === 'oculto';
+      if (val('loDest')) p.destacado = val('loDest') === 'si';
+    }
+    if (on.hasta) p.hasta = $('loHastaQuitar').checked ? undefined : val('loHasta');
+    if (on.telas) { if (p.versiones && p.versiones.length === 1) p.versiones[0].colores = telSel.slice(); else omitidos++; }
+    if (on.nombre) { p.nombre = (val('loPref').trim() ? val('loPref').trim() + ' ' : '') + subPad((parseInt(val('loDesde'), 10) || 1) + idx, Math.max(1, Math.min(6, parseInt(val('loDig'), 10) || 3))); tocaPagina = true; }
+    if (on.reset) p.ajuste = { v: 2 };
+  });
+  $('btnLoAplicar').disabled = true;
+  var cad = Promise.resolve(), regen = on.regen || on.reset;
+  if (cambioCat) cad = cad.then(function () { return subAsegurarCategoria(cambioCat.cat, cambioCat.sub); });
+  if (regen) sel.forEach(function (p, i) {
+    cad = cad.then(function () {
+      statusDe('loStatus', 'loading', 'Mockups ' + (i + 1) + ' de ' + sel.length + ' (' + p.nombre + ')…');
+      return loRegenerar(p).then(function (ok) { if (ok) tocaPagina = true; }).catch(function (e) { omitidos++; console.warn(e); });
+    }).then(function () { return pausa(150); });
+  });
+  cad.then(function () { statusDe('loStatus', 'loading', 'Guardando el catálogo…'); return guardarProductos('Edición en lote: ' + sel.length + ' producto(s)'); })
+    .then(function () {
+      if (!tocaPagina) return;
+      var c2 = Promise.resolve();
+      sel.forEach(function (p, i) { c2 = c2.then(function () { statusDe('loStatus', 'loading', 'Actualizando vistas previas al compartir ' + (i + 1) + ' de ' + sel.length + '…'); return escribirPaginaProducto(p); }); });
+      return c2;
+    }).then(function () {
+      statusDe('loStatus', 'ok', '✓ Listo: ' + sel.length + ' producto(s) actualizados.' + (quitados ? ' ' + quitados + ' descuento(s) quitados por quedar mayores al precio.' : '') + (omitidos ? ' ' + omitidos + ' cambio(s) omitidos (no aplicaban).' : '') + (regen ? ' Los mockups viejos quedaron sin usar: podés borrarlos con "Limpiar archivos sin usar".' : '') + ' Tarda 1–2 min en verse en la tienda.');
+      loLlenarFiltros(); loRender();
+    }).catch(function (e) { statusDe('loStatus', 'err', e.message + ' · Recargá la lista antes de reintentar.'); })
+    .then(function () { loContar(); });
+}
+$('btnEdLote').addEventListener('click', abrirLote);
+$('btnLoCerrar').addEventListener('click', function () { $('modalLote').classList.remove('abierto'); });
+$('btnLoCancelar').addEventListener('click', function () { $('modalLote').classList.remove('abierto'); });
+$('btnLoAplicar').addEventListener('click', loAplicar);
+['loSerie', 'loColeccion'].forEach(function (id) { $(id).addEventListener('change', loRender); });
+$('loBuscar').addEventListener('input', loRender);
+$('loMarcar').addEventListener('click', function () { loVisibles().forEach(function (p) { LO.sel[p.id] = true; }); loRender(); });
+$('loDesmarcar').addEventListener('click', function () { LO.sel = {}; loRender(); });
+$('loLista').addEventListener('change', function (e) { var id = e.target.getAttribute('data-lo-id'); if (id) { LO.sel[id] = e.target.checked; loContar(); loEjemploNombres(); } });
+$('loCat').addEventListener('change', loSubLista);
+$('loAcciones').addEventListener('change', function (e) {
+  var cb = e.target.closest('[data-lo]'); if (cb) cb.closest('.lo-bloque').classList.toggle('on', cb.checked);
+});
+$('loAcciones').addEventListener('input', function (e) { if (/^lo(Pref|Desde|Dig)$/.test(e.target.id)) loEjemploNombres(); });
+$('loAcciones').addEventListener('click', function (e) {
+  var b = e.target.closest('.tela'); if (b) b.classList.toggle('on');
+});
+$('modalLote').addEventListener('click', function (e) { if (e.target === $('modalLote')) $('modalLote').classList.remove('abierto'); });
 </script>
 </body>
 </html>
