@@ -5174,5 +5174,93 @@
     "colecciones": [
       "Manga"
     ]
+  },
+  {
+    "id": 1792165146056,
+    "nombre": "AoT 081",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-081-negro-1792165146056-0.jpg",
+        "images/aot-081-negro-1792165146056-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-081-1792165146056-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-081-1792165146056-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1792165154058,
+    "nombre": "AoT 082",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-082-negro-1792165154058-0.jpg",
+        "images/aot-082-negro-1792165154058-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-082-1792165154058-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-082-1792165154058-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
   }
 ]
