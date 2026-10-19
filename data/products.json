@@ -5262,5 +5262,385 @@
     "colecciones": [
       "Manga"
     ]
+  },
+  {
+    "id": 1792449062243,
+    "nombre": "AoT 083",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-083-negro-1792449062243-0.jpg",
+        "images/aot-083-negro-1792449062243-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-083-crema-1792449062243-2.jpg",
+        "images/aot-083-crema-1792449062243-3.jpg"
+      ],
+      "Café": [
+        "images/aot-083-cafe-1792449062243-4.jpg",
+        "images/aot-083-cafe-1792449062243-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-083-gris-grafito-1792449062243-6.jpg",
+        "images/aot-083-gris-grafito-1792449062243-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-083-azul-marino-1792449062243-8.jpg",
+        "images/aot-083-azul-marino-1792449062243-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-083-verde-musgo-1792449062243-10.jpg",
+        "images/aot-083-verde-musgo-1792449062243-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Crema",
+          "Café",
+          "Gris grafito",
+          "Azul marino",
+          "Verde musgo"
+        ],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-083-1792449062243-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-083-1792449062243-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1792449085824,
+    "nombre": "AoT 084",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-084-negro-1792449085824-0.jpg",
+        "images/aot-084-negro-1792449085824-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-084-crema-1792449085824-2.jpg",
+        "images/aot-084-crema-1792449085824-3.jpg"
+      ],
+      "Café": [
+        "images/aot-084-cafe-1792449085824-4.jpg",
+        "images/aot-084-cafe-1792449085824-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-084-gris-grafito-1792449085824-6.jpg",
+        "images/aot-084-gris-grafito-1792449085824-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-084-azul-marino-1792449085824-8.jpg",
+        "images/aot-084-azul-marino-1792449085824-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-084-verde-musgo-1792449085824-10.jpg",
+        "images/aot-084-verde-musgo-1792449085824-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Crema",
+          "Café",
+          "Gris grafito",
+          "Azul marino",
+          "Verde musgo"
+        ],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-084-1792449085824-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-084-1792449085824-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1792449107598,
+    "nombre": "AoT 085",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-085-negro-1792449107598-0.jpg",
+        "images/aot-085-negro-1792449107598-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-085-crema-1792449107598-2.jpg",
+        "images/aot-085-crema-1792449107598-3.jpg"
+      ],
+      "Café": [
+        "images/aot-085-cafe-1792449107598-4.jpg",
+        "images/aot-085-cafe-1792449107598-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-085-gris-grafito-1792449107598-6.jpg",
+        "images/aot-085-gris-grafito-1792449107598-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-085-azul-marino-1792449107598-8.jpg",
+        "images/aot-085-azul-marino-1792449107598-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-085-verde-musgo-1792449107598-10.jpg",
+        "images/aot-085-verde-musgo-1792449107598-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Crema",
+          "Café",
+          "Gris grafito",
+          "Azul marino",
+          "Verde musgo"
+        ],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-085-1792449107598-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-085-1792449107598-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1792449131372,
+    "nombre": "AoT 086",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-086-negro-1792449131372-0.jpg",
+        "images/aot-086-negro-1792449131372-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-086-crema-1792449131372-2.jpg",
+        "images/aot-086-crema-1792449131372-3.jpg"
+      ],
+      "Café": [
+        "images/aot-086-cafe-1792449131372-4.jpg",
+        "images/aot-086-cafe-1792449131372-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-086-gris-grafito-1792449131372-6.jpg",
+        "images/aot-086-gris-grafito-1792449131372-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-086-azul-marino-1792449131372-8.jpg",
+        "images/aot-086-azul-marino-1792449131372-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-086-verde-musgo-1792449131372-10.jpg",
+        "images/aot-086-verde-musgo-1792449131372-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Crema",
+          "Café",
+          "Gris grafito",
+          "Azul marino",
+          "Verde musgo"
+        ],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-086-1792449131372-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-086-1792449131372-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1792449155715,
+    "nombre": "AoT 087",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-087-negro-1792449155715-0.jpg",
+        "images/aot-087-negro-1792449155715-1.jpg"
+      ],
+      "Crema": [
+        "images/aot-087-crema-1792449155715-2.jpg",
+        "images/aot-087-crema-1792449155715-3.jpg"
+      ],
+      "Café": [
+        "images/aot-087-cafe-1792449155715-4.jpg",
+        "images/aot-087-cafe-1792449155715-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/aot-087-gris-grafito-1792449155715-6.jpg",
+        "images/aot-087-gris-grafito-1792449155715-7.jpg"
+      ],
+      "Azul marino": [
+        "images/aot-087-azul-marino-1792449155715-8.jpg",
+        "images/aot-087-azul-marino-1792449155715-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/aot-087-verde-musgo-1792449155715-10.jpg",
+        "images/aot-087-verde-musgo-1792449155715-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [
+          "Negro",
+          "Crema",
+          "Café",
+          "Gris grafito",
+          "Azul marino",
+          "Verde musgo"
+        ],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-087-1792449155715-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-087-1792449155715-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
