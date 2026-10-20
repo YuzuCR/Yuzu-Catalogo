@@ -6415,5 +6415,53 @@
     "colecciones": [
       "Manga"
     ]
+  },
+  {
+    "id": 1792514863996,
+    "nombre": "AoT 106",
+    "categoria": "Anime",
+    "subcategoria": "AoT Collection",
+    "colecciones": [
+      "Manga"
+    ],
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-106-negro-1792514863996-0.jpg",
+        "images/aot-106-negro-1792514863996-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-106-1792514863996-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-106-1792514863996-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "espalda": {
+          "cx": 552.4,
+          "cy": 735.9,
+          "w": 421
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false
   }
 ]
