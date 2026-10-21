@@ -12,10 +12,15 @@
     }
   },
   "drops": {
-    "actual": "AoT Collection",
-    "pasados": []
+    "actual": "DBZ Collection",
+    "pasados": [
+      "AoT Collection"
+    ]
   },
-  "banners": [],
+  "banners": [
+    "AoT Collection",
+    "DBZ Collection"
+  ],
   "precios": {
     "boxy": 13700,
     "sinmangas": 11500,
