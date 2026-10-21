@@ -4,6 +4,11 @@
       "sigla": "YUZU",
       "titulo": "Attack on Titan",
       "frase": "Mas allá de la muralla"
+    },
+    "DBZ Collection": {
+      "sigla": "DBZ",
+      "titulo": "Dragon Ball Z",
+      "frase": "Sangre Sayayin"
     }
   },
   "drops": {
