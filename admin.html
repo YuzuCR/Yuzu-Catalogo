@@ -374,6 +374,9 @@
       <p class="mini" style="margin-top:2px">Así la gente filtra dentro de la serie. Se queda marcada para el próximo producto.</p>
       <label>Colores disponibles</label>
       <div class="color-check-grid" id="colorCheckGrid"></div>
+      <label>¿Qué camiseta será la portada?</label>
+      <select id="portadaSelect"></select>
+      <p class="mini">La foto con la que aparece en el catálogo. Por defecto, la negra.</p>
       <label>Tipo de impresión</label>
       <select id="impresionSelect">
         <option value="espalda">Espalda grande + pecho pequeño</option>
@@ -827,8 +830,9 @@
           <div class="mini" style="margin-top:10px">Vista previa de <strong id="subPrevNombre">—</strong> · tocá la miniatura de otro diseño para verlo</div>
           <div class="sub-prev" id="subPrevBox"><figure><img id="subPrevCam" alt=""><figcaption class="mini">Sobre la camiseta</figcaption></figure><figure><img id="subPrevArte" class="cuadros" alt=""><figcaption class="mini">Solo el diseño (los cuadros son transparencia)</figcaption></figure></div>
         </div>
-        <label>Ver las miniaturas sobre</label>
+        <label>¿Qué camiseta será la portada?</label>
         <select id="subPrev"></select>
+        <p class="mini">Es la foto con la que sale cada diseño en el catálogo, y la que ves en las miniaturas. Por defecto, la negra. Si un diseño necesita otra, cambiala en su ⋯.</p>
       </div>
       <div class="subtit" id="subTitCards">Diseños</div>
       <div id="subCards"></div>
@@ -966,6 +970,20 @@ function ghPutImage(path, base64, msg) { return ghEnviar(path, { message: msg, c
 function ghBorrarArchivo(path, msg) { return fetch(urlDe(path), { headers:{Authorization:'token '+getConfig().token}}).then(function(res){ return res.ok?res.json():null; }).then(function(data){ if(!data||!data.sha) return null; return fetch(urlDe(path), { method:'DELETE', headers:{Authorization:'token '+getConfig().token,'Content-Type':'application/json'}, body:JSON.stringify({message:msg, sha:data.sha}) }); }).catch(function(){return null;}); }
 
 // ========== PRODUCTOS ==========
+// "¿Qué camiseta será la portada?": por defecto la negra (si está entre los colores)
+function portadaPorDefecto(colores) { return !colores || !colores.length ? '' : colores.indexOf('Negro') !== -1 ? 'Negro' : colores[0]; }
+function llenarPortada(sel, colores, actual) {
+  if (!sel) return;
+  var v = colores.indexOf(actual) !== -1 ? actual : portadaPorDefecto(colores);
+  sel.innerHTML = colores.map(function (c) { return '<option value="' + htmlAttr(c) + '"' + (c === v ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('');
+}
+document.addEventListener('change', function (e) {
+  var t = e.target, m = t && t.className && /(?:^|\s)e-color-(\d+)(?:\s|$)/.exec(t.className);
+  if (!m) return;
+  var sel = $('e-portada-' + m[1]); if (!sel) return;
+  var cols = Array.prototype.map.call(document.querySelectorAll('.e-color-' + m[1] + ':checked'), function (x) { return x.value; });
+  llenarPortada(sel, cols, sel.value);
+});
 function renderColorChecks() {
   var html = '';
   for (var i = 0; i < COLORES.length; i++) {
@@ -976,6 +994,7 @@ function renderColorChecks() {
       '<span class="lbl">' + c.name + '</span></label>';
   }
   $('colorCheckGrid').innerHTML = html;
+  llenarPortada($('portadaSelect'), coloresMarcados(), 'Negro');
 }
 function coloresMarcados() {
   var inputs = document.querySelectorAll('#colorCheckGrid input:checked'), out = [];
@@ -1207,7 +1226,7 @@ function subirProducto() {
       nuevoP = {
         id: stamp, nombre: nombre, categoria: categoria, subcategoria: subcategoria || null,
         colecciones: parseColecciones($('coleccionesInput').value),
-        imagenes: rutasGaleria, mockups: mapaMockups, colores: colores,
+        imagenes: rutasGaleria, mockups: mapaMockups, colores: colores, portada: $('portadaSelect').value || portadaPorDefecto(colores),
         precio: precio, enDescuento: enDescuento, precioDescuento: precioDescuento,
         impresion: $('impresionSelect').value,
         versiones: datosDisenos && datosDisenos.versiones.length ? datosDisenos.versiones : undefined,
@@ -1298,6 +1317,7 @@ function cargarProductos() {
   }).catch(function (e) { statusEdit('err', e.message); });
 }
 function portadaDe(p) {
+  if (p.portada && p.mockups && p.mockups[p.portada]) { var pm = p.mockups[p.portada]; var pf = (typeof pm === 'string') ? pm : pm[0]; if (pf) return pf; }
   if (p.imagenes && p.imagenes.length) return p.imagenes[0];
   if (p.mockups) {
     var claves = Object.keys(p.mockups);
@@ -1385,6 +1405,8 @@ function abrirEdicion(i) {
       '<span class="lbl">' + COLORES[k].name + '</span></label>';
   }
   html += '</div>';
+  var portadaAct = p.portada && colores.indexOf(p.portada) !== -1 ? p.portada : (colores.filter(function (c) { return p.mockups && p.mockups[c]; })[0] || portadaPorDefecto(colores));
+  html += '<label>¿Qué camiseta será la portada?</label><select id="e-portada-' + i + '">' + colores.map(function (c) { return '<option value="' + htmlAttr(c) + '"' + (c === portadaAct ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '</select>';
 
   var imp = p.impresion || 'espalda';
   html += '<label>Tipo de impresión</label><select id="e-imp-' + i + '">';
@@ -1444,6 +1466,7 @@ function guardarEdicion(i) {
   p.subcategoria = $('e-sub-' + i).value.trim() || null;
   var cols = parseColecciones($('e-col-' + i).value); p.colecciones = cols.length ? cols : undefined;
   p.colores = colores;
+  p.portada = ($('e-portada-' + i) && colores.indexOf($('e-portada-' + i).value) !== -1) ? $('e-portada-' + i).value : portadaPorDefecto(colores);
   p.impresion = $('e-imp-' + i).value;
   p.precio = precio;
   p.enDescuento = enDescuento;
@@ -3090,7 +3113,7 @@ function generarMockupsNuevo() {
     return nuevos;
   });
 }
-$('colorCheckGrid').addEventListener('change', function () { EDN.preview(); });
+$('colorCheckGrid').addEventListener('change', function () { llenarPortada($('portadaSelect'), coloresMarcados(), $('portadaSelect').value); EDN.preview(); });
 $('evNuevo').addEventListener('click', function (e) {
   if (!e.target.closest('#btnGenerarMk')) return;
   if (!EDN.tieneArchivos()) { statusDe('statusMk', 'err', 'Subí al menos un PNG.'); return; }
@@ -3152,7 +3175,7 @@ function htmlAttr(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').
 function escribirPaginaProducto(p) {
   if (!p || !p.id) return Promise.resolve();
   var r = refDeP(p), base = urlTienda();
-  var foto = (function () { var m = p.mockups || {}, c = (p.colores || [])[0]; var l = (c && m[c]) || m[Object.keys(m)[0]] || []; return l[0] || (p.imagenes || [])[0] || 'images/portada.jpg'; })();
+  var foto = (function () { var m = p.mockups || {}, c = p.portada || (p.colores || [])[0]; var l = (c && m[c]) || m[Object.keys(m)[0]] || []; return l[0] || (p.imagenes || [])[0] || 'images/portada.jpg'; })();
   var precio = (p.enDescuento && p.precioDescuento) ? p.precioDescuento : p.precio;
   var titulo = p.nombre + ' — Yuzu', desc = (p.subcategoria ? p.subcategoria + ' · ' : '') + plata(precio) + ' · Envío incluido a todo Costa Rica';
   var destino = '../index.html#/p/' + r;
@@ -3825,6 +3848,11 @@ function subDetalleHTML(k, i) {
     '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="precio-abajo">Precio → los de abajo</button>' +
     '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="precio-todos">Precio → todos</button>' +
     '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="todo-abajo">Colores, prendas, colecciones y telas → los de abajo</button></div>' +
+    '<div class="mini">Posición del diseño</div><div class="row" style="gap:6px;flex-wrap:wrap;margin-bottom:8px">' +
+    '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-pos>Ubicar el diseño…</button>' +
+    '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="pos-abajo">Esta posición → los de abajo</button>' +
+    '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="pos-todos">Esta posición → todos</button></div>' +
+    '<div class="mini">¿Qué camiseta será la portada?</div><select data-sk-portada>' + (function () { var act = subPortadaDe(k, subComun()); return k.colores.filter(function (x) { return YuzuMockup.disponible('boxy', x); }).map(function (x) { return '<option value="' + htmlAttr(x) + '"' + (x === act ? ' selected' : '') + '>' + esc(x) + '</option>'; }).join(''); })() + '</select>' +
     '<div class="mini">Colores disponibles</div><div class="check-lista">' + COLORES.map(function (col) {
     return '<label class="check-row"><input type="checkbox" data-sk-col value="' + htmlAttr(col.name) + '"' + (k.colores.indexOf(col.name) !== -1 ? ' checked' : '') + '><span>' + esc(col.name) + '</span></label>';
   }).join('') + '</div><div class="mini">Prendas</div><div class="check-lista">' + PRENDAS_IDS.map(function (id) {
@@ -3840,6 +3868,7 @@ function subCardHTML(k, i) {
     '<div class="cu"><input type="text" data-sk="nombre" value="' + htmlAttr(k.nombre) + '">' +
     '<div class="row" style="gap:6px;margin-top:6px"><input type="text" inputmode="numeric" data-sk="precio" value="' + htmlAttr(k.precio) + '" style="max-width:110px">' +
     '<button type="button" class="prod-btn" data-sk-copiar="precio-abajo" title="Copiar este precio a los diseños de abajo">₡↓</button>' +
+    '<button type="button" class="prod-btn" data-sk-pos title="Ubicar este diseño en la camiseta">◐</button>' +
     '<button type="button" class="prod-btn" data-sk-det title="Más opciones">⋯</button><button type="button" class="prod-btn del" data-sk-quitar title="Quitar de la lista">✕</button></div>' +
     '<div class="mini sub-est">' + esc(k.msg || k.file.name) + '</div>' + (k.abierto ? subDetalleHTML(k, i) : '') + '</div></div>';
 }
@@ -3854,11 +3883,20 @@ function subActualizarThumb(k) {
   var i = SUB.cards.indexOf(k), el = $('subCards').querySelector('.sub-card[data-i="' + i + '"] .th');
   if (el && k.thumb) el.src = k.thumb;
 }
+function subClon(o) { return JSON.parse(JSON.stringify(o)); }
+function subAjuste(k) { var a = k.ajuste ? subClon(k.ajuste) : {}; a.v = 2; return a; }
+// Camiseta de portada de un diseño: la suya si la cambió, si no la común; si no está entre sus colores, la negra o la primera
+function subPortadaDe(k, c) {
+  var p = k.ov.portada ? k.portada : c.prev, ok = function (x) { return x && k.colores.indexOf(x) !== -1 && YuzuMockup.disponible('boxy', x); };
+  if (ok(p)) return p;
+  if (ok('Negro')) return 'Negro';
+  return k.colores.filter(function (x) { return YuzuMockup.disponible('boxy', x); })[0] || 'Negro';
+}
 function subMiniatura(k) {
   var c = subComun();
   return leerPNG(k.file, RECORTAR_PNG(), c.quitar, true).then(function (r) {
-    var color = YuzuMockup.disponible('boxy', c.prev) ? c.prev : (c.colores.filter(function (x) { return YuzuMockup.disponible('boxy', x); })[0] || 'Negro');
-    return YuzuMockup.generarTodas('boxy', color, [{ nombre: 'V1', colores: [], espalda: r.img }], 0, { v: 2 }).then(function (cvs) {
+    var color = subPortadaDe(k, c);
+    return YuzuMockup.generarTodas('boxy', color, [{ nombre: 'V1', colores: [], espalda: r.img }], 0, subAjuste(k)).then(function (cvs) {
       var cv = cvs[0]; if (!cv) { k.thumb = r.preview; return; }
       var t = document.createElement('canvas'); t.width = 220; t.height = Math.round(220 * cv.height / cv.width);
       t.getContext('2d').drawImage(cv, 0, 0, t.width, t.height); k.thumb = t.toDataURL('image/jpeg', 0.75);
@@ -3883,8 +3921,8 @@ function subPrevGrande() {
   leerPNG(k.file, RECORTAR_PNG(), c.quitar, true).then(function (r) {
     if (tok !== SUB.pvTok) return;
     $('subPrevArte').src = r.preview;
-    var color = YuzuMockup.disponible('boxy', c.prev) ? c.prev : (c.colores.filter(function (x) { return YuzuMockup.disponible('boxy', x); })[0] || 'Negro');
-    return YuzuMockup.generarTodas('boxy', color, [{ nombre: 'V1', colores: [], espalda: r.img }], 0, { v: 2 }).then(function (cvs) {
+    var color = subPortadaDe(k, c);
+    return YuzuMockup.generarTodas('boxy', color, [{ nombre: 'V1', colores: [], espalda: r.img }], 0, subAjuste(k)).then(function (cvs) {
       if (tok !== SUB.pvTok || !cvs[0]) return;
       var t = document.createElement('canvas'); t.width = 520; t.height = Math.round(520 * cvs[0].height / cvs[0].width);
       t.getContext('2d').drawImage(cvs[0], 0, 0, t.width, t.height);
@@ -3895,15 +3933,36 @@ function subPrevGrande() {
 function subCopiar(i, modo) {
   var k = SUB.cards[i], n = 0; if (!k) return;
   SUB.cards.forEach(function (x, j) {
-    if (x === k || x.estado === 'ok' || (modo !== 'precio-todos' && j < i)) return;
+    if (x === k || x.estado === 'ok' || (modo !== 'precio-todos' && modo !== 'pos-todos' && j < i)) return;
     if (modo === 'todo-abajo') {
       x.colores = k.colores.slice(); x.prendas = k.prendas.slice(); x.telas = k.telas.slice(); x.colecciones = k.colecciones; x.hasta = k.hasta;
+      x.portada = subPortadaDe(k, subComun()); x.ov.portada = true;
       x.ov.colores = x.ov.prendas = x.ov.telas = x.ov.colecciones = x.ov.hasta = true;
+    } else if (modo === 'pos-abajo' || modo === 'pos-todos') {
+      x.ajuste = k.ajuste ? subClon(k.ajuste) : undefined; x.tv = -1;
     } else { x.precio = k.precio; x.ov.precio = true; }
     n++;
   });
   subRender();
+  if (/^pos-/.test(modo)) { SUB.tv++; subMiniaturas(); subPrevGrande(); }
   statusDe('subStatus', 'ok', n ? 'Copiado a ' + n + ' diseño' + (n === 1 ? '' : 's') + '.' : 'No hay otros diseños donde copiar.');
+}
+// Ubicar el diseño con el mismo editor de arrastrar (tamaño, posición, prenda a prenda)
+function subPosicion(i) {
+  var k = SUB.cards[i]; if (!k || k.estado === 'ok') return;
+  var c = subComun();
+  statusDe('subStatus', 'loading', 'Abriendo ' + (k.nombre || k.file.name) + '…');
+  leerPNG(k.file, RECORTAR_PNG(), c.quitar, true).then(function (r) {
+    $('subStatus').className = 'status';
+    k.ajuste = k.ajuste || { v: 2 }; k.ajuste.v = 2;
+    var ed = {
+      e: { ajuste: k.ajuste, colorPrev: subPortadaDe(k, c), prendaPrev: 'boxy' },
+      _v2: function () { return true; }, _prenda: function () { return ed.e.prendaPrev; },
+      versionesImg: function () { return [{ nombre: 'V1', colores: [], espalda: r.img }]; },
+      render: function () { k.ajuste = ed.e.ajuste; k.tv = -1; SUB.prevIdx = i; subRender(); subMiniaturas(); subPrevGrande(); }
+    };
+    abrirTf(ed, 'espalda');
+  }).catch(function (e) { statusDe('subStatus', 'err', 'No pude abrir el diseño: ' + e.message); });
 }
 function subAgregar(files) {
   var lista = Array.prototype.filter.call(files, function (f) { return /\.(png|pdf)$/i.test(f.name) || f.type === 'image/png' || f.type === 'application/pdf'; });
@@ -3912,7 +3971,7 @@ function subAgregar(files) {
   var vistos = {}; SUB.cards.forEach(function (k) { vistos[k.file.name + '|' + k.file.size] = 1; });
   lista.forEach(function (f) {
     if (vistos[f.name + '|' + f.size]) return;
-    SUB.cards.push({ file: f, nombre: '', precio: '', colores: [], colecciones: '', prendas: [], telas: [], hasta: '', thumb: '', tv: -1, estado: '', msg: '', ov: {}, abierto: false });
+    SUB.cards.push({ file: f, nombre: '', precio: '', colores: [], colecciones: '', prendas: [], telas: [], hasta: '', thumb: '', tv: -1, estado: '', msg: '', ov: {}, abierto: false, ajuste: null });
   });
   $('subStatus').className = 'status';
   subPropagar(); subMiniaturas(); subPrevGrande();
@@ -3982,7 +4041,7 @@ function subSubirUno(k, c, aviso) {
       cols.forEach(function (col, ci) {
         cad = cad.then(function () {
           aviso('Mockup ' + (ci + 1) + ' de ' + cols.length + '…');
-          return YuzuMockup.generarTodas('boxy', col, vs, YuzuMockup.recomendada(vs, col), { v: 2 }).then(function (cvs) {
+          return YuzuMockup.generarTodas('boxy', col, vs, YuzuMockup.recomendada(vs, col), subAjuste(k)).then(function (cvs) {
             var sub = Promise.resolve();
             cvs.forEach(function (cv) {
               sub = sub.then(function () {
@@ -4001,7 +4060,7 @@ function subSubirUno(k, c, aviso) {
     var np = {
       id: stamp, nombre: nombre, categoria: c.categoria, subcategoria: c.subcategoria || null,
       imagenes: [], mockups: mapa, colores: k.colores.slice(), precio: p, enDescuento: c.enDescuento, precioDescuento: c.enDescuento ? c.precioDescuento : null,
-      impresion: c.impresion, versiones: [o], prendas: k.prendas.slice(), ajuste: { v: 2 }, destacado: c.destacado, oculto: c.oculto
+      portada: subPortadaDe(k, c), impresion: c.impresion, versiones: [o], prendas: k.prendas.slice(), ajuste: subAjuste(k), destacado: c.destacado, oculto: c.oculto
     };
     if (colec.length) np.colecciones = colec;
     if (k.hasta) np.hasta = k.hasta;
@@ -4094,6 +4153,7 @@ $('subCuerpo').addEventListener('click', function (e) {
   var card = b.closest('.sub-card'), i = card ? +card.getAttribute('data-i') : -1, k = SUB.cards[i];
   if (!k) return;
   if (b.hasAttribute('data-sk-copiar')) subCopiar(i, b.getAttribute('data-sk-copiar'));
+  else if (b.hasAttribute('data-sk-pos')) subPosicion(i);
   else if (b.hasAttribute('data-sk-det')) { k.abierto = !k.abierto; subRender(); }
   else if (b.hasAttribute('data-sk-quitar')) { SUB.cards.splice(i, 1); if (SUB.prevIdx >= SUB.cards.length) SUB.prevIdx = 0; subPropagar(); subPrevGrande(); }
   else if (b.hasAttribute('data-sk-tela')) {
@@ -4103,7 +4163,8 @@ $('subCuerpo').addEventListener('click', function (e) {
 });
 $('subCards').addEventListener('change', function (e) {
   var t = e.target, card = t.closest('.sub-card'), k = card && SUB.cards[+card.getAttribute('data-i')]; if (!k) return;
-  if (t.hasAttribute('data-sk-col')) { k.colores = Array.prototype.map.call(card.querySelectorAll('[data-sk-col]:checked'), function (x) { return x.value; }); k.ov.colores = true; }
+  if (t.hasAttribute('data-sk-col')) { k.colores = Array.prototype.map.call(card.querySelectorAll('[data-sk-col]:checked'), function (x) { return x.value; }); k.ov.colores = true; k.tv = -1; subRender(); subMiniaturas(); }
+  else if (t.hasAttribute('data-sk-portada')) { k.portada = t.value; k.ov.portada = true; k.tv = -1; subMiniaturas(); if (SUB.cards[SUB.prevIdx] === k) subPrevGrande(); }
   else if (t.hasAttribute('data-sk-prenda')) { k.prendas = Array.prototype.map.call(card.querySelectorAll('[data-sk-prenda]:checked'), function (x) { return x.value; }); k.ov.prendas = true; }
 });
 
