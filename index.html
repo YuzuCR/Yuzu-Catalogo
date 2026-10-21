@@ -1284,7 +1284,7 @@ function listaMockups(p) {
   orden.forEach(function (c) { (fotosDe(p, c) || []).forEach(function (r) { if (out.indexOf(r) === -1) out.push(r); }); });
   return out;
 }
-function fotoBase(p) { var m = listaMockups(p); return m[0] || (p.imagenes || [])[0] || ''; }
+function fotoBase(p) { var pf = p.portada && fotosDe(p, p.portada); if (pf && pf[0]) return pf[0]; var m = listaMockups(p); return m[0] || (p.imagenes || [])[0] || ''; }
 function fotoArte(p) { var a = (p.imagenes || [])[0]; if (a) return a; var m = listaMockups(p); return m[1] || m[0] || ''; }
 function fotoAlt(p) { var base = fotoBase(p), m = listaMockups(p).filter(function (f) { return f !== base; }); if (m[0]) return m[0]; var a = fotoArte(p); return a && a !== base ? a : ''; }
 
