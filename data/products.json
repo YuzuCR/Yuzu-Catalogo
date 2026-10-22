@@ -22949,5 +22949,355 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1792680512736,
+    "nombre": "DBZ 198",
+    "categoria": "Anime",
+    "subcategoria": "DBZ Collection",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/dbz-198-negro-1792680512736-0.jpg",
+        "images/dbz-198-negro-1792680512736-1.jpg"
+      ],
+      "Crema": [
+        "images/dbz-198-crema-1792680512736-2.jpg",
+        "images/dbz-198-crema-1792680512736-3.jpg"
+      ],
+      "Café": [
+        "images/dbz-198-cafe-1792680512736-4.jpg",
+        "images/dbz-198-cafe-1792680512736-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/dbz-198-gris-grafito-1792680512736-6.jpg",
+        "images/dbz-198-gris-grafito-1792680512736-7.jpg"
+      ],
+      "Azul marino": [
+        "images/dbz-198-azul-marino-1792680512736-8.jpg",
+        "images/dbz-198-azul-marino-1792680512736-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/dbz-198-verde-musgo-1792680512736-10.jpg",
+        "images/dbz-198-verde-musgo-1792680512736-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/dbz-198-1792680512736-v1-espalda.png"
+        },
+        "espalda": "images/disenos/dbz-198-1792680512736-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1792680540735,
+    "nombre": "DBZ 199",
+    "categoria": "Anime",
+    "subcategoria": "DBZ Collection",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/dbz-199-negro-1792680540735-0.jpg",
+        "images/dbz-199-negro-1792680540735-1.jpg"
+      ],
+      "Crema": [
+        "images/dbz-199-crema-1792680540735-2.jpg",
+        "images/dbz-199-crema-1792680540735-3.jpg"
+      ],
+      "Café": [
+        "images/dbz-199-cafe-1792680540735-4.jpg",
+        "images/dbz-199-cafe-1792680540735-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/dbz-199-gris-grafito-1792680540735-6.jpg",
+        "images/dbz-199-gris-grafito-1792680540735-7.jpg"
+      ],
+      "Azul marino": [
+        "images/dbz-199-azul-marino-1792680540735-8.jpg",
+        "images/dbz-199-azul-marino-1792680540735-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/dbz-199-verde-musgo-1792680540735-10.jpg",
+        "images/dbz-199-verde-musgo-1792680540735-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/dbz-199-1792680540735-v1-espalda.png"
+        },
+        "espalda": "images/disenos/dbz-199-1792680540735-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1792680567737,
+    "nombre": "DBZ 200",
+    "categoria": "Anime",
+    "subcategoria": "DBZ Collection",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/dbz-200-negro-1792680567737-0.jpg",
+        "images/dbz-200-negro-1792680567737-1.jpg"
+      ],
+      "Crema": [
+        "images/dbz-200-crema-1792680567737-2.jpg",
+        "images/dbz-200-crema-1792680567737-3.jpg"
+      ],
+      "Café": [
+        "images/dbz-200-cafe-1792680567737-4.jpg",
+        "images/dbz-200-cafe-1792680567737-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/dbz-200-gris-grafito-1792680567737-6.jpg",
+        "images/dbz-200-gris-grafito-1792680567737-7.jpg"
+      ],
+      "Azul marino": [
+        "images/dbz-200-azul-marino-1792680567737-8.jpg",
+        "images/dbz-200-azul-marino-1792680567737-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/dbz-200-verde-musgo-1792680567737-10.jpg",
+        "images/dbz-200-verde-musgo-1792680567737-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/dbz-200-1792680567737-v1-espalda.png"
+        },
+        "espalda": "images/disenos/dbz-200-1792680567737-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1792680595735,
+    "nombre": "DBZ 201",
+    "categoria": "Anime",
+    "subcategoria": "DBZ Collection",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/dbz-201-negro-1792680595735-0.jpg",
+        "images/dbz-201-negro-1792680595735-1.jpg"
+      ],
+      "Crema": [
+        "images/dbz-201-crema-1792680595735-2.jpg",
+        "images/dbz-201-crema-1792680595735-3.jpg"
+      ],
+      "Café": [
+        "images/dbz-201-cafe-1792680595735-4.jpg",
+        "images/dbz-201-cafe-1792680595735-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/dbz-201-gris-grafito-1792680595735-6.jpg",
+        "images/dbz-201-gris-grafito-1792680595735-7.jpg"
+      ],
+      "Azul marino": [
+        "images/dbz-201-azul-marino-1792680595735-8.jpg",
+        "images/dbz-201-azul-marino-1792680595735-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/dbz-201-verde-musgo-1792680595735-10.jpg",
+        "images/dbz-201-verde-musgo-1792680595735-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/dbz-201-1792680595735-v1-espalda.png"
+        },
+        "espalda": "images/disenos/dbz-201-1792680595735-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1792680627735,
+    "nombre": "DBZ 202",
+    "categoria": "Anime",
+    "subcategoria": "DBZ Collection",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/dbz-202-negro-1792680627735-0.jpg",
+        "images/dbz-202-negro-1792680627735-1.jpg"
+      ],
+      "Crema": [
+        "images/dbz-202-crema-1792680627735-2.jpg",
+        "images/dbz-202-crema-1792680627735-3.jpg"
+      ],
+      "Café": [
+        "images/dbz-202-cafe-1792680627735-4.jpg",
+        "images/dbz-202-cafe-1792680627735-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/dbz-202-gris-grafito-1792680627735-6.jpg",
+        "images/dbz-202-gris-grafito-1792680627735-7.jpg"
+      ],
+      "Azul marino": [
+        "images/dbz-202-azul-marino-1792680627735-8.jpg",
+        "images/dbz-202-azul-marino-1792680627735-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/dbz-202-verde-musgo-1792680627735-10.jpg",
+        "images/dbz-202-verde-musgo-1792680627735-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/dbz-202-1792680627735-v1-espalda.png"
+        },
+        "espalda": "images/disenos/dbz-202-1792680627735-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
