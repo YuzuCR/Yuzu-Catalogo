@@ -78,6 +78,15 @@
           "alinear": "arriba",
           "kmin": 0.35,
           "kmax": 1
+        },
+        "nuca": {
+          "x": 512,
+          "y": 300,
+          "w": 61,
+          "h": 35,
+          "alinear": "centro",
+          "kmin": 0.6,
+          "kmax": 1.5
         }
       },
       "sinmangas": {
