@@ -22,18 +22,21 @@
     "DBZ Collection"
   ],
   "precios": {
-    "boxy": 13700,
-    "sinmangas": 11500,
-    "mangalarga": 13900,
-    "hoodie": 15600,
+    "boxy": 17500,
+    "sinmangas": 16500,
+    "mangalarga": 18500,
+    "hoodie": 19500,
     "uniMinimo": 5,
+    "producto": 17500,
+    "producto_pecho": 16500,
     "extra2xl": 0,
     "uniDescuento": 0,
     "estilos": {
       "minimalista": 3800,
       "brutalista": 5800,
       "otro": 6000,
-      "uniformes": 6500
+      "uniformes": 6500,
+      "propio": 2000
     }
   },
   "mockup": {
