@@ -108,6 +108,15 @@
           "w": 96,
           "h": 119,
           "alinear": "centro"
+        },
+        "pechoGrande": {
+          "x": 327,
+          "y": 394,
+          "w": 426,
+          "h": 583,
+          "alinear": "arriba",
+          "kmin": 0.35,
+          "kmax": 1
         }
       },
       "mangalarga": {
