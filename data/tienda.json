@@ -147,6 +147,15 @@
           "w": 100,
           "h": 160,
           "alinear": "centro"
+        },
+        "pechoGrande": {
+          "x": 325,
+          "y": 396,
+          "w": 424,
+          "h": 610,
+          "alinear": "arriba",
+          "kmin": 0.35,
+          "kmax": 1
         }
       },
       "hoodie": {
