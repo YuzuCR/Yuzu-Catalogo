@@ -69,6 +69,15 @@
           "w": 101,
           "h": 183,
           "alinear": "centro"
+        },
+        "pechoGrande": {
+          "x": 336,
+          "y": 437,
+          "w": 414,
+          "h": 505,
+          "alinear": "arriba",
+          "kmin": 0.35,
+          "kmax": 1
         }
       },
       "sinmangas": {
