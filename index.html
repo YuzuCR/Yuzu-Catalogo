@@ -697,6 +697,65 @@
     *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-delay: 0s !important; }
     .marquesina-pista { animation: none; }
   }
+
+  /* ---- Editor de posición (cliente) ---- */
+  .ep-velo { position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,.72); opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .ep-velo.abierta { opacity: 1; pointer-events: all; }
+  .ep { position: fixed; z-index: 610; left: 50%; top: 50%; width: min(94vw, 460px); max-height: 94vh; overflow-y: auto; background: var(--papel); border: 1px solid var(--linea); transform: translate(-50%, -46%); opacity: 0; visibility: hidden; transition: opacity .3s, transform .3s, visibility 0s linear .3s; padding: 14px 16px 18px; }
+  .ep.abierta { opacity: 1; visibility: visible; transform: translate(-50%, -50%); transition: opacity .3s, transform .3s, visibility 0s; }
+  .ep-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .ep-top strong { font-family: var(--display); font-weight: 800; font-size: 18px; text-transform: uppercase; }
+  .ep-tabs { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .ep-escena { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #0a0a0a; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .ep-escena canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ep-region { position: absolute; border: 1px dashed rgba(255,255,255,.35); pointer-events: none; }
+  .ep-caja { position: absolute; border: 1px solid var(--yuzu); cursor: grab; box-shadow: 0 0 0 1px rgba(0,0,0,.4); }
+  .ep-caja:active { cursor: grabbing; }
+  .ep-caja img { width: 100%; height: 100%; display: block; pointer-events: none; }
+  .ep-ctrl { margin-top: 12px; display: grid; gap: 10px; }
+  .ep-fila { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .ep-fila input[type=range] { flex: 1; min-width: 140px; accent-color: var(--yuzu); }
+  .ep-cm { font-family: var(--dato); font-size: 11px; letter-spacing: .08em; color: var(--tinta); white-space: nowrap; }
+  .ep-nota { font-size: 12px; color: var(--tinta-2); }
+  .nota-mini { margin-top: 8px; color: var(--tinta-2); }
+  .chip[disabled], .chip.no { opacity: .35; pointer-events: none; }
+  .mi-mockup { margin: 14px 0 4px; padding: 12px 14px; border: 1px dashed var(--linea); font-size: 13px; color: var(--tinta-2); }
+  .mi-mockup .btn { margin-top: 10px; min-height: 40px; }
+
+  /* ---- Armá tu personalizada: subir diseño ---- */
+  .slot { margin-bottom: 10px; }
+  .subida { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; border: 1px dashed var(--tinta-2); padding: 18px 16px; cursor: pointer; transition: border-color .3s, background .3s; }
+  .subida:hover { border-color: var(--yuzu); background: var(--papel-2); }
+  .subida input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+  .subida strong { font-family: var(--display); font-weight: 600; font-size: 18px; text-transform: uppercase; }
+  .subida span { font-size: 12px; color: var(--tinta-2); }
+  .slot.lleno { border: 1px solid var(--linea); padding: 10px; }
+  .slot-fila { display: flex; gap: 12px; align-items: center; }
+  .slot-fila img { width: 76px; height: 76px; object-fit: contain; flex-shrink: 0; border: 1px solid var(--linea); }
+  .slot-fila strong { display: block; font-family: var(--display); font-weight: 600; font-size: 16px; text-transform: uppercase; }
+  .slot-bot { display: flex; gap: 16px; margin-top: 6px; }
+  .cuadros { background-color: #bdbdbd; background-image: linear-gradient(45deg, #8f8f8f 25%, transparent 25%, transparent 75%, #8f8f8f 75%), linear-gradient(45deg, #8f8f8f 25%, transparent 25%, transparent 75%, #8f8f8f 75%); background-size: 12px 12px; background-position: 0 0, 6px 6px; }
+  .semaforo { display: flex; gap: 8px; align-items: flex-start; margin-top: 8px; font-size: 12px; line-height: 1.4; color: var(--tinta-2); }
+  .semaforo i { flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; background: #3aa655; }
+  .semaforo.medio i { background: #e0a21a; }
+  .semaforo.bajo i { background: #d0432f; }
+  .aviso-pers { margin: 10px 0 0; padding: 9px 12px; font-size: 12px; border: 1px solid var(--yuzu); color: var(--tinta); }
+  .quitar-pers { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--linea); }
+  .quitar-pers select { width: 100%; }
+  .check-pers { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; font-size: 12px; color: var(--tinta-2); cursor: pointer; }
+  .check-pers input { margin-top: 2px; accent-color: var(--yuzu); }
+  .aviso-calidad { margin-top: 16px; padding: 12px 14px; border-left: 3px solid var(--yuzu); background: var(--papel-2); font-size: 13px; line-height: 1.5; color: var(--tinta-2); }
+  .aviso-calidad strong { color: var(--tinta); }
+  .prev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+  .prev-grid figure { margin: 0; text-align: center; }
+  .prev-grid img { width: 100%; display: block; background: #0a0a0a; }
+  .prev-acciones { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .paso.enviado { border: 1px solid var(--yuzu); padding: 14px; margin-bottom: 18px; }
+  .hero-botones { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-hueco-claro { background: transparent; color: #fff; border-color: rgba(255,255,255,.55); }
+  .btn-hueco-claro:hover { color: #000; border-color: #fff; }
+  .banda-principal { border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
+  .banda-principal h2 { font-size: clamp(40px, 7vw, 84px); line-height: .9; }
 </style>
 <script>
   (function () {
@@ -768,7 +827,23 @@
     <div class="hero-txt">
       <span class="dato" id="heroEtiqueta">Drop actual</span>
       <h1 id="heroTit">Yuzu</h1>
-      <a class="btn btn-claro" id="heroBtn" href="#/c/todo">Ver el drop</a>
+      <div class="hero-botones"><button class="btn btn-claro" id="heroPers" data-abrir-pers="propio" type="button">Armá tu personalizada</button><a class="btn btn-hueco-claro" id="heroBtn" href="#/c/todo">Ver el catálogo</a></div>
+    </div>
+  </section>
+
+  <section class="banda-pers banda-principal envoltura" id="bandaPers">
+    <div>
+      <span class="dato">Nuestro servicio principal</span>
+      <h2>Armá tu<br>personalizada</h2>
+    </div>
+    <div>
+      <p>Subí tu diseño, elegí la prenda y el color, y mirá cómo queda en el momento: atrás, al frente, con o sin logo de Yuzu. Te mando el mockup final antes de imprimir.</p>
+      <div class="chips" style="margin:18px 0 22px">
+        <button class="chip" data-abrir-pers="propio">Tengo mi diseño</button>
+        <button class="chip" data-abrir-pers="idea">Tengo una idea</button>
+        <button class="chip" data-abrir-pers="uniformes">Uniformes</button>
+      </div>
+      <button class="btn" data-abrir-pers="propio">Armá tu personalizada</button>
     </div>
   </section>
 
@@ -817,21 +892,6 @@
     <div class="resenas" id="resenasInicio"></div>
   </section>
 
-  <section class="banda-pers envoltura">
-    <div>
-      <span class="dato">Diseño a pedido</span>
-      <h2>¿Tenés una idea?<br>La diseño yo.</h2>
-    </div>
-    <div>
-      <p>Minimalista, composición brutalista o uniformes para tu grupo. Elegís la prenda, me contás la idea y te mando el diseño antes de imprimir.</p>
-      <div class="chips" style="margin:18px 0 22px">
-        <button class="chip" data-abrir-pers="minimalista">Minimalista</button>
-        <button class="chip" data-abrir-pers="brutalista">Brutalista</button>
-        <button class="chip" data-abrir-pers="uniformes">Uniformes</button>
-      </div>
-      <button class="btn" data-abrir-pers>Construí tu prenda</button>
-    </div>
-  </section>
 
   <section class="seccion envoltura" id="secMuro" style="padding-top:60px">
     <div class="sec-cab">
@@ -1021,6 +1081,20 @@
   <button class="z-btn z-ant" id="zoomAnt" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
   <button class="z-btn z-sig" id="zoomSig" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
   <div class="z-cont" id="zoomCont"></div>
+</div>
+
+<!-- ============ EDITOR DE POSICIÓN (cliente) ============ -->
+<div class="ep-velo" id="epVelo"></div>
+<div class="ep" id="ep" role="dialog" aria-label="Ajustar tamaño y posición">
+  <div class="ep-top"><strong id="epTit">Ajustá tu diseño</strong><button class="icono" id="epCerrar" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="ep-tabs" id="epTabs"></div>
+  <div class="ep-escena" id="epEscena"><canvas id="epBase" width="1080" height="1440"></canvas><div class="ep-region" id="epRegion"></div><div class="ep-caja" id="epCaja"><img id="epImg" alt=""></div></div>
+  <div class="ep-ctrl">
+    <div class="ep-fila"><span class="dato">Tamaño</span><input type="range" id="epK" min="0" max="100" value="50" aria-label="Tamaño del diseño"><span class="ep-cm" id="epCm"></span></div>
+    <div class="ep-fila" id="epPresets"></div>
+    <p class="ep-nota">Arrastrá el diseño para moverlo. Hay un tamaño mínimo y uno máximo para que se imprima bien. La imagen es una referencia: antes de imprimir te confirmo la ubicación final.</p>
+    <div class="ep-fila"><button class="btn btn-hueco" id="epReset" type="button" style="min-height:40px">Volver a como estaba</button><button class="btn" id="epListo" type="button" style="min-height:40px;margin-left:auto">Listo</button></div>
+  </div>
 </div>
 
 <!-- ============ BARRA FIJA DE COMPRA (celular) ============ -->
@@ -1896,7 +1970,7 @@ function mostrarProducto(r) {
     return;
   }
   var disp = p.colores && p.colores.length ? p.colores : COLORES.map(function (c) { return c.name; });
-  PR = { p: p, color: disp[0], talla: null, cant: 1, fotos: [], i: 0, prenda: 'boxy', vs: window.YuzuMockup ? YuzuMockup.versionesDe(p) : [], version: 0 };
+  PR = { p: p, color: disp[0], talla: null, cant: 1, fotos: [], i: 0, prenda: 'boxy', vs: window.YuzuMockup ? YuzuMockup.versionesDe(p) : [], version: 0, opc: opcPorDefecto(), medTxt: '' };
   if (PR.vs.length) PR.version = YuzuMockup.recomendada(PR.vs, PR.color);
   document.title = p.nombre + ' — Yuzu';
   evento('view_item', { currency: 'CRC', value: precioVigente(p), items: [{ item_id: ref(p), item_name: p.nombre, item_category: p.categoria, item_category2: p.subcategoria }] });
@@ -1934,7 +2008,7 @@ function mostrarProducto(r) {
         (p.hasta ? '<p class="hasta-ficha">Disponible hasta el ' + fechaBonita(p.hasta) + (diasHasta(p) <= 7 ? ' · quedan ' + diasHasta(p) + (diasHasta(p) === 1 ? ' día' : ' días') : '') + '</p>' : '') +
         pruebaSocialHTML(p) +
         (esManifiesto(p) ? '<div class="ficha-manifiesto"><span class="dato">Manifiesto</span><p><strong>' + plata(MANIFIESTO.monto) + '</strong> de esta pieza se giran a <strong>' + MANIFIESTO.destino + '</strong>. Comprobante trimestral en @yuzucr.</p></div>' : '') +
-        prendasFichaHTML() + versionesFichaHTML() +
+        prendasFichaHTML() + versionesFichaHTML() + disenoFichaHTML() +
         '<div class="campo"><div class="campo-tit"><span class="dato">Color · <span class="valor" id="prColorNom">' + esc(PR.color) + '</span></span></div>' +
           '<div class="colores" id="prColores">' + coloresFichaHTML() + '</div></div>' +
         '<div class="campo"><div class="campo-tit"><span class="dato">Talla · <span class="valor" id="prMedida">elegí una</span></span><span style="display:flex;gap:14px"><button class="guia-link" id="prTalla">¿Qué talla soy?</button><button class="guia-link" id="prGuia">Guía de tallas</button></span></div>' +
@@ -1947,6 +2021,7 @@ function mostrarProducto(r) {
           '<button class="btn btn-ancho" id="prAgregar">Agregar a la bolsa</button>' +
           '<button class="link-wa" id="prPedir">o pedila directo por WhatsApp →</button>' +
         '</div>' +
+        (hayOpcionesFicha() ? '<div class="mi-mockup oculto" id="prMiMockup"><strong>Tu versión es distinta a la del catálogo.</strong> Descargá tu mockup (o compartilo desde el celular) y mandámelo en el chat junto con el pedido, así veo exactamente lo que elegiste.<br><button class="btn btn-hueco" id="prCompartirMockup" type="button">' + ((navigator.canShare && navigator.share) ? 'Compartir mi mockup' : 'Descargar mi mockup') + '</button><p class="dato nota-mini" id="prMiMockupEstado"></p></div>' : '') +
         '<ul class="confianza">' +
           '<li>' + svg('envio') + 'Envío incluido a todo Costa Rica</li>' +
           '<li>' + svg('calendario') + 'Se produce el miércoles · llega en una semana</li>' +
@@ -2045,6 +2120,22 @@ $('vProducto').addEventListener('click', function (e) {
     actualizarGaleriaPR();
   } else if ((b = e.target.closest('[data-prenda]'))) {
     cambiarPrendaFicha(b.getAttribute('data-prenda'));
+  } else if ((b = e.target.closest('[data-layout]'))) {
+    var lay = b.getAttribute('data-layout');
+    cambiarOpcFicha(function (o) {
+      if (lay === 'frente') { if (o.logo === 'pecho') { o.logo = 'ninguno'; PR.logoAuto = true; } }
+      else if (PR.logoAuto && o.logo === 'ninguno') { o.logo = 'pecho'; PR.logoAuto = false; }
+      o.layout = lay;
+    });
+    evento('opcion_diseno', { item_id: ref(PR.p), layout: lay });
+  } else if ((b = e.target.closest('[data-logo]'))) {
+    var lg = b.getAttribute('data-logo');
+    cambiarOpcFicha(function (o) { o.logo = lg; PR.logoAuto = false; });
+    evento('opcion_logo', { item_id: ref(PR.p), logo: lg });
+  } else if (e.target.closest('#prAjustar')) {
+    epAbrir({ prenda: PR.prenda, color: PR.color, versiones: PR.vs, iVersion: PR.version, ajuste: PR.p.ajuste, opc: PR.opc, piezas: piezasAjustables(), titulo: 'Ajustá el tamaño y la posición', alCerrar: function () { PR.medTxt = ''; pintarDisenoFicha(); actualizarGaleriaPR(); } });
+  } else if (e.target.closest('#prCompartirMockup')) {
+    compartirMiMockup();
   } else if ((b = e.target.closest('[data-version]'))) {
     PR.version = +b.getAttribute('data-version');
     pintarVersionFicha();
@@ -2082,6 +2173,198 @@ $('vProducto').addEventListener('click', function (e) {
     abrirZoom([b.getAttribute('data-zoom-src')], 0);
   }
 });
+/* =====================================================================
+   OPCIONES DEL DISEÑO (diseño al frente, logo de Yuzu) + EDITOR DE POSICIÓN
+   El cliente mueve y cambia el tamaño solo dentro de los límites que fija el admin (zonas de impresión).
+   ===================================================================== */
+function opcPorDefecto() { return { layout: 'espalda', logo: 'pecho', pos: {} }; }
+function opcEsDefecto(o) { return !o || (o.layout === 'espalda' && o.logo === 'pecho' && !Object.keys(o.pos || {}).length); }
+function hayOpcionesFicha() { return !!(window.YuzuMockup && PR.p && PR.vs && PR.vs.length); }
+var ROTULO_PIEZA = { pechoGrande: 'Diseño al frente', frente: 'Detalle del pecho', nuca: 'Logo en la nuca', espalda: 'Diseño atrás' };
+function detalleOpc(o, medidas) {
+  var partes = [o.layout === 'frente' ? 'Diseño al frente' : 'Diseño atrás'];
+  if (o.logo === 'nuca') partes.push('Logo Yuzu en la nuca');
+  else if (o.logo === 'ninguno') partes.push('Sin logo Yuzu');
+  else if (o.layout !== 'frente') partes.push('Logo Yuzu en el pecho');
+  if (medidas) partes.push(medidas);
+  return partes.join(' · ');
+}
+function chipOpc(attr, val, activo, texto, apagado) {
+  return '<button class="chip' + (activo ? ' on' : '') + (apagado ? ' no' : '') + '" ' + attr + '="' + val + '"' + (apagado ? ' aria-disabled="true" tabindex="-1"' : '') + '>' + texto + '</button>';
+}
+function disenoFichaHTML() { return hayOpcionesFicha() ? '<div id="prDisenoCaja">' + disenoCajaHTML() + '</div>' : ''; }
+function piezasAjustables() {
+  if (!hayOpcionesFicha()) return [];
+  var out = [];
+  ['frente', 'espalda'].forEach(function (v) {
+    YuzuMockup.piezasActivas(PR.prenda, PR.color, v, PR.vs, PR.version, PR.opc).forEach(function (it) { if (it.pz !== 'espalda' && it.pz !== 'lado' && it.pz !== 'costado') out.push(it.pz); });
+  });
+  return out;
+}
+function disenoCajaHTML() {
+  var o = PR.opc, frente = o.layout === 'frente', hayLogo = !!YuzuMockup.logoPara(PR.color), aj = piezasAjustables();
+  var h = '<div class="campo"><div class="campo-tit"><span class="dato">Dónde va el diseño</span></div><div class="chips-prenda">' +
+    chipOpc('data-layout', 'espalda', !frente, 'Atrás + detalle pequeño') + chipOpc('data-layout', 'frente', frente, 'Al frente · ver cómo queda') + '</div></div>';
+  if (hayLogo) {
+    h += '<div class="campo"><div class="campo-tit"><span class="dato">Logo de Yuzu</span></div><div class="chips-prenda">' +
+      chipOpc('data-logo', 'pecho', o.logo === 'pecho' && !frente, 'En el pecho', frente) + chipOpc('data-logo', 'nuca', o.logo === 'nuca', 'En la nuca') + chipOpc('data-logo', 'ninguno', o.logo === 'ninguno', 'Sin logo') + '</div>' +
+      (frente ? '<p class="dato nota-mini">Con el diseño al frente no va logo en el pecho.</p>' : '') + '</div>';
+  }
+  h += '<div class="campo" style="margin-top:-6px">' + (aj.length ? '<button class="guia-link" id="prAjustar" type="button">Ajustar tamaño y posición</button>' : '') + '<p class="dato nota-mini" id="prMedidasDis">' + esc(PR.medTxt || '') + '</p></div>';
+  return h;
+}
+function pintarDisenoFicha() { var c = $('prDisenoCaja'); if (c) c.innerHTML = disenoCajaHTML(); var m = $('prMiMockup'); if (m) m.classList.toggle('oculto', opcEsDefecto(PR.opc)); }
+// Medidas reales (cm) de las piezas que cambian con las opciones
+function medidasPR() {
+  if (!hayOpcionesFicha()) return Promise.resolve('');
+  var cm = (YuzuMockup.PRENDAS[PR.prenda] || {}).cmPx || 0.1, jobs = [], p = PR.p, o = PR.opc;
+  ['frente', 'espalda'].forEach(function (v) {
+    YuzuMockup.piezasActivas(PR.prenda, PR.color, v, PR.vs, PR.version, o).forEach(function (it) { if (it.pz === 'pechoGrande' || it.pz === 'frente' || it.pz === 'nuca') jobs.push(it); });
+  });
+  return Promise.all(jobs.map(function (it) {
+    return (typeof it.src === 'string' ? YuzuMockup.cargar(it.src) : Promise.resolve(it.src)).then(function (img) { return { pz: it.pz, r: YuzuMockup.rectPieza(PR.prenda, PR.color, it.pz, img, p.ajuste, o) }; }).catch(function () { return null; });
+  })).then(function (l) {
+    return l.filter(function (x) { return x && x.r; }).map(function (x) { return ROTULO_PIEZA[x.pz] + ' ≈ ' + (x.r.w * cm).toFixed(1).replace('.0', '') + ' × ' + (x.r.h * cm).toFixed(1).replace('.0', '') + ' cm'; }).join(' · ');
+  });
+}
+function refrescarMedidasPR() {
+  var clave = claveGal() + JSON.stringify(PR.opc);
+  medidasPR().then(function (t) { if (!PR.p || clave !== claveGal() + JSON.stringify(PR.opc)) return; PR.medTxt = t; var m = $('prMedidasDis'); if (m) m.textContent = t; });
+}
+function cambiarOpcFicha(cambio) {
+  cambio(PR.opc);
+  PR.medTxt = '';
+  pintarDisenoFicha(); actualizarGaleriaPR();
+}
+
+// ---------- Editor de posición ----------
+var EP = null;
+function epAbrir(cfg) {
+  var lista = cfg.piezas.filter(function (pz) { return YuzuMockup.limitesPieza(cfg.prenda, pz); });
+  if (!lista.length) return;
+  EP = { c: cfg, piezas: lista, pz: lista[0], tok: 0, img: null, rect: null, L: null };
+  $('ep').classList.add('abierta'); $('epVelo').classList.add('abierta'); document.body.style.overflow = 'hidden';
+  epCargar();
+}
+function epCerrar() {
+  if (!EP) return;
+  var c = EP.c; EP = null;
+  $('ep').classList.remove('abierta'); $('epVelo').classList.remove('abierta');
+  desbloquearScroll();
+  if (c.alCerrar) c.alCerrar();
+}
+function epCargar() {
+  var c = EP.c, pz = EP.pz, tok = ++EP.tok, vista = YuzuMockup.FOTO_DE[pz];
+  $('epTit').textContent = c.titulo || 'Ajustá tu diseño';
+  $('epTabs').innerHTML = EP.piezas.length > 1 ? EP.piezas.map(function (x) { return '<button class="chip' + (x === pz ? ' on' : '') + '" data-ep-pieza="' + x + '" type="button">' + esc(ROTULO_PIEZA[x] || x) + '</button>'; }).join('') : '';
+  var it = YuzuMockup.piezasActivas(c.prenda, c.color, vista, c.versiones, c.iVersion, c.opc).filter(function (x) { return x.pz === pz; })[0];
+  if (!it) return;
+  Promise.all([YuzuMockup.base(c.prenda, c.color, vista), typeof it.src === 'string' ? YuzuMockup.cargar(it.src) : Promise.resolve(it.src)]).then(function (r) {
+    if (!EP || tok !== EP.tok) return;
+    var cv = $('epBase'), ctx = cv.getContext('2d'); ctx.clearRect(0, 0, 1080, 1440); if (r[0]) ctx.drawImage(r[0], 0, 0, 1080, 1440);
+    EP.img = r[1]; $('epImg').src = r[1].src || r[1].toDataURL();
+    EP.L = YuzuMockup.limitesPieza(c.prenda, pz);
+    EP.base = YuzuMockup.rectDiseno(c.prenda, c.color, pz, r[1], c.ajuste);
+    EP.rect = YuzuMockup.rectPieza(c.prenda, c.color, pz, r[1], c.ajuste, c.opc);
+    var g = EP.L.region, rg = $('epRegion');
+    rg.style.left = (g.x / 1080 * 100) + '%'; rg.style.top = (g.y / 1440 * 100) + '%'; rg.style.width = (g.w / 1080 * 100) + '%'; rg.style.height = (g.h / 1440 * 100) + '%';
+    epPresets(); epPintar();
+  }).catch(function () {});
+}
+function epWMax() { var L = EP.L, m = YuzuMockup.medidas(EP.img), asp = m[1] / m[0]; return Math.max(L.wmin + 1, Math.min(L.wmax, L.region.w, L.region.h / asp)); }
+function epPintar() {
+  var r = EP.rect, c = $('epCaja'), cmPx = (YuzuMockup.PRENDAS[EP.c.prenda] || {}).cmPx || 0.1;
+  c.style.left = (r.x / 1080 * 100) + '%'; c.style.top = (r.y / 1440 * 100) + '%'; c.style.width = (r.w / 1080 * 100) + '%'; c.style.height = (r.h / 1440 * 100) + '%';
+  var wmax = epWMax(), t = (r.w - EP.L.wmin) / Math.max(1, wmax - EP.L.wmin);
+  if (document.activeElement !== $('epK')) $('epK').value = Math.round(Math.max(0, Math.min(1, t)) * 100);
+  $('epCm').textContent = (r.w * cmPx).toFixed(1).replace('.0', '') + ' × ' + (r.h * cmPx).toFixed(1).replace('.0', '') + ' cm';
+  var minimo = Math.abs(r.w - EP.L.wmin) < 1.5, maximo = Math.abs(r.w - wmax) < 1.5;
+  $('epCm').title = minimo ? 'Tamaño mínimo' : maximo ? 'Tamaño máximo' : '';
+}
+function epGuardarPos(rect) {
+  var pos = YuzuMockup.posDeRect(EP.c.prenda, EP.pz, rect);
+  EP.c.opc.pos = EP.c.opc.pos || {};
+  EP.c.opc.pos[EP.pz] = { u: Math.round(pos.u * 1000) / 1000, v: Math.round(pos.v * 1000) / 1000, k: Math.round(pos.k * 1000) / 1000 };
+  EP.rect = YuzuMockup.rectDePos(EP.c.prenda, EP.pz, EP.img, EP.c.opc.pos[EP.pz]) || rect;
+  epPintar();
+}
+function epPresets() {
+  var z = EP.L.zona, Z = YuzuMockup.ZONAS[EP.c.prenda], h = '';
+  if (EP.pz === 'frente') h = '<span class="dato">Lugar</span><button class="chip" type="button" data-ep-lugar="corazon">Corazón</button><button class="chip" type="button" data-ep-lugar="centro">Centro</button>';
+  else if (EP.pz === 'pechoGrande') h = '<span class="dato">Lugar</span><button class="chip" type="button" data-ep-lugar="centro">Centrar</button>';
+  $('epPresets').innerHTML = h;
+}
+function epLugar(que) {
+  var r = EP.rect, Z = YuzuMockup.ZONAS[EP.c.prenda], z = EP.L.zona, g = Z.pechoGrande || z, nr = { x: r.x, y: r.y, w: r.w, h: r.h };
+  if (EP.pz === 'frente') {
+    if (que === 'corazon') { nr.x = z.x + z.w / 2 - r.w / 2; nr.y = z.y + z.h / 2 - r.h / 2; }
+    else { nr.x = g.x + g.w / 2 - r.w / 2; nr.y = g.y + g.h * 0.04; }
+  } else { nr.x = z.x + z.w / 2 - r.w / 2; }
+  epGuardarPos(nr);
+}
+(function () {
+  var esc2 = $('epEscena'), drag = null;
+  function aFoto(e) { var b = esc2.getBoundingClientRect(), k = 1080 / b.width; return { x: (e.clientX - b.left) * k, y: (e.clientY - b.top) * k }; }
+  esc2.addEventListener('pointerdown', function (e) {
+    if (!EP || !EP.rect || !e.target.closest('#epCaja')) return;
+    e.preventDefault(); drag = { p0: aFoto(e), r0: { x: EP.rect.x, y: EP.rect.y, w: EP.rect.w, h: EP.rect.h } };
+    esc2.setPointerCapture(e.pointerId);
+  });
+  esc2.addEventListener('pointermove', function (e) {
+    if (!drag || !EP) return;
+    var p = aFoto(e), r = { x: drag.r0.x + p.x - drag.p0.x, y: drag.r0.y + p.y - drag.p0.y, w: drag.r0.w, h: drag.r0.h };
+    var L = EP.L.region; r.x = Math.max(L.x, Math.min(r.x, L.x + L.w - r.w)); r.y = Math.max(L.y, Math.min(r.y, L.y + L.h - r.h));
+    EP.rect = r; epPintar();
+  });
+  function soltar() { if (!drag) return; drag = null; if (EP) epGuardarPos(EP.rect); }
+  esc2.addEventListener('pointerup', soltar); esc2.addEventListener('pointercancel', soltar);
+  esc2.addEventListener('wheel', function (e) {
+    if (!EP || !EP.rect) return; e.preventDefault();
+    var r = EP.rect, f = e.deltaY < 0 ? 1.04 : 1 / 1.04, w = Math.max(EP.L.wmin, Math.min(epWMax(), r.w * f)), h = r.h * w / r.w, cx = r.x + r.w / 2, cy = r.y + r.h / 2;
+    epGuardarPos({ x: cx - w / 2, y: cy - h / 2, w: w, h: h });
+  }, { passive: false });
+  $('epK').addEventListener('input', function () {
+    if (!EP || !EP.rect) return;
+    var r = EP.rect, w = EP.L.wmin + (this.value / 100) * (epWMax() - EP.L.wmin), h = r.h * w / r.w, cx = r.x + r.w / 2, cy = r.y + r.h / 2;
+    epGuardarPos({ x: cx - w / 2, y: cy - h / 2, w: w, h: h });
+  });
+  $('epTabs').addEventListener('click', function (e) { var b = e.target.closest('[data-ep-pieza]'); if (!b || !EP) return; EP.pz = b.getAttribute('data-ep-pieza'); epCargar(); });
+  $('epPresets').addEventListener('click', function (e) { var b = e.target.closest('[data-ep-lugar]'); if (b && EP && EP.rect) epLugar(b.getAttribute('data-ep-lugar')); });
+  $('epReset').addEventListener('click', function () { if (!EP) return; if (EP.c.opc.pos) delete EP.c.opc.pos[EP.pz]; epCargar(); });
+  $('epListo').addEventListener('click', epCerrar); $('epCerrar').addEventListener('click', epCerrar); $('epVelo').addEventListener('click', epCerrar);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && EP) epCerrar(); });
+})();
+
+// ---------- Compartir / descargar el mockup del cliente ----------
+function dataURLaBlob(u) {
+  var m = /^data:([^;]+);base64,(.*)$/.exec(u); if (!m) return null;
+  var b = atob(m[2]), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i);
+  return new Blob([a], { type: m[1] });
+}
+function descargarBlob(blob, nombre) {
+  var url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = nombre;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+}
+// archivos = [{ nombre, blob }]. En el celular abre el menú de compartir (WhatsApp); si no se puede, descarga.
+function compartirArchivos(archivos, texto) {
+  archivos = archivos.filter(function (a) { return a && a.blob; });
+  var fs = []; try { fs = archivos.map(function (a) { return new File([a.blob], a.nombre, { type: a.blob.type }); }); } catch (e) { fs = []; }
+  var puede = fs.length && navigator.canShare && navigator.canShare({ files: fs });
+  var bajar = function () { archivos.forEach(function (a, i) { setTimeout(function () { descargarBlob(a.blob, a.nombre); }, i * 400); }); return 'descargado'; };
+  if (puede && navigator.share) return navigator.share({ files: fs, text: texto || '' }).then(function () { return 'compartido'; }, function (e) { return e && e.name === 'AbortError' ? 'cancelado' : bajar(); });
+  return Promise.resolve(bajar());
+}
+function compartirMiMockup() {
+  var arch = PR.fotos.filter(function (f) { return f && f.indexOf('data:') === 0; }).map(function (f, i) {
+    return { nombre: 'yuzu-' + slug(PR.p.nombre) + '-' + slug(prendaPorId(PR.prenda).nombre) + '-' + slug(PR.color) + '-' + (i + 1) + '.jpg', blob: dataURLaBlob(f) };
+  });
+  if (!arch.length) return;
+  compartirArchivos(arch, 'Mi mockup de ' + PR.p.nombre + ' (' + ref(PR.p) + '): ' + detalleOpc(PR.opc, PR.medTxt)).then(function (r) {
+    var t = $('prMiMockupEstado'); if (t) t.textContent = r === 'descargado' ? 'Listo: descargué la imagen. Adjuntala en el chat con el pedido.' : r === 'compartido' ? 'Listo, elegí el chat de Yuzu para enviarla.' : '';
+  });
+  evento('compartir_mockup', { item_id: ref(PR.p), layout: PR.opc.layout, logo: PR.opc.logo });
+}
+
 /* ---------- Prenda en la ficha (boxy por defecto; otras con mockup automático) ---------- */
 function prendaFicha() { return PR.prenda && PR.prenda !== 'boxy' ? prendaPorId(PR.prenda) : null; }
 function tallasPR() {
@@ -2167,24 +2450,28 @@ function cambiarPrendaFicha(id) {
 var CACHE_MOCKUP = {};
 function claveGal() { return PR.p.id + '|' + PR.prenda + '|' + PR.color + '|' + PR.version; }
 function actualizarGaleriaPR() {
-  var p = PR.p, usarGuardadas = !prendaFicha() && (!PR.vs.length || (PR.version === YuzuMockup.recomendada(PR.vs, PR.color) && fotosDe(p, PR.color)));
-  if (usarGuardadas || !PR.vs.length) { PR.fotos = fotosProducto(p, PR.color); pintarGaleria(); return; }
-  var clave = claveGal();
-  if (CACHE_MOCKUP[clave]) { PR.fotos = CACHE_MOCKUP[clave]; pintarGaleria(); return; }
+  var p = PR.p, def = opcEsDefecto(PR.opc), usarGuardadas = def && !prendaFicha() && (!PR.vs.length || (PR.version === YuzuMockup.recomendada(PR.vs, PR.color) && fotosDe(p, PR.color)));
+  if (usarGuardadas || !PR.vs.length) { PR.fotos = fotosProducto(p, PR.color); pintarGaleria(); pintarDisenoFicha(); refrescarMedidasPR(); return; }
+  var clave = claveGal() + '|' + JSON.stringify(PR.opc);
+  if (CACHE_MOCKUP[clave]) { PR.fotos = CACHE_MOCKUP[clave]; pintarGaleria(); pintarDisenoFicha(); refrescarMedidasPR(); return; }
   // Mientras se arma: se queda la foto anterior, opaca, con el aviso encima
   $('galAviso').textContent = 'Armando tu ' + prendaPorId(PR.prenda).nombre.toLowerCase() + '…';
   if ($('galPista').querySelector('img')) $('galPrincipal').classList.add('generando');
   else $('galPista').innerHTML = '<div class="gal-cargando">Armando tu ' + esc(prendaPorId(PR.prenda).nombre.toLowerCase()) + '…</div>';
-  YuzuMockup.generarTodas(PR.prenda, PR.color, PR.vs, PR.version, p.ajuste).then(function (cvs) {
-    var fotos = cvs.map(function (cv) { return cv.toDataURL('image/jpeg', 0.88); });
+  var opcAhora = JSON.stringify(PR.opc);
+  YuzuMockup.generarVistas(PR.prenda, PR.color, PR.vs, PR.version, p.ajuste, PR.opc).then(function (lista) {
+    // Con el diseño al frente, la primera foto es el frente
+    if (PR.opc.layout === 'frente') lista.sort(function (a, b) { return (a.vista === 'frente' ? 0 : 1) - (b.vista === 'frente' ? 0 : 1); });
+    var fotos = lista.map(function (x) { return x.canvas.toDataURL('image/jpeg', 0.88); });
     CACHE_MOCKUP[clave] = fotos;
-    if (PR.p === p && claveGal() === clave) { PR.fotos = fotos.length ? fotos : fotosProducto(p, PR.color); pintarGaleria(); }
+    if (PR.p === p && claveGal() + '|' + JSON.stringify(PR.opc) === clave) { PR.fotos = fotos.length ? fotos : fotosProducto(p, PR.color); pintarGaleria(); pintarDisenoFicha(); refrescarMedidasPR(); }
   }).catch(function () { PR.fotos = fotosProducto(p, PR.color); pintarGaleria(); });
 }
 function extraPR() {
-  var pr = prendaFicha(), version = PR.vs.length > 1 ? PR.vs[PR.version].nombre : '';
-  if (!pr && !version) return null;
-  return { prenda: pr ? pr.nombre : '', prendaId: PR.prenda, version: version, versionI: PR.version, precio: precioPR(false), foto: PR.fotos[0] && PR.fotos[0].indexOf('data:') !== 0 ? PR.fotos[0] : fotoBase(PR.p) };
+  var pr = prendaFicha(), version = PR.vs.length > 1 ? PR.vs[PR.version].nombre : '', opciones = hayOpcionesFicha();
+  if (!pr && !version && !opciones) return null;
+  var det = opciones ? detalleOpc(PR.opc, PR.medTxt) : '';
+  return { prenda: pr ? pr.nombre : '', prendaId: PR.prenda, version: version, versionI: PR.version, precio: precioPR(false) + ((tallasPR().extra || {})[PR.talla] || 0), foto: PR.fotos[0] && PR.fotos[0].indexOf('data:') !== 0 ? PR.fotos[0] : fotoBase(PR.p), det: det, opcKey: opciones ? JSON.stringify(PR.opc) : '', layout: opciones ? PR.opc.layout : '', logo: opciones ? PR.opc.logo : '' };
 }
 function tallaOk(t, color) { var so = tallasPR().solo; return !so[t] || so[t].indexOf(color) !== -1; }
 function tallasHTML(color, activa) {
@@ -2279,12 +2566,12 @@ function lineaDe(p, talla, color, cant, extra) {
   return {
     linea: Date.now() + Math.floor(Math.random() * 1000), id: p.id, nombre: p.nombre + (extra && extra.prenda ? ' · ' + extra.prenda : ''), ref: ref(p),
     talla: talla, color: color, precio: extra ? extra.precio : precioVigente(p) + (TALLA_EXTRA[talla] || 0), cant: cant || 1,
-    prenda: extra ? extra.prenda : '', prendaId: extra ? extra.prendaId : 'boxy', version: extra ? extra.version : '', versionI: extra ? extra.versionI : 0, manifiesto: esManifiesto(p), foto: extra ? extra.foto : ((fotos && fotos[0]) || fotoBase(p))
+    prenda: extra ? extra.prenda : '', prendaId: extra ? extra.prendaId : 'boxy', version: extra ? extra.version : '', versionI: extra ? extra.versionI : 0, det: extra ? (extra.det || '') : '', opcKey: extra ? (extra.opcKey || '') : '', layout: extra ? (extra.layout || '') : '', logo: extra ? (extra.logo || '') : '', manifiesto: esManifiesto(p), foto: extra ? extra.foto : ((fotos && fotos[0]) || fotoBase(p))
   };
 }
 function agregar(p, talla, color, cant, extra) {
   var prenda = extra ? extra.prenda : '', version = extra ? extra.version : '';
-  var existente = bolsa.filter(function (i) { return i.id === p.id && i.talla === talla && i.color === color && (i.prenda || '') === prenda && (i.version || '') === version; })[0];
+  var existente = bolsa.filter(function (i) { return i.id === p.id && i.talla === talla && i.color === color && (i.prenda || '') === prenda && (i.version || '') === version && (i.opcKey || '') === ((extra && extra.opcKey) || ''); })[0];
   var item;
   if (existente) { existente.cant = (existente.cant || 1) + cant; item = existente; }
   else { item = lineaDe(p, talla, color, cant, extra); bolsa.push(item); }
@@ -2332,7 +2619,7 @@ function actualizarBolsa() {
     ? bolsa.map(function (i) {
         return '<div class="b-item">' + (i.foto ? '<img src="' + esc(i.foto) + '" alt="">' : '<span></span>') +
           '<div><a class="b-nom" href="#/p/' + esc(i.ref) + '">' + esc(i.nombre) + '</a>' +
-          '<div class="b-det">' + esc(i.ref) + ' · Talla ' + esc(i.talla) + ' · ' + esc(i.color) + (i.version ? ' · ' + esc(i.version) : '') + '</div>' +
+          '<div class="b-det">' + esc(i.ref) + ' · Talla ' + esc(i.talla) + ' · ' + esc(i.color) + (i.version ? ' · ' + esc(i.version) : '') + '</div>' + (i.det ? '<div class="b-det">' + esc(i.det) + '</div>' : '') +
           '<div class="b-cant"><button data-b-menos="' + i.linea + '" aria-label="Menos">−</button><span>' + (i.cant || 1) + '</span><button data-b-mas="' + i.linea + '" aria-label="Más">+</button></div>' +
           '<button class="b-quitar" data-quitar="' + i.linea + '">Quitar</button></div>' +
           '<span class="b-precio">' + plata(i.precio * (i.cant || 1)) + '</span></div>';
@@ -2368,11 +2655,12 @@ function pedirWhatsApp(items) {
   var msg = 'Hola Yuzu, quiero hacer este pedido:\nPedido ' + pedido + '\n\n';
   items.forEach(function (i, n) {
     var c = i.cant || 1, prenda = i.prenda || 'Boxy oversize', nombre = i.nombre.replace(' · ' + prenda, '');
-    msg += (n + 1) + '. ' + nombre + ' (' + i.ref + ')\n   ' + prenda + ' · ' + i.color + ' · Talla ' + i.talla + (i.version ? ' · ' + i.version : '') + '\n   ' + c + ' × ' + plata(i.precio) + ' = ' + plata(i.precio * c) + '\n   ' + BASE_URL() + 'p/' + i.ref + '.html\n\n';
+    msg += (n + 1) + '. ' + nombre + ' (' + i.ref + ')\n   ' + prenda + ' · ' + i.color + ' · Talla ' + i.talla + (i.version ? ' · ' + i.version : '') + (i.det ? '\n   ' + i.det : '') + '\n   ' + c + ' × ' + plata(i.precio) + ' = ' + plata(i.precio * c) + '\n   ' + BASE_URL() + 'p/' + i.ref + '.html\n\n';
   });
   if (desc) msg += 'Subtotal: ' + plata(sub) + '\nDescuento ' + cupon.codigo + ' (' + cupon.pct + '%): −' + plata(desc) + '\n';
   msg += 'Total: ' + plata(total) + ' (envío incluido)\n';
   if (nMani) msg += 'Incluye ' + plata(nMani * MANIFIESTO.monto) + ' de aporte a ' + MANIFIESTO.destino + '.\n';
+  if (items.some(function (i) { return i.opcKey && i.opcKey !== JSON.stringify(opcPorDefecto()); })) msg += '\nNota: elegí una versión distinta a la del catálogo; te mando mi mockup en el chat.\n';
   msg += '\n¿Cómo coordinamos el pago?';
   evento('begin_checkout', { currency: 'CRC', value: total, coupon: desc ? cupon.codigo : undefined, transaction_id: pedido, items: items.map(function (i) { return { item_id: i.ref, item_name: i.nombre, item_variant: (i.prenda || 'Boxy') + ' / ' + i.color + ' / ' + i.talla, quantity: i.cant || 1, price: i.precio }; }) });
   window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
@@ -2451,10 +2739,11 @@ var ESTILOS = [
   { id: 'minimalista', nombre: 'Minimalista', texto: 'Un rostro, una línea, una idea limpia en toda la pieza.', precio: 4000 },
   { id: 'brutalista', nombre: 'Composición brutalista', texto: 'Collage, tipografía pesada y capas. Lo que más hago.', precio: 7000 },
   { id: 'uniformes', nombre: 'Uniformes y grupos', texto: '', precio: 8000 },
-  { id: 'otro', nombre: 'Otro / tengo mi idea', texto: 'Contame lo que imaginás y lo vemos juntos.', precio: 5000 }
+  { id: 'otro', nombre: 'Otro / tengo mi idea', texto: 'Contame lo que imaginás y lo vemos juntos.', precio: 5000 },
+  { id: 'propio', nombre: 'Mi diseño', texto: 'Subís tu imagen y ves cómo queda.', precio: 2000 }
 ];
 function estiloPorId(id) { for (var i = 0; i < ESTILOS.length; i++) if (ESTILOS[i].id === id) return ESTILOS[i]; return null; }
-function precioDisenoMinimo() { return Math.min.apply(null, ESTILOS.filter(function (e) { return e.id !== 'uniformes'; }).map(function (e) { return e.precio; })); }
+function precioDisenoMinimo() { return Math.min.apply(null, ESTILOS.filter(function (e) { return e.id !== 'uniformes' && e.id !== 'propio'; }).map(function (e) { return e.precio; })); }
 
 var PRENDAS = [
   { id: 'boxy', nombre: 'Boxy oversize', texto: 'Camiseta oversize, cuello redondo', precio: 18900,
@@ -2476,23 +2765,28 @@ var PRENDAS = [
     nota: 'Material y gramaje: consultanos por WhatsApp.' }
 ];
 
-var PS = { estilo: null, prenda: null, color: null, talla: null, cant: 1, idea: '', tallasGrupo: '', base: null };
+var PS = { estilo: null, prenda: null, color: null, talla: null, cant: 1, idea: '', tallasGrupo: '', base: null, modo: 'propio', opc: { layout: 'espalda', logo: 'pecho', pos: {} }, quitar: { modo: 'ninguno', tol: 40, global: false }, archivos: {}, vistas: [], medidas: [], calidad: [], medTxt: '', enviado: null, aviso: '' };
 
 function prendaPorId(id) { for (var i = 0; i < PRENDAS.length; i++) if (PRENDAS[i].id === id) return PRENDAS[i]; return null; }
 function tallaDisponible(pr, talla, color) { return !(pr.solo && pr.solo[talla]) || pr.solo[talla].indexOf(color) !== -1; }
 
 function abrirPers(opciones) {
   opciones = opciones || {};
-  PS = { estilo: opciones.estilo || PS.estilo, prenda: PS.prenda || 'boxy', color: PS.color, talla: null, cant: 1, idea: PS.idea, tallasGrupo: PS.tallasGrupo, base: opciones.base || null };
+  var prev = PS, est = opciones.estilo || null;
+  var modo = opciones.base ? 'idea' : (est === 'propio' ? 'propio' : (est ? 'idea' : (prev.modo || 'propio')));
+  if (est === 'idea') est = null;
+  PS = { estilo: modo === 'propio' ? 'propio' : (est || (prev.modo === 'idea' ? prev.estilo : null)), prenda: prev.prenda || 'boxy', color: prev.color, talla: null, cant: 1, idea: prev.idea, tallasGrupo: prev.tallasGrupo, base: opciones.base || null,
+    modo: modo, opc: prev.opc || { layout: 'espalda', logo: 'pecho', pos: {} }, quitar: prev.quitar || { modo: 'ninguno', tol: 40, global: false }, archivos: prev.archivos || {}, vistas: prev.vistas || [], medidas: prev.medidas || [], calidad: prev.calidad || [], medTxt: prev.medTxt || '', enviado: null, aviso: '' };
   if (opciones.base) { PS.estilo = PS.estilo || 'otro'; PS.idea = 'Basado en ' + opciones.base.nombre + ' (' + ref(opciones.base) + '): '; }
   var pr = prendaPorId(PS.prenda);
-  if (!PS.color || !pr.colores.some(function (c) { return c.name === PS.color; })) PS.color = pr.colores[0].name;
+  if (!PS.color || !pr.colores.some(function (c) { return c.name === PS.color; })) PS.color = (pr.colores.filter(function (c) { return c.name === 'Negro'; })[0] || pr.colores[0]).name;
   if (PS.estilo === 'uniformes') PS.cant = MINIMO_UNIFORMES;
   pintarPers();
   $('pers').classList.add('abierta'); $('persVelo').classList.add('abierta');
   document.body.style.overflow = 'hidden';
   $('persCuerpo').scrollTop = 0;
-  evento('personalizado_abrir', { estilo: PS.estilo || '', base: opciones.base ? ref(opciones.base) : '' });
+  if (PS.modo === 'propio') persMockup();
+  evento('personalizado_abrir', { estilo: PS.estilo || '', modo: PS.modo, base: opciones.base ? ref(opciones.base) : '' });
 }
 function cerrarPers() {
   $('pers').classList.remove('abierta'); $('persVelo').classList.remove('abierta');
@@ -2500,12 +2794,209 @@ function cerrarPers() {
   if (/^#\/personalizado/.test(location.hash)) history.replaceState(null, '', ultimaRuta || '#/');
 }
 
+/* ---------- Archivos del cliente: leer, quitar fondo, recortar, medir calidad ---------- */
+var LADO_MAX = 3000, ARCHIVO_MAX_MB = 25;
+function ycCanvas(im, max) {
+  var W0 = im.naturalWidth || im.width, H0 = im.naturalHeight || im.height, e = Math.min(1, max / Math.max(W0, H0));
+  var c = document.createElement('canvas'); c.width = Math.max(1, Math.round(W0 * e)); c.height = Math.max(1, Math.round(H0 * e));
+  var x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(im, 0, 0, c.width, c.height); return c;
+}
+function ycRecortar(c) {
+  var W = c.width, H = c.height, d = c.getContext('2d').getImageData(0, 0, W, H).data, x0 = W, y0 = H, x1 = -1, y1 = -1;
+  for (var y = 0; y < H; y++) for (var i = 0; i < W; i++) if (d[(y * W + i) * 4 + 3] > 8) { if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  if (x1 < 0 || (x0 === 0 && y0 === 0 && x1 === W - 1 && y1 === H - 1)) return c;
+  var o = document.createElement('canvas'); o.width = x1 - x0 + 1; o.height = y1 - y0 + 1;
+  o.getContext('2d').drawImage(c, x0, y0, o.width, o.height, 0, 0, o.width, o.height);
+  return o;
+}
+// Quita un color de fondo (negro, blanco o el de las esquinas). Por defecto solo el que toca los bordes, para no comerse partes del diseño.
+function ycQuitarColor(im, q) {
+  var c = ycCanvas(im, LADO_MAX), W = c.width, H = c.height, x = c.getContext('2d');
+  var img = x.getImageData(0, 0, W, H), d = img.data, ob;
+  if (q.modo === 'negro') ob = [0, 0, 0]; else if (q.modo === 'blanco') ob = [255, 255, 255];
+  else {
+    var s = [0, 0, 0], n = 0;
+    [[0, 0], [W - 1, 0], [0, H - 1], [W - 1, H - 1]].forEach(function (pt) { var i = (pt[1] * W + pt[0]) * 4; if (d[i + 3] > 200) { s[0] += d[i]; s[1] += d[i + 1]; s[2] += d[i + 2]; n++; } });
+    if (!n) return c; ob = [s[0] / n, s[1] / n, s[2] / n];
+  }
+  var t0 = q.tol, t1 = q.tol * 1.6 + 4;
+  function dist(i) { var a = d[i] - ob[0], b = d[i + 1] - ob[1], g = d[i + 2] - ob[2]; return Math.sqrt(a * a + b * b + g * g) / 1.732; }
+  function factor(i) { var v = dist(i); return v <= t0 ? 0 : v >= t1 ? 1 : (v - t0) / (t1 - t0); }
+  if (q.global) {
+    for (var i = 0; i < d.length; i += 4) { if (!d[i + 3]) continue; var f = factor(i); if (f < 1) d[i + 3] = Math.round(d[i + 3] * f); }
+  } else {
+    var vis = new Uint8Array(W * H), pila = new Int32Array(W * H), top = 0;
+    var empujar = function (px) { if (vis[px]) return; var i = px * 4; if (d[i + 3] > 8 && dist(i) >= t1) return; vis[px] = 1; pila[top++] = px; };
+    for (var a = 0; a < W; a++) { empujar(a); empujar((H - 1) * W + a); }
+    for (var b = 0; b < H; b++) { empujar(b * W); empujar(b * W + W - 1); }
+    while (top) {
+      var px = pila[--top], k = px * 4; if (d[k + 3] > 8) d[k + 3] = Math.round(d[k + 3] * factor(k));
+      var xx = px % W, yy = (px - xx) / W;
+      if (xx > 0) empujar(px - 1); if (xx < W - 1) empujar(px + 1); if (yy > 0) empujar(px - W); if (yy < H - 1) empujar(px + W);
+    }
+  }
+  x.putImageData(img, 0, 0); return c;
+}
+function psLeerArchivo(file) {
+  if (!/^image\/(png|jpe?g|webp)$/i.test(file.type) && !/\.(png|jpe?g|webp)$/i.test(file.name)) return Promise.reject(new Error('Subí un PNG, JPG o WEBP. Si lo tenés en otro formato (PDF, HEIC), mandámelo directo por WhatsApp.'));
+  if (file.size > ARCHIVO_MAX_MB * 1048576) return Promise.reject(new Error('El archivo pesa más de ' + ARCHIVO_MAX_MB + ' MB. Reducilo o mandámelo por WhatsApp.'));
+  return new Promise(function (ok, mal) {
+    var url = URL.createObjectURL(file), im = new Image();
+    im.onload = function () { URL.revokeObjectURL(url); ok(im); };
+    im.onerror = function () { URL.revokeObjectURL(url); mal(new Error('No pude abrir la imagen. Probá con otro archivo.')); };
+    im.src = url;
+  });
+}
+// ¿El borde de la imagen es un color liso (blanco o negro)? Sirve para quitar el fondo solo
+function psFondoProbable(im) {
+  var c = ycCanvas(im, 200), W = c.width, H = c.height, d = c.getContext('2d').getImageData(0, 0, W, H).data, n = 0, suma = 0, opacos = 0;
+  var pts = []; for (var i = 0; i < W; i += 4) { pts.push(i, (H - 1) * W + i); } for (var j = 0; j < H; j += 4) { pts.push(j * W, j * W + W - 1); }
+  pts.forEach(function (px) { var k = px * 4; if (d[k + 3] > 200) { suma += 0.2126 * d[k] + 0.7152 * d[k + 1] + 0.0722 * d[k + 2]; opacos++; } n++; });
+  if (!n || opacos < n * 0.9) return 'ninguno';
+  var m = suma / opacos; return m > 238 ? 'blanco' : m < 18 ? 'negro' : 'ninguno';
+}
+function psProcesar(a) {
+  var q = PS.quitar, im = a.orig, W0 = im.naturalWidth || im.width, H0 = im.naturalHeight || im.height, e = Math.min(1, LADO_MAX / Math.max(W0, H0));
+  var c = q.modo !== 'ninguno' ? ycQuitarColor(im, q) : ycCanvas(im, LADO_MAX), r = ycRecortar(c);
+  a.full = r; a.pxOrig = r.width / e; a.img = ycCanvas(r, 1400);
+  // ¿tiene transparencia? ¿quedó algo?
+  var t = ycCanvas(r, 120), d = t.getContext('2d').getImageData(0, 0, t.width, t.height).data, op = 0, tr = 0, lumSum = 0, lumN = 0;
+  for (var i = 0; i < d.length; i += 4) { if (d[i + 3] > 200) { op++; lumSum += 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]; lumN++; } else if (d[i + 3] < 20) tr++; }
+  var tot = d.length / 4; a.sinTransparencia = tr < tot * 0.01; a.vacio = op < tot * 0.004; a.lum = lumN ? lumSum / lumN : 128;
+}
+function psReprocesar() { Object.keys(PS.archivos).forEach(function (k) { if (PS.archivos[k]) psProcesar(PS.archivos[k]); }); }
+function psCargar(clave, file) {
+  return psLeerArchivo(file).then(function (im) {
+    var a = { file: file, nombre: file.name, orig: im };
+    var primero = !Object.keys(PS.archivos).some(function (k) { return PS.archivos[k]; });
+    if (primero && PS.quitar.modo === 'ninguno' && !/png$/i.test(file.type)) { var f = psFondoProbable(im); if (f !== 'ninguno') { PS.quitar.modo = f; PS.aviso = 'Detecté un fondo ' + f + ' liso y lo quité. Si no querías eso, elegí «No quitar nada».'; } }
+    psProcesar(a); PS.archivos[clave] = a;
+  });
+}
+function psVersiones() {
+  var g = PS.archivos.grande, p = PS.archivos.pecho; if (!g || !g.img) return [];
+  var v = { nombre: 'Tu diseño', colores: [], espalda: g.img };
+  if (p && p.img) { v.sinLogo = true; if (PS.opc.layout === 'espalda') v.pecho = p.img; }
+  return [v];
+}
+function psPiezas() {
+  var vs = psVersiones(), out = [];
+  if (!vs.length || !window.YuzuMockup) return out;
+  ['frente', 'espalda'].forEach(function (v) { YuzuMockup.piezasActivas(PS.prenda, PS.color, v, vs, 0, PS.opc).forEach(function (it) { out.push(it); }); });
+  return out;
+}
+var ROTULO_PS = { pechoGrande: 'Diseño al frente', frente: 'Detalle del pecho', nuca: 'Logo en la nuca', espalda: 'Diseño atrás' };
+function psMedidas() {
+  var cm = (YuzuMockup.PRENDAS[PS.prenda] || {}).cmPx || 0.1, vs = psVersiones();
+  return Promise.all(psPiezas().map(function (it) {
+    return (typeof it.src === 'string' ? YuzuMockup.cargar(it.src) : Promise.resolve(it.src)).then(function (img) {
+      var r = YuzuMockup.rectPieza(PS.prenda, PS.color, it.pz, img, { v: 2 }, PS.opc);
+      return r ? { pz: it.pz, w: r.w * cm, h: r.h * cm } : null;
+    }).catch(function () { return null; });
+  })).then(function (l) { return l.filter(Boolean); });
+}
+function psTxtMedidas() { return PS.medidas.map(function (m) { return ROTULO_PS[m.pz] + ' ≈ ' + m.w.toFixed(1).replace('.0', '') + ' × ' + m.h.toFixed(1).replace('.0', '') + ' cm'; }).join(' · '); }
+// Semáforo de calidad: nunca bloquea, solo avisa
+function psCalidad() {
+  var out = [], hex = (YuzuMockup.HEX[PS.color] || '#888888').replace('#', ''), rgb = [parseInt(hex.substr(0, 2), 16), parseInt(hex.substr(2, 2), 16), parseInt(hex.substr(4, 2), 16)], lumPrenda = 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+  PS.medidas.forEach(function (m) {
+    if (m.pz === 'nuca') return;
+    var a = m.pz === 'frente' ? PS.archivos.pecho : PS.archivos.grande; if (!a) return;
+    var dpi = a.pxOrig / (m.w / 2.54), clave = m.pz === 'frente' ? 'pecho' : 'grande', nivel, texto;
+    if (dpi >= 150) { nivel = 'ok'; texto = 'Calidad buena para ' + m.w.toFixed(0) + ' cm de ancho: se imprime nítido.'; }
+    else if (dpi >= 90) { nivel = 'medio'; texto = 'Calidad aceptable para ' + m.w.toFixed(0) + ' cm: puede verse un poco suave. Si tenés una versión más grande, mejor.'; }
+    else { nivel = 'bajo'; texto = 'Calidad baja para ' + m.w.toFixed(0) + ' cm: se vería pixelada. Podés enviarla igual; si hay que rehacerla, te cotizo antes de producir.'; }
+    out.push({ clave: clave, nivel: nivel, texto: texto, dpi: Math.round(dpi) });
+  });
+  ['grande', 'pecho'].forEach(function (k) {
+    var a = PS.archivos[k]; if (!a) return;
+    if (a.vacio) out.push({ clave: k, nivel: 'bajo', texto: 'Con esa configuración se quitó casi todo el diseño. Probá bajar la tolerancia o elegí «No quitar nada».', dpi: 0 });
+    else if (a.sinTransparencia) out.push({ clave: k, nivel: 'medio', texto: 'Tu imagen tiene fondo (un rectángulo): así se imprimiría. Usá «Quitar el blanco/negro» abajo, o subí un PNG sin fondo.', dpi: 0 });
+    else if (Math.abs(a.lum - lumPrenda) < 38) out.push({ clave: k, nivel: 'medio', texto: 'El diseño es muy parecido al color de la prenda y casi no se va a ver. Probá otro color de prenda.', dpi: 0 });
+  });
+  return out;
+}
+var PS_TOK = 0, PS_T = null;
+function persMockup(demora) {
+  clearTimeout(PS_T);
+  PS_T = setTimeout(function () {
+    var tok = ++PS_TOK, vs = psVersiones();
+    if (PS.modo !== 'propio' || !vs.length) { PS.vistas = []; PS.medidas = []; PS.calidad = []; PS.medTxt = ''; pintarPrevPers(); return; }
+    if (!YuzuMockup.disponible(PS.prenda, PS.color)) { PS.vistas = []; PS.sinFoto = true; pintarPrevPers(); return; }
+    PS.sinFoto = false;
+    YuzuMockup.generarVistas(PS.prenda, PS.color, vs, 0, { v: 2 }, PS.opc).then(function (lista) {
+      if (tok !== PS_TOK) return;
+      if (PS.opc.layout === 'frente') lista.sort(function (a, b) { return (a.vista === 'frente' ? 0 : 1) - (b.vista === 'frente' ? 0 : 1); });
+      PS.canvases = lista;
+      PS.vistas = lista.map(function (x) { return { vista: x.vista, url: x.canvas.toDataURL('image/jpeg', 0.85) }; });
+      return psMedidas().then(function (m) { if (tok !== PS_TOK) return; PS.medidas = m; PS.medTxt = psTxtMedidas(); PS.calidad = psCalidad(); pintarPrevPers(); pintarSlotsPers(); });
+    }).catch(function () { if (tok === PS_TOK) { PS.vistas = []; pintarPrevPers(); } });
+  }, demora === undefined ? 60 : demora);
+}
+function semaforoHTML(clave) {
+  return PS.calidad.filter(function (c) { return c.clave === clave; }).map(function (c) { return '<p class="semaforo ' + c.nivel + '"><i></i><span>' + esc(c.texto) + '</span></p>'; }).join('');
+}
+function slotHTML(clave, titulo, ayuda, opcional) {
+  var a = PS.archivos[clave];
+  if (!a) return '<div class="slot"><label class="subida"><input type="file" accept="image/png,image/jpeg,image/webp" data-p-archivo="' + clave + '"><strong>' + esc(titulo) + (opcional ? ' <span class="dato">(opcional)</span>' : '') + '</strong><span>' + esc(ayuda) + '</span></label></div>';
+  return '<div class="slot lleno"><div class="slot-fila"><img class="cuadros" alt="" src="' + a.img.toDataURL('image/png') + '"><div><strong>' + esc(titulo) + '</strong><span class="dato">' + esc(a.nombre) + '</span><div class="slot-bot"><label class="guia-link">Cambiar<input type="file" accept="image/png,image/jpeg,image/webp" data-p-archivo="' + clave + '" hidden></label><button type="button" class="guia-link" data-p-quitar-archivo="' + clave + '">Quitar</button></div></div></div>' + semaforoHTML(clave) + '</div>';
+}
+function slotsPersHTML() {
+  var frente = PS.opc.layout === 'frente', h = '';
+  h += slotHTML('grande', frente ? 'Tu diseño (va al frente)' : 'Tu diseño grande (va atrás)', 'Tocá para subirlo · PNG, JPG o WEBP · hasta ' + ARCHIVO_MAX_MB + ' MB', false);
+  if (!frente) h += slotHTML('pecho', 'Detalle pequeño del pecho', 'Si querés algo en el pecho en vez del logo de Yuzu', true);
+  return h;
+}
+function pintarSlotsPers() { var c = $('persSlots'); if (c) c.innerHTML = slotsPersHTML(); var q = $('persAvisoFondo'); if (q) { q.textContent = PS.aviso || ''; q.classList.toggle('oculto', !PS.aviso); } }
+function pintarPrevPers() {
+  var c = $('persPrev'); if (!c) return;
+  if (!Object.keys(PS.archivos).some(function (k) { return PS.archivos[k]; })) { c.innerHTML = '<p class="nota-paso">Subí tu diseño y acá ves cómo queda en la prenda.</p>'; return; }
+  if (PS.sinFoto) { c.innerHTML = '<p class="nota-paso">Todavía no tengo foto de ' + esc(prendaPorId(PS.prenda).nombre.toLowerCase()) + ' en ' + esc(PS.color.toLowerCase()) + '. Elegí otro color o mandame igual el pedido y te lo muestro yo.</p>'; return; }
+  if (!PS.vistas.length) { c.innerHTML = '<p class="nota-paso">Armando tu mockup…</p>'; return; }
+  c.innerHTML = '<div class="prev-grid">' + PS.vistas.map(function (v) { return '<figure><img src="' + v.url + '" alt="' + esc(YuzuMockup.NOMBRE_VISTA[v.vista]) + '"><figcaption class="dato">' + esc(YuzuMockup.NOMBRE_VISTA[v.vista]) + '</figcaption></figure>'; }).join('') + '</div>' +
+    (PS.medTxt ? '<p class="dato nota-mini">' + esc(PS.medTxt) + '</p>' : '') +
+    '<div class="prev-acciones"><button class="btn btn-hueco" id="persAjustar" type="button" style="min-height:42px">Ajustar tamaño y posición</button><button class="btn btn-hueco" id="persDescMockup" type="button" style="min-height:42px">Descargar mi mockup</button></div>' +
+    '<p class="nota-paso">Descargá tu mockup para mandarlo de referencia en el chat. Es una vista previa: antes de imprimir te confirmo la ubicación final.</p>';
+}
+function quitarPersHTML() {
+  var q = PS.quitar, hay = Object.keys(PS.archivos).some(function (k) { return PS.archivos[k]; });
+  if (!hay) return '';
+  return '<div class="quitar-pers"><div class="dato" style="margin-bottom:8px">Quitar un color del diseño (por ejemplo el fondo)</div>' +
+    '<select id="persQModo" class="campo-txt"><option value="ninguno"' + (q.modo === 'ninguno' ? ' selected' : '') + '>No quitar nada</option><option value="negro"' + (q.modo === 'negro' ? ' selected' : '') + '>Quitar el negro</option><option value="blanco"' + (q.modo === 'blanco' ? ' selected' : '') + '>Quitar el blanco</option><option value="esquina"' + (q.modo === 'esquina' ? ' selected' : '') + '>Quitar el color de las esquinas</option></select>' +
+    (q.modo !== 'ninguno' ? '<label class="ep-fila" style="margin-top:10px"><span class="dato">Qué tanto</span><input type="range" id="persQTol" min="5" max="120" step="5" value="' + q.tol + '"><span class="ep-cm" id="persQTolV">' + q.tol + '</span></label>' +
+      '<label class="check-pers"><input type="checkbox" id="persQGlobal"' + (q.global ? ' checked' : '') + '><span>También dentro del diseño (si no, solo el fondo que toca los bordes)</span></label>' : '') +
+    '<p class="nota-paso">Las imágenes JPG traen fondo. Si tu fondo es blanco o negro, quitalo acá y se ve en la prenda al instante.</p></div>';
+}
+function unoPropioHTML() {
+  var frente = PS.opc.layout === 'frente', tengoPecho = !!PS.archivos.pecho, hayLogo = !!YuzuMockup.logoPara(PS.color);
+  var h = '<div class="chips-prenda" style="margin-bottom:14px">' + chipOpc('data-p-layout', 'espalda', !frente, 'Grande atrás + detalle adelante') + chipOpc('data-p-layout', 'frente', frente, 'Solo grande al frente') + '</div>';
+  h += '<div id="persSlots">' + slotsPersHTML() + '</div>';
+  h += '<p class="aviso-pers oculto" id="persAvisoFondo"></p>';
+  h += '<div id="persQuitar">' + quitarPersHTML() + '</div>';
+  if (hayLogo && !tengoPecho) {
+    h += '<div class="campo" style="margin-top:16px"><div class="campo-tit"><span class="dato">Logo de Yuzu</span></div><div class="chips-prenda">' +
+      chipOpc('data-p-logo', 'pecho', PS.opc.logo === 'pecho' && !frente, 'En el pecho', frente) + chipOpc('data-p-logo', 'nuca', PS.opc.logo === 'nuca', 'En la nuca') + chipOpc('data-p-logo', 'ninguno', PS.opc.logo === 'ninguno', 'Sin logo') + '</div></div>';
+  } else if (tengoPecho) h += '<p class="nota-paso">Con tu detalle en el pecho no va el logo de Yuzu.</p>';
+  h += '<div class="aviso-calidad"><strong>Importante.</strong> Si la imagen que subís es de baja calidad (borrosa, muy pequeña o con un fondo que no se puede quitar), hay que rehacerla desde cero y eso tiene un costo extra según la complejidad del diseño. Te lo cotizo por WhatsApp <u>antes</u> de producir y no se hace nada sin tu aprobación.</div>';
+  h += '<div id="persPrev" style="margin-top:16px"></div>';
+  return h;
+}
+
 function pintarPers() {
-  var pr = prendaPorId(PS.prenda), uni = PS.estilo === 'uniformes';
+  var pr = prendaPorId(PS.prenda), uni = PS.estilo === 'uniformes', propio = PS.modo === 'propio';
   var h = '';
-  ESTILOS[2].texto = textoUniformes();
-  h += '<section class="paso"><div class="paso-tit"><span class="n">01</span><h3>Estilo</h3></div><div class="opciones-grid">' +
-    ESTILOS.map(function (e) { return '<button class="opcion' + (PS.estilo === e.id ? ' on' : '') + '" data-p-estilo="' + e.id + '"><strong>' + esc(e.nombre) + '</strong><span>' + esc(e.texto) + '</span><span class="desde">' + (e.id === 'uniformes' ? 'Diseño ' + plata(e.precio) + ' · una vez' : 'Diseño +' + plata(e.precio)) + '</span></button>'; }).join('') + '</div></section>';
+  ESTILOS.filter(function (e) { return e.id === 'uniformes'; })[0].texto = textoUniformes();
+  if (PS.enviado) {
+    h += '<section class="paso enviado"><div class="paso-tit"><span class="n">✓</span><h3>Último paso: mandame las imágenes</h3></div>' +
+      '<p class="nota-paso" style="margin-top:0">Tu mensaje del pedido <strong>' + esc(PS.enviado.pedido) + '</strong> quedó listo en WhatsApp. Ahora mandame en el chat las imágenes para que no tenga que pedírtelas:</p>' +
+      '<div class="prev-acciones"><button class="btn" id="persCompartir" type="button">' + ((navigator.canShare && navigator.share) ? 'Compartir mockup y diseño' : 'Descargar mockup y diseño') + '</button><button class="btn btn-hueco" id="persDescMockup" type="button">Descargar mi mockup</button><button class="btn btn-hueco" id="persDescDiseno" type="button">Descargar mi diseño</button></div>' +
+      '<p class="dato nota-mini" id="persEstadoEnvio"></p></section>';
+  }
+  h += '<section class="paso"><div class="paso-tit"><span class="n">01</span><h3>Tu diseño</h3></div><div class="chips-prenda" style="margin-bottom:14px">' +
+    chipOpc('data-p-modo', 'propio', propio, 'Subo mi diseño') + chipOpc('data-p-modo', 'idea', !propio, 'Tengo una idea') + '</div>';
+  if (propio) h += unoPropioHTML();
+  else h += '<div class="opciones-grid">' + ESTILOS.filter(function (e) { return e.id !== 'propio'; }).map(function (e) { return '<button class="opcion' + (PS.estilo === e.id ? ' on' : '') + '" data-p-estilo="' + e.id + '"><strong>' + esc(e.nombre) + '</strong><span>' + esc(e.texto) + '</span><span class="desde">' + (e.id === 'uniformes' ? 'Diseño ' + plata(e.precio) + ' · una vez' : 'Diseño +' + plata(e.precio)) + '</span></button>'; }).join('') + '</div>';
+  h += '</section>';
 
   h += '<section class="paso"><div class="paso-tit"><span class="n">02</span><h3>Prenda</h3></div><div class="opciones-grid">' +
     PRENDAS.map(function (p) { return '<button class="opcion' + (PS.prenda === p.id ? ' on' : '') + '" data-p-prenda="' + p.id + '"><strong>' + esc(p.nombre) + '</strong><span>' + esc(p.texto) + '</span><span class="desde">' + (uni ? plata(p.precio - DESCUENTO_UNIFORMES) + ' c/u' : plata(p.precio)) + '</span></button>'; }).join('') + '</div>' +
@@ -2537,12 +3028,13 @@ function pintarPers() {
       }).join('') + '</div></section>';
   }
 
-  h += '<section class="paso"><div class="paso-tit"><span class="n">05</span><h3>Tu idea</h3></div>' +
-    '<label class="sr" for="persIdea">Tu idea</label>' +
-    '<textarea id="persIdea" rows="4" placeholder="Qué querés, para quién, qué referencias tenés en mente...">' + esc(PS.idea) + '</textarea>' +
-    '<p class="nota-paso">Las imágenes de referencia me las mandás por WhatsApp después de enviar esto. Antes de imprimir te mando el diseño para que lo aprobés.</p></section>';
+  h += '<section class="paso"><div class="paso-tit"><span class="n">05</span><h3>' + (propio ? 'Comentarios' : 'Tu idea') + '</h3></div>' +
+    '<label class="sr" for="persIdea">' + (propio ? 'Comentarios' : 'Tu idea') + '</label>' +
+    '<textarea id="persIdea" rows="4" placeholder="' + (propio ? 'Algo que tenga que saber (opcional): cambios, textos, para cuándo lo necesitás…' : 'Qué querés, para quién, qué referencias tenés en mente...') + '">' + esc(PS.idea) + '</textarea>' +
+    '<p class="nota-paso">' + (propio ? 'Al enviar se abre WhatsApp con tu pedido y después te aparecen los botones para mandarme el mockup y tu diseño. Antes de imprimir te confirmo todo.' : 'Las imágenes de referencia me las mandás por WhatsApp después de enviar esto. Antes de imprimir te mando el diseño para que lo aprobés.') + '</p></section>';
 
   $('persCuerpo').innerHTML = h;
+  if (propio) { pintarSlotsPers(); pintarPrevPers(); }
   actualizarResumenPers();
 }
 
@@ -2561,12 +3053,17 @@ function calcularPers() {
     total = unit * PS.cant;
     lineas.push([pr.nombre, plata(pr.precio)]);
     if (extra) lineas.push(['Talla ' + PS.talla, '+' + plata(extra)]);
-    lineas.push([est ? 'Diseño ' + est.nombre.toLowerCase() : 'Diseño (elegí un estilo)', est ? '+' + plata(diseno) : '—']);
+    lineas.push([PS.estilo === 'propio' ? 'Personalización con tu diseño' : (est ? 'Diseño ' + est.nombre.toLowerCase() : 'Diseño (elegí un estilo)'), est ? '+' + plata(diseno) : '—']);
   }
   lineas.push(['Envío', 'Incluido']);
   return { pr: pr, uni: uni, unit: unit, total: total, lineas: lineas };
 }
 function faltaPers() {
+  if (PS.modo === 'propio') {
+    if (!PS.archivos.grande) return 'Subí tu diseño';
+    if (!PS.talla) return 'Elegí una talla';
+    return '';
+  }
   if (!PS.estilo) return 'Elegí un estilo';
   if (PS.estilo !== 'uniformes' && !PS.talla) return 'Elegí una talla';
   if (PS.estilo === 'uniformes' && PS.cant < MINIMO_UNIFORMES) return 'Mínimo ' + MINIMO_UNIFORMES + ' piezas';
@@ -2581,9 +3078,46 @@ function actualizarResumenPers() {
   $('persAviso').classList.add('oculto');
 }
 
+/* ---------- Exportar lo que se manda por WhatsApp: mockups + archivo original ---------- */
+function canvasABlob(cv, tipo, calidad) { return new Promise(function (ok) { cv.toBlob(function (b) { ok(b); }, tipo || 'image/jpeg', calidad || 0.9); }); }
+function psArchivosExport(solo) {
+  var nom = 'yuzu-' + slug(prendaPorId(PS.prenda).nombre) + '-' + slug(PS.color), jobs = [];
+  if (solo !== 'diseno') (PS.canvases || []).forEach(function (x, i) { jobs.push(canvasABlob(x.canvas, 'image/jpeg', 0.92).then(function (b) { return { nombre: nom + '-mockup-' + x.vista + '.jpg', blob: b }; })); });
+  if (solo !== 'mockup') Object.keys(PS.archivos).forEach(function (k) { var a = PS.archivos[k]; if (a && a.file) jobs.push(Promise.resolve({ nombre: (k === 'pecho' ? 'detalle-pecho-' : 'diseno-') + a.nombre, blob: a.file })); });
+  return Promise.all(jobs);
+}
+function psEnviarArchivos(que) {
+  var estado = $('persEstadoEnvio');
+  return psArchivosExport(que === 'compartir' ? null : que).then(function (arch) {
+    if (!arch.length) return;
+    if (que === 'compartir') return compartirArchivos(arch, 'Mockup y diseño del pedido ' + (PS.enviado ? PS.enviado.pedido : '')).then(function (r) { if (estado) estado.textContent = r === 'compartido' ? 'Listo: elegí el chat de Yuzu para enviarlas.' : r === 'descargado' ? 'Descargué las imágenes. Adjuntalas en el chat con tu pedido.' : ''; });
+    arch.forEach(function (a, i) { setTimeout(function () { descargarBlob(a.blob, a.nombre); }, i * 400); });
+    if (estado) estado.textContent = 'Descargado. Adjuntalo en el chat con tu pedido.';
+  });
+}
+
 $('persCuerpo').addEventListener('click', function (e) {
   var b;
-  if ((b = e.target.closest('[data-p-estilo]'))) {
+  if (e.target.closest('#persAjustar')) {
+    epAbrir({ prenda: PS.prenda, color: PS.color, versiones: psVersiones(), iVersion: 0, ajuste: { v: 2 }, opc: PS.opc, piezas: psPiezas().map(function (x) { return x.pz; }).filter(function (v, i, a) { return a.indexOf(v) === i; }), titulo: 'Ajustá tu diseño', alCerrar: function () { persMockup(0); } });
+    return;
+  }
+  if (e.target.closest('#persDescMockup')) { psEnviarArchivos('mockup'); evento('descargar_mockup_pers', { prenda: PS.prenda }); return; }
+  if (e.target.closest('#persDescDiseno')) { psEnviarArchivos('diseno'); return; }
+  if (e.target.closest('#persCompartir')) { psEnviarArchivos('compartir'); evento('compartir_mockup_pers', { prenda: PS.prenda }); return; }
+  if ((b = e.target.closest('[data-p-quitar-archivo]'))) { PS.archivos[b.getAttribute('data-p-quitar-archivo')] = null; PS.aviso = ''; PS.medidas = []; PS.calidad = []; PS.medTxt = ''; pintarPers(); persMockup(0); return; }
+  if ((b = e.target.closest('[data-p-modo]'))) {
+    PS.modo = b.getAttribute('data-p-modo');
+    if (PS.modo === 'propio') { PS.estilo = 'propio'; PS.cant = 1; } else if (PS.estilo === 'propio') PS.estilo = null;
+  } else if ((b = e.target.closest('[data-p-layout]'))) {
+    var lay = b.getAttribute('data-p-layout');
+    if (lay === 'frente') { if (PS.opc.logo === 'pecho') { PS.opc.logo = 'ninguno'; PS.logoAuto = true; } } else if (PS.logoAuto && PS.opc.logo === 'ninguno') { PS.opc.logo = 'pecho'; PS.logoAuto = false; }
+    PS.opc.layout = lay; PS.opc.pos = {}; PS.medTxt = '';
+    evento('opcion_diseno_pers', { layout: lay });
+  } else if ((b = e.target.closest('[data-p-logo]'))) {
+    PS.opc.logo = b.getAttribute('data-p-logo'); PS.logoAuto = false; PS.medTxt = '';
+    evento('opcion_logo_pers', { logo: PS.opc.logo });
+  } else if ((b = e.target.closest('[data-p-estilo]'))) {
     PS.estilo = b.getAttribute('data-p-estilo');
     if (PS.estilo === 'uniformes' && PS.cant < MINIMO_UNIFORMES) PS.cant = MINIMO_UNIFORMES;
     if (PS.estilo !== 'uniformes') PS.cant = 1;
@@ -2603,26 +3137,55 @@ $('persCuerpo').addEventListener('click', function (e) {
   var y = $('persCuerpo').scrollTop;
   pintarPers();
   $('persCuerpo').scrollTop = y;
+  if (PS.modo === 'propio') persMockup(0);
+});
+$('persCuerpo').addEventListener('change', function (e) {
+  var t = e.target, clave = t.getAttribute && t.getAttribute('data-p-archivo');
+  if (clave) {
+    var f = t.files && t.files[0]; if (!f) return;
+    PS.aviso = 'Leyendo tu imagen…'; pintarSlotsPers();
+    psCargar(clave, f).then(function () { if (PS.aviso === 'Leyendo tu imagen…') PS.aviso = ''; var y = $('persCuerpo').scrollTop; pintarPers(); $('persCuerpo').scrollTop = y; persMockup(0); evento('subir_diseno_pers', { clave: clave }); })
+      .catch(function (err) { PS.aviso = err.message; pintarSlotsPers(); });
+    return;
+  }
+  if (t.id === 'persQModo') {
+    PS.quitar.modo = t.value; PS.aviso = ''; psReprocesar();
+    var y2 = $('persCuerpo').scrollTop; pintarPers(); $('persCuerpo').scrollTop = y2; persMockup(0);
+    evento('quitar_color_pers', { modo: t.value });
+  } else if (t.id === 'persQGlobal') { PS.quitar.global = t.checked; psReprocesar(); pintarSlotsPers(); persMockup(0); }
 });
 $('persCuerpo').addEventListener('input', function (e) {
   if (e.target.id === 'persIdea') PS.idea = e.target.value;
   if (e.target.id === 'persTallasGrupo') PS.tallasGrupo = e.target.value;
+  if (e.target.id === 'persQTol') {
+    PS.quitar.tol = parseInt(e.target.value, 10) || 40; $('persQTolV').textContent = PS.quitar.tol;
+    clearTimeout(PS.tolT); PS.tolT = setTimeout(function () { psReprocesar(); pintarSlotsPers(); persMockup(0); }, 220);
+  }
 });
 $('persEnviar').addEventListener('click', function () {
   var falta = faltaPers();
   if (falta) { $('persAviso').textContent = falta; $('persAviso').classList.remove('oculto'); return; }
-  var c = calcularPers(), estilo = ESTILOS.filter(function (x) { return x.id === PS.estilo; })[0];
-  var msg = 'Hola Yuzu, quiero un diseño personalizado.\n\n' +
-    'Estilo: ' + estilo.nombre + '\n' +
-    'Prenda: ' + c.pr.nombre + ' · ' + PS.color + '\n' +
-    (c.uni ? 'Cantidad: ' + PS.cant + ' piezas a ' + plata(c.unit) + ' c/u\nTallas: ' + (PS.tallasGrupo.trim() || 'por definir') + '\n' : 'Talla: ' + PS.talla + '\n') +
-    (PS.base ? 'Diseño base: ' + PS.base.nombre + ' (' + ref(PS.base) + ')\n' : '') +
-    '\nIdea:\n' + PS.idea.trim() + '\n\n' +
+  var c = calcularPers(), estilo = estiloPorId(PS.estilo), propio = PS.modo === 'propio', pedido = numeroPedido();
+  var msg = 'Hola Yuzu, quiero ' + (propio ? 'una prenda personalizada con mi diseño' : 'un diseño personalizado') + '.\nPedido ' + pedido + '\nTipo: ' + (propio ? 'Personalizada · diseño propio' : 'Personalizada · ' + estilo.nombre) + '\n\n' +
+    'Prenda: ' + c.pr.nombre + ' · ' + PS.color + (c.uni ? '' : ' · Talla ' + PS.talla) + '\n' +
+    (c.uni ? 'Cantidad: ' + PS.cant + ' piezas a ' + plata(c.unit) + ' c/u\nTallas: ' + (PS.tallasGrupo.trim() || 'por definir') + '\n' : '') +
+    (PS.base ? 'Diseño base: ' + PS.base.nombre + ' (' + ref(PS.base) + ')\n' : '');
+  if (propio) {
+    var o = PS.opc, tienePecho = !!PS.archivos.pecho, calid = PS.calidad.filter(function (x) { return x.dpi > 0; });
+    msg += 'Distribución: ' + (o.layout === 'frente' ? 'Solo diseño grande al frente' : 'Diseño grande atrás' + (tienePecho ? ' + detalle propio en el pecho' : '')) + '\n' +
+      'Logo Yuzu: ' + (tienePecho && o.layout !== 'frente' ? 'no (detalle propio en el pecho)' : o.logo === 'nuca' ? 'en la nuca' : o.logo === 'ninguno' || o.layout === 'frente' && o.logo !== 'nuca' ? 'sin logo' : 'en el pecho') + '\n' +
+      (PS.medTxt ? 'Tamaños: ' + PS.medTxt + '\n' : '') +
+      (calid.length ? 'Calidad del archivo: ' + calid.map(function (x) { return ({ ok: 'buena', medio: 'aceptable', bajo: 'baja' })[x.nivel] + ' (≈ ' + x.dpi + ' ppp)'; }).join(' · ') + '\n' : '') +
+      (PS.quitar.modo !== 'ninguno' ? 'Fondo quitado: ' + PS.quitar.modo + '\n' : '') +
+      'Archivos: ' + Object.keys(PS.archivos).filter(function (k) { return PS.archivos[k]; }).map(function (k) { return PS.archivos[k].nombre; }).join(', ') + '\n';
+  } else msg += 'Estilo: ' + estilo.nombre + '\n';
+  msg += (PS.idea.trim() ? '\n' + (propio ? 'Comentarios' : 'Idea') + ':\n' + PS.idea.trim() + '\n' : '') + '\n' +
     c.lineas.map(function (l) { return l[0] + ': ' + l[1]; }).join('\n') + '\n' +
     'Total estimado: ' + plata(c.total) + '\n' +
-    '\nTe mando las referencias por acá.';
-  evento('personalizado_enviar', { estilo: PS.estilo, prenda: PS.prenda, value: c.total, currency: 'CRC' });
+    (propio ? '\nTe mando el mockup y mi diseño en los siguientes mensajes. Entiendo que si la imagen no sirve para imprimir se cotiza rehacerla antes de producir.' : '\nTe mando las referencias por acá.');
+  evento('personalizado_enviar', { estilo: PS.estilo, modo: PS.modo, prenda: PS.prenda, value: c.total, currency: 'CRC', transaction_id: pedido, logo: propio ? PS.opc.logo : '', layout: propio ? PS.opc.layout : '' });
   window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
+  if (propio) { PS.enviado = { pedido: pedido }; pintarPers(); $('persCuerpo').scrollTop = 0; }
 });
 $('cerrarPers').addEventListener('click', cerrarPers);
 $('persVelo').addEventListener('click', cerrarPers);
