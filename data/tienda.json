@@ -186,6 +186,15 @@
           "w": 88,
           "h": 101,
           "alinear": "centro"
+        },
+        "pechoGrande": {
+          "x": 311,
+          "y": 538,
+          "w": 463,
+          "h": 485,
+          "alinear": "arriba",
+          "kmin": 0.35,
+          "kmax": 1
         }
       }
     },
