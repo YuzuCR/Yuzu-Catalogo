@@ -35521,5 +35521,50 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1793135468514,
+    "nombre": "DS 136",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-136-negro-1793135468514-0.jpg",
+        "images/ds-136-negro-1793135468514-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-136-1793135468514-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-136-1793135468514-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
