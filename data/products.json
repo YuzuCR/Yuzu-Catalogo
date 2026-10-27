@@ -28171,5 +28171,380 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1793126443249,
+    "nombre": "DS 036",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/ds-036-blanco-1793126443249-0.jpg",
+        "images/ds-036-blanco-1793126443249-1.jpg"
+      ],
+      "Negro": [
+        "images/ds-036-negro-1793126443249-2.jpg",
+        "images/ds-036-negro-1793126443249-3.jpg"
+      ],
+      "Crema": [
+        "images/ds-036-crema-1793126443249-4.jpg",
+        "images/ds-036-crema-1793126443249-5.jpg"
+      ],
+      "Café": [
+        "images/ds-036-cafe-1793126443249-6.jpg",
+        "images/ds-036-cafe-1793126443249-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-036-gris-grafito-1793126443249-8.jpg",
+        "images/ds-036-gris-grafito-1793126443249-9.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-036-azul-marino-1793126443249-10.jpg",
+        "images/ds-036-azul-marino-1793126443249-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-036-verde-musgo-1793126443249-12.jpg",
+        "images/ds-036-verde-musgo-1793126443249-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-036-1793126443249-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-036-1793126443249-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793126468474,
+    "nombre": "DS 037",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/ds-037-blanco-1793126468474-0.jpg",
+        "images/ds-037-blanco-1793126468474-1.jpg"
+      ],
+      "Negro": [
+        "images/ds-037-negro-1793126468474-2.jpg",
+        "images/ds-037-negro-1793126468474-3.jpg"
+      ],
+      "Crema": [
+        "images/ds-037-crema-1793126468474-4.jpg",
+        "images/ds-037-crema-1793126468474-5.jpg"
+      ],
+      "Café": [
+        "images/ds-037-cafe-1793126468474-6.jpg",
+        "images/ds-037-cafe-1793126468474-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-037-gris-grafito-1793126468474-8.jpg",
+        "images/ds-037-gris-grafito-1793126468474-9.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-037-azul-marino-1793126468474-10.jpg",
+        "images/ds-037-azul-marino-1793126468474-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-037-verde-musgo-1793126468474-12.jpg",
+        "images/ds-037-verde-musgo-1793126468474-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-037-1793126468474-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-037-1793126468474-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793126493905,
+    "nombre": "DS 038",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/ds-038-blanco-1793126493905-0.jpg",
+        "images/ds-038-blanco-1793126493905-1.jpg"
+      ],
+      "Negro": [
+        "images/ds-038-negro-1793126493905-2.jpg",
+        "images/ds-038-negro-1793126493905-3.jpg"
+      ],
+      "Crema": [
+        "images/ds-038-crema-1793126493905-4.jpg",
+        "images/ds-038-crema-1793126493905-5.jpg"
+      ],
+      "Café": [
+        "images/ds-038-cafe-1793126493905-6.jpg",
+        "images/ds-038-cafe-1793126493905-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-038-gris-grafito-1793126493905-8.jpg",
+        "images/ds-038-gris-grafito-1793126493905-9.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-038-azul-marino-1793126493905-10.jpg",
+        "images/ds-038-azul-marino-1793126493905-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-038-verde-musgo-1793126493905-12.jpg",
+        "images/ds-038-verde-musgo-1793126493905-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-038-1793126493905-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-038-1793126493905-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793126518765,
+    "nombre": "DS 039",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/ds-039-blanco-1793126518765-0.jpg",
+        "images/ds-039-blanco-1793126518765-1.jpg"
+      ],
+      "Negro": [
+        "images/ds-039-negro-1793126518765-2.jpg",
+        "images/ds-039-negro-1793126518765-3.jpg"
+      ],
+      "Crema": [
+        "images/ds-039-crema-1793126518765-4.jpg",
+        "images/ds-039-crema-1793126518765-5.jpg"
+      ],
+      "Café": [
+        "images/ds-039-cafe-1793126518765-6.jpg",
+        "images/ds-039-cafe-1793126518765-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-039-gris-grafito-1793126518765-8.jpg",
+        "images/ds-039-gris-grafito-1793126518765-9.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-039-azul-marino-1793126518765-10.jpg",
+        "images/ds-039-azul-marino-1793126518765-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-039-verde-musgo-1793126518765-12.jpg",
+        "images/ds-039-verde-musgo-1793126518765-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-039-1793126518765-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-039-1793126518765-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793126545563,
+    "nombre": "DS 040",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/ds-040-blanco-1793126545563-0.jpg",
+        "images/ds-040-blanco-1793126545563-1.jpg"
+      ],
+      "Negro": [
+        "images/ds-040-negro-1793126545563-2.jpg",
+        "images/ds-040-negro-1793126545563-3.jpg"
+      ],
+      "Crema": [
+        "images/ds-040-crema-1793126545563-4.jpg",
+        "images/ds-040-crema-1793126545563-5.jpg"
+      ],
+      "Café": [
+        "images/ds-040-cafe-1793126545563-6.jpg",
+        "images/ds-040-cafe-1793126545563-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-040-gris-grafito-1793126545563-8.jpg",
+        "images/ds-040-gris-grafito-1793126545563-9.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-040-azul-marino-1793126545563-10.jpg",
+        "images/ds-040-azul-marino-1793126545563-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-040-verde-musgo-1793126545563-12.jpg",
+        "images/ds-040-verde-musgo-1793126545563-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-040-1793126545563-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-040-1793126545563-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
