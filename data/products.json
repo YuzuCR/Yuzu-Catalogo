@@ -35296,5 +35296,230 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1793135407884,
+    "nombre": "DS 131",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-131-negro-1793135407884-0.jpg",
+        "images/ds-131-negro-1793135407884-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-131-1793135407884-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-131-1793135407884-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793135417526,
+    "nombre": "DS 132",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-132-negro-1793135417526-0.jpg",
+        "images/ds-132-negro-1793135417526-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-132-1793135417526-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-132-1793135417526-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793135429524,
+    "nombre": "DS 133",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-133-negro-1793135429524-0.jpg",
+        "images/ds-133-negro-1793135429524-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-133-1793135429524-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-133-1793135429524-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793135439522,
+    "nombre": "DS 134",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-134-negro-1793135439522-0.jpg",
+        "images/ds-134-negro-1793135439522-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-134-1793135439522-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-134-1793135439522-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793135448522,
+    "nombre": "DS 135",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-135-negro-1793135448522-0.jpg",
+        "images/ds-135-negro-1793135448522-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-135-1793135448522-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-135-1793135448522-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
