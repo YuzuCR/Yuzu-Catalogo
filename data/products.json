@@ -38491,5 +38491,135 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1793146175526,
+    "nombre": "DS 182",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-182-negro-1793146175526-0.jpg",
+        "images/ds-182-negro-1793146175526-1.jpg"
+      ],
+      "Café": [
+        "images/ds-182-cafe-1793146175526-2.jpg",
+        "images/ds-182-cafe-1793146175526-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-182-gris-grafito-1793146175526-4.jpg",
+        "images/ds-182-gris-grafito-1793146175526-5.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-182-azul-marino-1793146175526-6.jpg",
+        "images/ds-182-azul-marino-1793146175526-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-182-verde-musgo-1793146175526-8.jpg",
+        "images/ds-182-verde-musgo-1793146175526-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Verde musgo",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-182-1793146175526-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-182-1793146175526-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793146197536,
+    "nombre": "DS 183",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-183-negro-1793146197536-0.jpg",
+        "images/ds-183-negro-1793146197536-1.jpg"
+      ],
+      "Café": [
+        "images/ds-183-cafe-1793146197536-2.jpg",
+        "images/ds-183-cafe-1793146197536-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-183-gris-grafito-1793146197536-4.jpg",
+        "images/ds-183-gris-grafito-1793146197536-5.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-183-azul-marino-1793146197536-6.jpg",
+        "images/ds-183-azul-marino-1793146197536-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-183-verde-musgo-1793146197536-8.jpg",
+        "images/ds-183-verde-musgo-1793146197536-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Verde musgo",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-183-1793146197536-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-183-1793146197536-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
