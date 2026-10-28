@@ -36541,5 +36541,330 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1793145534537,
+    "nombre": "DS 152",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-152-negro-1793145534537-0.jpg",
+        "images/ds-152-negro-1793145534537-1.jpg"
+      ],
+      "Café": [
+        "images/ds-152-cafe-1793145534537-2.jpg",
+        "images/ds-152-cafe-1793145534537-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-152-gris-grafito-1793145534537-4.jpg",
+        "images/ds-152-gris-grafito-1793145534537-5.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-152-azul-marino-1793145534537-6.jpg",
+        "images/ds-152-azul-marino-1793145534537-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-152-verde-musgo-1793145534537-8.jpg",
+        "images/ds-152-verde-musgo-1793145534537-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Verde musgo",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-152-1793145534537-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-152-1793145534537-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793145553539,
+    "nombre": "DS 153",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-153-negro-1793145553539-0.jpg",
+        "images/ds-153-negro-1793145553539-1.jpg"
+      ],
+      "Café": [
+        "images/ds-153-cafe-1793145553539-2.jpg",
+        "images/ds-153-cafe-1793145553539-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-153-gris-grafito-1793145553539-4.jpg",
+        "images/ds-153-gris-grafito-1793145553539-5.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-153-azul-marino-1793145553539-6.jpg",
+        "images/ds-153-azul-marino-1793145553539-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-153-verde-musgo-1793145553539-8.jpg",
+        "images/ds-153-verde-musgo-1793145553539-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Verde musgo",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-153-1793145553539-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-153-1793145553539-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793145572536,
+    "nombre": "DS 154",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-154-negro-1793145572536-0.jpg",
+        "images/ds-154-negro-1793145572536-1.jpg"
+      ],
+      "Café": [
+        "images/ds-154-cafe-1793145572536-2.jpg",
+        "images/ds-154-cafe-1793145572536-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-154-gris-grafito-1793145572536-4.jpg",
+        "images/ds-154-gris-grafito-1793145572536-5.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-154-azul-marino-1793145572536-6.jpg",
+        "images/ds-154-azul-marino-1793145572536-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-154-verde-musgo-1793145572536-8.jpg",
+        "images/ds-154-verde-musgo-1793145572536-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Verde musgo",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-154-1793145572536-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-154-1793145572536-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793145591529,
+    "nombre": "DS 155",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-155-negro-1793145591529-0.jpg",
+        "images/ds-155-negro-1793145591529-1.jpg"
+      ],
+      "Café": [
+        "images/ds-155-cafe-1793145591529-2.jpg",
+        "images/ds-155-cafe-1793145591529-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-155-gris-grafito-1793145591529-4.jpg",
+        "images/ds-155-gris-grafito-1793145591529-5.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-155-azul-marino-1793145591529-6.jpg",
+        "images/ds-155-azul-marino-1793145591529-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-155-verde-musgo-1793145591529-8.jpg",
+        "images/ds-155-verde-musgo-1793145591529-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Verde musgo",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-155-1793145591529-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-155-1793145591529-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793145610538,
+    "nombre": "DS 156",
+    "categoria": "Anime",
+    "subcategoria": "Demon Slayer",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ds-156-negro-1793145610538-0.jpg",
+        "images/ds-156-negro-1793145610538-1.jpg"
+      ],
+      "Café": [
+        "images/ds-156-cafe-1793145610538-2.jpg",
+        "images/ds-156-cafe-1793145610538-3.jpg"
+      ],
+      "Gris grafito": [
+        "images/ds-156-gris-grafito-1793145610538-4.jpg",
+        "images/ds-156-gris-grafito-1793145610538-5.jpg"
+      ],
+      "Azul marino": [
+        "images/ds-156-azul-marino-1793145610538-6.jpg",
+        "images/ds-156-azul-marino-1793145610538-7.jpg"
+      ],
+      "Verde musgo": [
+        "images/ds-156-verde-musgo-1793145610538-8.jpg",
+        "images/ds-156-verde-musgo-1793145610538-9.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Verde musgo",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ds-156-1793145610538-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ds-156-1793145610538-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
