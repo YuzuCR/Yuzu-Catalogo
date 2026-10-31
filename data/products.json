@@ -39766,5 +39766,145 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1793414444214,
+    "nombre": "Poke 061",
+    "categoria": "Anime",
+    "subcategoria": "Pokemon",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/poke-061-negro-1793414444214-0.jpg",
+        "images/poke-061-negro-1793414444214-1.jpg"
+      ],
+      "Crema": [
+        "images/poke-061-crema-1793414444214-2.jpg",
+        "images/poke-061-crema-1793414444214-3.jpg"
+      ],
+      "Café": [
+        "images/poke-061-cafe-1793414444214-4.jpg",
+        "images/poke-061-cafe-1793414444214-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/poke-061-gris-grafito-1793414444214-6.jpg",
+        "images/poke-061-gris-grafito-1793414444214-7.jpg"
+      ],
+      "Azul marino": [
+        "images/poke-061-azul-marino-1793414444214-8.jpg",
+        "images/poke-061-azul-marino-1793414444214-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/poke-061-verde-musgo-1793414444214-10.jpg",
+        "images/poke-061-verde-musgo-1793414444214-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/poke-061-1793414444214-v1-espalda.png"
+        },
+        "espalda": "images/disenos/poke-061-1793414444214-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793414477208,
+    "nombre": "Poke 062",
+    "categoria": "Anime",
+    "subcategoria": "Pokemon",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/poke-062-negro-1793414477208-0.jpg",
+        "images/poke-062-negro-1793414477208-1.jpg"
+      ],
+      "Crema": [
+        "images/poke-062-crema-1793414477208-2.jpg",
+        "images/poke-062-crema-1793414477208-3.jpg"
+      ],
+      "Café": [
+        "images/poke-062-cafe-1793414477208-4.jpg",
+        "images/poke-062-cafe-1793414477208-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/poke-062-gris-grafito-1793414477208-6.jpg",
+        "images/poke-062-gris-grafito-1793414477208-7.jpg"
+      ],
+      "Azul marino": [
+        "images/poke-062-azul-marino-1793414477208-8.jpg",
+        "images/poke-062-azul-marino-1793414477208-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/poke-062-verde-musgo-1793414477208-10.jpg",
+        "images/poke-062-verde-musgo-1793414477208-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/poke-062-1793414477208-v1-espalda.png"
+        },
+        "espalda": "images/disenos/poke-062-1793414477208-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
