@@ -6,9 +6,18 @@
       "frase": "Mas allá de la muralla"
     },
     "DBZ Collection": {
-      "sigla": "DBZ",
+      "sigla": "YUZU",
       "titulo": "Dragon Ball Z",
       "frase": "Sangre Sayayin"
+    },
+    "Demon Slayer": {
+      "sigla": "YUZU",
+      "titulo": "Demon Slayer",
+      "frase": "Primera postura"
+    },
+    "Pokemon": {
+      "sigla": "YUZU",
+      "frase": "¡Atrápalos a todos!"
     }
   },
   "drops": {
