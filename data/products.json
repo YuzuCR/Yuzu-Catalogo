@@ -40137,5 +40137,75 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1793663901261,
+    "nombre": "AS 001",
+    "categoria": "Anime",
+    "subcategoria": "Afro Samurai",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/as-001-negro-1793663901261-0.jpg",
+        "images/as-001-negro-1793663901261-1.jpg"
+      ],
+      "Crema": [
+        "images/as-001-crema-1793663901261-2.jpg",
+        "images/as-001-crema-1793663901261-3.jpg"
+      ],
+      "Café": [
+        "images/as-001-cafe-1793663901261-4.jpg",
+        "images/as-001-cafe-1793663901261-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/as-001-gris-grafito-1793663901261-6.jpg",
+        "images/as-001-gris-grafito-1793663901261-7.jpg"
+      ],
+      "Azul marino": [
+        "images/as-001-azul-marino-1793663901261-8.jpg",
+        "images/as-001-azul-marino-1793663901261-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/as-001-verde-musgo-1793663901261-10.jpg",
+        "images/as-001-verde-musgo-1793663901261-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/as-001-1793663901261-v1-espalda.png"
+        },
+        "espalda": "images/disenos/as-001-1793663901261-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
