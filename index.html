@@ -742,8 +742,18 @@
   .aviso-pers { margin: 10px 0 0; padding: 9px 12px; font-size: 12px; border: 1px solid var(--yuzu); color: var(--tinta); }
   .quitar-pers { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--linea); }
   .quitar-pers select { width: 100%; }
+  select, select option, select optgroup { color-scheme: inherit; }
+  select option, select optgroup { background: var(--papel); color: var(--tinta); }
+  .quitar-pers select, .campo-txt { background-color: var(--papel); color: var(--tinta); }
   .check-pers { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; font-size: 12px; color: var(--tinta-2); cursor: pointer; }
   .check-pers input { margin-top: 2px; accent-color: var(--yuzu); }
+  .pers-modal { position: fixed; inset: 0; z-index: 400; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,.78); }
+  .pers-modal.abierta { display: flex; }
+  .pers-modal .caja { background: var(--papel); border: 1px solid var(--tinta); max-width: 460px; width: 100%; padding: 26px 24px; text-align: left; }
+  .pers-modal h3 { font-family: var(--display); font-size: 30px; text-transform: uppercase; line-height: 1; margin-bottom: 12px; }
+  .pers-modal p { font-size: 14px; line-height: 1.55; color: var(--tinta-2); margin-bottom: 16px; }
+  .pers-modal .btn { width: 100%; margin-top: 8px; }
+  .pers-modal .paso-ok { color: var(--yuzu); font-family: var(--dato); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin: 6px 0 0; }
   .aviso-calidad { margin-top: 16px; padding: 12px 14px; border-left: 3px solid var(--yuzu); background: var(--papel-2); font-size: 13px; line-height: 1.5; color: var(--tinta-2); }
   .aviso-calidad strong { color: var(--tinta); }
   .prev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
@@ -868,9 +878,9 @@
 
   <section class="drop envoltura" id="secDrop">
     <div>
-      <span class="dato">Último drop</span>
+      <span class="dato">Novedades</span>
       <h2 id="dropTit"></h2>
-      <p id="dropTexto">Lo más reciente que salió del taller. Se imprime a pedido y sale el miércoles.</p>
+      <p id="dropTexto">Los diseños más nuevos de todo el archivo. Se imprimen a pedido.</p>
       <a class="btn" id="dropBtn" href="#/c/todo">Ver el drop</a>
     </div>
     <div class="mini-carril" id="dropCarril"></div>
@@ -1178,6 +1188,19 @@
 </div>
 
 <!-- ============ PERSONALIZADO ============ -->
+<div class="pers-modal" id="persModal" role="dialog" aria-label="Guardá tu mockup">
+  <div class="caja">
+    <span class="dato">Último paso</span>
+    <h3>Guardá tu mockup antes de ir a WhatsApp</h3>
+    <p>Así lo adjuntás en el chat junto con tu diseño. Sin esas imágenes no puedo cotizar ni producir tu pedido.</p>
+    <button class="btn" id="pmDescargar" type="button">Descargar mockup y diseño</button>
+    <p class="paso-ok oculto" id="pmOk">✓ Imágenes guardadas</p>
+    <button class="btn btn-claro oculto" id="pmWsp" type="button">Abrir WhatsApp</button>
+    <button class="btn btn-hueco" id="pmVolver" type="button">Volver</button>
+    <p class="dato" id="pmEstado" style="margin-top:12px"></p>
+  </div>
+</div>
+
 <div class="pers-velo" id="persVelo"></div>
 <aside class="pers" id="pers" aria-label="Construí tu prenda" role="dialog">
   <div class="pers-top">
@@ -1258,7 +1281,7 @@ var NOMBRES = {
 var DROPS = null;
 
 /* Colecciones para los cuatro banners de la portada. null = las cuatro más grandes. */
-var BANNERS = null;
+var BANNERS = null, INICIO = {};
 
 var IMPRESION = {
   espalda: 'Diseño grande en la espalda y estampado pequeño en el pecho.',
@@ -1359,7 +1382,7 @@ function listaMockups(p) {
   return out;
 }
 function fotoBase(p) { var pf = p.portada && fotosDe(p, p.portada); if (pf && pf[0]) return pf[0]; var m = listaMockups(p); return m[0] || (p.imagenes || [])[0] || ''; }
-function fotoArte(p) { var a = (p.imagenes || [])[0]; if (a) return a; var m = listaMockups(p); return m[1] || m[0] || ''; }
+function fotoArte(p) { var a = (p.imagenes || [])[0]; if (a) return a; var pf = p.portada && fotosDe(p, p.portada); if (pf && pf[0]) return pf[0]; var m = listaMockups(p); return m[0] || ''; }
 function fotoAlt(p) { var base = fotoBase(p), m = listaMockups(p).filter(function (f) { return f !== base; }); if (m[0]) return m[0]; var a = fotoArte(p); return a && a !== base ? a : ''; }
 
 function porId(id) { id = Number(id); for (var i = 0; i < PRODUCTOS.length; i++) if (PRODUCTOS[i].id === id) return PRODUCTOS[i]; return null; }
@@ -1391,6 +1414,7 @@ function cargar() {
     if (T.nombres) Object.keys(T.nombres).forEach(function (k) { NOMBRES[k] = T.nombres[k]; });
     if (T.drops && T.drops.actual) DROPS = T.drops;
     if (T.banners && T.banners.length) BANNERS = T.banners;
+    INICIO = T.inicio || {};
     var P = T.precios || {};
     PRENDAS.forEach(function (pr) { if (P[pr.id] > 0) pr.precio = Number(P[pr.id]); });
     if (P.estilos) ESTILOS.forEach(function (e) { var v = P.estilos[e.id]; if (v !== undefined && v !== '' && v >= 0) e.precio = Number(v); });
@@ -1663,23 +1687,27 @@ function pintarInicio() {
     var ps = productosDeSub(s.nombre), p = ps[0];
     var nuevo = ps.some(esNuevo);
     return '<a class="banner" href="' + hrefSub(s) + '">' +
-      (p ? '<img src="' + esc(fotoArte(p)) + '" alt="" loading="lazy">' : '') +
+      ((INICIO.colecciones && INICIO.colecciones[s.nombre]) ? '<img src="' + esc(INICIO.colecciones[s.nombre]) + '" alt="" loading="lazy">' : p ? '<img src="' + esc(fotoArte(p)) + '" alt="" loading="lazy">' : '') +
       '<div class="banner-txt"><span class="dato">' + (nuevo ? 'Nuevo · ' : '') + esc(s.cat) + ' · ' + s.n + (s.n === 1 ? ' pieza' : ' piezas') + '</span>' +
       '<h3>' + nombreColeccion(s.nombre, true) + '</h3><span class="subrayado">Ver colección</span></div></a>';
   }).join('');
   if (!subsB.length) $('banners').parentElement.classList.add('oculto');
 
-  // ----- Último drop -----
-  if (DROP_ACTUAL) {
-    var dp = productosDeSub(DROP_ACTUAL.nombre).slice(0, 8);
-    $('dropTit').innerHTML = nombreColeccion(DROP_ACTUAL.nombre, true);
-    $('dropBtn').href = hrefSub(DROP_ACTUAL);
-    $('dropCarril').innerHTML = dp.map(function (p, i) { return tarjeta(p, i, 'mini'); }).join('');
+  // ----- Recién salidos (lo último subido, de cualquier colección; no repite el drop de arriba) -----
+  var nuevos = VISIBLES.slice().sort(function (a, b) { return b.id - a.id; }).slice(0, 8);
+  if (nuevos.length) {
+    $('dropTit').innerHTML = 'Recién salidos<br>del taller';
+    $('dropBtn').href = '#/c/todo'; $('dropBtn').textContent = 'Ver todo';
+    $('dropCarril').innerHTML = nuevos.map(function (p, i) { return tarjeta(p, i, 'mini'); }).join('');
   } else $('secDrop').classList.add('oculto');
 
   // ----- Banner grande -----
-  var arte = VISIBLES.filter(function (p) { return (p.imagenes || []).length; }).slice(0, 3);
-  $('granMosaico').innerHTML = arte.map(function (p) { return '<img src="' + esc(fotoArte(p)) + '" alt="" loading="lazy">'; }).join('');
+  var propias = (INICIO.gran || []).filter(Boolean), arte;
+  if (propias.length) $('granMosaico').innerHTML = propias.slice(0, 3).map(function (u) { return '<img src="' + esc(u) + '" alt="" loading="lazy">'; }).join('');
+  else {
+    arte = VISIBLES.filter(function (p) { return fotoArte(p); }).slice(0, 3);
+    $('granMosaico').innerHTML = arte.map(function (p) { return '<img src="' + esc(fotoArte(p)) + '" alt="" loading="lazy">'; }).join('');
+  }
   $('granConteo').textContent = 'El archivo completo · ' + VISIBLES.length + ' piezas';
 
   // ----- Reseñas -----
@@ -1688,10 +1716,10 @@ function pintarInicio() {
     $('resenasInicio').innerHTML = RESENAS.slice(0, 12).map(resenaHTML).join('');
   }
 
-  // ----- Muro -----
-  var muro = VISIBLES.filter(function (p) { return (p.imagenes || []).length; }).sort(function (a, b) { return b.id - a.id; }).slice(0, 6);
-  $('muro').innerHTML = muro.map(function (p) {
-    return '<a href="#/p/' + ref(p) + '" aria-label="' + esc(p.nombre) + '"><img src="' + esc(fotoArte(p)) + '" alt="" loading="lazy"></a>';
+  // ----- Muro (capturas de clientes que nos etiquetaron, subidas desde el admin) -----
+  var muro = (INICIO.muro || []).filter(Boolean);
+  $('muro').innerHTML = muro.map(function (u) {
+    return '<a href="#" onclick="return false" data-zoom-src="' + esc(u) + '" aria-label="Foto de un cliente"><img src="' + esc(u) + '" alt="Cliente de Yuzu" loading="lazy"></a>';
   }).join('');
   if (!muro.length) $('secMuro').classList.add('oculto');
 }
@@ -2917,7 +2945,7 @@ function psCalidad() {
   return out;
 }
 var PS_TOK = 0, PS_T = null;
-function persMockup(demora) {
+function persMockup(demora) { PS.descargado = false;
   clearTimeout(PS_T);
   PS_T = setTimeout(function () {
     var tok = ++PS_TOK, vs = psVersiones();
@@ -3184,8 +3212,28 @@ $('persEnviar').addEventListener('click', function () {
     'Total estimado: ' + plata(c.total) + '\n' +
     (propio ? '\nTe mando el mockup y mi diseño en los siguientes mensajes. Entiendo que si la imagen no sirve para imprimir se cotiza rehacerla antes de producir.' : '\nTe mando las referencias por acá.');
   evento('personalizado_enviar', { estilo: PS.estilo, modo: PS.modo, prenda: PS.prenda, value: c.total, currency: 'CRC', transaction_id: pedido, logo: propio ? PS.opc.logo : '', layout: propio ? PS.opc.layout : '' });
-  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
-  if (propio) { PS.enviado = { pedido: pedido }; pintarPers(); $('persCuerpo').scrollTop = 0; }
+  if (!propio) { window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank'); return; }
+  // Con diseño propio: primero tiene que guardar el mockup y el diseño; recién después se abre WhatsApp
+  PS.pend = { msg: msg, pedido: pedido };
+  $('pmOk').classList.toggle('oculto', !PS.descargado); $('pmWsp').classList.toggle('oculto', !PS.descargado);
+  $('pmDescargar').textContent = PS.descargado ? 'Descargar otra vez' : 'Descargar mockup y diseño'; $('pmEstado').textContent = '';
+  $('persModal').classList.add('abierta');
+});
+function persAbrirWhatsApp() {
+  var d = PS.pend; if (!d) return;
+  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(d.msg), '_blank');
+  PS.enviado = { pedido: d.pedido }; PS.pend = null; $('persModal').classList.remove('abierta'); pintarPers(); $('persCuerpo').scrollTop = 0;
+}
+$('pmVolver').addEventListener('click', function () { $('persModal').classList.remove('abierta'); });
+$('pmWsp').addEventListener('click', persAbrirWhatsApp);
+$('pmDescargar').addEventListener('click', function () {
+  var est = $('pmEstado'); est.textContent = 'Preparando las imágenes…';
+  var listo = function () { PS.descargado = true; $('pmOk').classList.remove('oculto'); $('pmWsp').classList.remove('oculto'); est.textContent = 'Si no ves las imágenes en tus descargas, tocá «Descargar otra vez». Después abrí WhatsApp y adjuntalas.'; $('pmDescargar').textContent = 'Descargar otra vez'; };
+  psArchivosExport(null).then(function (arch) {
+    if (!arch.length) { est.textContent = 'Todavía no se generó el mockup. Volvé y esperá un segundo.'; return; }
+    evento('descargar_mockup_pers', { prenda: PS.prenda, antes_de_enviar: 1 });
+    return compartirArchivos(arch, 'Mockup y diseño del pedido ' + (PS.pend ? PS.pend.pedido : '')).then(function (r) { if (r === 'cancelado') est.textContent = 'Se canceló. Tocá otra vez para guardar las imágenes.'; else listo(); });
+  });
 });
 $('cerrarPers').addEventListener('click', cerrarPers);
 $('persVelo').addEventListener('click', cerrarPers);
