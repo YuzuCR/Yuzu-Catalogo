@@ -13,7 +13,7 @@
     --font: 'Archivo', sans-serif; --mono: 'Space Mono', monospace;
   }
   body { background: var(--bg); color: var(--tinta); font-family: var(--font); min-height: 100vh; padding: 22px 14px 60px; font-size: 15px; }
-  .wrap { max-width: 680px; margin: 0 auto; }
+  .wrap { max-width: 720px; margin: 0 auto; }
   .logo { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--yuzu); letter-spacing: .04em; }
   .subtitle { color: var(--mudo); font-size: 12px; margin-bottom: 24px; }
 
@@ -341,6 +341,40 @@
   .ini-grid button { background: #000; border: 1px solid var(--linea); border-radius: 8px; padding: 0; cursor: pointer; color: inherit; font-size: 11px; text-align: left; overflow: hidden; }
   .ini-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
   .ini-grid span { display: block; padding: 4px 6px; }
+
+  /* Navegación nueva */
+  body.sin-config .panel { display: none !important; }
+  .tabs { position: sticky; top: 0; z-index: 50; background: var(--bg); padding: 8px 0; margin: 0 0 10px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: 0 0 auto; padding: 11px 14px; white-space: nowrap; }
+  .sub-nav { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 0 14px; padding-bottom: 2px; position: sticky; top: 58px; z-index: 40; background: var(--bg); }
+  .sub-nav::-webkit-scrollbar { display: none; }
+  .sub-nav button { flex: 0 0 auto; background: transparent; border: 1px solid var(--linea); border-radius: 99px; color: var(--mudo); font: inherit; font-size: 12px; padding: 7px 13px; cursor: pointer; }
+  .sub-nav button.on { border-color: var(--yuzu); color: var(--yuzu); }
+  .sec { display: none; }
+  .sec.on { display: block; }
+  .sec-nota { font-size: 12px; color: var(--mudo); line-height: 1.55; margin: 0 2px 14px; }
+  .sec-nota strong { color: var(--tinta); }
+  .kpis#hoyKpis { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .kpi-btn { text-align: left; cursor: pointer; font: inherit; color: inherit; }
+  .kpi-btn:hover { border-color: var(--yuzu); }
+  .hoy-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+  .hoy-acciones .btn { margin: 0; }
+  .flujo { margin: 0 0 10px 18px; padding: 0; font-size: 13px; line-height: 1.6; color: var(--tinta); }
+  .flujo li { margin-bottom: 6px; }
+  .mini-btn { padding: 5px 10px !important; font-size: 11px !important; margin: 0 !important; flex: none !important; }
+  @media (max-width: 520px) { .hoy-acciones { grid-template-columns: 1fr; } }
+
+  .acciones-prod { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 8px; }
+  .acciones-prod .btn { margin: 0; }
+  .mas-herr { margin-top: 10px; border: 1px solid var(--linea); border-radius: 8px; padding: 0 12px; }
+  .mas-herr summary { cursor: pointer; padding: 10px 0; font-size: 13px; color: var(--mudo); }
+  .herr-lista { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; padding-bottom: 12px; }
+  .herr-lista .btn { margin: 0; white-space: nowrap; }
+  .herr-lista span { font-size: 12px; color: var(--mudo); }
+  .nombre-fila .cab > span:last-child { flex-wrap: wrap; justify-content: flex-end; }
+  @media (max-width: 520px) { .acciones-prod { grid-template-columns: 1fr; } .herr-lista { grid-template-columns: 1fr; } .herr-lista span { margin-bottom: 6px; } }
+  .sub-h { font-size: 13px; color: var(--yuzu); margin: 18px 0 6px; font-weight: 600; letter-spacing: .02em; }
 </style>
 </head>
 <body>
@@ -359,25 +393,126 @@
     <input type="password" id="ghToken" placeholder="github_pat_xxxxx">
     <button class="btn" id="btnGuardarConfig">Guardar configuración</button>
   </div>
-  <div class="card" id="configOk" style="display:none;">
-    <div class="token-ok">✓ Configuración guardada <button id="btnBorrarConfig">cambiar</button></div>
-  </div>
 
   <!-- TABS -->
   <div class="tabs" id="tabs" style="display:none;">
-    <button class="tab on" data-tab="productos">Productos</button>
-    <button class="tab" data-tab="tienda">Tienda</button>
-    <button class="tab" data-tab="estudio">Portafolio</button>
-    <button class="tab" data-tab="boletines">Boletines</button>
-    <button class="tab" data-tab="ventas">Ventas</button>
-    <button class="tab" data-tab="produccion">Producción</button>
+    <button class="tab on" data-tab="hoy">Hoy</button>
+    <button class="tab" data-tab="pedidos">Pedidos</button>
+    <button class="tab" data-tab="productos">Catálogo</button>
+    <button class="tab" data-tab="inicio">Inicio</button>
+    <button class="tab" data-tab="ajustes">Precios</button>
+    <button class="tab" data-tab="mockups">Mockups</button>
+    <button class="tab" data-tab="numeros">Números</button>
+    <button class="tab" data-tab="mas">Más</button>
   </div>
 
-  <!-- ==================== PANEL PRODUCTOS ==================== -->
-  <div class="panel on" id="panel-productos">
-    <div class="card" id="formCard">
+  <!-- ==================== HOY ==================== -->
+  <div class="panel on" id="panel-hoy">
+    <div class="card">
+      <h2>Hoy en el taller</h2>
+      <div class="kpis" id="hoyKpis"><div class="kpi"><div class="n">…</div><div class="q">Cargando</div></div></div>
+      <div class="hoy-acciones">
+        <button class="btn" data-ir="pedidos/Bandeja" data-foco="pedidoTexto">＋ Pegar un pedido de WhatsApp</button>
+        <button class="btn btn-sec" data-ir="productos/Productos" data-click="btnSubidaLote">⇪ Subir diseños</button>
+        <button class="btn btn-sec" data-ir="pedidos/Producción">Ver qué producir</button>
+        <button class="btn btn-sec" data-ir="inicio/Portada y drop">Cambiar el drop</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Cómo fluye un pedido</h2>
+      <ol class="flujo">
+        <li><strong>Llega el mensaje</strong> por WhatsApp (de la tienda o de «Armá tu personalizada»).</li>
+        <li><strong>Pedidos › Bandeja:</strong> pegalo y tocá «Guardar en la bandeja». Queda «Por cerrar».</li>
+        <li><strong>Se vendió:</strong> se registra la venta sola (una por prenda) y pasa a <em>Producción</em>. No hay que registrarla a mano.</li>
+        <li><strong>Pedidos › Producción:</strong> ahí ves qué imprimir, qué prendas lisas comprar (lista de compras) y armás la lámina DTF.</li>
+        <li><strong>Números:</strong> ingresos, ganancia y lo más vendido salen solos de esas ventas.</li>
+      </ol>
+      <p class="mini">«Registrar venta a mano» (en Pedidos) es solo para ventas que no llegaron como mensaje: en persona, por Instagram, etc.</p>
+    </div>
+  </div>
+
+  <!-- ==================== PEDIDOS ==================== -->
+  <div class="panel" id="panel-pedidos">
+    <div class="sec" data-sec="Bandeja"><div class="card"><h2>Pedidos recibidos</h2>
+      <p class="mini" style="margin-top:0">Pegá el mensaje de WhatsApp tal como llega (catálogo o personalizada) y guardalo en la bandeja. Cuando se defina, tocá «Se vendió» o «No se vendió»: lo vendido pasa solo a Ventas y Producción, y las personalizadas entran en la cola.</p>
+      <textarea id="pedidoTexto" rows="6" placeholder="Hola Yuzu, quiero una prenda personalizada con mi diseño.&#10;Pedido P-261001-AB3&#10;..."></textarea>
+      <div class="row"><button class="btn btn-sec" id="btnLeerPedido">Guardar en la bandeja</button></div>
+      <div class="status" id="statusPedido"></div>
+      <div class="bandeja-filtros" id="bandejaFiltros">
+        <button class="on" data-bf="abiertos">Por cerrar</button><button data-bf="vendidos">Vendidos</button><button data-bf="no_vendidos">No vendidos</button><button data-bf="todos">Todos</button>
+      </div>
+      <div id="bandeja"></div>
+      <div id="bandejaStats"></div>
+    </div></div>
+    <div class="sec" data-sec="Producción">
+      <p class="sec-nota">Todo lo que marcaste «Se vendió» y todavía no está hecho. Cuando lo entregues, marcalo como producido.</p>
+      <div class="card"><h2>Por producir</h2><p class="mini" style="margin-top:0">Cada pieza vendida que falta hacer, agrupada por pedido.</p>
+      <div id="prodResumen"></div>
+      <div class="row"><button class="btn btn-sec" id="btnProdRecargar">Recargar</button><button class="btn btn-sec" id="btnProdHechos">Marcar todo como producido</button></div>
+      <div class="status" id="statusProd"></div>
+    </div>
+      <div class="card"><h2>Lista de compras</h2><p class="mini" style="margin-top:0">Las prendas lisas que tenés que pedirle al proveedor para lo que está por producir, sumadas por prenda, color y talla. «Copiar lista» la deja lista para pegar en WhatsApp.</p><div id="prodCompras"></div><button class="btn btn-sec" id="btnCopiarCompras" style="margin-top:10px">Copiar lista</button></div>
+      <div class="card"><h2>Lámina DTF</h2>
+      <p class="mini" style="margin-top:0">Acomoda todos los diseños de los pedidos pendientes en láminas del tamaño del proveedor. Usa los PNG de impresión de cada versión. Cada diseño se ajusta dentro de su caja sin deformarse.</p>
+      <div class="row"><div style="flex:1"><label>Ancho lámina (cm)</label><input type="number" id="dtfAncho" value="56" step="0.5"></div><div style="flex:1"><label>Alto lámina (cm)</label><select id="dtfAlto"><option value="50" selected>50 (medio metro)</option><option value="100">100 (metro)</option></select></div></div>
+      <div class="row"><div style="flex:1"><label>Resolución</label><select id="dtfDpi"><option value="150">150 dpi (liviana)</option><option value="300" selected>300 dpi (imprenta)</option></select></div><div style="flex:1"><label>Separación (cm)</label><input type="number" id="dtfGap" value="0.5" step="0.1"></div></div>
+      <div class="row"><div style="flex:1"><label>Espalda ancho × alto máx.</label><div class="row" style="margin:0"><input type="number" id="dtfEspW" value="27.5" step="0.5"><input type="number" id="dtfEspH" value="40" step="0.5"></div></div></div>
+      <div class="row"><div style="flex:1"><label>Pecho ancho × alto</label><div class="row" style="margin:0"><input type="number" id="dtfPecW" value="9" step="0.5"><input type="number" id="dtfPecH" value="11" step="0.5"></div></div><div style="flex:1"><label>Manga ancho × alto</label><div class="row" style="margin:0"><input type="number" id="dtfManW" value="7" step="0.5"><input type="number" id="dtfManH" value="30" step="0.5"></div></div></div>
+      <label class="chk" style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="dtfReal" checked> Usar el tamaño que tiene cada diseño en su mockup (sin marcar: usa las cajas de arriba)</label>
+      <label class="chk" style="display:flex;gap:8px;align-items:center;margin-top:6px"><input type="checkbox" id="dtfRecortar" checked> Recortar bordes transparentes de cada PNG</label>
+      <label class="chk" style="display:flex;gap:8px;align-items:center;margin-top:6px"><input type="checkbox" id="dtfGirar" checked> Permitir girar diseños 90° para aprovechar la lámina</label>
+      <button class="btn" id="btnArmarLamina" style="margin-top:12px">Armar lámina</button>
+      <div class="status" id="statusLamina"></div>
+      <div id="laminas"></div>
+    </div>
+    </div>
+    <div class="sec" data-sec="Venta a mano">
+      <p class="sec-nota">Solo para ventas que no llegaron como mensaje de WhatsApp (en persona, Instagram, un amigo). Las de la bandeja se registran solas.</p>
+      <div class="card"><h2>Registrar venta</h2>
+      <label>Producto</label><select id="ventaProducto"></select>
+      <div class="row"><div style="flex:1"><label>Talla</label><select id="ventaTalla"><option>S</option><option>M</option><option>L</option><option>XL</option></select></div><div style="flex:1"><label>Color</label><select id="ventaColor"></select></div></div>
+      <div class="row"><div style="flex:1"><label>Precio</label><input type="text" id="ventaPrecio"></div><div style="flex:1"><label>Fecha</label><input type="date" id="ventaFecha"></div></div>
+      <label>Canal</label><select id="ventaCanal"><option>WhatsApp</option><option>Instagram</option><option>TikTok</option><option>Referido</option><option>En persona</option><option>Otro</option></select>
+      <label>Nota</label><input type="text" id="ventaNota">
+      <button class="btn" id="btnGuardarVenta">Registrar venta</button>
+      <div class="status" id="statusVenta"></div>
+    </div>
+    </div>
+  </div>
+
+  <!-- ==================== CATÁLOGO ==================== -->
+  <div class="panel" id="panel-productos">
+    <div class="sec" data-sec="Productos"><div class="card" id="editCard">
+      <h2>Tus productos</h2>
+      <div class="acciones-prod">
+        <button class="btn" id="btnSubidaLote">⇪ Subir varios diseños</button>
+        <button class="btn btn-sec" id="btnEdLote">✎ Editar en lote</button>
+        <button class="btn btn-sec" id="btnGestionarVis">● Mostrar / ocultar</button>
+      </div>
+      <details class="mas-herr">
+        <summary>Más herramientas</summary>
+        <div class="herr-lista">
+          <button class="btn btn-sec" id="btnPrecioTodos">Precio a todos</button><span>Pone el mismo precio a todos los diseños.</span>
+          <button class="btn btn-sec" id="btnQuitarDesc">Quitar descuentos</button><span>Saca el precio rebajado de todos.</span>
+          <button class="btn btn-sec" id="btnPaginas">Vistas previas al compartir</button><span>Regenera las tarjetas que se ven al mandar un link por WhatsApp.</span>
+          <button class="btn btn-sec" id="btnLimpiar">Limpiar archivos sin usar</button><span>Busca imágenes del repo que ningún producto usa, para liberar espacio.</span>
+          <button class="btn btn-sec" id="btnRecargar">Recargar lista</button><span>Vuelve a leer los productos de GitHub.</span>
+          <button class="btn btn-sec" id="btnBorrarLote" style="color:var(--rojo);border-color:var(--rojo);">Borrar en lote</button><span>Elegís varios y se borran juntos.</span>
+        </div>
+      </details>
+      <p class="mini" style="margin-top:12px">En cada producto: ● visible/oculto · ◐ diseños PNG y versiones · ✎ editar datos · ✕ borrar.</p>
+      <div id="limpieza" style="display:none;margin-top:12px;border:1px solid var(--linea);border-radius:8px;padding:12px;">
+        <div class="status" id="statusLimp"></div>
+        <div id="limpLista" style="max-height:340px;overflow:auto"></div>
+        <div class="row" style="margin-top:10px"><button class="btn" id="btnLimpBorrar" style="display:none;background:var(--rojo);border-color:var(--rojo);">Borrar seleccionados</button><button class="btn btn-sec" id="btnLimpCerrar">Cerrar</button></div>
+      </div>
+      <input type="text" id="buscarProd" placeholder="Buscar un producto por nombre o colección…" style="margin-top:14px">
+      <div id="listaProductos" style="margin-top:10px;"></div>
+      <div class="status" id="statusEdit"></div>
+    </div></div>
+    <div class="sec" data-sec="Nuevo producto"><div class="card" id="formCard">
       <h2>Nuevo producto</h2>
-      <button class="btn btn-sec" id="btnSubidaLote" style="margin:0 0 6px">⇪ Subir varios diseños a la vez</button>
+      <p class="mini" style="margin-top:0">Para un solo diseño con fotos o mockups hechos a mano. Si tenés varios PNG, usá «Subir varios diseños» en Productos.</p>
       <label>Fotos del diseño</label>
       <div class="file-drop" id="dropGaleria">Tocá para elegir fotos</div>
       <input type="file" id="inputGaleria" class="hidden-input" accept="image/*" multiple>
@@ -432,63 +567,109 @@
       </div>
       <button class="btn" id="btnSubir">Subir producto</button>
       <div class="status" id="status"></div>
+    </div></div>
+    <div class="sec" data-sec="Colecciones">
+      <p class="sec-nota">Cada colección (AoT, Angel Beats…) en un solo lugar: cambiarle el nombre, la sigla, el título y la frase. La imagen y si sale en la portada se eligen en «Página de inicio».</p>
+      <div class="card">
+      <h2>Nombres de colecciones</h2>
+      <p class="mini">Formato de la tienda: <strong>SIGLA ⊹ TÍTULO</strong>. Lo que dejés vacío se llena solo (sigla automática y el nombre de la serie). Para que una colección no lleve sigla, escribí <strong>-</strong>.</p>
+      <div id="tNombres"></div>
+      <button class="btn" id="btnGuardarNombres">Guardar nombres</button>
+      <div class="status" id="statusNombres"></div>
     </div>
-    <div class="card" id="editCard">
-      <h2>Editar productos</h2>
-      <div class="row">
-        <button class="btn btn-sec" id="btnRecargar">Recargar lista</button>
-        <button class="btn btn-sec" id="btnEdLote">Editar en lote</button>
-        <button class="btn btn-sec" id="btnGestionarVis">Gestionar visibilidad</button>
-        <button class="btn btn-sec" id="btnQuitarDesc">Quitar descuentos</button>
-        <button class="btn btn-sec" id="btnPrecioTodos">Precio a todos</button>
-        <button class="btn btn-sec" id="btnPaginas">Vistas previas al compartir</button>
-        <button class="btn btn-sec" id="btnBorrarLote" style="color:var(--rojo);border-color:var(--rojo);">Borrar en lote</button>
-        <button class="btn btn-sec" id="btnLimpiar">Limpiar archivos sin usar</button>
-      </div>
-      <div id="limpieza" style="display:none;margin-top:12px;border:1px solid var(--linea);border-radius:8px;padding:12px;">
-        <div class="status" id="statusLimp"></div>
-        <div id="limpLista" style="max-height:340px;overflow:auto"></div>
-        <div class="row" style="margin-top:10px"><button class="btn" id="btnLimpBorrar" style="display:none;background:var(--rojo);border-color:var(--rojo);">Borrar seleccionados</button><button class="btn btn-sec" id="btnLimpCerrar">Cerrar</button></div>
-      </div>
-      <input type="text" id="buscarProd" placeholder="Buscar un producto por nombre o colección…" style="margin-top:14px">
-      <div id="listaProductos" style="margin-top:10px;"></div>
-      <div class="status" id="statusEdit"></div>
     </div>
   </div>
 
-  <!-- ==================== PANEL TIENDA ==================== -->
-  <div class="panel" id="panel-tienda">
-    <div class="card">
-      <h2>Imágenes de la tienda</h2>
-      <p class="mini">Se reemplazan al instante en la página. La portada se ve mejor horizontal; el logo, PNG con fondo transparente.</p>
-      <div id="imgsFijas"></div>
-      <div class="status" id="statusImgs"></div>
+  <!-- ==================== PÁGINA DE INICIO ==================== -->
+  <div class="panel" id="panel-inicio">
+    <div class="sec" data-sec="Portada y drop">
+      <div class="card">
+        <h2>Portada (lo primero que se ve)</h2>
+        <p class="mini" style="margin-top:0">La portada tiene tres cosas: <strong>tu foto</strong> de fondo, un <strong>título grande</strong> y el botón «Ver el catálogo». Por defecto el título es el nombre del <strong>drop actual</strong> y el botón lleva a esa colección; por eso aparecen juntos. Si escribís un título propio, se usa ese.</p>
+        <div id="imgsFijasPortada"></div>
+        <div class="row">
+          <div style="flex:1"><label>Texto pequeño arriba del título</label><input type="text" id="heroEtiq" placeholder="Drop actual"></div>
+          <div style="flex:2"><label>Título grande (vacío = nombre del drop)</label><input type="text" id="heroTitulo" placeholder="Automático"></div>
+        </div>
+        <label>Drop actual (la colección que se promociona)</label>
+        <select id="tDropActual"></select>
+        <label>Drops pasados (máximo 4 · salen en el menú)</label>
+        <div class="check-lista" id="tDropsPasados"></div>
+        <button class="btn" id="btnGuardarDrops">Guardar portada y drops</button>
+        <div class="status" id="statusDrops"></div>
+      </div>
     </div>
-
-    <div class="card" id="cardInicio">
-      <h2>Imágenes de la página de inicio</h2>
-      <p class="mini">Elegí un diseño que ya tenés o subí una imagen. Se guarda al instante. «Automática» deja que la tienda escoja sola.</p>
-      <h3 style="font-size:14px;margin:14px 0 4px">Colecciones del inicio</h3>
-      <p class="mini" style="margin-top:0">Las colecciones que salen en los cuadros grandes (se eligen abajo en «Drops y banners»).</p>
-      <div id="inicioCols"></div>
-      <h3 style="font-size:14px;margin:18px 0 4px">Fondo de «Camisetas gráficas»</h3>
-      <p class="mini" style="margin-top:0">Hasta 3 imágenes. Si no ponés ninguna, se usan 3 diseños automáticos.</p>
-      <div id="inicioGran"></div>
-      <h3 style="font-size:14px;margin:18px 0 4px">Etiquétanos · fotos de clientes</h3>
-      <p class="mini" style="margin-top:0">Subí capturas o fotos de quienes nos etiquetaron. Si no hay ninguna, la sección no aparece.</p>
-      <div id="inicioMuro" class="ini-muro"></div>
-      <label class="btn btn-sec" style="margin-top:10px;cursor:pointer;display:inline-block">Subir fotos<input type="file" accept="image/*" multiple data-ini-muro style="display:none"></label>
-      <div class="status" id="statusInicio"></div>
+    <div class="sec" data-sec="Colecciones en portada">
+      <div class="card">
+        <h2>Cuadros de colecciones</h2>
+        <p class="mini" style="margin-top:0">Los 4 cuadros grandes del inicio. Elegí qué colección va en cada uno y su imagen. Se guarda al instante.</p>
+        <div id="inicioCols"></div>
+        <div class="status" id="statusInicio"></div>
+      </div>
     </div>
+    <div class="sec" data-sec="Secciones">
+      <div class="card">
+        <h2>Qué secciones se muestran</h2>
+        <p class="mini" style="margin-top:0">En el orden en que aparecen en la tienda. Desmarcá lo que no querés mostrar por ahora (no se borra nada).</p>
+        <div class="check-lista" id="inicioSecciones"></div>
+        <div class="status" id="statusSecciones"></div>
+      </div>
+      <div class="card">
+        <h2>Fondo de «Camisetas gráficas»</h2>
+        <p class="mini" style="margin-top:0">Hasta 3 imágenes. Sin ninguna, se usan 3 diseños automáticos.</p>
+        <div id="inicioGran"></div>
+        <div class="status" id="statusGran"></div>
+      </div>
+      <div class="card">
+        <h2>Etiquétanos · fotos de clientes</h2>
+        <p class="mini" style="margin-top:0">Capturas o fotos de quienes te etiquetaron. Sin ninguna, la sección no aparece.</p>
+        <div id="inicioMuro" class="ini-muro"></div>
+        <label class="btn btn-sec" style="margin-top:10px;cursor:pointer;display:inline-block">Subir fotos<input type="file" accept="image/*" multiple data-ini-muro style="display:none"></label>
+        <div class="status" id="statusMuro"></div>
+      </div>
+    </div>
+    <div class="sec" data-sec="Reseñas"><div class="card">
+      <h2 id="resFormTitulo">Nueva reseña</h2>
+      <p class="mini">Solo reseñas reales. Subí la captura de WhatsApp tal cual (podés tapar el número antes).</p>
+      <label>Captura</label>
+      <div class="file-drop" id="dropResena">Tocá para elegir la captura</div>
+      <input type="file" id="inputResena" class="hidden-input" accept="image/*">
+      <img class="prev-bol" id="resPrev" style="display:none;object-fit:contain;max-height:220px;">
+      <label>Nombre del cliente</label><input type="text" id="resNombre" placeholder="ej: María">
+      <div class="row">
+        <div style="flex:1"><label>Fecha</label><input type="date" id="resFecha"></div>
+        <div style="flex:1"><label>Estrellas</label><select id="resEstrellas"><option value="">Sin estrellas</option><option value="5">★★★★★</option><option value="4">★★★★</option><option value="3">★★★</option></select></div>
+      </div>
+      <label>Texto (opcional si hay captura)</label><textarea id="resTexto" rows="3" placeholder="Lo que te escribió, con sus palabras"></textarea>
+      <label>Pieza</label><select id="resPieza"></select>
+      <button class="btn" id="btnGuardarResena">Guardar reseña</button>
+      <button class="btn btn-sec" id="btnCancelarResena" style="display:none;">Cancelar</button>
+      <div class="status" id="statusResena"></div>
+    </div><div class="card"><h2>Reseñas publicadas</h2><div id="listaResenas"></div></div></div>
+    <div class="sec" data-sec="Logo y taller">
+      <div class="card">
+        <h2>Logo y foto del taller</h2>
+        <p class="mini" style="margin-top:0">El logo es el de la barra de arriba (PNG transparente, en negro; en modo oscuro se invierte solo). La foto del taller sale en «Se hace aquí mismo».</p>
+        <div id="imgsFijas"></div>
+        <div class="status" id="statusImgs"></div>
+      </div>
+    </div>
+  </div>
 
-    <div class="card">
+  <!-- ==================== PRECIOS Y REGLAS ==================== -->
+  <div class="panel" id="panel-ajustes">
+    <div class="sec" data-sec="Precios y costos">
+      <p class="sec-nota"><strong>Precio</strong> = lo que paga el cliente. <strong>Costo</strong> = lo que te cuesta a vos hacer una prenda; el cliente nunca lo ve y solo sirve para calcular tu ganancia en «Números».</p>
+      <div class="card">
       <h2>Precios de prendas</h2>
-      <p class="mini">Se usan en "Construí tu prenda" y para la diferencia de precio entre prendas en cada diseño.</p>
+      <h3 class="sub-h">1 · Precio inicial al subir un diseño</h3>
       <div class="row">
         <div style="flex:1"><label>Producto nuevo del catálogo (boxy)</label><input type="text" inputmode="numeric" id="pProducto"></div>
         <div style="flex:1"><label>Producto nuevo · solo pecho</label><input type="text" inputmode="numeric" id="pProductoPecho"></div>
       </div>
       <p class="mini" style="margin-top:2px">Es el precio que aparece solo al crear un producto. Los que ya existen se cambian en Productos o con "Precio a todos".</p>
+      <h3 class="sub-h">2 · Precio de cada prenda</h3>
+      <p class="mini" style="margin-top:0">Se usa en «Construí tu prenda» y para la diferencia cuando el cliente cambia de prenda en un diseño (ej. de boxy a hoodie).</p>
       <div class="row">
         <div style="flex:1"><label>Boxy oversize</label><input type="text" inputmode="numeric" id="pBoxy"></div>
         <div style="flex:1"><label>Sin mangas</label><input type="text" inputmode="numeric" id="pSinmangas"></div>
@@ -497,7 +678,7 @@
         <div style="flex:1"><label>Manga larga</label><input type="text" inputmode="numeric" id="pMangalarga"></div>
         <div style="flex:1"><label>Hoodie</label><input type="text" inputmode="numeric" id="pHoodie"></div>
       </div>
-      <label style="margin-top:20px">Precio del diseño según estilo (se suma a la prenda)</label>
+      <h3 class="sub-h">3 · Diseño personalizado (se suma a la prenda)</h3>
       <div class="row">
         <div style="flex:1"><label>Minimalista</label><input type="text" inputmode="numeric" id="pEstMinimalista"></div>
         <div style="flex:1"><label>Brutalista</label><input type="text" inputmode="numeric" id="pEstBrutalista"></div>
@@ -514,8 +695,15 @@
       <button class="btn" id="btnGuardarPrecios">Guardar precios</button>
       <div class="status" id="statusPrecios"></div>
     </div>
-
-    <div class="card">
+      <div class="card"><h2>Costos por prenda</h2><p class="mini" style="margin-top:0">Lo que te cuesta a vos cada prenda. El cliente no lo ve; sirve para calcular la ganancia en «Números» y el margen de abajo.</p>
+      <div class="row"><div style="flex:1"><label>Tela</label><input type="text" id="costoTela" value="4500"></div><div style="flex:1"><label>DTF</label><input type="text" id="costoDtf" value="3000"></div></div>
+      <div class="row"><div style="flex:1"><label>Empaque</label><input type="text" id="costoEmpaque" value="500"></div><div style="flex:1"><label>Envío</label><input type="text" id="costoEnvio" value="2500"></div></div>
+      <button class="btn btn-sec" id="btnGuardarCostos">Guardar costos</button>
+      <div class="status" id="statusCostos"></div>
+    </div>
+      <div class="card"><h2>Margen por prenda</h2><div id="margenVista"></div></div>
+    </div>
+    <div class="sec" data-sec="Descuentos"><div class="card">
       <h2>Descuentos</h2>
       <p class="mini">Botón flotante tipo "10% OFF": el cliente deja su correo y el código se aplica solo en la bolsa. Después se le ofrece un descuento mayor a cambio de su WhatsApp.</p>
       <label class="check-row"><input type="checkbox" id="capActivo"><span>Activar captura de correo y teléfono</span></label>
@@ -541,9 +729,8 @@
       </div>
       <button class="btn" id="btnGuardarDesc">Guardar descuentos</button>
       <div class="status" id="statusDesc"></div>
-    </div>
-
-    <div class="card">
+    </div></div>
+    <div class="sec" data-sec="Urgencia"><div class="card">
       <h2>Fecha de corte</h2>
       <p class="mini">Se muestra en la tienda con cuenta regresiva: "Pedí antes del martes 11:59 p. m. → sale el miércoles".</p>
       <label class="check-row"><input type="checkbox" id="corteActivo"><span>Mostrar fecha de corte</span></label>
@@ -554,26 +741,26 @@
       </div>
       <button class="btn" id="btnGuardarCorte">Guardar fecha de corte</button>
       <div class="status" id="statusCorte"></div>
-    </div>
-
-    <div class="card">
+    </div><div class="card">
       <h2>Pedidos reales en la tienda</h2>
       <p class="mini" style="margin-top:0">Urgencia sin inventar nada: sale de las ventas que registrás. En cada producto: "Alguien la pidió hace 3 h" o "Pedida 4 veces este mes". En la marquesina: "12 pedidos esta semana", solo si llegás al mínimo. La tienda ve solo esos números, nunca nombres ni montos.</p>
       <label class="check-row"><input type="checkbox" id="actActivo"><span>Mostrar pedidos reales</span></label>
       <label>Mínimo de pedidos en la semana para mostrarlo en la marquesina</label><input type="number" id="actMinimo" min="1" style="max-width:120px">
       <button class="btn btn-sec" id="btnGuardarAct">Guardar</button>
       <div class="status" id="statusAct"></div>
-    </div>
-
-    <div class="card">
+    </div></div>
+    <div class="sec" data-sec="Colores"><div class="card">
       <h2>Colores por prenda</h2>
       <p class="mini">Qué colores se ofrecen en sin mangas, manga larga y hoodie (para todos los diseños). Los de la boxy se eligen en cada producto.</p>
       <div id="colPrendas"></div>
       <button class="btn" id="btnGuardarColPrendas">Guardar colores</button>
       <div class="status" id="statusColPrendas"></div>
-    </div>
+    </div></div>
+  </div>
 
-    <div class="card">
+  <!-- ==================== MOCKUPS ==================== -->
+  <div class="panel" id="panel-mockups">
+    <div class="sec" data-sec="Zonas"><div class="card">
       <h2>Zonas de impresión</h2>
       <p class="mini">Mové el recuadro y estiralo desde el punto amarillo. El diseño de prueba se encaja adentro sin deformarse. Lo que guardés se aplica a todos los colores de esa prenda.</p>
       <div class="row">
@@ -592,29 +779,8 @@
         <button class="btn btn-sec" id="btnZonaReset" style="flex:1">Restablecer</button>
       </div>
       <div class="status" id="statusZona"></div>
-    </div>
-
-    <div class="card">
-      <h2>Archivos de impresión (privados)</h2>
-      <p class="mini" style="margin-top:0">Tu repo de la tienda es público: cualquiera puede bajar lo que hay ahí. Los PNG en calidad de imprenta van en un repo <strong>privado</strong> aparte; la tienda solo usa una versión liviana (1000 px) que sirve para ver, no para imprimir.<br>1) En GitHub creá un repo nuevo, privado (ej: <em>Yuzu-Privado</em>). 2) En tu token agregá ese repo con permiso Contents: lectura y escritura. 3) Escribí el nombre acá.</p>
-      <label>Repo privado</label><input type="text" id="privRepo" placeholder="Yuzu-Privado">
-      <div class="row"><button class="btn btn-sec" id="btnPrivProbar">Guardar y probar</button><button class="btn btn-sec" id="btnPrivMover">Mover los que están en el público</button></div>
-      <div class="status" id="statusPriv"></div>
-    </div>
-
-    <div class="card">
-      <h2>Logo en el pecho</h2>
-      <p class="mini" style="margin-top:0">Si un diseño no trae PNG de pecho, el mockup lleva este logo en el frente (y entra en la lámina DTF). PNG transparente, recortado al borde.</p>
-      <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="logoActivo" checked> Usar logo cuando no hay diseño de pecho</label>
-      <div class="png-grid" style="grid-template-columns:repeat(2,1fr);margin-top:10px" id="logoGrid">
-        <label class="png-slot" data-logo="claro" style="background:#111"><input type="file" accept="image/png,application/pdf,.pdf"><img alt=""><span>Logo claro<br><small>(va en telas oscuras)</small></span></label>
-        <label class="png-slot" data-logo="oscuro" style="background:#eee;color:#333"><input type="file" accept="image/png,application/pdf,.pdf"><img alt=""><span>Logo oscuro<br><small>(va en telas claras)</small></span></label>
-      </div>
-      <button class="btn btn-sec" id="btnLogoGuardar">Guardar logo</button>
-      <div class="status" id="statusLogo"></div>
-    </div>
-
-    <div class="card">
+    </div></div>
+    <div class="sec" data-sec="Fotos de prendas"><div class="card">
       <h2>Fotos de prendas (plantillas)</h2>
       <p class="mini">Los colores sin foto propia se tiñen a partir de la foto blanca. Si subís la foto real de un color, se usa esa. Mismo encuadre que las demás, 1080 × 1440.</p>
       <div class="plant-lista" id="plantLista"></div>
@@ -629,52 +795,40 @@
       </div>
       <button class="btn btn-sec" id="btnPlSubir">Subir fotos de este color</button>
       <div class="status" id="statusPl"></div>
-    </div>
-
-    <div class="card">
-      <h2>Drops y banners</h2>
-      <label>Drop actual</label>
-      <select id="tDropActual"></select>
-      <label>Drops pasados (máximo 4)</label>
-      <div class="check-lista" id="tDropsPasados"></div>
-      <label>Banners de la portada (máximo 4 · vacío = automático)</label>
-      <div class="check-lista" id="tBanners"></div>
-      <button class="btn" id="btnGuardarDrops">Guardar drops y banners</button>
-      <div class="status" id="statusDrops"></div>
-    </div>
-
-    <div class="card">
-      <h2>Nombres de colecciones</h2>
-      <p class="mini">Formato de la tienda: <strong>SIGLA ⊹ TÍTULO</strong>. Lo que dejés vacío se llena solo (sigla automática y el nombre de la serie). Para que una colección no lleve sigla, escribí <strong>-</strong>.</p>
-      <div id="tNombres"></div>
-      <button class="btn" id="btnGuardarNombres">Guardar nombres</button>
-      <div class="status" id="statusNombres"></div>
-    </div>
-
-    <div class="card">
-      <h2 id="resFormTitulo">Nueva reseña</h2>
-      <p class="mini">Solo reseñas reales. Subí la captura de WhatsApp tal cual (podés tapar el número antes).</p>
-      <label>Captura</label>
-      <div class="file-drop" id="dropResena">Tocá para elegir la captura</div>
-      <input type="file" id="inputResena" class="hidden-input" accept="image/*">
-      <img class="prev-bol" id="resPrev" style="display:none;object-fit:contain;max-height:220px;">
-      <label>Nombre del cliente</label><input type="text" id="resNombre" placeholder="ej: María">
-      <div class="row">
-        <div style="flex:1"><label>Fecha</label><input type="date" id="resFecha"></div>
-        <div style="flex:1"><label>Estrellas</label><select id="resEstrellas"><option value="">Sin estrellas</option><option value="5">★★★★★</option><option value="4">★★★★</option><option value="3">★★★</option></select></div>
+    </div></div>
+    <div class="sec" data-sec="Logo en el pecho"><div class="card">
+      <h2>Logo en el pecho</h2>
+      <p class="mini" style="margin-top:0">Si un diseño no trae PNG de pecho, el mockup lleva este logo en el frente (y entra en la lámina DTF). PNG transparente, recortado al borde.</p>
+      <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="logoActivo" checked> Usar logo cuando no hay diseño de pecho</label>
+      <div class="png-grid" style="grid-template-columns:repeat(2,1fr);margin-top:10px" id="logoGrid">
+        <label class="png-slot" data-logo="claro" style="background:#111"><input type="file" accept="image/png,application/pdf,.pdf"><img alt=""><span>Logo claro<br><small>(va en telas oscuras)</small></span></label>
+        <label class="png-slot" data-logo="oscuro" style="background:#eee;color:#333"><input type="file" accept="image/png,application/pdf,.pdf"><img alt=""><span>Logo oscuro<br><small>(va en telas claras)</small></span></label>
       </div>
-      <label>Texto (opcional si hay captura)</label><textarea id="resTexto" rows="3" placeholder="Lo que te escribió, con sus palabras"></textarea>
-      <label>Pieza</label><select id="resPieza"></select>
-      <button class="btn" id="btnGuardarResena">Guardar reseña</button>
-      <button class="btn btn-sec" id="btnCancelarResena" style="display:none;">Cancelar</button>
-      <div class="status" id="statusResena"></div>
-    </div>
-    <div class="card"><h2>Reseñas publicadas</h2><div id="listaResenas"></div></div>
+      <button class="btn btn-sec" id="btnLogoGuardar">Guardar logo</button>
+      <div class="status" id="statusLogo"></div>
+    </div></div>
+    <div class="sec" data-sec="Archivos privados"><div class="card">
+      <h2>Archivos de impresión (privados)</h2>
+      <p class="mini" style="margin-top:0">Tu repo de la tienda es público: cualquiera puede bajar lo que hay ahí. Los PNG en calidad de imprenta van en un repo <strong>privado</strong> aparte; la tienda solo usa una versión liviana (1000 px) que sirve para ver, no para imprimir.<br>1) En GitHub creá un repo nuevo, privado (ej: <em>Yuzu-Privado</em>). 2) En tu token agregá ese repo con permiso Contents: lectura y escritura. 3) Escribí el nombre acá.</p>
+      <label>Repo privado</label><input type="text" id="privRepo" placeholder="Yuzu-Privado">
+      <div class="row"><button class="btn btn-sec" id="btnPrivProbar">Guardar y probar</button><button class="btn btn-sec" id="btnPrivMover">Mover los que están en el público</button></div>
+      <div class="status" id="statusPriv"></div>
+    </div></div>
   </div>
 
-  <!-- ==================== PANEL ESTUDIO ==================== -->
-  <div class="panel" id="panel-estudio">
-    <div class="card">
+  <!-- ==================== NÚMEROS ==================== -->
+  <div class="panel" id="panel-numeros">
+    <div class="card"><h2>Números</h2>
+      <select id="ventaRango"><option value="30">30 días</option><option value="90">90 días</option><option value="365">1 año</option><option value="0" selected>Todo</option></select>
+      <div id="tablero"></div>
+      <div class="row"><button class="btn btn-sec" id="btnCsv">CSV</button><button class="btn btn-sec" id="btnRecargarVentas">Recargar</button></div>
+    </div>
+    <div class="card"><h2>Últimas ventas</h2><div id="listaVentas"></div></div>
+  </div>
+
+  <!-- ==================== MÁS ==================== -->
+  <div class="panel" id="panel-mas">
+    <div class="sec" data-sec="Portafolio"><div class="card">
       <h2>Editar portafolio</h2>
       <label>Título principal</label>
       <input type="text" id="estTitulo" value="Arley Andre">
@@ -689,18 +843,13 @@
 20+|Negocios ayudados</textarea>
       <button class="btn" id="btnGuardarEstudio">Guardar portafolio</button>
       <div class="status" id="statusEstudio"></div>
-    </div>
-    <div class="card">
+    </div><div class="card">
       <h2>Bloques del portafolio</h2>
       <p class="mini">Cada bloque es una sección. Podés subir/bajar, editar y borrar.</p>
       <div id="listaBloques"></div>
       <button class="btn btn-sec" id="btnAgregarBloque">+ Añadir bloque</button>
-    </div>
-  </div>
-
-  <!-- ==================== PANEL BOLETINES ==================== -->
-  <div class="panel" id="panel-boletines">
-    <div class="card">
+    </div></div>
+    <div class="sec" data-sec="Boletines"><div class="card">
       <h2 id="bolFormTitulo">Nuevo boletín</h2>
       <label>Imagen</label><input type="file" id="bolArchivo" accept="image/*">
       <img class="prev-bol" id="bolPrev" style="display:none;">
@@ -716,67 +865,13 @@
       <button class="btn" id="btnGuardarBol">Guardar boletín</button>
       <button class="btn btn-sec" id="btnCancelarBol" style="display:none;">Cancelar</button>
       <div class="status" id="statusBol"></div>
-    </div>
-    <div class="card"><h2>Boletines guardados</h2><div id="listaBoletines"></div></div>
+    </div><div class="card"><h2>Boletines guardados</h2><div id="listaBoletines"></div></div></div>
+    <div class="sec" data-sec="Conexión">  <div class="card" id="configOk" style="display:none;">
+    <div class="token-ok">✓ Configuración guardada <button id="btnBorrarConfig">cambiar</button></div>
+  </div>
+</div>
   </div>
 
-  <!-- ==================== PANEL VENTAS ==================== -->
-  <div class="panel" id="panel-ventas">
-    <div class="card"><h2>Costos</h2>
-      <div class="row"><div style="flex:1"><label>Tela</label><input type="text" id="costoTela" value="4500"></div><div style="flex:1"><label>DTF</label><input type="text" id="costoDtf" value="3000"></div></div>
-      <div class="row"><div style="flex:1"><label>Empaque</label><input type="text" id="costoEmpaque" value="500"></div><div style="flex:1"><label>Envío</label><input type="text" id="costoEnvio" value="2500"></div></div>
-      <button class="btn btn-sec" id="btnGuardarCostos">Guardar costos</button>
-      <div class="status" id="statusCostos"></div>
-    </div>
-    <div class="card"><h2>Pedidos recibidos</h2>
-      <p class="mini" style="margin-top:0">Pegá el mensaje de WhatsApp tal como llega (catálogo o personalizada) y guardalo en la bandeja. Cuando se defina, tocá «Se vendió» o «No se vendió»: lo vendido pasa solo a Ventas y Producción, y las personalizadas entran en la cola.</p>
-      <textarea id="pedidoTexto" rows="6" placeholder="Hola Yuzu, quiero una prenda personalizada con mi diseño.&#10;Pedido P-261001-AB3&#10;..."></textarea>
-      <div class="row"><button class="btn btn-sec" id="btnLeerPedido">Guardar en la bandeja</button></div>
-      <div class="status" id="statusPedido"></div>
-      <div class="bandeja-filtros" id="bandejaFiltros">
-        <button class="on" data-bf="abiertos">Por cerrar</button><button data-bf="vendidos">Vendidos</button><button data-bf="no_vendidos">No vendidos</button><button data-bf="todos">Todos</button>
-      </div>
-      <div id="bandeja"></div>
-      <div id="bandejaStats"></div>
-    </div>
-    <div class="card"><h2>Registrar venta</h2>
-      <label>Producto</label><select id="ventaProducto"></select>
-      <div class="row"><div style="flex:1"><label>Talla</label><select id="ventaTalla"><option>S</option><option>M</option><option>L</option><option>XL</option></select></div><div style="flex:1"><label>Color</label><select id="ventaColor"></select></div></div>
-      <div class="row"><div style="flex:1"><label>Precio</label><input type="text" id="ventaPrecio"></div><div style="flex:1"><label>Fecha</label><input type="date" id="ventaFecha"></div></div>
-      <label>Canal</label><select id="ventaCanal"><option>WhatsApp</option><option>Instagram</option><option>TikTok</option><option>Referido</option><option>En persona</option><option>Otro</option></select>
-      <label>Nota</label><input type="text" id="ventaNota">
-      <button class="btn" id="btnGuardarVenta">Registrar venta</button>
-      <div class="status" id="statusVenta"></div>
-    </div>
-    <div class="card"><h2>Números</h2>
-      <select id="ventaRango"><option value="30">30 días</option><option value="90">90 días</option><option value="365">1 año</option><option value="0" selected>Todo</option></select>
-      <div id="tablero"></div>
-      <div class="row"><button class="btn btn-sec" id="btnCsv">CSV</button><button class="btn btn-sec" id="btnRecargarVentas">Recargar</button></div>
-    </div>
-    <div class="card"><h2>Últimas ventas</h2><div id="listaVentas"></div></div>
-  </div>
-  <!-- ==================== PANEL PRODUCCIÓN ==================== -->
-  <div class="panel" id="panel-produccion">
-    <div class="card"><h2>Por producir</h2>
-      <div id="prodResumen"></div>
-      <div class="row"><button class="btn btn-sec" id="btnProdRecargar">Recargar</button><button class="btn btn-sec" id="btnProdHechos">Marcar todo como producido</button></div>
-      <div class="status" id="statusProd"></div>
-    </div>
-    <div class="card"><h2>Lista de compras</h2><div id="prodCompras"></div><button class="btn btn-sec" id="btnCopiarCompras" style="margin-top:10px">Copiar lista</button></div>
-    <div class="card"><h2>Lámina DTF</h2>
-      <p class="mini" style="margin-top:0">Acomoda todos los diseños de los pedidos pendientes en láminas del tamaño del proveedor. Usa los PNG de impresión de cada versión. Cada diseño se ajusta dentro de su caja sin deformarse.</p>
-      <div class="row"><div style="flex:1"><label>Ancho lámina (cm)</label><input type="number" id="dtfAncho" value="56" step="0.5"></div><div style="flex:1"><label>Alto lámina (cm)</label><select id="dtfAlto"><option value="50" selected>50 (medio metro)</option><option value="100">100 (metro)</option></select></div></div>
-      <div class="row"><div style="flex:1"><label>Resolución</label><select id="dtfDpi"><option value="150">150 dpi (liviana)</option><option value="300" selected>300 dpi (imprenta)</option></select></div><div style="flex:1"><label>Separación (cm)</label><input type="number" id="dtfGap" value="0.5" step="0.1"></div></div>
-      <div class="row"><div style="flex:1"><label>Espalda ancho × alto máx.</label><div class="row" style="margin:0"><input type="number" id="dtfEspW" value="27.5" step="0.5"><input type="number" id="dtfEspH" value="40" step="0.5"></div></div></div>
-      <div class="row"><div style="flex:1"><label>Pecho ancho × alto</label><div class="row" style="margin:0"><input type="number" id="dtfPecW" value="9" step="0.5"><input type="number" id="dtfPecH" value="11" step="0.5"></div></div><div style="flex:1"><label>Manga ancho × alto</label><div class="row" style="margin:0"><input type="number" id="dtfManW" value="7" step="0.5"><input type="number" id="dtfManH" value="30" step="0.5"></div></div></div>
-      <label class="chk" style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="dtfReal" checked> Usar el tamaño que tiene cada diseño en su mockup (sin marcar: usa las cajas de arriba)</label>
-      <label class="chk" style="display:flex;gap:8px;align-items:center;margin-top:6px"><input type="checkbox" id="dtfRecortar" checked> Recortar bordes transparentes de cada PNG</label>
-      <label class="chk" style="display:flex;gap:8px;align-items:center;margin-top:6px"><input type="checkbox" id="dtfGirar" checked> Permitir girar diseños 90° para aprovechar la lámina</label>
-      <button class="btn" id="btnArmarLamina" style="margin-top:12px">Armar lámina</button>
-      <div class="status" id="statusLamina"></div>
-      <div id="laminas"></div>
-    </div>
-  </div>
 
 </div>
 
@@ -994,9 +1089,12 @@ function mostrarEstadoConfig() {
   if (cfg.owner && cfg.repo && cfg.token) {
     $('setupCard').style.display = 'none'; $('configOk').style.display = 'block'; $('formCard').style.display = 'block';
     $('tabs').style.display = 'flex'; $('editCard').style.display = 'block';
-    renderColorChecks(); cargarCategorias().then(cargarProductos);
-    cargarEstudio(); cargarBoletines(); cargarVentas(); cargarCfgMockup();
+    document.body.classList.remove('sin-config');
+    renderColorChecks(); cargarCategorias().then(cargarProductos).then(function () { cargarUnaVez('tienda', cargarTienda); });
+    cargarVentas(); cargarCfgMockup();
+    irA(leerPos('yuzu_tab') || 'hoy');
   } else {
+    document.body.classList.add('sin-config');
     $('setupCard').style.display = 'block'; $('configOk').style.display = 'none'; $('formCard').style.display = 'none';
     $('editCard').style.display = 'none'; $('tabs').style.display = 'none';
   }
@@ -1374,7 +1472,7 @@ function cargarProductos() {
   statusEdit('loading', 'Cargando productos...');
   return ghGet('data/products.json').then(function (r) {
     PRODUCTOS = r.content;
-    renderLista();
+    renderLista(); renderHoy();
     pintarSugColecciones();
     $('statusEdit').className = 'status';
   }).catch(function (e) { statusEdit('err', e.message); });
@@ -2198,19 +2296,84 @@ $('btnLimpBorrar').addEventListener('click', function () {
 // ============================================================
 // 3. TABS
 // ============================================================
-$('tabs').addEventListener('click', function(e) {
-  var b = e.target.closest('[data-tab]'); if(!b) return;
-  var t = b.getAttribute('data-tab');
-  document.querySelectorAll('.tab').forEach(function(el){ el.classList.remove('on'); });
-  b.classList.add('on');
-  document.querySelectorAll('.panel').forEach(function(el){ el.classList.remove('on'); });
-  $('panel-'+t).classList.add('on');
-  if (t === 'boletines') cargarBoletines();
-  if (t === 'ventas') cargarVentas();
-  if (t === 'produccion') cargarProduccion();
-  if (t === 'estudio') cargarEstudio();
-  if (t === 'tienda') cargarTienda();
+// Pestañas principales + secciones dentro de cada pestaña (se recuerda dónde quedaste)
+var CARGADO = {};
+function cargarUnaVez(k, fn) { if (CARGADO[k]) return; CARGADO[k] = true; var r = fn(); if (r && r.catch) r.catch(function () { CARGADO[k] = false; }); }
+function cargarDeTab(t) {
+  if (t === 'hoy') { cargarVentas(); }
+  if (t === 'pedidos') { cargarVentas(); cargarProduccion(); }
+  if (t === 'numeros') cargarVentas();
+  if (t === 'inicio' || t === 'ajustes' || t === 'mockups' || t === 'productos') cargarUnaVez('tienda', cargarTienda);
+  if (t === 'ajustes') cargarVentas();
+  if (t === 'mas') { cargarUnaVez('estudio', cargarEstudio); cargarBoletines(); }
+}
+function guardarPos(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function leerPos(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function armarSecciones(panel) {
+  var secs = panel.querySelectorAll(':scope > .sec[data-sec]'); if (!secs.length || panel.querySelector(':scope > .sub-nav')) return;
+  var nav = document.createElement('div'); nav.className = 'sub-nav';
+  nav.innerHTML = Array.prototype.map.call(secs, function (x) { return '<button type="button" data-sub="' + htmlAttr(x.getAttribute('data-sec')) + '">' + esc(x.getAttribute('data-sec')) + '</button>'; }).join('');
+  panel.insertBefore(nav, panel.firstChild);
+  nav.addEventListener('click', function (e) { var b = e.target.closest('[data-sub]'); if (b) irA(panel.id.replace('panel-', ''), b.getAttribute('data-sub')); });
+}
+function mostrarSeccion(panel, nombre) {
+  var secs = panel.querySelectorAll(':scope > .sec[data-sec]'); if (!secs.length) return;
+  var ok = Array.prototype.some.call(secs, function (x) { return x.getAttribute('data-sec') === nombre; });
+  if (!ok) nombre = secs[0].getAttribute('data-sec');
+  Array.prototype.forEach.call(secs, function (x) { x.classList.toggle('on', x.getAttribute('data-sec') === nombre); });
+  Array.prototype.forEach.call(panel.querySelectorAll(':scope > .sub-nav button'), function (b) { b.classList.toggle('on', b.getAttribute('data-sub') === nombre); });
+  guardarPos('yuzu_sec_' + panel.id, nombre);
+}
+function irA(t, sub) {
+  var panel = $('panel-' + t); if (!panel) return;
+  document.querySelectorAll('.tab').forEach(function (el) { el.classList.toggle('on', el.getAttribute('data-tab') === t); });
+  document.querySelectorAll('.panel').forEach(function (el) { el.classList.toggle('on', el === panel); });
+  armarSecciones(panel);
+  mostrarSeccion(panel, sub || leerPos('yuzu_sec_' + panel.id));
+  guardarPos('yuzu_tab', t);
+  cargarDeTab(t);
+  if (t === 'hoy') renderHoy();
+  window.dispatchEvent(new Event('resize'));
+}
+$('tabs').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-tab]'); if (!b) return;
+  irA(b.getAttribute('data-tab'));
+  window.scrollTo({ top: 0 });
 });
+// Botones que llevan a otra parte del admin: data-ir="pestaña/Sección", data-foco="id", data-click="id"
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-ir]'); if (!b) return;
+  var p = b.getAttribute('data-ir').split('/');
+  irA(p[0], p[1]);
+  var f = b.getAttribute('data-foco'), c = b.getAttribute('data-click');
+  setTimeout(function () { if (f && $(f)) { $(f).scrollIntoView({ block: 'center' }); $(f).focus(); } if (c && $(c)) $(c).click(); }, 60);
+});
+
+// ---------- Margen por prenda (precio que paga el cliente − lo que te cuesta) ----------
+function renderMargen() {
+  var c = $('margenVista'); if (!c) return;
+  var n = function (id) { var el = $(id); return el ? parseInt(String(el.value || el.placeholder || '').replace(/\D/g, ''), 10) || 0 : 0; };
+  var costo = ['costoTela', 'costoDtf', 'costoEmpaque', 'costoEnvio'].reduce(function (s, id) { return s + n(id); }, 0);
+  var filas = [['Diseño del catálogo', n('pProducto')], ['Personalizada boxy (diseño del cliente)', n('pBoxy') + n('pEstPropio')], ['Sin mangas (catálogo)', n('pSinmangas')], ['Manga larga (catálogo)', n('pMangalarga')], ['Hoodie (catálogo)', n('pHoodie')]].filter(function (f) { return f[1] > 0; });
+  c.innerHTML = '<table class="compras"><tr><th>Prenda</th><th style="text-align:right">Precio</th><th style="text-align:right">Ganancia</th><th style="text-align:right">%</th></tr>' +
+    filas.map(function (f) { var g = f[1] - costo, pc = f[1] ? Math.round(g / f[1] * 100) : 0; return '<tr><td>' + esc(f[0]) + '</td><td class="n">' + plata(f[1]) + '</td><td class="n" style="color:' + (g >= 0 ? 'var(--yuzu)' : 'var(--rojo)') + '">' + plata(g) + '</td><td class="n">' + pc + '%</td></tr>'; }).join('') + '</table>' +
+    '<p class="mini">Costo usado: ' + plata(costo) + ' por prenda (tela + DTF + empaque + envío). Es el mismo para todas: si el hoodie o la manga larga te cuestan más, su ganancia real es menor. Se actualiza mientras escribís.</p>';
+}
+document.addEventListener('input', function (e) { if (e.target && /^(p[A-Z]|costo)/.test(e.target.id || '')) renderMargen(); });
+
+// ---------- Hoy: resumen ----------
+function renderHoy() {
+  if (!$('hoyKpis')) return;
+  var abiertos = PEDIDOS.filter(function (e) { return e.cierre === 'abierto'; }).length;
+  var pend = (typeof pendientes === 'function') ? pendientes().length : 0;
+  var mes = hoyLocal().slice(0, 7), delMes = VENTAS.filter(function (v) { return String(v.fecha || '').slice(0, 7) === mes && estadoDe(v) !== 'cancelado'; });
+  var ingreso = delMes.reduce(function (s, v) { return s + (v.precio || 0); }, 0), costo = delMes.reduce(function (s, v) { return s + (v.costo || costoUnitario()); }, 0);
+  var visibles = PRODUCTOS.filter(function (p) { return !p.oculto; }).length;
+  var kpi = function (n, q, ir, clase) { return '<button type="button" class="kpi kpi-btn" data-ir="' + ir + '"><div class="n ' + (clase || '') + '">' + n + '</div><div class="q">' + q + '</div></button>'; };
+  $('hoyKpis').innerHTML = kpi(abiertos, 'Pedidos por cerrar', 'pedidos/Bandeja', abiertos ? 'malo' : '') + kpi(pend, 'Piezas por producir', 'pedidos/Producción', pend ? 'malo' : '') +
+    kpi(delMes.length, 'Vendidas este mes', 'numeros') + kpi(plata(ingreso), 'Ingreso del mes', 'numeros') + kpi(plata(ingreso - costo), 'Ganancia del mes', 'numeros', ingreso - costo >= 0 ? 'bueno' : 'malo') +
+    kpi(visibles, 'Diseños publicados', 'productos/Productos');
+}
 
 // ============================================================
 // 4. BOLETINES
@@ -2229,7 +2392,7 @@ function limpiarFormBol(){ bolEditando=-1; bolImagenNueva=null; $('bolFormTitulo
 // 5. VENTAS
 // ============================================================
 function statusVenta(t,m){ var el=$('statusVenta'); el.className='status show '+t; el.textContent=m; }
-function cargarVentas(){ leerVentasDatos().then(function(x){ var d=x.d; VENTAS=d.ventas||[]; PEDIDOS=d.pedidos||[]; if(d.costos) COSTOS=d.costos; $('costoTela').value=COSTOS.tela; $('costoDtf').value=COSTOS.dtf; $('costoEmpaque').value=COSTOS.empaque; $('costoEnvio').value=COSTOS.envio; prepararFormVenta(); renderTablero(); renderListaVentas(); renderBandeja(); }).catch(function(){ VENTAS=[]; PEDIDOS=[]; prepararFormVenta(); renderTablero(); renderListaVentas(); renderBandeja(); }); }
+function cargarVentas(){ leerVentasDatos().then(function(x){ var d=x.d; VENTAS=d.ventas||[]; PEDIDOS=d.pedidos||[]; if(d.costos) COSTOS=d.costos; $('costoTela').value=COSTOS.tela; $('costoDtf').value=COSTOS.dtf; $('costoEmpaque').value=COSTOS.empaque; $('costoEnvio').value=COSTOS.envio; prepararFormVenta(); renderTablero(); renderListaVentas(); renderBandeja(); renderHoy(); renderMargen(); }).catch(function(){ VENTAS=[]; PEDIDOS=[]; prepararFormVenta(); renderTablero(); renderListaVentas(); renderBandeja(); renderHoy(); }); }
 function prepararFormVenta(){ $('ventaProducto').innerHTML=PRODUCTOS.map(function(p){ return '<option value="'+p.id+'">'+p.nombre+'</option>'; }).join(''); $('ventaColor').innerHTML=COLORES.map(function(c){ return '<option value="'+c.name+'">'+c.name+'</option>'; }).join(''); if(!$('ventaFecha').value) $('ventaFecha').value=hoyLocal(); sincronizarPrecioVenta(); }
 function sincronizarPrecioVenta(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p) return; $('ventaPrecio').value=(p.enDescuento&&p.precioDescuento)?p.precioDescuento:(p.precio||18900); }
 $('ventaProducto').addEventListener('change', sincronizarPrecioVenta);
@@ -2455,7 +2618,7 @@ function cargarProduccion() {
 }
 function renderProduccion() {
   var pen = pendientes();
-  if (!pen.length) { $('prodResumen').innerHTML = '<p class="mini">No hay pedidos pendientes. Cuando registrés un pedido en Ventas aparece acá.</p>'; $('prodCompras').innerHTML = ''; return; }
+  if (!pen.length) { $('prodResumen').innerHTML = '<p class="mini">No hay nada por producir. Cuando marqués «Se vendió» en la Bandeja, aparece acá.</p>'; $('prodCompras').innerHTML = ''; return; }
   var porPedido = {};
   pen.forEach(function (v) { var k = v.pedido || 'Sin número'; (porPedido[k] = porPedido[k] || []).push(v); });
   $('prodResumen').innerHTML = '<p class="mini" style="margin-top:0">' + pen.length + ' pieza(s) en ' + Object.keys(porPedido).length + ' pedido(s).</p>' +
@@ -2696,7 +2859,7 @@ function cargarTienda() {
     TIENDA = t; ['nombres', 'precios', 'mockup'].forEach(function (k) { TIENDA[k] = TIENDA[k] || {}; }); TIENDA.banners = TIENDA.banners || []; TIENDA.drops = TIENDA.drops || null; TIENDA._formspreeBol = bolFs;
     aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); initPriv(); renderDescuentos(); renderCorte(); renderActividad(); renderColPrendas();
     RESENAS = Array.isArray(r[1].content) ? r[1].content : [];
-    renderImgsFijas(); renderInicio(); renderPrecios(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
+    renderImgsFijas(); renderInicio(); renderPrecios(); renderMargen(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
   });
 }
 
@@ -2707,12 +2870,14 @@ var IMGS_FIJAS = [
   { ruta: 'images/logo.png', nombre: 'Logo', nota: 'PNG transparente, en negro (en modo oscuro se invierte solo)', crudo: true, logo: true }
 ];
 function renderImgsFijas() {
-  $('imgsFijas').innerHTML = IMGS_FIJAS.map(function (f, i) {
+  var html = IMGS_FIJAS.map(function (f, i) {
     return '<div class="img-fija"><div class="vista' + (f.logo ? ' logo' : '') + '" id="vistaFija' + i + '">sin imagen</div>' +
       '<div><strong>' + f.nombre + '</strong><span class="mini" style="margin:0">' + f.nota + '</span>' +
       '<div class="row"><label class="btn btn-sec" style="margin:0;cursor:pointer">Subir<input type="file" accept="' + (f.logo ? 'image/png' : 'image/*') + '" data-fija="' + i + '" style="display:none"></label>' +
       '<button class="btn btn-sec" data-quitar-fija="' + i + '">Quitar</button></div></div></div>';
-  }).join('');
+  });
+  // La foto de portada vive en «Portada y drop»; logo y taller en su propia sección
+  $('imgsFijasPortada').innerHTML = html[0]; $('imgsFijas').innerHTML = html.slice(1).join('');
   IMGS_FIJAS.forEach(function (f, i) {
     var img = new Image();
     img.onload = function () { var v = $('vistaFija' + i); v.style.backgroundImage = 'url(' + img.src + ')'; v.textContent = ''; };
@@ -2721,55 +2886,70 @@ function renderImgsFijas() {
 }
 document.addEventListener('change', function (e) {
   var inp = e.target.closest('[data-fija]'); if (!inp || !inp.files.length) return;
-  var f = IMGS_FIJAS[Number(inp.getAttribute('data-fija'))], file = inp.files[0];
-  statusDe('statusImgs', 'loading', 'Subiendo ' + f.nombre.toLowerCase() + '...');
+  var f = IMGS_FIJAS[Number(inp.getAttribute('data-fija'))], file = inp.files[0], stF = f.ruta === 'images/portada.jpg' ? 'statusDrops' : 'statusImgs';
+  statusDe(stF, 'loading', 'Subiendo ' + f.nombre.toLowerCase() + '...');
   var prep = f.crudo ? leerCrudo(file) : comprimirCon(file, f.max).then(function (r) { return r && r.base64; });
   prep.then(function (b64) {
     if (!b64) throw new Error('No pude leer la imagen.');
     if (b64.length * 0.75 > 4 * 1024 * 1024) throw new Error('La imagen pesa más de 4 MB.');
     return subirArchivoFijo(f.ruta, b64, f.nombre + ' de la tienda');
   }).then(function () {
-    statusDe('statusImgs', 'ok', f.nombre + ' subida. GitHub Pages tarda 1–2 minutos en mostrarla.');
+    statusDe(stF, 'ok', f.nombre + ' subida. GitHub Pages tarda 1–2 minutos en mostrarla.');
     var v = $('vistaFija' + IMGS_FIJAS.indexOf(f)); v.style.backgroundImage = 'url(' + URL.createObjectURL(file) + ')'; v.textContent = '';
-  }).catch(function (err) { statusDe('statusImgs', 'err', err.message); });
+  }).catch(function (err) { statusDe(stF, 'err', err.message); });
   inp.value = '';
 });
 document.addEventListener('click', function (e) {
   var b = e.target.closest('[data-quitar-fija]'); if (!b) return;
   var f = IMGS_FIJAS[Number(b.getAttribute('data-quitar-fija'))];
   if (!confirm('¿Quitar ' + f.nombre.toLowerCase() + '?')) return;
-  ghBorrarArchivo(f.ruta, 'Quitar ' + f.nombre).then(function () { statusDe('statusImgs', 'ok', f.nombre + ' quitada.'); renderImgsFijas(); });
+  ghBorrarArchivo(f.ruta, 'Quitar ' + f.nombre).then(function () { statusDe(f.ruta === 'images/portada.jpg' ? 'statusDrops' : 'statusImgs', 'ok', f.nombre + ' quitada.'); renderImgsFijas(); });
 });
 
 
-// ---------- Imágenes del inicio (colecciones, fondo de Camisetas gráficas, Etiquétanos) ----------
-function inicioDatos() { TIENDA.inicio = TIENDA.inicio || {}; var I = TIENDA.inicio; I.colecciones = I.colecciones || {}; I.gran = I.gran || []; I.muro = I.muro || []; return I; }
+// ---------- Página de inicio: colecciones en portada, secciones, fondo, Etiquétanos ----------
+function inicioDatos() { TIENDA.inicio = TIENDA.inicio || {}; var I = TIENDA.inicio; I.colecciones = I.colecciones || {}; I.gran = I.gran || []; I.muro = I.muro || []; I.ocultar = I.ocultar || {}; return I; }
 function artDe(p) { return (p.imagenes || [])[0] || portadaDe(p); }
-function inicioSlot(tipo, clave, titulo, url) {
-  return '<div class="img-fija"><div class="vista" style="' + (url ? 'background-image:url(' + htmlAttr(url) + ')' : '') + '">' + (url ? '' : 'automática') + '</div>' +
-    '<div><strong>' + esc(titulo) + '</strong><div class="row" style="flex-wrap:wrap">' +
-    '<button class="btn btn-sec" data-ini="elegir" data-tipo="' + tipo + '" data-clave="' + htmlAttr(clave) + '">Elegir de mis diseños</button>' +
+function subsConPiezas() { return subcategoriasTienda().filter(function (x) { return x.n > 0; }); }
+function bannersAuto() { return subsConPiezas().filter(function (x) { return !TIENDA.drops || x.nombre !== TIENDA.drops.actual; }).sort(function (a, b) { return b.n - a.n; }).slice(0, 4).map(function (x) { return x.nombre; }); }
+function botonesImagen(tipo, clave, url) {
+  return '<button class="btn btn-sec" data-ini="elegir" data-tipo="' + tipo + '" data-clave="' + htmlAttr(clave) + '">Elegir de mis diseños</button>' +
     '<label class="btn btn-sec" style="margin:0;cursor:pointer">Subir<input type="file" accept="image/*" data-ini-file data-tipo="' + tipo + '" data-clave="' + htmlAttr(clave) + '" style="display:none"></label>' +
-    (url ? '<button class="btn btn-sec" data-ini="auto" data-tipo="' + tipo + '" data-clave="' + htmlAttr(clave) + '">Automática</button>' : '') + '</div></div></div>';
+    (url ? '<button class="btn btn-sec" data-ini="auto" data-tipo="' + tipo + '" data-clave="' + htmlAttr(clave) + '">Automática</button>' : '');
 }
+function vistaImg(url) { return '<div class="vista" style="' + (url ? 'background-image:url(' + htmlAttr(url) + ')' : '') + '">' + (url ? '' : 'automática') + '</div>'; }
+function inicioSlot(tipo, clave, titulo, url) {
+  return '<div class="img-fija">' + vistaImg(url) + '<div><strong>' + esc(titulo) + '</strong><div class="row" style="flex-wrap:wrap">' + botonesImagen(tipo, clave, url) + '</div></div></div>';
+}
+var SECCIONES_INICIO = [['bandaPers', 'Armá tu personalizada (banda)'], ['secDestacados', 'Destacados'], ['secBanners', 'Cuadros de colecciones'], ['secDrop', 'Recién salidos del taller'], ['granBanner', 'Camisetas gráficas (banner grande)'], ['secResenas', 'Reseñas'], ['secMuro', 'Etiquétanos'], ['detras', 'El taller']];
 function renderInicio() {
-  var I = inicioDatos();
-  var subs = (TIENDA.banners && TIENDA.banners.length) ? TIENDA.banners.slice() : subcategoriasTienda().filter(function (x) { return x.n > 0; }).sort(function (a, b) { return b.n - a.n; }).slice(0, 4).map(function (x) { return x.nombre; });
-  $('inicioCols').innerHTML = subs.map(function (n) { return inicioSlot('col', n, n, I.colecciones[n]); }).join('') || '<p class="mini">Todavía no hay colecciones.</p>';
+  var I = inicioDatos(), fijos = TIENDA.banners && TIENDA.banners.length, subs = fijos ? TIENDA.banners.slice() : bannersAuto(), todas = subsConPiezas();
+  while (subs.length < 4) subs.push('');
+  $('inicioCols').innerHTML = (fijos ? '' : '<p class="mini" style="margin-top:0">Ahora están en automático (las colecciones con más piezas). Cambiá cualquiera para fijarlas.</p>') +
+    subs.slice(0, 4).map(function (n, i) {
+      var url = n && I.colecciones[n];
+      return '<div class="img-fija">' + vistaImg(url) + '<div><label style="margin:0 0 6px">Cuadro ' + (i + 1) + '</label>' +
+        '<select data-banner-slot="' + i + '"><option value="">— vacío —</option>' + todas.map(function (s) { return '<option value="' + htmlAttr(s.nombre) + '"' + (s.nombre === n ? ' selected' : '') + '>' + esc(s.nombre) + ' · ' + s.n + '</option>'; }).join('') + '</select>' +
+        (n ? '<div class="row" style="flex-wrap:wrap;margin-top:6px">' + botonesImagen('col', n, url) + '</div>' : '') + '</div></div>';
+    }).join('') + (fijos ? '<button class="btn btn-sec" data-ini="banners-auto" style="margin-top:8px">Volver a automático</button>' : '');
   var g = ''; for (var i = 0; i < 3; i++) g += inicioSlot('gran', String(i), 'Imagen ' + (i + 1), I.gran[i]);
   $('inicioGran').innerHTML = g;
   $('inicioMuro').innerHTML = I.muro.length ? I.muro.map(function (u, i) { return '<div class="im-item"><img src="' + htmlAttr(u) + '"><button class="im-rm" data-ini="muro-quitar" data-clave="' + i + '" title="Quitar">✕</button></div>'; }).join('') : '<p class="mini" style="margin:0">Sin fotos: la sección está oculta en la tienda.</p>';
+  $('inicioSecciones').innerHTML = SECCIONES_INICIO.map(function (x) { return '<label class="check-row"><input type="checkbox" data-sec-inicio="' + x[0] + '"' + (I.ocultar[x[0]] ? '' : ' checked') + '><span>' + esc(x[1]) + '</span></label>'; }).join('');
+  $('heroEtiq').value = I.heroEtiqueta || ''; $('heroTitulo').value = I.heroTitulo || '';
 }
-function inicioGuardar(msg) {
-  statusDe('statusInicio', 'loading', 'Guardando…');
-  return guardarJSON('data/tienda.json', TIENDA, 'Imágenes del inicio').then(function () { statusDe('statusInicio', 'ok', msg || 'Guardado. GitHub Pages tarda 1–2 minutos en mostrarlo.'); renderInicio(); })
-    .catch(function (e) { statusDe('statusInicio', 'err', e.message); });
+function inicioGuardar(msg, st) {
+  st = st || 'statusInicio';
+  statusDe(st, 'loading', 'Guardando…');
+  return guardarJSON('data/tienda.json', TIENDA, 'Página de inicio').then(function () { statusDe(st, 'ok', msg || 'Guardado. GitHub Pages tarda 1–2 minutos en mostrarlo.'); renderInicio(); })
+    .catch(function (e) { statusDe(st, 'err', e.message); });
 }
+function stDeTipo(t) { return t === 'gran' ? 'statusGran' : t === 'muro' ? 'statusMuro' : 'statusInicio'; }
 function inicioPoner(tipo, clave, url) {
   var I = inicioDatos();
   if (tipo === 'col') { if (url) I.colecciones[clave] = url; else delete I.colecciones[clave]; }
   else if (tipo === 'gran') { var i = Number(clave); I.gran = I.gran.slice(); while (I.gran.length < 3) I.gran.push(''); I.gran[i] = url || ''; while (I.gran.length && !I.gran[I.gran.length - 1]) I.gran.pop(); }
-  return inicioGuardar();
+  return inicioGuardar(null, stDeTipo(tipo));
 }
 function inicioSubir(file, nombre) {
   return comprimirCon(file, 1400).then(function (r) {
@@ -2780,7 +2960,7 @@ function inicioSubir(file, nombre) {
 }
 function inicioElegir(alElegir) {
   var v = document.createElement('div'); v.className = 'ini-pick';
-  v.innerHTML = '<div class="caja"><div class="row"><input type="text" id="inipBuscar" placeholder="Buscar diseño por nombre…" style="flex:1"><button class="btn btn-sec" id="inipCerrar" style="flex:none">Cerrar</button></div><div class="ini-grid" id="inipGrid"></div></div>';
+  v.innerHTML = '<div class="caja"><div class="row"><input type="text" id="inipBuscar" placeholder="Buscar diseño por nombre o colección…" style="flex:1"><button class="btn btn-sec" id="inipCerrar" style="flex:none">Cerrar</button></div><div class="ini-grid" id="inipGrid"></div></div>';
   document.body.appendChild(v);
   var pintar = function () {
     var q = $('inipBuscar').value.trim().toLowerCase();
@@ -2789,7 +2969,9 @@ function inicioElegir(alElegir) {
   };
   pintar();
   $('inipBuscar').addEventListener('input', pintar);
+  $('inipBuscar').focus();
   $('inipCerrar').addEventListener('click', function () { v.remove(); });
+  v.addEventListener('click', function (e) { if (e.target === v) v.remove(); });
   $('inipGrid').addEventListener('click', function (e) { var b = e.target.closest('button[data-u]'); if (!b) return; v.remove(); alElegir(b.getAttribute('data-u')); });
 }
 document.addEventListener('click', function (e) {
@@ -2797,46 +2979,55 @@ document.addEventListener('click', function (e) {
   var a = b.getAttribute('data-ini'), t = b.getAttribute('data-tipo'), c = b.getAttribute('data-clave');
   if (a === 'elegir') inicioElegir(function (u) { inicioPoner(t, c, u); });
   else if (a === 'auto') inicioPoner(t, c, '');
-  else if (a === 'muro-quitar') { inicioDatos().muro.splice(Number(c), 1); inicioGuardar('Foto quitada.'); }
+  else if (a === 'muro-quitar') { inicioDatos().muro.splice(Number(c), 1); inicioGuardar('Foto quitada.', 'statusMuro'); }
+  else if (a === 'banners-auto') { TIENDA.banners = []; inicioGuardar('Los cuadros vuelven a ser automáticos.'); }
 });
 document.addEventListener('change', function (e) {
   var inp = e.target;
-  if (inp.hasAttribute && inp.hasAttribute('data-ini-file') && inp.files.length) {
+  if (inp.hasAttribute && inp.hasAttribute('data-banner-slot')) {
+    var cur = (TIENDA.banners && TIENDA.banners.length) ? TIENDA.banners.slice() : bannersAuto();
+    while (cur.length < 4) cur.push('');
+    cur[Number(inp.getAttribute('data-banner-slot'))] = inp.value;
+    TIENDA.banners = cur.filter(function (x, i, arr) { return x && arr.indexOf(x) === i; });
+    inicioGuardar('Cuadros guardados.');
+  } else if (inp.hasAttribute && inp.hasAttribute('data-sec-inicio')) {
+    var I = inicioDatos(), k = inp.getAttribute('data-sec-inicio');
+    if (inp.checked) delete I.ocultar[k]; else I.ocultar[k] = true;
+    inicioGuardar(inp.checked ? 'Sección visible.' : 'Sección oculta.', 'statusSecciones');
+  } else if (inp.hasAttribute && inp.hasAttribute('data-ini-file') && inp.files.length) {
     var t = inp.getAttribute('data-tipo'), c = inp.getAttribute('data-clave'), f = inp.files[0]; inp.value = '';
-    statusDe('statusInicio', 'loading', 'Subiendo imagen…');
-    inicioSubir(f, t + '-' + c).then(function (ruta) { return inicioPoner(t, c, ruta); }).catch(function (er) { statusDe('statusInicio', 'err', er.message); });
+    statusDe(stDeTipo(t), 'loading', 'Subiendo imagen…');
+    inicioSubir(f, t + '-' + c).then(function (ruta) { return inicioPoner(t, c, ruta); }).catch(function (er) { statusDe(stDeTipo(t), 'err', er.message); });
   } else if (inp.hasAttribute && inp.hasAttribute('data-ini-muro') && inp.files.length) {
     var fs = Array.prototype.slice.call(inp.files); inp.value = '';
     var cad = Promise.resolve(), n = 0;
-    fs.forEach(function (f, i) { cad = cad.then(function () { statusDe('statusInicio', 'loading', 'Subiendo foto ' + (i + 1) + ' de ' + fs.length + '…'); return inicioSubir(f, 'cliente').then(function (ruta) { inicioDatos().muro.push(ruta); n++; }); }); });
-    cad.then(function () { return inicioGuardar(n + ' foto(s) agregadas.'); }).catch(function (er) { statusDe('statusInicio', 'err', er.message); });
+    fs.forEach(function (f, i) { cad = cad.then(function () { statusDe('statusMuro', 'loading', 'Subiendo foto ' + (i + 1) + ' de ' + fs.length + '…'); return inicioSubir(f, 'cliente').then(function (ruta) { inicioDatos().muro.push(ruta); n++; }); }); });
+    cad.then(function () { return inicioGuardar(n + ' foto(s) agregadas.', 'statusMuro'); }).catch(function (er) { statusDe('statusMuro', 'err', er.message); });
   }
 });
 
-// ---------- Drops y banners ----------
+// ---------- Portada y drops ----------
 function renderDrops() {
-  var subs = subcategoriasTienda().filter(function (s) { return s.n > 0; });
+  var subs = subsConPiezas();
   var d = TIENDA.drops || {};
   var auto = subs.slice().sort(function (a, b) { return b.ultimo - a.ultimo; })[0];
-  $('tDropActual').innerHTML = '<option value="">Automático' + (auto ? ' (hoy: ' + esc(auto.nombre) + ')' : '') + '</option>' +
+  $('tDropActual').innerHTML = '<option value="">Automático' + (auto ? ' (hoy: ' + esc(auto.nombre) + ', la última que subiste)' : '') + '</option>' +
     subs.map(function (s) { return '<option value="' + esc(s.nombre) + '"' + (d.actual === s.nombre ? ' selected' : '') + '>' + esc(s.nombre) + ' · ' + s.n + '</option>'; }).join('');
   $('tDropsPasados').innerHTML = subs.map(function (s) {
     return '<label class="check-row"><input type="checkbox" value="' + esc(s.nombre) + '"' + ((d.pasados || []).indexOf(s.nombre) !== -1 ? ' checked' : '') + '><span>' + esc(s.nombre) + '</span></label>';
   }).join('');
-  $('tBanners').innerHTML = subs.map(function (s) {
-    return '<label class="check-row"><input type="checkbox" value="' + esc(s.nombre) + '"' + (TIENDA.banners.indexOf(s.nombre) !== -1 ? ' checked' : '') + '><span>' + esc(s.nombre) + '</span></label>';
-  }).join('');
 }
 function marcados(id) { return Array.prototype.map.call(document.querySelectorAll('#' + id + ' input:checked'), function (i) { return i.value; }); }
 $('btnGuardarDrops').addEventListener('click', function () {
-  var actual = $('tDropActual').value, pasados = marcados('tDropsPasados').filter(function (s) { return s !== actual; }), banners = marcados('tBanners');
+  var actual = $('tDropActual').value, pasados = marcados('tDropsPasados').filter(function (s) { return s !== actual; });
   if (pasados.length > 4) { statusDe('statusDrops', 'err', 'Máximo 4 drops pasados.'); return; }
-  if (banners.length > 4) { statusDe('statusDrops', 'err', 'Máximo 4 banners.'); return; }
   if (!actual && pasados.length) { statusDe('statusDrops', 'err', 'Para fijar drops pasados, elegí también el drop actual.'); return; }
   TIENDA.drops = actual ? { actual: actual, pasados: pasados } : null;
-  TIENDA.banners = banners;
+  var I = inicioDatos(), et = $('heroEtiq').value.trim(), ti = $('heroTitulo').value.trim();
+  if (et) I.heroEtiqueta = et; else delete I.heroEtiqueta;
+  if (ti) I.heroTitulo = ti; else delete I.heroTitulo;
   statusDe('statusDrops', 'loading', 'Guardando...');
-  guardarJSON('data/tienda.json', TIENDA, 'Drops y banners').then(function () { statusDe('statusDrops', 'ok', 'Guardado.'); })
+  guardarJSON('data/tienda.json', TIENDA, 'Portada y drops').then(function () { statusDe('statusDrops', 'ok', 'Guardado.'); renderInicio(); })
     .catch(function (err) { statusDe('statusDrops', 'err', err.message); });
 });
 
@@ -3931,6 +4122,7 @@ function renderNombres() {
     var n = TIENDA.nombres[s.nombre] || {};
     return '<div class="nombre-fila" data-sub="' + esc(s.nombre) + '">' +
       '<div class="cab"><span>' + esc(s.nombre) + ' <span class="mini" style="margin:0">· ' + esc(s.cat) + ' · ' + s.n + '</span></span><span style="display:flex;align-items:center;gap:10px"><em>' + esc(vistaNombre(s.nombre, n)) + '</em>' +
+        '<button class="btn btn-sec mini-btn" data-ver-sub="' + htmlAttr(s.nombre) + '">Ver productos</button><button class="btn btn-sec mini-btn" data-renombrar-sub="' + htmlAttr(s.nombre) + '">Renombrar</button>' +
         (s.total ? '' : '<button class="prod-btn del" data-borrar-sub="' + esc(s.nombre) + '" title="Borrar subcategoría">✕</button>') + '</span></div>' +
       '<div class="grid">' +
         '<input type="text" data-campo="sigla" maxlength="6" placeholder="' + esc(siglaAuto(s.nombre) || 'Sigla') + '" value="' + esc(n.sigla || '') + '">' +
@@ -3960,6 +4152,48 @@ $('btnGuardarNombres').addEventListener('click', function () {
   statusDe('statusNombres', 'loading', 'Guardando...');
   guardarJSON('data/tienda.json', TIENDA, 'Nombres de colecciones').then(function () { statusDe('statusNombres', 'ok', 'Guardado.'); })
     .catch(function (err) { statusDe('statusNombres', 'err', err.message); });
+});
+
+
+// ---------- Renombrar una colección (cambia productos, categorias.json y tienda.json) ----------
+function renombrarClaves(obj, viejo, nuevo) { if (obj && Object.prototype.hasOwnProperty.call(obj, viejo)) { if (!obj[nuevo]) obj[nuevo] = obj[viejo]; delete obj[viejo]; } }
+function renombrarColeccion(viejo) {
+  var nuevo = prompt('Nuevo nombre para la colección «' + viejo + '»:\n(Los productos, el drop, los cuadros del inicio y la sigla/título se mueven al nuevo nombre.)', viejo);
+  if (nuevo == null) return; nuevo = nuevo.trim().replace(/\s+/g, ' ');
+  if (!nuevo || nuevo === viejo) return;
+  var existe = subcategoriasTienda().some(function (x) { return x.nombre === nuevo; });
+  if (existe && !confirm('Ya existe una colección llamada «' + nuevo + '». ¿Juntar las dos en una sola?')) return;
+  var n = 0;
+  statusDe('statusNombres', 'loading', 'Renombrando «' + viejo + '» → «' + nuevo + '»… no cierres la pestaña.');
+  ghLeerFresco('data/products.json').then(function (r) {
+    r.content.forEach(function (p) { if (p.subcategoria === viejo) { p.subcategoria = nuevo; n++; } });
+    if (!n) return;
+    return ghPut('data/products.json', r.content, r.sha, 'Renombrar colección: ' + viejo + ' → ' + nuevo).then(function () { PRODUCTOS = r.content; });
+  }).then(function () {
+    return ghLeerFresco('data/categorias.json').then(function (r) {
+      var cambio = false;
+      Object.keys(r.content).forEach(function (c) { var l = r.content[c]; if (!Array.isArray(l)) return; var i = l.indexOf(viejo); if (i === -1) return; cambio = true; if (l.indexOf(nuevo) === -1) l[i] = nuevo; else l.splice(i, 1); });
+      if (cambio) return ghPut('data/categorias.json', r.content, r.sha, 'Renombrar colección: ' + viejo + ' → ' + nuevo);
+    }).catch(function () {});
+  }).then(function () {
+    return ghGet('data/tienda.json').then(function (r) { var t = r.content || {}; Object.keys(t).forEach(function (k) { if (k !== 'nombres' && k !== 'inicio' && k !== 'banners' && k !== 'drops') TIENDA[k] = t[k]; }); }).catch(function () {});
+  }).then(function () {
+    renombrarClaves(TIENDA.nombres, viejo, nuevo);
+    if (TIENDA.inicio) renombrarClaves(TIENDA.inicio.colecciones, viejo, nuevo);
+    if (TIENDA.banners) TIENDA.banners = TIENDA.banners.map(function (x) { return x === viejo ? nuevo : x; }).filter(function (x, i, a) { return a.indexOf(x) === i; });
+    if (TIENDA.drops) { if (TIENDA.drops.actual === viejo) TIENDA.drops.actual = nuevo; TIENDA.drops.pasados = (TIENDA.drops.pasados || []).map(function (x) { return x === viejo ? nuevo : x; }); }
+    return guardarJSON('data/tienda.json', TIENDA, 'Renombrar colección: ' + viejo + ' → ' + nuevo);
+  }).then(function () {
+    statusDe('statusNombres', 'ok', '✓ «' + viejo + '» ahora se llama «' + nuevo + '» (' + n + ' producto' + (n === 1 ? '' : 's') + '). Tarda 1–2 minutos en verse en la tienda.');
+    return cargarCategorias();
+  }).then(function () { renderLista(); renderNombres(); renderDrops(); renderInicio(); })
+    .catch(function (e) { statusDe('statusNombres', 'err', 'No pude terminar de renombrar: ' + e.message + ' · Tocá Renombrar otra vez; lo que ya cambió no se duplica.'); });
+}
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-renombrar-sub]');
+  if (b) { renombrarColeccion(b.getAttribute('data-renombrar-sub')); return; }
+  b = e.target.closest('[data-ver-sub]');
+  if (b) { var n = b.getAttribute('data-ver-sub'); irA('productos', 'Productos'); $('buscarProd').value = ''; CARPETAS_ABIERTAS[n] = true; renderLista(); var d = document.querySelector('details.carpeta[data-carpeta="' + CSS.escape(n) + '"]'); if (d) d.scrollIntoView({ block: 'start' }); }
 });
 
 // ---------- Reseñas ----------
