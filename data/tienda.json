@@ -21,14 +21,18 @@
     }
   },
   "drops": {
-    "actual": "DBZ Collection",
+    "actual": "Akira",
     "pasados": [
-      "AoT Collection"
+      "DBZ Collection",
+      "Demon Slayer",
+      "Pokemon"
     ]
   },
   "banners": [
     "AoT Collection",
-    "DBZ Collection"
+    "DBZ Collection",
+    "Demon Slayer",
+    "Pokemon"
   ],
   "precios": {
     "boxy": 13700,
@@ -241,5 +245,10 @@
   },
   "privado": {
     "repo": "Yuzu-Privado"
+  },
+  "inicio": {
+    "colecciones": {},
+    "gran": [],
+    "muro": []
   }
 }
