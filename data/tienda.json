@@ -247,9 +247,7 @@
     "repo": "Yuzu-Privado"
   },
   "inicio": {
-    "colecciones": {
-      "AoT Collection": "images/eren-001-gal-1790904455558-0.jpg"
-    },
+    "colecciones": {},
     "gran": [],
     "muro": []
   }
