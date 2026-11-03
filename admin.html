@@ -326,6 +326,21 @@
   .resena-fila .txt { font-size: 12px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   .resena-fila .acciones { display: flex; gap: 4px; }
   .resena-fila .acciones button { background: none; border: 1px solid var(--linea); border-radius: 6px; color: var(--mudo); cursor: pointer; font-size: 13px; padding: 4px 8px; }
+
+  details.carpeta { border: 1px solid var(--linea); border-radius: 10px; margin-bottom: 8px; background: rgba(255,255,255,.02); }
+  details.carpeta > summary { cursor: pointer; padding: 12px 14px; font-weight: 700; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details.carpeta > summary::-webkit-details-marker { display: none; }
+  details.carpeta > summary .n { margin-left: auto; font-size: 12px; color: var(--mudo); font-weight: 400; }
+  details.carpeta[open] > summary { border-bottom: 1px solid var(--linea); }
+  details.carpeta > .prod-row, details.carpeta > .prod-edit { margin-left: 8px; margin-right: 8px; }
+
+  .ini-muro { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
+  .ini-pick { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.8); display: flex; align-items: center; justify-content: center; padding: 14px; }
+  .ini-pick .caja { background: var(--bg, #14130f); border: 1px solid var(--linea); border-radius: 12px; padding: 14px; width: 100%; max-width: 760px; max-height: 88vh; overflow: auto; }
+  .ini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; margin-top: 12px; }
+  .ini-grid button { background: #000; border: 1px solid var(--linea); border-radius: 8px; padding: 0; cursor: pointer; color: inherit; font-size: 11px; text-align: left; overflow: hidden; }
+  .ini-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .ini-grid span { display: block; padding: 4px 6px; }
 </style>
 </head>
 <body>
@@ -435,7 +450,8 @@
         <div id="limpLista" style="max-height:340px;overflow:auto"></div>
         <div class="row" style="margin-top:10px"><button class="btn" id="btnLimpBorrar" style="display:none;background:var(--rojo);border-color:var(--rojo);">Borrar seleccionados</button><button class="btn btn-sec" id="btnLimpCerrar">Cerrar</button></div>
       </div>
-      <div id="listaProductos" style="margin-top:14px;"></div>
+      <input type="text" id="buscarProd" placeholder="Buscar un producto por nombre o colección…" style="margin-top:14px">
+      <div id="listaProductos" style="margin-top:10px;"></div>
       <div class="status" id="statusEdit"></div>
     </div>
   </div>
@@ -447,6 +463,22 @@
       <p class="mini">Se reemplazan al instante en la página. La portada se ve mejor horizontal; el logo, PNG con fondo transparente.</p>
       <div id="imgsFijas"></div>
       <div class="status" id="statusImgs"></div>
+    </div>
+
+    <div class="card" id="cardInicio">
+      <h2>Imágenes de la página de inicio</h2>
+      <p class="mini">Elegí un diseño que ya tenés o subí una imagen. Se guarda al instante. «Automática» deja que la tienda escoja sola.</p>
+      <h3 style="font-size:14px;margin:14px 0 4px">Colecciones del inicio</h3>
+      <p class="mini" style="margin-top:0">Las colecciones que salen en los cuadros grandes (se eligen abajo en «Drops y banners»).</p>
+      <div id="inicioCols"></div>
+      <h3 style="font-size:14px;margin:18px 0 4px">Fondo de «Camisetas gráficas»</h3>
+      <p class="mini" style="margin-top:0">Hasta 3 imágenes. Si no ponés ninguna, se usan 3 diseños automáticos.</p>
+      <div id="inicioGran"></div>
+      <h3 style="font-size:14px;margin:18px 0 4px">Etiquétanos · fotos de clientes</h3>
+      <p class="mini" style="margin-top:0">Subí capturas o fotos de quienes nos etiquetaron. Si no hay ninguna, la sección no aparece.</p>
+      <div id="inicioMuro" class="ini-muro"></div>
+      <label class="btn btn-sec" style="margin-top:10px;cursor:pointer;display:inline-block">Subir fotos<input type="file" accept="image/*" multiple data-ini-muro style="display:none"></label>
+      <div class="status" id="statusInicio"></div>
     </div>
 
     <div class="card">
@@ -975,7 +1007,13 @@ $('btnBorrarConfig').addEventListener('click', borrarConfig);
 // ========== GITHUB API ==========
 function urlDe(path) { var cfg = getConfig(); return 'https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + path; }
 function errorDeRespuesta(res, ctx) { return res.json().catch(function(){return{};}).then(function(err){ var d=err.message||''; if(err.errors&&err.errors.length&&err.errors[0].message) d+=' — '+err.errors[0].message; throw new Error(ctx+' ('+res.status+') '+d); }); }
-function ghGet(path) { return fetch(urlDe(path), { headers: { Authorization: 'token ' + getConfig().token } }).then(function(res){ if(!res.ok) return errorDeRespuesta(res,'No pude leer '+path); return res.json(); }).then(function(data){ var texto=decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))); return { content: JSON.parse(texto), sha: data.sha }; }); }
+// GitHub no entrega "content" en archivos de más de 1 MB: en ese caso se pide el texto crudo
+function ghDecodificar(data, url) {
+  if (data.content) return Promise.resolve(decodeURIComponent(escape(atob(data.content.replace(/\n/g, '')))));
+  return fetch(url, { cache: 'no-store', headers: { Authorization: 'token ' + getConfig().token, Accept: 'application/vnd.github.raw+json' } })
+    .then(function (r) { if (!r.ok) return errorDeRespuesta(r, 'No pude leer ' + url.split('/contents/')[1].split('?')[0]); return r.text(); });
+}
+function ghGet(path) { var u = urlDe(path) + '?t=' + Date.now(); return fetch(u, { cache: 'no-store', headers: { Authorization: 'token ' + getConfig().token } }).then(function(res){ if(!res.ok) return errorDeRespuesta(res,'No pude leer '+path); return res.json(); }).then(function(data){ return ghDecodificar(data, u).then(function (texto) { return { content: JSON.parse(texto), sha: data.sha }; }); }); }
 // Envía un archivo; si GitHub responde con un error pasajero (límite de velocidad, "timed out validating the rule", 5xx) espera y reintenta
 function ghEnviar(path, body, ctx, intento) {
   intento = intento || 0;
@@ -1353,34 +1391,54 @@ function portadaDe(p) {
   }
   return '';
 }
+var CARPETAS_ABIERTAS = {};
 function renderLista(abrirIdx) {
   if (!PRODUCTOS.length) {
     $('listaProductos').innerHTML = '<div style="color:var(--mudo);font-size:13px;">Todavía no hay productos.</div>';
     return;
   }
+  if (typeof abrirIdx === 'number' && PRODUCTOS[abrirIdx]) CARPETAS_ABIERTAS[PRODUCTOS[abrirIdx].subcategoria || ''] = true;
+  var grupos = {};
+  PRODUCTOS.forEach(function (p, i) { var k = p.subcategoria || ''; (grupos[k] = grupos[k] || []).push(i); });
+  var claves = Object.keys(grupos).sort(function (a, b) { if (!a) return 1; if (!b) return -1; return a.localeCompare(b, 'es'); });
+  var filtro = ($('buscarProd') && $('buscarProd').value || '').trim().toLowerCase();
   var html = '';
-  for (var i = 0; i < PRODUCTOS.length; i++) {
-    var p = PRODUCTOS[i];
-    var precio = p.precio || 18900;
-    var meta = (p.enDescuento && p.precioDescuento)
-      ? '<span class="tachado">' + plata(precio) + '</span><span class="vigente">' + plata(p.precioDescuento) + '</span>'
-      : '<span class="vigente">' + plata(precio) + '</span>';
-    if (p.destacado) meta += '<span class="chip dest">destacado</span>';
-    if (p.oculto) meta += '<span class="chip">oculto</span>';
-
-    html += '<div class="prod-row' + (p.oculto ? ' off' : '') + '">' +
-      '<img class="prod-thumb" src="' + portadaDe(p) + '">' +
-      '<div class="prod-info"><div class="prod-nombre">' + p.nombre + '</div>' +
-      '<div class="prod-meta">' + meta + '</div></div>' +
-      '<button class="prod-btn" data-accion="visible" data-i="' + i + '" title="Mostrar u ocultar">' + (p.oculto ? '○' : '●') + '</button>' +
-      '<button class="prod-btn" data-accion="disenos" data-i="' + i + '" title="Diseños PNG y versiones"' + (p.versiones || p.disenos ? ' style="color:var(--yuzu);border-color:var(--yuzu)"' : '') + '>◐</button>' +
-      '<button class="prod-btn" data-accion="editar" data-i="' + i + '" title="Editar">✎</button>' +
-      '<button class="prod-btn del" data-accion="borrar" data-i="' + i + '" title="Borrar">✕</button>' +
-      '</div><div class="prod-edit" id="edit-' + i + '" style="display:none;"></div>';
-  }
-  $('listaProductos').innerHTML = html;
+  claves.forEach(function (k) {
+    var idxs = grupos[k].slice().sort(function (a, b) { return String(PRODUCTOS[a].nombre).localeCompare(String(PRODUCTOS[b].nombre), 'es', { numeric: true }); });
+    if (filtro) idxs = idxs.filter(function (i) { return (String(PRODUCTOS[i].nombre) + ' ' + k).toLowerCase().indexOf(filtro) !== -1; });
+    if (!idxs.length) return;
+    var filas = '';
+    idxs.forEach(function (i) {
+      var p = PRODUCTOS[i], precio = p.precio || 18900;
+      var meta = (p.enDescuento && p.precioDescuento)
+        ? '<span class="tachado">' + plata(precio) + '</span><span class="vigente">' + plata(p.precioDescuento) + '</span>'
+        : '<span class="vigente">' + plata(precio) + '</span>';
+      if (p.destacado) meta += '<span class="chip dest">destacado</span>';
+      if (p.oculto) meta += '<span class="chip">oculto</span>';
+      filas += '<div class="prod-row' + (p.oculto ? ' off' : '') + '">' +
+        '<img class="prod-thumb" loading="lazy" src="' + portadaDe(p) + '">' +
+        '<div class="prod-info"><div class="prod-nombre">' + p.nombre + '</div>' +
+        '<div class="prod-meta">' + meta + '</div></div>' +
+        '<button class="prod-btn" data-accion="visible" data-i="' + i + '" title="Mostrar u ocultar">' + (p.oculto ? '○' : '●') + '</button>' +
+        '<button class="prod-btn" data-accion="disenos" data-i="' + i + '" title="Diseños PNG y versiones"' + (p.versiones || p.disenos ? ' style="color:var(--yuzu);border-color:var(--yuzu)"' : '') + '>◐</button>' +
+        '<button class="prod-btn" data-accion="editar" data-i="' + i + '" title="Editar">✎</button>' +
+        '<button class="prod-btn del" data-accion="borrar" data-i="' + i + '" title="Borrar">✕</button>' +
+        '</div><div class="prod-edit" id="edit-' + i + '" style="display:none;"></div>';
+    });
+    var abierta = filtro || CARPETAS_ABIERTAS[k];
+    html += '<details class="carpeta" data-carpeta="' + htmlAttr(k) + '"' + (abierta ? ' open' : '') + '><summary>📁 ' + esc(k || 'Sin colección') + ' <span class="n">' + idxs.length + '</span></summary>' + (abierta ? filas : '<template>' + filas + '</template>') + '</details>';
+  });
+  $('listaProductos').innerHTML = html || '<div style="color:var(--mudo);font-size:13px;">Nada coincide con la búsqueda.</div>';
   if (typeof abrirIdx === 'number') abrirEdicion(abrirIdx);
 }
+// Las carpetas cerradas guardan sus filas en un <template> (la lista de 500+ productos carga rápido) y se llenan al abrirlas
+document.addEventListener('toggle', function (e) {
+  var d = e.target; if (!d || !d.matches || !d.matches('details.carpeta')) return;
+  CARPETAS_ABIERTAS[d.getAttribute('data-carpeta')] = d.open;
+  var t = d.querySelector(':scope > template');
+  if (d.open && t) { t.insertAdjacentHTML('afterend', t.innerHTML); t.remove(); }
+}, true);
+document.addEventListener('input', function (e) { if (e.target && e.target.id === 'buscarProd') renderLista(); });
 
 function bloqueImagenes(i, tipo, color, rutas) {
   var html = '<div class="im-grid">';
@@ -2110,7 +2168,7 @@ function buscarHuerfanos() {
 }
 function ghGet0(path) {
   return fetch(urlDe(path), { headers: { Authorization: 'token ' + getConfig().token } }).then(function (r) { return r.ok ? r.json() : { content: '' }; })
-    .then(function (d) { return d.content ? decodeURIComponent(escape(atob(d.content.replace(/\n/g, '')))) : ''; });
+    .then(function (d) { return d.sha ? ghDecodificar(d, urlDe(path) + '?t=' + Date.now()) : ''; });
 }
 $('btnLimpiar').addEventListener('click', buscarHuerfanos);
 $('btnLimpCerrar').addEventListener('click', function () { $('limpieza').style.display = 'none'; });
@@ -2638,7 +2696,7 @@ function cargarTienda() {
     TIENDA = t; ['nombres', 'precios', 'mockup'].forEach(function (k) { TIENDA[k] = TIENDA[k] || {}; }); TIENDA.banners = TIENDA.banners || []; TIENDA.drops = TIENDA.drops || null; TIENDA._formspreeBol = bolFs;
     aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); initPriv(); renderDescuentos(); renderCorte(); renderActividad(); renderColPrendas();
     RESENAS = Array.isArray(r[1].content) ? r[1].content : [];
-    renderImgsFijas(); renderPrecios(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
+    renderImgsFijas(); renderInicio(); renderPrecios(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
   });
 }
 
@@ -2681,6 +2739,78 @@ document.addEventListener('click', function (e) {
   var f = IMGS_FIJAS[Number(b.getAttribute('data-quitar-fija'))];
   if (!confirm('¿Quitar ' + f.nombre.toLowerCase() + '?')) return;
   ghBorrarArchivo(f.ruta, 'Quitar ' + f.nombre).then(function () { statusDe('statusImgs', 'ok', f.nombre + ' quitada.'); renderImgsFijas(); });
+});
+
+
+// ---------- Imágenes del inicio (colecciones, fondo de Camisetas gráficas, Etiquétanos) ----------
+function inicioDatos() { TIENDA.inicio = TIENDA.inicio || {}; var I = TIENDA.inicio; I.colecciones = I.colecciones || {}; I.gran = I.gran || []; I.muro = I.muro || []; return I; }
+function artDe(p) { return (p.imagenes || [])[0] || portadaDe(p); }
+function inicioSlot(tipo, clave, titulo, url) {
+  return '<div class="img-fija"><div class="vista" style="' + (url ? 'background-image:url(' + htmlAttr(url) + ')' : '') + '">' + (url ? '' : 'automática') + '</div>' +
+    '<div><strong>' + esc(titulo) + '</strong><div class="row" style="flex-wrap:wrap">' +
+    '<button class="btn btn-sec" data-ini="elegir" data-tipo="' + tipo + '" data-clave="' + htmlAttr(clave) + '">Elegir de mis diseños</button>' +
+    '<label class="btn btn-sec" style="margin:0;cursor:pointer">Subir<input type="file" accept="image/*" data-ini-file data-tipo="' + tipo + '" data-clave="' + htmlAttr(clave) + '" style="display:none"></label>' +
+    (url ? '<button class="btn btn-sec" data-ini="auto" data-tipo="' + tipo + '" data-clave="' + htmlAttr(clave) + '">Automática</button>' : '') + '</div></div></div>';
+}
+function renderInicio() {
+  var I = inicioDatos();
+  var subs = (TIENDA.banners && TIENDA.banners.length) ? TIENDA.banners.slice() : subcategoriasTienda().filter(function (x) { return x.n > 0; }).sort(function (a, b) { return b.n - a.n; }).slice(0, 4).map(function (x) { return x.nombre; });
+  $('inicioCols').innerHTML = subs.map(function (n) { return inicioSlot('col', n, n, I.colecciones[n]); }).join('') || '<p class="mini">Todavía no hay colecciones.</p>';
+  var g = ''; for (var i = 0; i < 3; i++) g += inicioSlot('gran', String(i), 'Imagen ' + (i + 1), I.gran[i]);
+  $('inicioGran').innerHTML = g;
+  $('inicioMuro').innerHTML = I.muro.length ? I.muro.map(function (u, i) { return '<div class="im-item"><img src="' + htmlAttr(u) + '"><button class="im-rm" data-ini="muro-quitar" data-clave="' + i + '" title="Quitar">✕</button></div>'; }).join('') : '<p class="mini" style="margin:0">Sin fotos: la sección está oculta en la tienda.</p>';
+}
+function inicioGuardar(msg) {
+  statusDe('statusInicio', 'loading', 'Guardando…');
+  return guardarJSON('data/tienda.json', TIENDA, 'Imágenes del inicio').then(function () { statusDe('statusInicio', 'ok', msg || 'Guardado. GitHub Pages tarda 1–2 minutos en mostrarlo.'); renderInicio(); })
+    .catch(function (e) { statusDe('statusInicio', 'err', e.message); });
+}
+function inicioPoner(tipo, clave, url) {
+  var I = inicioDatos();
+  if (tipo === 'col') { if (url) I.colecciones[clave] = url; else delete I.colecciones[clave]; }
+  else if (tipo === 'gran') { var i = Number(clave); I.gran = I.gran.slice(); while (I.gran.length < 3) I.gran.push(''); I.gran[i] = url || ''; while (I.gran.length && !I.gran[I.gran.length - 1]) I.gran.pop(); }
+  return inicioGuardar();
+}
+function inicioSubir(file, nombre) {
+  return comprimirCon(file, 1400).then(function (r) {
+    if (!r) throw new Error('No pude leer la imagen.');
+    var ruta = 'images/inicio/' + slugify(nombre) + '-' + Date.now() + Math.floor(Math.random() * 90 + 10) + '.jpg';
+    return ghPutImage(ruta, r.base64, 'Imagen del inicio').then(function () { return ruta; });
+  });
+}
+function inicioElegir(alElegir) {
+  var v = document.createElement('div'); v.className = 'ini-pick';
+  v.innerHTML = '<div class="caja"><div class="row"><input type="text" id="inipBuscar" placeholder="Buscar diseño por nombre…" style="flex:1"><button class="btn btn-sec" id="inipCerrar" style="flex:none">Cerrar</button></div><div class="ini-grid" id="inipGrid"></div></div>';
+  document.body.appendChild(v);
+  var pintar = function () {
+    var q = $('inipBuscar').value.trim().toLowerCase();
+    var l = PRODUCTOS.filter(function (p) { return artDe(p) && (!q || String(p.nombre).toLowerCase().indexOf(q) !== -1 || String(p.subcategoria || '').toLowerCase().indexOf(q) !== -1); }).slice(0, 60);
+    $('inipGrid').innerHTML = l.map(function (p) { return '<button type="button" data-u="' + htmlAttr(artDe(p)) + '" title="' + htmlAttr(p.nombre) + '"><img loading="lazy" src="' + htmlAttr(artDe(p)) + '"><span>' + esc(p.nombre) + '</span></button>'; }).join('') || '<p class="mini">Nada coincide.</p>';
+  };
+  pintar();
+  $('inipBuscar').addEventListener('input', pintar);
+  $('inipCerrar').addEventListener('click', function () { v.remove(); });
+  $('inipGrid').addEventListener('click', function (e) { var b = e.target.closest('button[data-u]'); if (!b) return; v.remove(); alElegir(b.getAttribute('data-u')); });
+}
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-ini]'); if (!b) return;
+  var a = b.getAttribute('data-ini'), t = b.getAttribute('data-tipo'), c = b.getAttribute('data-clave');
+  if (a === 'elegir') inicioElegir(function (u) { inicioPoner(t, c, u); });
+  else if (a === 'auto') inicioPoner(t, c, '');
+  else if (a === 'muro-quitar') { inicioDatos().muro.splice(Number(c), 1); inicioGuardar('Foto quitada.'); }
+});
+document.addEventListener('change', function (e) {
+  var inp = e.target;
+  if (inp.hasAttribute && inp.hasAttribute('data-ini-file') && inp.files.length) {
+    var t = inp.getAttribute('data-tipo'), c = inp.getAttribute('data-clave'), f = inp.files[0]; inp.value = '';
+    statusDe('statusInicio', 'loading', 'Subiendo imagen…');
+    inicioSubir(f, t + '-' + c).then(function (ruta) { return inicioPoner(t, c, ruta); }).catch(function (er) { statusDe('statusInicio', 'err', er.message); });
+  } else if (inp.hasAttribute && inp.hasAttribute('data-ini-muro') && inp.files.length) {
+    var fs = Array.prototype.slice.call(inp.files); inp.value = '';
+    var cad = Promise.resolve(), n = 0;
+    fs.forEach(function (f, i) { cad = cad.then(function () { statusDe('statusInicio', 'loading', 'Subiendo foto ' + (i + 1) + ' de ' + fs.length + '…'); return inicioSubir(f, 'cliente').then(function (ruta) { inicioDatos().muro.push(ruta); n++; }); }); });
+    cad.then(function () { return inicioGuardar(n + ' foto(s) agregadas.'); }).catch(function (er) { statusDe('statusInicio', 'err', er.message); });
+  }
 });
 
 // ---------- Drops y banners ----------
@@ -3930,7 +4060,7 @@ function ghFresco(path) {
     .then(function (res) { if (!res.ok) return errorDeRespuesta(res, 'No pude leer ' + path); return res.json(); });
 }
 function ghLeerFresco(path) {
-  return ghFresco(path).then(function (d) { return { content: JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g, ''))))), sha: d.sha }; });
+  return ghGet(path);
 }
 
 // ---------- Quitar un color (fondo negro, blanco…) ----------
@@ -4048,6 +4178,7 @@ function subActualizarThumb(k) {
   if (el && k.thumb) el.src = k.thumb;
 }
 function subClon(o) { return JSON.parse(JSON.stringify(o)); }
+function subSlot(c) { return c && c.impresion === 'pecho' ? 'pecho' : 'espalda'; }
 function subAjuste(k) { var a = k.ajuste ? subClon(k.ajuste) : {}; a.v = 2; return a; }
 // Camiseta de portada de un diseño: la suya si la cambió, si no la común; si no está entre sus colores, la negra o la primera
 function subPortadaDe(k, c) {
@@ -4060,7 +4191,8 @@ function subMiniatura(k) {
   var c = subComun();
   return leerPNG(k.file, RECORTAR_PNG(), c.quitar, true).then(function (r) {
     var color = subPortadaDe(k, c);
-    return YuzuMockup.generarTodas('boxy', color, [{ nombre: 'V1', colores: [], espalda: r.img }], 0, subAjuste(k)).then(function (cvs) {
+    var v1 = { nombre: 'V1', colores: [] }; v1[subSlot(c)] = r.img;
+    return YuzuMockup.generarTodas('boxy', color, [v1], 0, subAjuste(k)).then(function (cvs) {
       var cv = cvs[0]; if (!cv) { k.thumb = r.preview; return; }
       var t = document.createElement('canvas'); t.width = 220; t.height = Math.round(220 * cv.height / cv.width);
       t.getContext('2d').drawImage(cv, 0, 0, t.width, t.height); k.thumb = t.toDataURL('image/jpeg', 0.75);
@@ -4086,7 +4218,8 @@ function subPrevGrande() {
     if (tok !== SUB.pvTok) return;
     $('subPrevArte').src = r.preview;
     var color = subPortadaDe(k, c);
-    return YuzuMockup.generarTodas('boxy', color, [{ nombre: 'V1', colores: [], espalda: r.img }], 0, subAjuste(k)).then(function (cvs) {
+    var v1 = { nombre: 'V1', colores: [] }; v1[subSlot(c)] = r.img;
+    return YuzuMockup.generarTodas('boxy', color, [v1], 0, subAjuste(k)).then(function (cvs) {
       if (tok !== SUB.pvTok || !cvs[0]) return;
       var t = document.createElement('canvas'); t.width = 520; t.height = Math.round(520 * cvs[0].height / cvs[0].width);
       t.getContext('2d').drawImage(cvs[0], 0, 0, t.width, t.height);
@@ -4122,10 +4255,10 @@ function subPosicion(i) {
     var ed = {
       e: { ajuste: k.ajuste, colorPrev: subPortadaDe(k, c), prendaPrev: 'boxy' },
       _v2: function () { return true; }, _prenda: function () { return ed.e.prendaPrev; },
-      versionesImg: function () { return [{ nombre: 'V1', colores: [], espalda: r.img }]; },
+      versionesImg: function () { var v = { nombre: 'V1', colores: [] }; v[subSlot(c)] = r.img; return [v]; },
       render: function () { k.ajuste = ed.e.ajuste; k.tv = -1; SUB.prevIdx = i; subRender(); subMiniaturas(); subPrevGrande(); }
     };
-    abrirTf(ed, 'espalda');
+    abrirTf(ed, subSlot(c) === 'pecho' ? 'frente' : 'espalda');
   }).catch(function (e) { statusDe('subStatus', 'err', 'No pude abrir el diseño: ' + e.message); });
 }
 function subAgregar(files) {
@@ -4193,15 +4326,15 @@ function subAsegurarCategoria(cat, sub) {
 function subSubirUno(k, c, aviso) {
   if (k.producto) return Promise.resolve();
   var stamp = (SUB.sello = Math.max(Date.now(), SUB.sello + 1)), nombre = k.nombre.trim(), base = slugify(nombre) + '-' + stamp;
-  var o = { nombre: 'Versión 1', colores: k.telas.slice(), print: {} }, mapa = {}, n = 0, rutaLiv = 'images/disenos/' + base + '-v1-espalda.png', rutaPrint = 'images/disenos/print/' + base + '-v1-espalda.png';
+  var slot = subSlot(c), o = { nombre: 'Versión 1', colores: k.telas.slice(), print: {} }, mapa = {}, n = 0, rutaLiv = 'images/disenos/' + base + '-v1-' + slot + '.png', rutaPrint = 'images/disenos/print/' + base + '-v1-' + slot + '.png';
   return leerPNG(k.file, RECORTAR_PNG(), c.quitar).then(function (r) {
     aviso('Subiendo el diseño…');
     return ghPutImage(rutaLiv, r.base64, 'Diseño ' + base).then(function () {
-      o.espalda = rutaLiv;
+      o[slot] = rutaLiv;
       if (!repoPrivado()) return;
-      return privPut(rutaPrint, r.print, 'Diseño para imprimir ' + base).then(function () { o.print.espalda = 'privado:' + rutaPrint; }).catch(function () { k.msg = 'Ojo: no pude guardar la versión para imprimir.'; });
+      return privPut(rutaPrint, r.print, 'Diseño para imprimir ' + base).then(function () { o.print[slot] = 'privado:' + rutaPrint; }).catch(function () { k.msg = 'Ojo: no pude guardar la versión para imprimir.'; });
     }).then(function () {
-      var vs = [{ nombre: o.nombre, colores: o.colores, espalda: r.img }], cols = k.colores.filter(function (x) { return YuzuMockup.disponible('boxy', x); }), cad = Promise.resolve();
+      var vs = [(function () { var v = { nombre: o.nombre, colores: o.colores }; v[slot] = r.img; return v; })()], cols = k.colores.filter(function (x) { return YuzuMockup.disponible('boxy', x); }), cad = Promise.resolve();
       cols.forEach(function (col, ci) {
         cad = cad.then(function () {
           aviso('Mockup ' + (ci + 1) + ' de ' + cols.length + '…');
@@ -4298,7 +4431,7 @@ $('subCuerpo').addEventListener('change', function (e) {
   if (t.id === 'subCat') { subLlenarSubs(); $('subSubNueva').value = ''; subAutoNombre(); subPropagar(); return; }
   if (t.id === 'subSub' || t.id === 'subSubNueva') { subAutoNombre(); subPropagar(); return; }
   if (t.id === 'subQTol') { $('subQTolV').textContent = t.value; }
-  if (t.id === 'subQModo' || t.id === 'subQTol' || t.id === 'subQGlobal' || t.id === 'subPrev') { SUB.tv++; subPropagar(); subMiniaturas(); subPrevGrande(); return; }
+  if (t.id === 'subQModo' || t.id === 'subQTol' || t.id === 'subQGlobal' || t.id === 'subPrev' || t.id === 'subImpresion') { SUB.tv++; subPropagar(); subMiniaturas(); subPrevGrande(); return; }
   if (t.classList.contains('sub-c')) subPropagar();
 });
 $('subCuerpo').addEventListener('input', function (e) {
