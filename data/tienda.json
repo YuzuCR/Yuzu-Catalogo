@@ -1,23 +1,9 @@
 {
   "nombres": {
-    "Demon Slayer": {
-      "sigla": "YUZU",
-      "titulo": "Demon Slayer",
-      "frase": "Primera postura"
-    },
-    "Pokemon": {
-      "sigla": "YUZU",
-      "frase": "¡Atrápalos a todos!"
-    },
     "Attack on Titan": {
       "sigla": "YUZU",
       "titulo": "Attack on Titan",
       "frase": "Mas allá de la muralla"
-    },
-    "Dragon Ball Z": {
-      "sigla": "YUZU",
-      "titulo": "Dragon Ball Z",
-      "frase": "Sangre Sayayin"
     }
   },
   "drops": {
