@@ -42192,5 +42192,230 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1793665389701,
+    "nombre": "AB 006",
+    "categoria": "Anime",
+    "subcategoria": "Angel Beats",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/ab-006-blanco-1793665389701-0.jpg",
+        "images/ab-006-blanco-1793665389701-1.jpg"
+      ],
+      "Negro": [
+        "images/ab-006-negro-1793665389701-2.jpg",
+        "images/ab-006-negro-1793665389701-3.jpg"
+      ],
+      "Crema": [
+        "images/ab-006-crema-1793665389701-4.jpg",
+        "images/ab-006-crema-1793665389701-5.jpg"
+      ],
+      "Café": [
+        "images/ab-006-cafe-1793665389701-6.jpg",
+        "images/ab-006-cafe-1793665389701-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/ab-006-gris-grafito-1793665389701-8.jpg",
+        "images/ab-006-gris-grafito-1793665389701-9.jpg"
+      ],
+      "Azul marino": [
+        "images/ab-006-azul-marino-1793665389701-10.jpg",
+        "images/ab-006-azul-marino-1793665389701-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/ab-006-verde-musgo-1793665389701-12.jpg",
+        "images/ab-006-verde-musgo-1793665389701-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ab-006-1793665389701-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ab-006-1793665389701-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793665416757,
+    "nombre": "AB 007",
+    "categoria": "Anime",
+    "subcategoria": "Angel Beats",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/ab-007-blanco-1793665416757-0.jpg",
+        "images/ab-007-blanco-1793665416757-1.jpg"
+      ],
+      "Negro": [
+        "images/ab-007-negro-1793665416757-2.jpg",
+        "images/ab-007-negro-1793665416757-3.jpg"
+      ],
+      "Crema": [
+        "images/ab-007-crema-1793665416757-4.jpg",
+        "images/ab-007-crema-1793665416757-5.jpg"
+      ],
+      "Café": [
+        "images/ab-007-cafe-1793665416757-6.jpg",
+        "images/ab-007-cafe-1793665416757-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/ab-007-gris-grafito-1793665416757-8.jpg",
+        "images/ab-007-gris-grafito-1793665416757-9.jpg"
+      ],
+      "Azul marino": [
+        "images/ab-007-azul-marino-1793665416757-10.jpg",
+        "images/ab-007-azul-marino-1793665416757-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/ab-007-verde-musgo-1793665416757-12.jpg",
+        "images/ab-007-verde-musgo-1793665416757-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ab-007-1793665416757-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ab-007-1793665416757-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793665444728,
+    "nombre": "AB 008",
+    "categoria": "Anime",
+    "subcategoria": "Angel Beats",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/ab-008-blanco-1793665444728-0.jpg",
+        "images/ab-008-blanco-1793665444728-1.jpg"
+      ],
+      "Negro": [
+        "images/ab-008-negro-1793665444728-2.jpg",
+        "images/ab-008-negro-1793665444728-3.jpg"
+      ],
+      "Crema": [
+        "images/ab-008-crema-1793665444728-4.jpg",
+        "images/ab-008-crema-1793665444728-5.jpg"
+      ],
+      "Café": [
+        "images/ab-008-cafe-1793665444728-6.jpg",
+        "images/ab-008-cafe-1793665444728-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/ab-008-gris-grafito-1793665444728-8.jpg",
+        "images/ab-008-gris-grafito-1793665444728-9.jpg"
+      ],
+      "Azul marino": [
+        "images/ab-008-azul-marino-1793665444728-10.jpg",
+        "images/ab-008-azul-marino-1793665444728-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/ab-008-verde-musgo-1793665444728-12.jpg",
+        "images/ab-008-verde-musgo-1793665444728-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ab-008-1793665444728-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ab-008-1793665444728-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
