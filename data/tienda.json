@@ -1,10 +1,5 @@
 {
   "nombres": {
-    "AoT Collection": {
-      "sigla": "YUZU",
-      "titulo": "Attack on Titan",
-      "frase": "Mas allá de la muralla"
-    },
     "DBZ Collection": {
       "sigla": "YUZU",
       "titulo": "Dragon Ball Z",
@@ -18,6 +13,11 @@
     "Pokemon": {
       "sigla": "YUZU",
       "frase": "¡Atrápalos a todos!"
+    },
+    "Attack on Titan": {
+      "sigla": "YUZU",
+      "titulo": "Attack on Titan",
+      "frase": "Mas allá de la muralla"
     }
   },
   "drops": {
@@ -29,7 +29,7 @@
     ]
   },
   "banners": [
-    "AoT Collection",
+    "Attack on Titan",
     "DBZ Collection",
     "Demon Slayer",
     "Pokemon"
@@ -249,6 +249,7 @@
   "inicio": {
     "colecciones": {},
     "gran": [],
-    "muro": []
+    "muro": [],
+    "ocultar": {}
   }
 }
