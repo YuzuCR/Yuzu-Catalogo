@@ -872,7 +872,7 @@
     <div style="margin-top:26px"><a class="subrayado" href="#/c/todo">Ver todo el archivo</a></div>
   </section>
 
-  <section class="seccion envoltura">
+  <section class="seccion envoltura" id="secBanners">
     <div class="banners" id="banners"></div>
   </section>
 
@@ -1671,6 +1671,9 @@ function pintarInicio() {
     $('heroEtiqueta').textContent = 'Taller en San José · Costa Rica';
     $('heroTit').textContent = 'Envío incluido';
   }
+  if (INICIO.heroEtiqueta) $('heroEtiqueta').textContent = INICIO.heroEtiqueta;
+  if (INICIO.heroTitulo) $('heroTit').textContent = INICIO.heroTitulo;
+
 
   // ----- Destacados -----
   var dest = VISIBLES.slice(0, 9);
@@ -1722,6 +1725,8 @@ function pintarInicio() {
     return '<a href="#" onclick="return false" data-zoom-src="' + esc(u) + '" aria-label="Foto de un cliente"><img src="' + esc(u) + '" alt="Cliente de Yuzu" loading="lazy"></a>';
   }).join('');
   if (!muro.length) $('secMuro').classList.add('oculto');
+  // Secciones que el admin apagó
+  Object.keys(INICIO.ocultar || {}).forEach(function (id) { if (INICIO.ocultar[id] && $(id)) $(id).classList.add('oculto'); });
 }
 function productosDeSub(nombre) { return VISIBLES.filter(function (p) { return p.subcategoria === nombre; }).sort(function (a, b) { return b.id - a.id; }); }
 
