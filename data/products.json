@@ -40207,5 +40207,355 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1793664258589,
+    "nombre": "AGK 001",
+    "categoria": "Anime",
+    "subcategoria": "Akame Ga Kill!",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/agk-001-negro-1793664258589-0.jpg",
+        "images/agk-001-negro-1793664258589-1.jpg"
+      ],
+      "Crema": [
+        "images/agk-001-crema-1793664258589-2.jpg",
+        "images/agk-001-crema-1793664258589-3.jpg"
+      ],
+      "Café": [
+        "images/agk-001-cafe-1793664258589-4.jpg",
+        "images/agk-001-cafe-1793664258589-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/agk-001-gris-grafito-1793664258589-6.jpg",
+        "images/agk-001-gris-grafito-1793664258589-7.jpg"
+      ],
+      "Azul marino": [
+        "images/agk-001-azul-marino-1793664258589-8.jpg",
+        "images/agk-001-azul-marino-1793664258589-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/agk-001-verde-musgo-1793664258589-10.jpg",
+        "images/agk-001-verde-musgo-1793664258589-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "pecho",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/agk-001-1793664258589-v1-espalda.png"
+        },
+        "espalda": "images/disenos/agk-001-1793664258589-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1793664280690,
+    "nombre": "AGK 002",
+    "categoria": "Anime",
+    "subcategoria": "Akame Ga Kill!",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/agk-002-negro-1793664280690-0.jpg",
+        "images/agk-002-negro-1793664280690-1.jpg"
+      ],
+      "Crema": [
+        "images/agk-002-crema-1793664280690-2.jpg",
+        "images/agk-002-crema-1793664280690-3.jpg"
+      ],
+      "Café": [
+        "images/agk-002-cafe-1793664280690-4.jpg",
+        "images/agk-002-cafe-1793664280690-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/agk-002-gris-grafito-1793664280690-6.jpg",
+        "images/agk-002-gris-grafito-1793664280690-7.jpg"
+      ],
+      "Azul marino": [
+        "images/agk-002-azul-marino-1793664280690-8.jpg",
+        "images/agk-002-azul-marino-1793664280690-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/agk-002-verde-musgo-1793664280690-10.jpg",
+        "images/agk-002-verde-musgo-1793664280690-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "pecho",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/agk-002-1793664280690-v1-espalda.png"
+        },
+        "espalda": "images/disenos/agk-002-1793664280690-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1793664302289,
+    "nombre": "AGK 003",
+    "categoria": "Anime",
+    "subcategoria": "Akame Ga Kill!",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/agk-003-negro-1793664302289-0.jpg",
+        "images/agk-003-negro-1793664302289-1.jpg"
+      ],
+      "Crema": [
+        "images/agk-003-crema-1793664302289-2.jpg",
+        "images/agk-003-crema-1793664302289-3.jpg"
+      ],
+      "Café": [
+        "images/agk-003-cafe-1793664302289-4.jpg",
+        "images/agk-003-cafe-1793664302289-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/agk-003-gris-grafito-1793664302289-6.jpg",
+        "images/agk-003-gris-grafito-1793664302289-7.jpg"
+      ],
+      "Azul marino": [
+        "images/agk-003-azul-marino-1793664302289-8.jpg",
+        "images/agk-003-azul-marino-1793664302289-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/agk-003-verde-musgo-1793664302289-10.jpg",
+        "images/agk-003-verde-musgo-1793664302289-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "pecho",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/agk-003-1793664302289-v1-espalda.png"
+        },
+        "espalda": "images/disenos/agk-003-1793664302289-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1793664324506,
+    "nombre": "AGK 004",
+    "categoria": "Anime",
+    "subcategoria": "Akame Ga Kill!",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/agk-004-negro-1793664324506-0.jpg",
+        "images/agk-004-negro-1793664324506-1.jpg"
+      ],
+      "Crema": [
+        "images/agk-004-crema-1793664324506-2.jpg",
+        "images/agk-004-crema-1793664324506-3.jpg"
+      ],
+      "Café": [
+        "images/agk-004-cafe-1793664324506-4.jpg",
+        "images/agk-004-cafe-1793664324506-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/agk-004-gris-grafito-1793664324506-6.jpg",
+        "images/agk-004-gris-grafito-1793664324506-7.jpg"
+      ],
+      "Azul marino": [
+        "images/agk-004-azul-marino-1793664324506-8.jpg",
+        "images/agk-004-azul-marino-1793664324506-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/agk-004-verde-musgo-1793664324506-10.jpg",
+        "images/agk-004-verde-musgo-1793664324506-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "pecho",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/agk-004-1793664324506-v1-espalda.png"
+        },
+        "espalda": "images/disenos/agk-004-1793664324506-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1793664352353,
+    "nombre": "AGK 005",
+    "categoria": "Anime",
+    "subcategoria": "Akame Ga Kill!",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/agk-005-negro-1793664352353-0.jpg",
+        "images/agk-005-negro-1793664352353-1.jpg"
+      ],
+      "Crema": [
+        "images/agk-005-crema-1793664352353-2.jpg",
+        "images/agk-005-crema-1793664352353-3.jpg"
+      ],
+      "Café": [
+        "images/agk-005-cafe-1793664352353-4.jpg",
+        "images/agk-005-cafe-1793664352353-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/agk-005-gris-grafito-1793664352353-6.jpg",
+        "images/agk-005-gris-grafito-1793664352353-7.jpg"
+      ],
+      "Azul marino": [
+        "images/agk-005-azul-marino-1793664352353-8.jpg",
+        "images/agk-005-azul-marino-1793664352353-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/agk-005-verde-musgo-1793664352353-10.jpg",
+        "images/agk-005-verde-musgo-1793664352353-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "pecho",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/agk-005-1793664352353-v1-espalda.png"
+        },
+        "espalda": "images/disenos/agk-005-1793664352353-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
   }
 ]
