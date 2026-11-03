@@ -40767,5 +40767,380 @@
     "colecciones": [
       "Manga"
     ]
+  },
+  {
+    "id": 1793664595923,
+    "nombre": "Aki 001",
+    "categoria": "Anime",
+    "subcategoria": "Akira",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/aki-001-blanco-1793664595923-0.jpg",
+        "images/aki-001-blanco-1793664595923-1.jpg"
+      ],
+      "Negro": [
+        "images/aki-001-negro-1793664595923-2.jpg",
+        "images/aki-001-negro-1793664595923-3.jpg"
+      ],
+      "Crema": [
+        "images/aki-001-crema-1793664595923-4.jpg",
+        "images/aki-001-crema-1793664595923-5.jpg"
+      ],
+      "Café": [
+        "images/aki-001-cafe-1793664595923-6.jpg",
+        "images/aki-001-cafe-1793664595923-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/aki-001-gris-grafito-1793664595923-8.jpg",
+        "images/aki-001-gris-grafito-1793664595923-9.jpg"
+      ],
+      "Azul marino": [
+        "images/aki-001-azul-marino-1793664595923-10.jpg",
+        "images/aki-001-azul-marino-1793664595923-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aki-001-verde-musgo-1793664595923-12.jpg",
+        "images/aki-001-verde-musgo-1793664595923-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aki-001-1793664595923-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aki-001-1793664595923-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793664625279,
+    "nombre": "Aki 002",
+    "categoria": "Anime",
+    "subcategoria": "Akira",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/aki-002-blanco-1793664625279-0.jpg",
+        "images/aki-002-blanco-1793664625279-1.jpg"
+      ],
+      "Negro": [
+        "images/aki-002-negro-1793664625279-2.jpg",
+        "images/aki-002-negro-1793664625279-3.jpg"
+      ],
+      "Crema": [
+        "images/aki-002-crema-1793664625279-4.jpg",
+        "images/aki-002-crema-1793664625279-5.jpg"
+      ],
+      "Café": [
+        "images/aki-002-cafe-1793664625279-6.jpg",
+        "images/aki-002-cafe-1793664625279-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/aki-002-gris-grafito-1793664625279-8.jpg",
+        "images/aki-002-gris-grafito-1793664625279-9.jpg"
+      ],
+      "Azul marino": [
+        "images/aki-002-azul-marino-1793664625279-10.jpg",
+        "images/aki-002-azul-marino-1793664625279-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aki-002-verde-musgo-1793664625279-12.jpg",
+        "images/aki-002-verde-musgo-1793664625279-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aki-002-1793664625279-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aki-002-1793664625279-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793664659821,
+    "nombre": "Aki 003",
+    "categoria": "Anime",
+    "subcategoria": "Akira",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/aki-003-blanco-1793664659821-0.jpg",
+        "images/aki-003-blanco-1793664659821-1.jpg"
+      ],
+      "Negro": [
+        "images/aki-003-negro-1793664659821-2.jpg",
+        "images/aki-003-negro-1793664659821-3.jpg"
+      ],
+      "Crema": [
+        "images/aki-003-crema-1793664659821-4.jpg",
+        "images/aki-003-crema-1793664659821-5.jpg"
+      ],
+      "Café": [
+        "images/aki-003-cafe-1793664659821-6.jpg",
+        "images/aki-003-cafe-1793664659821-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/aki-003-gris-grafito-1793664659821-8.jpg",
+        "images/aki-003-gris-grafito-1793664659821-9.jpg"
+      ],
+      "Azul marino": [
+        "images/aki-003-azul-marino-1793664659821-10.jpg",
+        "images/aki-003-azul-marino-1793664659821-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aki-003-verde-musgo-1793664659821-12.jpg",
+        "images/aki-003-verde-musgo-1793664659821-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aki-003-1793664659821-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aki-003-1793664659821-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793664695791,
+    "nombre": "Aki 004",
+    "categoria": "Anime",
+    "subcategoria": "Akira",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/aki-004-blanco-1793664695791-0.jpg",
+        "images/aki-004-blanco-1793664695791-1.jpg"
+      ],
+      "Negro": [
+        "images/aki-004-negro-1793664695791-2.jpg",
+        "images/aki-004-negro-1793664695791-3.jpg"
+      ],
+      "Crema": [
+        "images/aki-004-crema-1793664695791-4.jpg",
+        "images/aki-004-crema-1793664695791-5.jpg"
+      ],
+      "Café": [
+        "images/aki-004-cafe-1793664695791-6.jpg",
+        "images/aki-004-cafe-1793664695791-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/aki-004-gris-grafito-1793664695791-8.jpg",
+        "images/aki-004-gris-grafito-1793664695791-9.jpg"
+      ],
+      "Azul marino": [
+        "images/aki-004-azul-marino-1793664695791-10.jpg",
+        "images/aki-004-azul-marino-1793664695791-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aki-004-verde-musgo-1793664695791-12.jpg",
+        "images/aki-004-verde-musgo-1793664695791-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aki-004-1793664695791-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aki-004-1793664695791-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1793664732831,
+    "nombre": "Aki 005",
+    "categoria": "Anime",
+    "subcategoria": "Akira",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/aki-005-blanco-1793664732831-0.jpg",
+        "images/aki-005-blanco-1793664732831-1.jpg"
+      ],
+      "Negro": [
+        "images/aki-005-negro-1793664732831-2.jpg",
+        "images/aki-005-negro-1793664732831-3.jpg"
+      ],
+      "Crema": [
+        "images/aki-005-crema-1793664732831-4.jpg",
+        "images/aki-005-crema-1793664732831-5.jpg"
+      ],
+      "Café": [
+        "images/aki-005-cafe-1793664732831-6.jpg",
+        "images/aki-005-cafe-1793664732831-7.jpg"
+      ],
+      "Gris grafito": [
+        "images/aki-005-gris-grafito-1793664732831-8.jpg",
+        "images/aki-005-gris-grafito-1793664732831-9.jpg"
+      ],
+      "Azul marino": [
+        "images/aki-005-azul-marino-1793664732831-10.jpg",
+        "images/aki-005-azul-marino-1793664732831-11.jpg"
+      ],
+      "Verde musgo": [
+        "images/aki-005-verde-musgo-1793664732831-12.jpg",
+        "images/aki-005-verde-musgo-1793664732831-13.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aki-005-1793664732831-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aki-005-1793664732831-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
