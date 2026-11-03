@@ -1,10 +1,5 @@
 {
   "nombres": {
-    "DBZ Collection": {
-      "sigla": "YUZU",
-      "titulo": "Dragon Ball Z",
-      "frase": "Sangre Sayayin"
-    },
     "Demon Slayer": {
       "sigla": "YUZU",
       "titulo": "Demon Slayer",
@@ -18,19 +13,24 @@
       "sigla": "YUZU",
       "titulo": "Attack on Titan",
       "frase": "Mas allá de la muralla"
+    },
+    "Dragon Ball Z": {
+      "sigla": "YUZU",
+      "titulo": "Dragon Ball Z",
+      "frase": "Sangre Sayayin"
     }
   },
   "drops": {
     "actual": "Akira",
     "pasados": [
-      "DBZ Collection",
+      "Dragon Ball Z",
       "Demon Slayer",
       "Pokemon"
     ]
   },
   "banners": [
     "Attack on Titan",
-    "DBZ Collection",
+    "Dragon Ball Z",
     "Demon Slayer",
     "Pokemon"
   ],
