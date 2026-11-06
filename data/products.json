@@ -43668,5 +43668,50 @@
     "colecciones": [
       "Manga"
     ]
+  },
+  {
+    "id": 1794005156151,
+    "nombre": "AC 021",
+    "categoria": "Anime",
+    "subcategoria": "Assassination Classroom",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ac-021-negro-1794005156151-0.jpg",
+        "images/ac-021-negro-1794005156151-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ac-021-1794005156151-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ac-021-1794005156151-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
   }
 ]
