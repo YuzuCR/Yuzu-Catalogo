@@ -42697,5 +42697,76 @@
     "colecciones": [
       "Manga"
     ]
+  },
+  {
+    "id": 1794004642901,
+    "nombre": "Ant 001",
+    "categoria": "Anime",
+    "subcategoria": "Another",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/ant-001-blanco-1794004642901-0.jpg"
+      ],
+      "Crema": [
+        "images/ant-001-crema-1794004642901-1.jpg"
+      ],
+      "Café": [
+        "images/ant-001-cafe-1794004642901-2.jpg"
+      ],
+      "Gris grafito": [
+        "images/ant-001-gris-grafito-1794004642901-3.jpg"
+      ],
+      "Azul marino": [
+        "images/ant-001-azul-marino-1794004642901-4.jpg"
+      ],
+      "Verde musgo": [
+        "images/ant-001-verde-musgo-1794004642901-5.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "pecho",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "pecho": "privado:images/disenos/print/ant-001-1794004642901-v1-pecho.png"
+        },
+        "pecho": "images/disenos/ant-001-1794004642901-v1-pecho.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2,
+      "boxy": {
+        "frente": {
+          "cx": 537.7,
+          "cy": 701.9,
+          "w": 371.7
+        }
+      }
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
