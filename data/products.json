@@ -43443,5 +43443,230 @@
     "colecciones": [
       "Manga"
     ]
+  },
+  {
+    "id": 1794005107175,
+    "nombre": "AC 016",
+    "categoria": "Anime",
+    "subcategoria": "Assassination Classroom",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ac-016-negro-1794005107175-0.jpg",
+        "images/ac-016-negro-1794005107175-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ac-016-1794005107175-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ac-016-1794005107175-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794005114102,
+    "nombre": "AC 017",
+    "categoria": "Anime",
+    "subcategoria": "Assassination Classroom",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ac-017-negro-1794005114102-0.jpg",
+        "images/ac-017-negro-1794005114102-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ac-017-1794005114102-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ac-017-1794005114102-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794005121392,
+    "nombre": "AC 018",
+    "categoria": "Anime",
+    "subcategoria": "Assassination Classroom",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ac-018-negro-1794005121392-0.jpg",
+        "images/ac-018-negro-1794005121392-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ac-018-1794005121392-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ac-018-1794005121392-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794005128584,
+    "nombre": "AC 019",
+    "categoria": "Anime",
+    "subcategoria": "Assassination Classroom",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ac-019-negro-1794005128584-0.jpg",
+        "images/ac-019-negro-1794005128584-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ac-019-1794005128584-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ac-019-1794005128584-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794005136011,
+    "nombre": "AC 020",
+    "categoria": "Anime",
+    "subcategoria": "Assassination Classroom",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ac-020-negro-1794005136011-0.jpg",
+        "images/ac-020-negro-1794005136011-1.jpg"
+      ]
+    },
+    "colores": [
+      "Negro"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ac-020-1794005136011-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ac-020-1794005136011-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
   }
 ]
