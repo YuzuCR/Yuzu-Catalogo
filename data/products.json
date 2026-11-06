@@ -42417,5 +42417,285 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1794004304950,
+    "nombre": "AB 009",
+    "categoria": "Anime",
+    "subcategoria": "Angel Beats",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ab-009-negro-1794004304950-0.jpg",
+        "images/ab-009-negro-1794004304950-1.jpg"
+      ],
+      "Crema": [
+        "images/ab-009-crema-1794004304950-2.jpg",
+        "images/ab-009-crema-1794004304950-3.jpg"
+      ],
+      "Café": [
+        "images/ab-009-cafe-1794004304950-4.jpg",
+        "images/ab-009-cafe-1794004304950-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/ab-009-gris-grafito-1794004304950-6.jpg",
+        "images/ab-009-gris-grafito-1794004304950-7.jpg"
+      ],
+      "Azul marino": [
+        "images/ab-009-azul-marino-1794004304950-8.jpg",
+        "images/ab-009-azul-marino-1794004304950-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/ab-009-verde-musgo-1794004304950-10.jpg",
+        "images/ab-009-verde-musgo-1794004304950-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ab-009-1794004304950-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ab-009-1794004304950-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794004327717,
+    "nombre": "AB 010",
+    "categoria": "Anime",
+    "subcategoria": "Angel Beats",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ab-010-negro-1794004327717-0.jpg",
+        "images/ab-010-negro-1794004327717-1.jpg"
+      ],
+      "Crema": [
+        "images/ab-010-crema-1794004327717-2.jpg",
+        "images/ab-010-crema-1794004327717-3.jpg"
+      ],
+      "Café": [
+        "images/ab-010-cafe-1794004327717-4.jpg",
+        "images/ab-010-cafe-1794004327717-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/ab-010-gris-grafito-1794004327717-6.jpg",
+        "images/ab-010-gris-grafito-1794004327717-7.jpg"
+      ],
+      "Azul marino": [
+        "images/ab-010-azul-marino-1794004327717-8.jpg",
+        "images/ab-010-azul-marino-1794004327717-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/ab-010-verde-musgo-1794004327717-10.jpg",
+        "images/ab-010-verde-musgo-1794004327717-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ab-010-1794004327717-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ab-010-1794004327717-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794004350204,
+    "nombre": "AB 011",
+    "categoria": "Anime",
+    "subcategoria": "Angel Beats",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ab-011-negro-1794004350204-0.jpg",
+        "images/ab-011-negro-1794004350204-1.jpg"
+      ],
+      "Crema": [
+        "images/ab-011-crema-1794004350204-2.jpg",
+        "images/ab-011-crema-1794004350204-3.jpg"
+      ],
+      "Café": [
+        "images/ab-011-cafe-1794004350204-4.jpg",
+        "images/ab-011-cafe-1794004350204-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/ab-011-gris-grafito-1794004350204-6.jpg",
+        "images/ab-011-gris-grafito-1794004350204-7.jpg"
+      ],
+      "Azul marino": [
+        "images/ab-011-azul-marino-1794004350204-8.jpg",
+        "images/ab-011-azul-marino-1794004350204-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/ab-011-verde-musgo-1794004350204-10.jpg",
+        "images/ab-011-verde-musgo-1794004350204-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ab-011-1794004350204-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ab-011-1794004350204-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794004373084,
+    "nombre": "AB 012",
+    "categoria": "Anime",
+    "subcategoria": "Angel Beats",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ab-012-negro-1794004373084-0.jpg",
+        "images/ab-012-negro-1794004373084-1.jpg"
+      ],
+      "Crema": [
+        "images/ab-012-crema-1794004373084-2.jpg",
+        "images/ab-012-crema-1794004373084-3.jpg"
+      ],
+      "Café": [
+        "images/ab-012-cafe-1794004373084-4.jpg",
+        "images/ab-012-cafe-1794004373084-5.jpg"
+      ],
+      "Gris grafito": [
+        "images/ab-012-gris-grafito-1794004373084-6.jpg",
+        "images/ab-012-gris-grafito-1794004373084-7.jpg"
+      ],
+      "Azul marino": [
+        "images/ab-012-azul-marino-1794004373084-8.jpg",
+        "images/ab-012-azul-marino-1794004373084-9.jpg"
+      ],
+      "Verde musgo": [
+        "images/ab-012-verde-musgo-1794004373084-10.jpg",
+        "images/ab-012-verde-musgo-1794004373084-11.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ab-012-1794004373084-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ab-012-1794004373084-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
   }
 ]
