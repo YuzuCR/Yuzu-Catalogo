@@ -947,9 +947,14 @@
         </div>
         <input type="text" id="subSubNueva" placeholder="…o escribí una subcategoría nueva" style="margin-top:6px">
         <label class="check-row"><input type="checkbox" id="subNumerar" class="sub-c" checked><span>Numerar los nombres automáticamente (si no, uso el nombre de cada archivo)</span></label>
+        <label>¿De dónde sale el número?</label>
+        <select id="subNumModo" class="sub-c">
+          <option value="archivo">Del nombre del archivo · «AoT (56).png» → AoT 056 (igual que en tu carpeta)</option>
+          <option value="seguir">Seguir después del último del catálogo</option>
+        </select>
         <div class="row">
           <div style="flex:2"><label>Prefijo</label><input type="text" id="subPrefijo" class="sub-c" placeholder="ej: AoT"></div>
-          <div style="flex:1"><label>Empezar en</label><input type="text" inputmode="numeric" id="subDesde" class="sub-c"></div>
+          <div style="flex:1" id="subDesdeCaja"><label>Empezar en</label><input type="text" inputmode="numeric" id="subDesde" class="sub-c"></div>
           <div style="flex:1"><label>Dígitos</label><input type="text" inputmode="numeric" id="subDigitos" class="sub-c"></div>
         </div>
         <p class="mini" id="subEjemplo" style="margin-top:4px"></p>
@@ -1106,10 +1111,14 @@ $('btnBorrarConfig').addEventListener('click', borrarConfig);
 function urlDe(path) { var cfg = getConfig(); return 'https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + path; }
 function errorDeRespuesta(res, ctx) { return res.json().catch(function(){return{};}).then(function(err){ var d=err.message||''; if(err.errors&&err.errors.length&&err.errors[0].message) d+=' — '+err.errors[0].message; throw new Error(ctx+' ('+res.status+') '+d); }); }
 // GitHub no entrega "content" en archivos de más de 1 MB: en ese caso se pide el texto crudo
+function b64ATexto(b64) { return decodeURIComponent(escape(atob(String(b64).replace(/\n/g, '')))); }
 function ghDecodificar(data, url) {
-  if (data.content) return Promise.resolve(decodeURIComponent(escape(atob(data.content.replace(/\n/g, '')))));
-  return fetch(url, { cache: 'no-store', headers: { Authorization: 'token ' + getConfig().token, Accept: 'application/vnd.github.raw+json' } })
-    .then(function (r) { if (!r.ok) return errorDeRespuesta(r, 'No pude leer ' + url.split('/contents/')[1].split('?')[0]); return r.text(); });
+  if (data.content) return Promise.resolve(b64ATexto(data.content));
+  // Archivo grande: se pide por la API de blobs (devuelve el contenido completo hasta 100 MB, en base64)
+  if (!data.git_url) return Promise.reject(new Error('GitHub no devolvió el contenido de ' + (data.path || 'un archivo') + '.'));
+  return fetch(data.git_url + (data.git_url.indexOf('?') === -1 ? '?' : '&') + 't=' + Date.now(), { cache: 'no-store', headers: { Authorization: 'token ' + getConfig().token } })
+    .then(function (r) { if (!r.ok) return errorDeRespuesta(r, 'No pude leer ' + (data.path || 'el archivo')); return r.json(); })
+    .then(function (b) { if (!b.content) throw new Error('GitHub no devolvió el contenido de ' + (data.path || 'un archivo') + '.'); return b64ATexto(b.content); });
 }
 function ghGet(path) { var u = urlDe(path) + '?t=' + Date.now(); return fetch(u, { cache: 'no-store', headers: { Authorization: 'token ' + getConfig().token } }).then(function(res){ if(!res.ok) return errorDeRespuesta(res,'No pude leer '+path); return res.json(); }).then(function(data){ return ghDecodificar(data, u).then(function (texto) { return { content: JSON.parse(texto), sha: data.sha }; }); }); }
 // Envía un archivo; si GitHub responde con un error pasajero (límite de velocidad, "timed out validating the rule", 5xx) espera y reintenta
@@ -1128,7 +1137,7 @@ function ghEnviar(path, body, ctx, intento) {
 }
 function ghPut(path, obj, sha, msg) { var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(obj, null, 2)))); var body = { message: msg, content: encoded }; if (sha) body.sha = sha; return ghEnviar(path, body, 'Error guardando ' + path); }
 function ghPutImage(path, base64, msg) { return ghEnviar(path, { message: msg, content: base64 }, 'Error subiendo ' + path); }
-function ghBorrarArchivo(path, msg) { return fetch(urlDe(path), { headers:{Authorization:'token '+getConfig().token}}).then(function(res){ return res.ok?res.json():null; }).then(function(data){ if(!data||!data.sha) return null; return fetch(urlDe(path), { method:'DELETE', headers:{Authorization:'token '+getConfig().token,'Content-Type':'application/json'}, body:JSON.stringify({message:msg, sha:data.sha}) }); }).catch(function(){return null;}); }
+function ghBorrarArchivo(path, msg) { return fetch(urlDe(path) + '?t=' + Date.now(), { cache: 'no-store', headers:{Authorization:'token '+getConfig().token}}).then(function(res){ return res.ok?res.json():null; }).then(function(data){ if(!data||!data.sha) return null; return fetch(urlDe(path), { method:'DELETE', headers:{Authorization:'token '+getConfig().token,'Content-Type':'application/json'}, body:JSON.stringify({message:msg, sha:data.sha}) }); }).catch(function(){return null;}); }
 
 // ========== PRODUCTOS ==========
 // "¿Qué camiseta será la portada?": por defecto la negra (si está entre los colores)
@@ -1284,7 +1293,18 @@ $('categoriaSelect').addEventListener('change', function () {
 });
 $('subcategoriaSelect').addEventListener('change', function () {
   $('rowNuevaSubcat').style.display = this.value === '__nueva__' ? 'flex' : 'none';
+  if (ULTIMO_ARCHIVO_NUEVO) nombreNuevoDesdeArchivo('');
 });
+// Producto individual: si el PNG se llama «AoT (56).png», el nombre queda «AoT 056» (prefijo de la subcategoría + número del archivo)
+var ULTIMO_ARCHIVO_NUEVO = '';
+function nombreNuevoDesdeArchivo(sugerido) {
+  var inp = $('nombreProducto'), libre = !inp.value.trim() || inp.getAttribute('data-auto') === inp.value;
+  if (!libre) return;
+  var n = numeroDeArchivo(ULTIMO_ARCHIVO_NUEVO), sub = $('subcategoriaSelect').value, v = sugerido || '';
+  if (n != null && sub && sub !== '__nueva__') { var d = subDetectar(sub); v = (d.prefijo ? d.prefijo + ' ' : '') + subPad(n, d.digitos); }
+  if (!v) return;
+  inp.value = v; inp.setAttribute('data-auto', v);
+}
 function crearCategoria() {
   var nueva = $('inputNuevaCat').value.trim();
   if (!nueva) return;
@@ -1403,7 +1423,7 @@ function subirProducto() {
   }).then(function () {
     escribirPaginaProducto(nuevoP);
     mostrarStatus('ok', '✓ "' + nombre + '" subido. Tarda 1-2 min en verse en la tienda.');
-    $('nombreProducto').value = '';
+    $('nombreProducto').value = ''; $('nombreProducto').removeAttribute('data-auto'); ULTIMO_ARCHIVO_NUEVO = '';
     $('precioInput').value = precioDefecto($('impresionSelect').value); $('hastaInput').value = '';
     $('descuentoCheck').checked = false;
     $('precioDescuentoInput').value = '';
@@ -1471,6 +1491,7 @@ document.addEventListener('input', function (e) {
 function cargarProductos() {
   statusEdit('loading', 'Cargando productos...');
   return ghGet('data/products.json').then(function (r) {
+    if (!Array.isArray(r.content)) throw new Error('products.json no se leyó como una lista de productos. Tocá «Recargar lista» en Más herramientas; si sigue, avisame.');
     PRODUCTOS = r.content;
     renderLista(); renderHoy();
     pintarSugColecciones();
@@ -2265,7 +2286,7 @@ function buscarHuerfanos() {
   }).catch(function (e) { statusLimp('err', 'Error: ' + e.message); });
 }
 function ghGet0(path) {
-  return fetch(urlDe(path), { headers: { Authorization: 'token ' + getConfig().token } }).then(function (r) { return r.ok ? r.json() : { content: '' }; })
+  return fetch(urlDe(path) + '?t=' + Date.now(), { cache: 'no-store', headers: { Authorization: 'token ' + getConfig().token } }).then(function (r) { return r.ok ? r.json() : { content: '' }; })
     .then(function (d) { return d.sha ? ghDecodificar(d, urlDe(path) + '?t=' + Date.now()) : ''; });
 }
 $('btnLimpiar').addEventListener('click', buscarHuerfanos);
@@ -3194,7 +3215,7 @@ EditorDisenos.prototype._archivo = function (clave, file) {
     if (sl) { sl.classList.remove('cargando'); sl.classList.add('lleno'); sl.querySelector('img').src = r.preview; }
     else self.render();
     if (par[1] === 'espalda') self._sugerirColores();
-    if (self.op.alNombre) self.op.alNombre(nombreDesdeArchivo(file.name));
+    if (self.op.alNombre) self.op.alNombre(nombreDesdeArchivo(file.name), file.name);
     self.preview();
   }).catch(function (err) { if (slot) slot.classList.remove('cargando'); alert(err.message); });
 };
@@ -3575,7 +3596,7 @@ EditorDisenos.prototype.subir = function (base, avisar) {
 
 var EDN = new EditorDisenos($('evNuevo'), {
   botones: '<button type="button" class="btn btn-sec" id="btnGenerarMk">Ver los mockups de la boxy</button><p class="mini" style="margin-top:4px">No hace falta tocarlo: al subir el producto se generan solos con la posición que dejaste.</p><div class="status" id="statusMk"></div>',
-  alNombre: function (n) { if (n && !$('nombreProducto').value.trim()) $('nombreProducto').value = n; }
+  alNombre: function (n, archivo) { ULTIMO_ARCHIVO_NUEVO = archivo || ''; nombreNuevoDesdeArchivo(n); }
 });
 // Genera las fotos de la boxy (una por color marcado) y las pone en "Mockups por color"
 function generarMockupsNuevo() {
@@ -3878,13 +3899,13 @@ function repoPrivado() { return (TIENDA.privado && TIENDA.privado.repo) || ''; }
 function urlPriv(path) { var c = getConfig(); return 'https://api.github.com/repos/' + c.owner + '/' + repoPrivado() + '/contents/' + path; }
 function privPut(path, base64, msg) {
   var h = { Authorization: 'token ' + getConfig().token };
-  return fetch(urlPriv(path), { headers: h }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+  return fetch(urlPriv(path) + '?t=' + Date.now(), { cache: 'no-store', headers: h }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
     var body = { message: msg, content: base64 }; if (d && d.sha) body.sha = d.sha;
     return fetch(urlPriv(path), { method: 'PUT', headers: { Authorization: h.Authorization, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   }).then(function (r) { if (!r.ok) return errorDeRespuesta(r, 'Error subiendo al repo privado ' + path); return r.json(); });
 }
 function rawBlob(url) {
-  return fetch(url, { headers: { Authorization: 'token ' + getConfig().token, Accept: 'application/vnd.github.raw' } })
+  return fetch(url + (url.indexOf('?') === -1 ? '?' : '&') + 't=' + Date.now(), { cache: 'no-store', headers: { Authorization: 'token ' + getConfig().token, Accept: 'application/vnd.github.raw' } })
     .then(function (r) { if (!r.ok) return errorDeRespuesta(r, 'No pude leer ' + url.split('/contents/')[1]); return r.blob(); });
 }
 function blobABase64(b) { return new Promise(function (ok) { var fr = new FileReader(); fr.onload = function () { ok(String(fr.result).split(',')[1]); }; fr.readAsDataURL(b); }); }
@@ -4331,7 +4352,7 @@ function subComun() {
   var marcados = function (sel) { return Array.prototype.map.call(document.querySelectorAll(sel), function (i) { return i.value; }); };
   return {
     categoria: $('subCat').value, subcategoria: subSubActual(),
-    numerar: $('subNumerar').checked, prefijo: $('subPrefijo').value.trim(), desde: parseInt($('subDesde').value, 10) || 1, digitos: Math.max(1, Math.min(6, parseInt($('subDigitos').value, 10) || 3)),
+    numerar: $('subNumerar').checked, numModo: $('subNumModo').value, prefijo: $('subPrefijo').value.trim(), desde: parseInt($('subDesde').value, 10) || 1, digitos: Math.max(1, Math.min(6, parseInt($('subDigitos').value, 10) || 3)),
     colecciones: $('subColecciones').value,
     colores: marcados('#subColGrid input:checked'), prendas: marcados('#subPrendas input:checked'),
     telas: Array.prototype.map.call(document.querySelectorAll('#subTelas .tela.on'), function (b) { return b.getAttribute('data-c'); }),
@@ -4350,8 +4371,17 @@ function subAutoNombre() {
   var d = subDetectar(subSubActual());
   $('subPrefijo').value = d.prefijo; $('subDesde').value = d.desde; $('subDigitos').value = d.digitos;
 }
+// Número que trae el archivo: «AoT (56).png», «AoT 56.png», «aot_056.pdf» → 56 (null si no trae)
+function numeroDeArchivo(fn) {
+  var b = String(fn || '').replace(/\.[a-z0-9]+$/i, '').trim(), m = /\((\d+)\)\s*$/.exec(b) || /(?:^|[\s_\-#.])(\d+)\s*$/.exec(b) || /^(\d+)$/.exec(b);
+  return m ? parseInt(m[1], 10) : null;
+}
 function subNombreDe(c, i, k) {
   if (!c.numerar) return nombreDesdeArchivo(k.file.name);
+  if (c.numModo === 'archivo') {
+    var n = numeroDeArchivo(k.file.name);
+    return n == null ? '' : (c.prefijo ? c.prefijo + ' ' : '') + subPad(n, c.digitos);
+  }
   return (c.prefijo ? c.prefijo + ' ' : '') + subPad(c.desde + i, c.digitos);
 }
 function subPropagar() {
@@ -4527,6 +4557,8 @@ function abrirSubida() {
   $('subHasta').value = ''; $('subDescCheck').checked = false; $('subPrecioDesc').value = ''; $('subDest').checked = false; $('subOculto').checked = false;
   $('subQModo').value = 'ninguno'; $('subQTol').value = 40; $('subQTolV').textContent = '40'; $('subQGlobal').checked = false;
   $('subNumerar').checked = true;
+  try { $('subNumModo').value = localStorage.getItem('yuzu_num_modo') || 'archivo'; } catch (e) { $('subNumModo').value = 'archivo'; }
+  $('subDesdeCaja').style.display = $('subNumModo').value === 'archivo' ? 'none' : '';
   SUB.cards = []; SUB.prevIdx = 0; $('subPrevBox').classList.remove('on'); $('subPrevNombre').textContent = '—'; $('subStatus').className = 'status';
   pintarSugColecciones(); subPropagar();
   $('modalSubida').classList.add('abierto');
@@ -4539,9 +4571,17 @@ function subValidar(c) {
   if (!SUB.cards.length) return 'Elegí los archivos primero.';
   if (!c.categoria) return 'Elegí una categoría.';
   var pend = SUB.cards.filter(function (k) { return k.estado !== 'ok'; });
+  var norm = function (x) { return String(x || '').trim().toLowerCase().replace(/\s+/g, ' '); }, vistos = {}, existentes = {};
+  PRODUCTOS.forEach(function (p) { existentes[norm(p.nombre)] = 1; });
+  for (var j = 0; j < pend.length; j++) {
+    var nm = norm(pend[j].nombre); if (!nm) continue;
+    if (vistos[nm]) return 'Hay dos diseños que se llamarían «' + pend[j].nombre + '» (' + vistos[nm] + ' y ' + pend[j].file.name + '). Revisá los números de los archivos.';
+    if (existentes[nm]) return '«' + pend[j].nombre + '» ya existe en el catálogo (archivo ' + pend[j].file.name + '). Si es otro diseño, cambiale el número; si es el mismo, quitalo del lote.';
+    vistos[nm] = pend[j].file.name;
+  }
   for (var i = 0; i < pend.length; i++) {
     var k = pend[i], p = parseInt(k.precio, 10);
-    if (!k.nombre.trim()) return 'Hay un diseño sin nombre (' + k.file.name + ').';
+    if (!k.nombre.trim()) return c.numerar && c.numModo === 'archivo' ? '«' + k.file.name + '» no trae número en el nombre. Renombralo en Windows (ej. «AoT (57).png») o escribile el nombre a mano en su tarjeta.' : 'Hay un diseño sin nombre (' + k.file.name + ').';
     if (!p || p <= 0) return 'Revisá el precio de ' + k.nombre + '.';
     if (!k.colores.length) return k.nombre + ' no tiene colores disponibles.';
     if (!k.prendas.length) return k.nombre + ' no tiene prendas marcadas.';
@@ -4664,6 +4704,7 @@ $('subCuerpo').addEventListener('change', function (e) {
   var t = e.target;
   if (t.id === 'subCat') { subLlenarSubs(); $('subSubNueva').value = ''; subAutoNombre(); subPropagar(); return; }
   if (t.id === 'subSub' || t.id === 'subSubNueva') { subAutoNombre(); subPropagar(); return; }
+  if (t.id === 'subNumModo') { try { localStorage.setItem('yuzu_num_modo', t.value); } catch (er) {} $('subDesdeCaja').style.display = t.value === 'archivo' ? 'none' : ''; SUB.cards.forEach(function (k) { k.ov.nombre = false; }); subPropagar(); return; }
   if (t.id === 'subQTol') { $('subQTolV').textContent = t.value; }
   if (t.id === 'subQModo' || t.id === 'subQTol' || t.id === 'subQGlobal' || t.id === 'subPrev' || t.id === 'subImpresion') { SUB.tv++; subPropagar(); subMiniaturas(); subPrevGrande(); return; }
   if (t.classList.contains('sub-c')) subPropagar();
