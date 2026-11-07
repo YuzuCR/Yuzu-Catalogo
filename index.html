@@ -1604,10 +1604,54 @@ function pintarRedes() {
 /* =====================================================================
    TARJETAS
    ===================================================================== */
+/* Mockups en vivo: los diseños nuevos solo guardan una foto (la portada); las demás vistas y colores
+   se arman en el navegador cuando hacen falta y se guardan en memoria mientras la página esté abierta. */
+var VIVO = { cache: {}, cola: [], ocupado: false, obs: null };
+function esVivo(p) { return !!(p && p.vivo && window.YuzuMockup && YuzuMockup.versionesDe(p).length); }
+function vivoFoto(p, color, vista, ancho) {
+  var clave = p.id + '|' + color + '|' + vista + '|' + ancho;
+  if (VIVO.cache[clave]) return VIVO.cache[clave];
+  var vs = YuzuMockup.versionesDe(p);
+  return (VIVO.cache[clave] = YuzuMockup.generar('boxy', color, vista, vs, YuzuMockup.recomendada(vs, color), p.ajuste).then(function (cv) {
+    if (!cv) throw new Error('sin vista');
+    var t = cv; if (cv.width > ancho) { t = document.createElement('canvas'); t.width = ancho; t.height = Math.round(ancho * cv.height / cv.width); t.getContext('2d').drawImage(cv, 0, 0, t.width, t.height); }
+    return new Promise(function (ok) { t.toBlob(function (b) { ok(b ? URL.createObjectURL(b) : t.toDataURL('image/jpeg', 0.85)); }, 'image/jpeg', 0.85); });
+  }).catch(function (e) { delete VIVO.cache[clave]; throw e; }));
+}
+// Una a la vez, para no trabar el celular
+function vivoSiguiente() {
+  if (VIVO.ocupado || !VIVO.cola.length) return;
+  var img = VIVO.cola.shift(); if (!img.isConnected) { vivoSiguiente(); return; }
+  var d = img.getAttribute('data-vivo').split('|'), p = porId(d[0]); if (!p) { vivoSiguiente(); return; }
+  VIVO.ocupado = true;
+  vivoFoto(p, d[1], d[2], 640).then(function (u) { img.src = u; img.removeAttribute('data-vivo'); img.classList.add('vivo-listo'); }).catch(function () {})
+    .then(function () { VIVO.ocupado = false; setTimeout(vivoSiguiente, 0); });
+}
+function vivoPedir(img) { if (img && img.getAttribute('data-vivo') && VIVO.cola.indexOf(img) === -1) { VIVO.cola.push(img); vivoSiguiente(); } }
+function vivoObservar(raiz) {
+  var imgs = (raiz || document).querySelectorAll('img[data-vivo][data-vivo-ver]');
+  if (!imgs.length) return;
+  if (!('IntersectionObserver' in window)) { Array.prototype.forEach.call(imgs, vivoPedir); return; }
+  if (!VIVO.obs) VIVO.obs = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { VIVO.obs.unobserve(e.target); vivoPedir(e.target); } }); }, { rootMargin: '300px' });
+  Array.prototype.forEach.call(imgs, function (im) { VIVO.obs.observe(im); });
+}
+// Las fotos «al pasar el mouse» se arman recién cuando el mouse llega a la tarjeta
+document.addEventListener('pointerover', function (e) {
+  var c = e.target.closest && e.target.closest('.card'); if (!c) return;
+  vivoPedir(c.querySelector('img.alt[data-vivo]'));
+});
+// Cada vez que se pinta HTML con tarjetas, se observan las fotos en vivo
+new MutationObserver(function () { clearTimeout(VIVO.t); VIVO.t = setTimeout(function () { vivoObservar(document); }, 30); }).observe(document.documentElement, { childList: true, subtree: true });
+
 function tarjeta(p, i, clase, color) {
-  var base = fotoBase(p), alt = fotoAlt(p);
+  var base = fotoBase(p), alt = fotoAlt(p), vivoBase = '', vivoAlt = '';
   var delColor = color ? fotosDe(p, color) : null;
   if (delColor) { base = delColor[0]; alt = delColor[1] || fotoArte(p); if (alt === base) alt = ''; }
+  if (esVivo(p)) {
+    var colorV = color || p.portada || (p.colores || [])[0];
+    if (color && !delColor && YuzuMockup.disponible('boxy', color)) vivoBase = p.id + '|' + color + '|espalda';
+    if (!alt || alt === base) { alt = ''; if (YuzuMockup.disponible('boxy', colorV)) vivoAlt = p.id + '|' + colorV + '|frente'; }
+  }
   var sellos = '';
   if (esManifiesto(p)) sellos += '<span class="sello">Manifiesto</span>';
   else if (enOferta(p)) sellos += '<span class="sello oferta">Oferta</span>';
@@ -1616,8 +1660,8 @@ function tarjeta(p, i, clase, color) {
   var retraso = i != null ? ' style="animation-delay:' + Math.min(i, 8) * 50 + 'ms"' : '';
   return '<a class="card' + (clase ? ' ' + clase : '') + '" href="#/p/' + ref(p) + '"' + retraso + '>' +
     '<div class="card-media">' +
-      (base ? '<img class="base" src="' + esc(base) + '" alt="' + esc(p.nombre) + '" loading="lazy">' : '') +
-      (alt ? '<img class="alt" src="' + esc(alt) + '" alt="" loading="lazy">' : '') +
+      (base ? '<img class="base" src="' + esc(base) + '" alt="' + esc(p.nombre) + '" loading="lazy"' + (vivoBase ? ' data-vivo="' + esc(vivoBase) + '" data-vivo-ver="1"' : '') + '>' : '') +
+      (alt ? '<img class="alt" src="' + esc(alt) + '" alt="" loading="lazy">' : vivoAlt ? '<img class="alt" data-vivo="' + esc(vivoAlt) + '" alt="">' : '') +
       sellos +
     '</div>' +
     '<h3 class="card-nom">' + esc(p.nombre) + '</h3>' +
@@ -2003,7 +2047,7 @@ function mostrarProducto(r) {
     return;
   }
   var disp = p.colores && p.colores.length ? p.colores : COLORES.map(function (c) { return c.name; });
-  PR = { p: p, color: disp[0], talla: null, cant: 1, fotos: [], i: 0, prenda: 'boxy', vs: window.YuzuMockup ? YuzuMockup.versionesDe(p) : [], version: 0, opc: opcPorDefecto(), medTxt: '' };
+  PR = { p: p, color: (p.vivo && disp.indexOf(p.portada) !== -1) ? p.portada : disp[0], talla: null, cant: 1, fotos: [], i: 0, prenda: 'boxy', vs: window.YuzuMockup ? YuzuMockup.versionesDe(p) : [], version: 0, opc: opcPorDefecto(), medTxt: '' };
   if (PR.vs.length) PR.version = YuzuMockup.recomendada(PR.vs, PR.color);
   document.title = p.nombre + ' — Yuzu';
   evento('view_item', { currency: 'CRC', value: precioVigente(p), items: [{ item_id: ref(p), item_name: p.nombre, item_category: p.categoria, item_category2: p.subcategoria }] });
@@ -2095,6 +2139,7 @@ function mostrarProducto(r) {
   $('vProducto').innerHTML = h;
   PR.fotos = fotosProducto(p, PR.color);
   pintarGaleria();
+  if (esVivo(p)) actualizarGaleriaPR();
   pintarCorte();
   vigilarBarra();
 }
@@ -2483,12 +2528,13 @@ function cambiarPrendaFicha(id) {
 var CACHE_MOCKUP = {};
 function claveGal() { return PR.p.id + '|' + PR.prenda + '|' + PR.color + '|' + PR.version; }
 function actualizarGaleriaPR() {
-  var p = PR.p, def = opcEsDefecto(PR.opc), usarGuardadas = def && !prendaFicha() && (!PR.vs.length || (PR.version === YuzuMockup.recomendada(PR.vs, PR.color) && fotosDe(p, PR.color)));
+  var p = PR.p, def = opcEsDefecto(PR.opc), usarGuardadas = !p.vivo && def && !prendaFicha() && (!PR.vs.length || (PR.version === YuzuMockup.recomendada(PR.vs, PR.color) && fotosDe(p, PR.color)));
   if (usarGuardadas || !PR.vs.length) { PR.fotos = fotosProducto(p, PR.color); pintarGaleria(); pintarDisenoFicha(); refrescarMedidasPR(); return; }
   var clave = claveGal() + '|' + JSON.stringify(PR.opc);
   if (CACHE_MOCKUP[clave]) { PR.fotos = CACHE_MOCKUP[clave]; pintarGaleria(); pintarDisenoFicha(); refrescarMedidasPR(); return; }
   // Mientras se arma: se queda la foto anterior, opaca, con el aviso encima
   $('galAviso').textContent = 'Armando tu ' + prendaPorId(PR.prenda).nombre.toLowerCase() + '…';
+  if (!$('galPista').querySelector('img') && p.vivo && fotoBase(p)) { PR.fotos = [fotoBase(p)]; pintarGaleria(); }
   if ($('galPista').querySelector('img')) $('galPrincipal').classList.add('generando');
   else $('galPista').innerHTML = '<div class="gal-cargando">Armando tu ' + esc(prendaPorId(PR.prenda).nombre.toLowerCase()) + '…</div>';
   var opcAhora = JSON.stringify(PR.opc);
@@ -2496,6 +2542,7 @@ function actualizarGaleriaPR() {
     // Con el diseño al frente, la primera foto es el frente
     if (PR.opc.layout === 'frente') lista.sort(function (a, b) { return (a.vista === 'frente' ? 0 : 1) - (b.vista === 'frente' ? 0 : 1); });
     var fotos = lista.map(function (x) { return x.canvas.toDataURL('image/jpeg', 0.88); });
+    if (p.vivo) (p.imagenes || []).forEach(function (f) { if (fotos.indexOf(f) === -1) fotos.push(f); });
     CACHE_MOCKUP[clave] = fotos;
     if (PR.p === p && claveGal() + '|' + JSON.stringify(PR.opc) === clave) { PR.fotos = fotos.length ? fotos : fotosProducto(p, PR.color); pintarGaleria(); pintarDisenoFicha(); refrescarMedidasPR(); }
   }).catch(function () { PR.fotos = fotosProducto(p, PR.color); pintarGaleria(); });
