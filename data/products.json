@@ -46193,55 +46193,5 @@
     "colecciones": [
       "Manga"
     ]
-  },
-  {
-    "id": 1794042999897,
-    "nombre": "Ba 001",
-    "categoria": "Anime",
-    "subcategoria": "Bakemonogatari",
-    "imagenes": [],
-    "mockups": {
-      "Negro": [
-        "images/ba-001-negro-1794042999897-portada.jpg"
-      ]
-    },
-    "colores": [
-      "Negro",
-      "Crema",
-      "Café",
-      "Gris grafito",
-      "Azul marino",
-      "Verde musgo"
-    ],
-    "precio": 17500,
-    "enDescuento": false,
-    "precioDescuento": null,
-    "portada": "Negro",
-    "impresion": "espalda",
-    "versiones": [
-      {
-        "nombre": "Versión 1",
-        "colores": [],
-        "print": {
-          "espalda": "privado:images/disenos/print/ba-001-1794042999897-v1-espalda.png"
-        },
-        "espalda": "images/disenos/ba-001-1794042999897-v1-espalda.png"
-      }
-    ],
-    "prendas": [
-      "boxy",
-      "sinmangas",
-      "mangalarga",
-      "hoodie"
-    ],
-    "ajuste": {
-      "v": 2
-    },
-    "destacado": false,
-    "oculto": false,
-    "vivo": true,
-    "colecciones": [
-      "Manga"
-    ]
   }
 ]
