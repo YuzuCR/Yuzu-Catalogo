@@ -45393,5 +45393,255 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1794040101884,
+    "nombre": "Bak 001",
+    "categoria": "Anime",
+    "subcategoria": "Bakemonogatari",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/bak-001-negro-1794040101884-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/bak-001-1794040101884-v1-espalda.png"
+        },
+        "espalda": "images/disenos/bak-001-1794040101884-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794040107637,
+    "nombre": "Bak 002",
+    "categoria": "Anime",
+    "subcategoria": "Bakemonogatari",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/bak-002-negro-1794040107637-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/bak-002-1794040107637-v1-espalda.png"
+        },
+        "espalda": "images/disenos/bak-002-1794040107637-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794040113237,
+    "nombre": "Bak 003",
+    "categoria": "Anime",
+    "subcategoria": "Bakemonogatari",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/bak-003-negro-1794040113237-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/bak-003-1794040113237-v1-espalda.png"
+        },
+        "espalda": "images/disenos/bak-003-1794040113237-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794040118288,
+    "nombre": "Bak 004",
+    "categoria": "Anime",
+    "subcategoria": "Bakemonogatari",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/bak-004-negro-1794040118288-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/bak-004-1794040118288-v1-espalda.png"
+        },
+        "espalda": "images/disenos/bak-004-1794040118288-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794040123852,
+    "nombre": "Bak 005",
+    "categoria": "Anime",
+    "subcategoria": "Bakemonogatari",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/bak-005-negro-1794040123852-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/bak-005-1794040123852-v1-espalda.png"
+        },
+        "espalda": "images/disenos/bak-005-1794040123852-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Manga"
+    ]
   }
 ]
