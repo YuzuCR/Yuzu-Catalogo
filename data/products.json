@@ -46673,5 +46673,245 @@
     "destacado": false,
     "oculto": false,
     "vivo": true
+  },
+  {
+    "id": 1794043819688,
+    "nombre": "Ba 011",
+    "categoria": "Anime",
+    "subcategoria": "Baki",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ba-011-negro-1794043819688-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ba-011-1794043819688-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ba-011-1794043819688-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794043832598,
+    "nombre": "Ba 012",
+    "categoria": "Anime",
+    "subcategoria": "Baki",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ba-012-negro-1794043832598-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ba-012-1794043832598-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ba-012-1794043832598-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794043845011,
+    "nombre": "Ba 013",
+    "categoria": "Anime",
+    "subcategoria": "Baki",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ba-013-negro-1794043845011-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ba-013-1794043845011-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ba-013-1794043845011-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794043857761,
+    "nombre": "Ba 014",
+    "categoria": "Anime",
+    "subcategoria": "Baki",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ba-014-negro-1794043857761-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ba-014-1794043857761-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ba-014-1794043857761-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794043873227,
+    "nombre": "Ba 015",
+    "categoria": "Anime",
+    "subcategoria": "Baki",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ba-015-negro-1794043873227-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ba-015-1794043873227-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ba-015-1794043873227-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
   }
 ]
