@@ -44643,5 +44643,255 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1794029802502,
+    "nombre": "AoT 122",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-122-negro-1794029802502-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-122-1794029802502-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-122-1794029802502-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1794029810299,
+    "nombre": "AoT 123",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-123-negro-1794029810299-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-123-1794029810299-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-123-1794029810299-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1794029817191,
+    "nombre": "AoT 124",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-124-negro-1794029817191-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-124-1794029817191-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-124-1794029817191-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1794029823882,
+    "nombre": "AoT 125",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-125-negro-1794029823882-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-125-1794029823882-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-125-1794029823882-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1794029834835,
+    "nombre": "AoT 126",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-126-negro-1794029834835-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-126-1794029834835-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-126-1794029834835-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
