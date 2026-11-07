@@ -375,6 +375,30 @@
   .nombre-fila .cab > span:last-child { flex-wrap: wrap; justify-content: flex-end; }
   @media (max-width: 520px) { .acciones-prod { grid-template-columns: 1fr; } .herr-lista { grid-template-columns: 1fr; } .herr-lista span { margin-bottom: 6px; } }
   .sub-h { font-size: 13px; color: var(--yuzu); margin: 18px 0 6px; font-weight: 600; letter-spacing: .02em; }
+
+  /* Subida en lote: lista a la izquierda, vista previa fija a la derecha */
+  .sub-dos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; padding: 0; overflow: hidden; }
+  .sub-izq { overflow-y: auto; padding: 8px 20px 20px; min-height: 0; }
+  .sub-der { overflow-y: auto; padding: 14px 20px 20px; border-left: 1px solid var(--linea); min-height: 0; background: rgba(255,255,255,.015); }
+  .sub-nav-prev { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .sub-nav-prev .btn { margin: 0; flex: none; width: 42px; padding: 8px 0; font-size: 20px; line-height: 1; }
+  .sub-nav-tit { flex: 1; min-width: 0; text-align: center; display: flex; flex-direction: column; gap: 2px; }
+  .sub-nav-tit strong { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sub-der .sub-prev img { max-height: 46vh; object-fit: contain; }
+  .sub-der .quitar-box { margin-top: 12px; }
+  .sub-der-toggle { display: none; }
+  .sub-card { cursor: pointer; border-radius: 8px; padding: 10px 8px; }
+  .sub-card.sel { background: rgba(196,194,74,.08); }
+  .sub-card input, .sub-card select, .sub-card button, .sub-card label { cursor: auto; }
+  @media (max-width: 860px) {
+    .sub-dos { display: flex; flex-direction: column; overflow-y: auto; }
+    .sub-izq, .sub-der { overflow: visible; flex-shrink: 0; }
+    .sub-der { order: -1; position: sticky; top: 0; z-index: 3; background: #1b1a16; box-shadow: 0 6px 14px rgba(0,0,0,.45); border-left: none; border-bottom: 1px solid var(--linea); padding: 10px 16px; }
+    .sub-der .sub-prev img { max-height: 24vh; }
+    .sub-der-toggle { display: block; width: 100%; margin: 8px 0 0; padding: 8px; font-size: 12px; }
+    .sub-der .quitar-box, .sub-der > label, .sub-der > select, .sub-der > p.mini:not(#subPrevVacio) { display: none; }
+    .sub-der.abierto .quitar-box, .sub-der.abierto > label, .sub-der.abierto > select, .sub-der.abierto > p.mini { display: block; }
+  }
 </style>
 </head>
 <body>
@@ -495,11 +519,13 @@
           <button class="btn btn-sec" id="btnPrecioTodos">Precio a todos</button><span>Pone el mismo precio a todos los diseños.</span>
           <button class="btn btn-sec" id="btnQuitarDesc">Quitar descuentos</button><span>Saca el precio rebajado de todos.</span>
           <button class="btn btn-sec" id="btnPaginas">Vistas previas al compartir</button><span>Regenera las tarjetas que se ven al mandar un link por WhatsApp.</span>
+          <button class="btn btn-sec" id="btnVivo" style="border-color:var(--yuzu);color:var(--yuzu)">Liberar espacio (mockups en vivo)</button><span>Deja una sola foto por diseño y borra el resto de mockups: la tienda los arma sola. Se hace en un solo cambio en GitHub.</span>
           <button class="btn btn-sec" id="btnLimpiar">Limpiar archivos sin usar</button><span>Busca imágenes del repo que ningún producto usa, para liberar espacio.</span>
           <button class="btn btn-sec" id="btnRecargar">Recargar lista</button><span>Vuelve a leer los productos de GitHub.</span>
           <button class="btn btn-sec" id="btnBorrarLote" style="color:var(--rojo);border-color:var(--rojo);">Borrar en lote</button><span>Elegís varios y se borran juntos.</span>
         </div>
       </details>
+      <div class="status" id="statusVivo"></div>
       <p class="mini" style="margin-top:12px">En cada producto: ● visible/oculto · ◐ diseños PNG y versiones · ✎ editar datos · ✕ borrar.</p>
       <div id="limpieza" style="display:none;margin-top:12px;border:1px solid var(--linea);border-radius:8px;padding:12px;">
         <div class="status" id="statusLimp"></div>
@@ -933,9 +959,10 @@
 
 <!-- MODAL SUBIDA EN LOTE -->
 <div class="modal-fondo" id="modalSubida">
-  <div class="modal" style="max-width:880px;max-height:94vh">
+  <div class="modal modal-sub" style="max-width:1280px;max-height:96vh">
     <div class="modal-cab"><h3>Subir varios diseños a la vez</h3><button id="btnSubCerrar">✕</button></div>
-    <div class="modal-lista" id="subCuerpo">
+    <div class="modal-lista sub-dos" id="subCuerpo">
+     <div class="sub-izq">
       <div class="file-drop" id="subDrop">Tocá o arrastrá los PNG / PDF (todos los que quieras)</div>
       <input type="file" id="subArchivos" class="hidden-input" accept="image/png,application/pdf,.pdf" multiple>
       <p class="mini">Cada archivo es un diseño de espalda. El pecho lleva tu logo y el diseño queda en la zona de Tienda → Zonas de impresión. Lo que pongas en "Para todos" se copia a cada diseño; si cambiás algo en uno solo (⋯), ese ya no se toca.</p>
@@ -979,24 +1006,33 @@
         </div>
         <label>Se ve bien en (opcional · vacío = todas las telas)</label>
         <div class="tela-chips" id="subTelas"></div>
+      </div>
+      <div class="subtit" id="subTitCards">Diseños</div>
+      <div id="subCards"></div>
+     </div>
+     <aside class="sub-der">
+      <div class="sub-nav-prev">
+        <button type="button" class="btn btn-sec" id="subPrevAnt" title="Diseño anterior (flecha ←)">‹</button>
+        <div class="sub-nav-tit"><span class="mini" style="margin:0">Vista previa</span><strong id="subPrevNombre">—</strong><span class="mini" id="subPrevCuenta" style="margin:0"></span></div>
+        <button type="button" class="btn btn-sec" id="subPrevSig" title="Diseño siguiente (flecha →)">›</button>
+      </div>
+      <div class="sub-prev on" id="subPrevBox"><figure><img id="subPrevCam" alt=""><figcaption class="mini">Sobre la camiseta</figcaption></figure><figure><img id="subPrevArte" class="cuadros" alt=""><figcaption class="mini">Solo el diseño (cuadros = transparente)</figcaption></figure></div>
+      <button type="button" class="btn btn-sec sub-der-toggle" id="subDerToggle">Quitar color y portada ▾</button>
+      <p class="mini" id="subPrevVacio">Elegí los archivos y acá ves cada diseño. Tocá cualquier diseño de la lista, o usá ‹ › (o las flechas del teclado).</p>
         <div class="quitar-box">
           <div class="mini" style="margin:0 0 6px">Quitar un color del diseño (por ejemplo un fondo negro o blanco)</div>
           <select id="subQModo"><option value="ninguno">No quitar nada</option><option value="negro">Quitar el negro</option><option value="blanco">Quitar el blanco</option><option value="esquina">Quitar el color de las esquinas</option></select>
           <label class="mini" style="margin:8px 0 0">Tolerancia: <span id="subQTolV">40</span><input type="range" id="subQTol" min="5" max="120" step="5" value="40"></label>
           <label class="check-row" style="margin-top:6px"><input type="checkbox" id="subQGlobal"><span>También dentro del diseño (si no, solo el fondo que toca los bordes)</span></label>
-          <div class="mini" style="margin-top:10px">Vista previa de <strong id="subPrevNombre">—</strong> · tocá la miniatura de otro diseño para verlo</div>
-          <div class="sub-prev" id="subPrevBox"><figure><img id="subPrevCam" alt=""><figcaption class="mini">Sobre la camiseta</figcaption></figure><figure><img id="subPrevArte" class="cuadros" alt=""><figcaption class="mini">Solo el diseño (los cuadros son transparencia)</figcaption></figure></div>
         </div>
         <label>¿Qué camiseta será la portada?</label>
         <select id="subPrev"></select>
         <p class="mini">Es la foto con la que sale cada diseño en el catálogo, y la que ves en las miniaturas. Por defecto, la negra. Si un diseño necesita otra, cambiala en su ⋯.</p>
-      </div>
-      <div class="subtit" id="subTitCards">Diseños</div>
-      <div id="subCards"></div>
+     </aside>
     </div>
     <div style="padding:0 20px"><div class="status" id="subStatus"></div></div>
     <div class="modal-pie">
-      <button class="btn btn-sec" id="btnSubLimpiar">Quitar los ya subidos</button>
+      <button class="btn btn-sec" id="btnSubLimpiar">Empezar un lote nuevo</button>
       <button class="btn btn-sec" id="btnSubParar" style="display:none">Detener</button>
       <button class="btn" id="btnSubSubir" disabled>Subir</button>
     </div>
@@ -1415,7 +1451,8 @@ function subirProducto() {
         ajuste: datosDisenos ? datosDisenos.ajuste : undefined,
         hasta: $('hastaInput').value || undefined,
         destacado: $('nuevoDestacado').checked,
-        oculto: $('nuevoOculto').checked
+        oculto: $('nuevoOculto').checked,
+        vivo: datosDisenos && datosDisenos.versiones.length ? true : undefined
       };
       r.content.push(nuevoP);
       return ghPut('data/products.json', r.content, r.sha, 'Nuevo producto: ' + nombre);
@@ -1668,6 +1705,7 @@ function guardarEdicion(i) {
   p.subcategoria = $('e-sub-' + i).value.trim() || null;
   var cols = parseColecciones($('e-col-' + i).value); p.colecciones = cols.length ? cols : undefined;
   p.colores = colores;
+  var portadaAntes = p.portada;
   p.portada = ($('e-portada-' + i) && colores.indexOf($('e-portada-' + i).value) !== -1) ? $('e-portada-' + i).value : portadaPorDefecto(colores);
   p.impresion = $('e-imp-' + i).value;
   p.precio = precio;
@@ -1677,6 +1715,16 @@ function guardarEdicion(i) {
   p.oculto = $('e-ocu-' + i).checked;
   p.hasta = $('e-hasta-' + i).value || undefined;
 
+  if (p.vivo && (p.portada !== portadaAntes || !(p.mockups && p.mockups[p.portada]))) {
+    statusEdit('loading', 'Armando la foto de portada en ' + p.portada.toLowerCase() + '…');
+    var viejos = rutasMockups(p);
+    subirPortadaVivo(p.nombre, YuzuMockup.versionesDe(p), p.portada, p.ajuste, colores).then(function (r) {
+      p.mockups = r.mapa; p.portada = r.color;
+      guardarProductos('Edita: ' + nombre, i);
+      viejos.forEach(function (x) { ghBorrarArchivo(x, 'Portada vieja'); });
+    }).catch(function (e) { statusEdit('err', e.message); });
+    return;
+  }
   guardarProductos('Edita: ' + nombre, i);
 }
 
@@ -2289,6 +2337,73 @@ function ghGet0(path) {
   return fetch(urlDe(path) + '?t=' + Date.now(), { cache: 'no-store', headers: { Authorization: 'token ' + getConfig().token } }).then(function (r) { return r.ok ? r.json() : { content: '' }; })
     .then(function (d) { return d.sha ? ghDecodificar(d, urlDe(path) + '?t=' + Date.now()) : ''; });
 }
+
+// ---------- Pasar los diseños a mockups en vivo y borrar las fotos sobrantes en UN solo commit ----------
+function ghApi(ruta, metodo, cuerpo) {
+  var c = getConfig();
+  return fetch('https://api.github.com/repos/' + c.owner + '/' + c.repo + ruta + (metodo ? '' : (ruta.indexOf('?') === -1 ? '?' : '&') + 't=' + Date.now()), {
+    method: metodo || 'GET', cache: 'no-store',
+    headers: { Authorization: 'token ' + c.token, 'Content-Type': 'application/json' }, body: cuerpo ? JSON.stringify(cuerpo) : undefined
+  }).then(function (r) { if (!r.ok) return errorDeRespuesta(r, 'GitHub ' + (metodo || 'GET') + ' ' + ruta.split('?')[0]); return r.json(); });
+}
+function vivoPlan(productos, arbol) {
+  var existe = {}, tam = {};
+  arbol.forEach(function (x) { if (x.type === 'blob') { existe[x.path] = 1; tam[x.path] = x.size || 0; } });
+  var borrar = [], bytes = 0, n = 0, nuevos = JSON.parse(JSON.stringify(productos));
+  nuevos.forEach(function (p) {
+    if (p.vivo || !YuzuMockup.versionesDe(p).length) return;
+    var todas = rutasMockups(p); if (!todas.length) return;
+    var col = p.portada && p.mockups[p.portada] ? p.portada : Object.keys(p.mockups)[0];
+    var l = p.mockups[col], portada = typeof l === 'string' ? l : l[0];
+    if (!portada || !existe[portada]) return; // sin una portada real no se toca
+    var m = {}; m[col] = [portada]; p.mockups = m; p.portada = col; p.vivo = true; n++;
+    todas.forEach(function (r) { if (r !== portada && existe[r] && borrar.indexOf(r) === -1 && (p.imagenes || []).indexOf(r) === -1) { borrar.push(r); bytes += tam[r]; } });
+  });
+  // Una foto puede ser usada por otro producto (copias): esas no se borran
+  var usadas = {}; nuevos.forEach(function (p) { rutasMockups(p).concat(p.imagenes || []).forEach(function (r) { usadas[r] = 1; }); });
+  borrar = borrar.filter(function (r) { if (usadas[r]) { bytes -= tam[r]; return false; } return true; });
+  return { productos: nuevos, borrar: borrar, bytes: bytes, n: n };
+}
+$('btnVivo').addEventListener('click', function () {
+  var st = function (t, m) { statusDe('statusVivo', t, m); }, rama, cabeza, plan;
+  st('loading', 'Revisando el repo… (puede tardar unos segundos)');
+  ghApi('').then(function (repo) {
+    rama = repo.default_branch;
+    return ghApi('/git/ref/heads/' + rama);
+  }).then(function (ref) {
+    cabeza = ref.object.sha;
+    return ghApi('/git/commits/' + cabeza);
+  }).then(function (cm) {
+    return ghApi('/git/trees/' + cm.tree.sha + '?recursive=1');
+  }).then(function (t) {
+    if (t.truncated) throw new Error('El repo es tan grande que GitHub no me dio la lista completa de archivos. Avisame y lo hacemos por partes.');
+    return ghLeerFresco('data/products.json').then(function (r) { plan = vivoPlan(r.content, t.tree); plan.sha = r.sha; });
+  }).then(function () {
+    if (!plan.n) { st('ok', '✓ Todo está al día: no hay diseños con mockups de sobra.'); return; }
+    var mb = (plan.bytes / 1048576).toFixed(0);
+    if (!confirm('Se van a pasar ' + plan.n + ' diseños a mockups en vivo.\n\n• Cada uno conserva su foto de portada (la que ya tenía).\n• Se borran ' + plan.borrar.length + ' fotos de mockups (≈ ' + mb + ' MB).\n• Las fotos reales de galería no se tocan.\n\nTodo en un solo cambio en GitHub. ¿Seguir?')) { st('ok', 'Cancelado. No se cambió nada.'); return; }
+    var lotes = [], TAM = 3000;
+    for (var i = 0; i < Math.max(1, plan.borrar.length); i += TAM) lotes.push(plan.borrar.slice(i, i + TAM));
+    var cad = Promise.resolve(), hecho = 0;
+    lotes.forEach(function (lote, li) {
+      cad = cad.then(function () {
+        st('loading', 'Guardando en GitHub' + (lotes.length > 1 ? ' (parte ' + (li + 1) + ' de ' + lotes.length + ')' : '') + '…');
+        var entradas = lote.map(function (pth) { return { path: pth, mode: '100644', type: 'blob', sha: null }; });
+        var pasoBlob = li === 0 ? ghApi('/git/blobs', 'POST', { content: JSON.stringify(plan.productos, null, 2), encoding: 'utf-8' }).then(function (b) { entradas.push({ path: 'data/products.json', mode: '100644', type: 'blob', sha: b.sha }); }) : Promise.resolve();
+        return pasoBlob.then(function () { return ghApi('/git/commits/' + cabeza); })
+          .then(function (cm) { return ghApi('/git/trees', 'POST', { base_tree: cm.tree.sha, tree: entradas }); })
+          .then(function (tr) { return ghApi('/git/commits', 'POST', { message: li === 0 ? 'Mockups en vivo: ' + plan.n + ' diseños, ' + plan.borrar.length + ' fotos de sobra borradas' : 'Mockups en vivo (parte ' + (li + 1) + ')', tree: tr.sha, parents: [cabeza] }); })
+          .then(function (nc) { return ghApi('/git/refs/heads/' + rama, 'PATCH', { sha: nc.sha }).then(function () { cabeza = nc.sha; hecho += lote.length; }); });
+      });
+    });
+    return cad.then(function () {
+      PRODUCTOS = plan.productos; renderLista(); renderHoy();
+      st('ok', '✓ Listo: ' + plan.n + ' diseños en vivo y ' + hecho + ' fotos borradas (≈ ' + mb + ' MB menos en la tienda publicada). GitHub tarda unos minutos en publicarlo.');
+    });
+  }).catch(function (e) {
+    st('err', 'No pude terminar: ' + e.message + (/409|422|Update is not a fast forward/i.test(e.message) ? ' · Alguien (o el admin en otra pestaña) cambió el repo al mismo tiempo. Esperá un minuto y tocá el botón otra vez.' : ''));
+  });
+});
 $('btnLimpiar').addEventListener('click', buscarHuerfanos);
 $('btnLimpCerrar').addEventListener('click', function () { $('limpieza').style.display = 'none'; });
 $('limpLista').addEventListener('change', function (e) {
@@ -3555,6 +3670,35 @@ function tfGuardar() {
   var org = YuzuMockup.origenPos(aj, TF.prenda, TF.color, TF.vista);
   if (org !== 'inicial') $('tfInfo').textContent = org === 'color' ? 'Posición propia de ' + TF.color.toLowerCase() + '.' : 'Posición de ' + YuzuMockup.PRENDAS[TF.prenda].nombre.toLowerCase() + ': vale para todos sus colores.';
 }
+
+// ---------- Mockups en vivo: cada diseño guarda UNA foto (la portada); la tienda arma el resto en el navegador ----------
+function achicarCanvas(cv, ancho) {
+  if (!cv || cv.width <= ancho) return cv;
+  var t = document.createElement('canvas'); t.width = ancho; t.height = Math.round(ancho * cv.height / cv.width);
+  var g = t.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(cv, 0, 0, t.width, t.height); return t;
+}
+function vistaPortada(vs) { return vs.some(function (v) { return v.espalda; }) ? 'espalda' : 'frente'; }
+function colorPortadaOk(color, colores) {
+  if (color && YuzuMockup.disponible('boxy', color)) return color;
+  return (colores || []).concat(COLORES_TELA).filter(function (c) { return YuzuMockup.disponible('boxy', c); })[0] || color;
+}
+// → { color, base64, preview }
+function fotoPortadaVivo(vs, color, ajuste, colores) {
+  color = colorPortadaOk(color, colores);
+  return YuzuMockup.generar('boxy', color, vistaPortada(vs), vs, YuzuMockup.recomendada(vs, color), ajuste).then(function (cv) {
+    if (!cv) throw new Error('No pude armar la foto de portada (¿falta la foto de la camiseta ' + color + '?).');
+    var url = achicarCanvas(cv, 1000).toDataURL('image/jpeg', 0.84);
+    return { color: color, base64: url.split(',')[1], preview: url };
+  });
+}
+// Sube la portada y devuelve { mapa: { color: [ruta] }, color }
+function subirPortadaVivo(nombre, vs, color, ajuste, colores, stamp) {
+  return fotoPortadaVivo(vs, color, ajuste, colores).then(function (f) {
+    var ruta = 'images/' + slugify(nombre) + '-' + slugify(f.color) + '-' + (stamp || Date.now()) + '-portada.jpg';
+    return ghPutImage(ruta, f.base64, 'Portada: ' + nombre).then(function () { var m = {}; m[f.color] = [ruta]; return { mapa: m, color: f.color }; });
+  });
+}
+function rutasMockups(p) { var out = []; Object.keys(p.mockups || {}).forEach(function (c) { var l = p.mockups[c]; (typeof l === 'string' ? [l] : l || []).forEach(function (x) { if (out.indexOf(x) === -1) out.push(x); }); }); return out; }
 // Genera los mockups de la boxy para los colores dados → [{color, base64, preview}]
 EditorDisenos.prototype.generarBoxy = function (colores) {
   var vs = this.versionesImg(), aj = this.e.ajuste, out = [], cadena = Promise.resolve();
@@ -3595,7 +3739,7 @@ EditorDisenos.prototype.subir = function (base, avisar) {
 };
 
 var EDN = new EditorDisenos($('evNuevo'), {
-  botones: '<button type="button" class="btn btn-sec" id="btnGenerarMk">Ver los mockups de la boxy</button><p class="mini" style="margin-top:4px">No hace falta tocarlo: al subir el producto se generan solos con la posición que dejaste.</p><div class="status" id="statusMk"></div>',
+  botones: '<button type="button" class="btn btn-sec" id="btnGenerarMk">Ver la foto de portada</button><p class="mini" style="margin-top:4px">No hace falta tocarlo: al subir se arma sola. Solo se guarda esa foto; las demás vistas y colores la tienda las arma en vivo.</p><div class="status" id="statusMk"></div>',
   alNombre: function (n, archivo) { ULTIMO_ARCHIVO_NUEVO = archivo || ''; nombreNuevoDesdeArchivo(n); }
 });
 // Genera las fotos de la boxy (una por color marcado) y las pone en "Mockups por color"
@@ -3604,11 +3748,12 @@ function generarMockupsNuevo() {
   if (!cols.length) return Promise.reject(new Error('Marcá al menos un color.'));
   var faltan = cols.filter(function (c) { return !YuzuMockup.disponible('boxy', c); });
   statusDe('statusMk', 'loading', 'Generando mockups...');
-  return EDN.generarBoxy(cols).then(function (lista) {
+  var colP = colorPortadaOk($('portadaSelect').value || portadaPorDefecto(cols), cols);
+  return fotoPortadaVivo(EDN.versionesImg(), colP, EDN.e.ajuste, cols).then(function (f) { return [f]; }).then(function (lista) {
     var nuevos = lista.map(function (x) { return { base64: x.base64, ext: 'jpg', preview: x.preview, nombre: 'auto', color: x.color, peso: Math.round(x.base64.length * 0.75 / 1024), auto: true }; });
     mockups = mockups.filter(function (m) { return !m.auto; }).concat(nuevos);
     renderMockups();
-    statusDe('statusMk', 'ok', '✓ ' + nuevos.length + ' mockups listos.' + (faltan.length ? ' Sin foto: ' + faltan.join(', ') + '.' : ''));
+    statusDe('statusMk', 'ok', '✓ Foto de portada lista (' + nuevos[0].color + '). Las demás vistas y colores la tienda las arma sola.');
     return nuevos;
   });
 }
@@ -3634,27 +3779,17 @@ function abrirDisenosProducto(i) {
 function cerrarDisenos() { $('modalDis').classList.remove('abierto'); }
 function guardarDisenos(regenerar) {
   var p = PRODUCTOS[EDE_I]; if (!p) return;
-  if (regenerar && !confirm('Esto reemplaza los mockups de la boxy de "' + p.nombre + '" por mockups generados. ¿Seguir?')) return;
+  if (regenerar && !confirm('Esto rehace la foto de portada de "' + p.nombre + '" con el diseño actual. Las demás vistas y colores la tienda las arma sola. ¿Seguir?')) return;
   var base = slugify(p.nombre) + '-' + p.id, aviso = function (m) { statusDe('statusDis', 'loading', m); };
   aviso('Guardando...');
   EDE.subir(base, aviso).then(function (r) {
     p.versiones = r.versiones; p.prendas = r.prendas; p.ajuste = r.ajuste; delete p.disenos;
     if (!regenerar) return;
-    aviso('Generando mockups...');
-    return EDE.generarBoxy(p.colores || []).then(function (lista) {
-      var stamp = Date.now(), nuevo = {}, viejos = [], cad = Promise.resolve();
-      Object.keys(p.mockups || {}).forEach(function (c) { (p.mockups[c] || []).forEach(function (r2) { viejos.push(r2); }); });
-      lista.forEach(function (x, n) {
-        cad = cad.then(function () {
-          aviso('Subiendo mockup ' + (n + 1) + ' de ' + lista.length + '...');
-          var ruta = 'images/' + slugify(p.nombre) + '-' + slugify(x.color) + '-' + stamp + '-' + n + '.jpg';
-          return ghPutImage(ruta, x.base64, 'Mockup ' + x.color + ': ' + p.nombre).then(function () { (nuevo[x.color] = nuevo[x.color] || []).push(ruta); });
-        });
-      });
-      return cad.then(function () {
-        p.mockups = nuevo;
-        viejos.forEach(function (r3) { ghBorrarArchivo(r3, 'Borra mockup viejo'); });
-      });
+    aviso('Armando la foto de portada...');
+    var viejos = rutasMockups(p);
+    return subirPortadaVivo(p.nombre, YuzuMockup.versionesDe(p), p.portada, p.ajuste, p.colores).then(function (r) {
+      p.mockups = r.mapa; p.portada = r.color; p.vivo = true;
+      viejos.forEach(function (x) { ghBorrarArchivo(x, 'Mockup viejo (ahora en vivo)'); });
     });
   }).then(function () {
     return guardarProductos('Diseños: ' + p.nombre).then(function () { return escribirPaginaProducto(p); });
@@ -4475,12 +4610,17 @@ function subMiniaturas() {
 function subPrevGrande() {
   var box = $('subPrevBox'), k = SUB.cards[SUB.prevIdx];
   if (!k || k.estado === 'ok') { k = SUB.cards.filter(function (x) { return x.estado !== 'ok'; })[0]; SUB.prevIdx = k ? SUB.cards.indexOf(k) : 0; }
-  if (!k) { box.classList.remove('on'); $('subPrevNombre').textContent = '—'; return; }
+  $('subPrevVacio').style.display = k ? 'none' : '';
+  if (!k) { box.classList.remove('on'); $('subPrevNombre').textContent = '—'; $('subPrevCuenta').textContent = ''; return; }
   var c = subComun(), tok = ++SUB.pvTok;
   $('subPrevNombre').textContent = k.nombre || k.file.name;
+  $('subPrevCuenta').textContent = (SUB.prevIdx + 1) + ' de ' + SUB.cards.length + ' · ' + k.file.name;
+  var sel = $('subCards').querySelector('.sub-card[data-i="' + SUB.prevIdx + '"]');
+  Array.prototype.forEach.call($('subCards').querySelectorAll('.sub-card.sel'), function (x) { if (x !== sel) x.classList.remove('sel'); });
+  if (sel) { sel.classList.add('sel'); var izq = sel.closest('.sub-izq'), r1 = sel.getBoundingClientRect(), r2 = izq.getBoundingClientRect(); if (r1.top < r2.top || r1.bottom > r2.bottom) sel.scrollIntoView({ block: 'nearest' }); }
   leerPNG(k.file, RECORTAR_PNG(), c.quitar, true).then(function (r) {
     if (tok !== SUB.pvTok) return;
-    $('subPrevArte').src = r.preview;
+    $('subPrevArte').src = r.preview; box.classList.add('on');
     var color = subPortadaDe(k, c);
     var v1 = { nombre: 'V1', colores: [] }; v1[subSlot(c)] = r.img;
     return YuzuMockup.generarTodas('boxy', color, [v1], 0, subAjuste(k)).then(function (cvs) {
@@ -4544,6 +4684,7 @@ function abrirSubida() {
   if (cats.indexOf(actual) !== -1) $('subCat').value = actual;
   subLlenarSubs();
   var sub = $('subcategoriaSelect').value; if (sub && sub !== '__nueva__') $('subSub').value = sub;
+  if (SUB.ultimo && CATEGORIAS[SUB.ultimo.cat]) { $('subCat').value = SUB.ultimo.cat; subLlenarSubs(); if (SUB.ultimo.sub) $('subSub').value = SUB.ultimo.sub; }
   $('subSubNueva').value = '';
   subAutoNombre();
   $('subColGrid').innerHTML = COLORES.map(function (c) {
@@ -4560,7 +4701,8 @@ function abrirSubida() {
   try { $('subNumModo').value = localStorage.getItem('yuzu_num_modo') || 'archivo'; } catch (e) { $('subNumModo').value = 'archivo'; }
   $('subDesdeCaja').style.display = $('subNumModo').value === 'archivo' ? 'none' : '';
   SUB.cards = []; SUB.prevIdx = 0; $('subPrevBox').classList.remove('on'); $('subPrevNombre').textContent = '—'; $('subStatus').className = 'status';
-  pintarSugColecciones(); subPropagar();
+  $('subCuerpo').querySelector('.sub-izq').scrollTop = 0;
+  pintarSugColecciones(); subPropagar(); subPrevGrande();
   $('modalSubida').classList.add('abierto');
 }
 function cerrarSubida() {
@@ -4608,30 +4750,16 @@ function subSubirUno(k, c, aviso) {
       if (!repoPrivado()) return;
       return privPut(rutaPrint, r.print, 'Diseño para imprimir ' + base).then(function () { o.print[slot] = 'privado:' + rutaPrint; }).catch(function () { k.msg = 'Ojo: no pude guardar la versión para imprimir.'; });
     }).then(function () {
-      var vs = [(function () { var v = { nombre: o.nombre, colores: o.colores }; v[slot] = r.img; return v; })()], cols = k.colores.filter(function (x) { return YuzuMockup.disponible('boxy', x); }), cad = Promise.resolve();
-      cols.forEach(function (col, ci) {
-        cad = cad.then(function () {
-          aviso('Mockup ' + (ci + 1) + ' de ' + cols.length + '…');
-          return YuzuMockup.generarTodas('boxy', col, vs, YuzuMockup.recomendada(vs, col), subAjuste(k)).then(function (cvs) {
-            var sub = Promise.resolve();
-            cvs.forEach(function (cv) {
-              sub = sub.then(function () {
-                var ruta = 'images/' + slugify(nombre) + '-' + slugify(col) + '-' + stamp + '-' + (n++) + '.jpg';
-                return ghPutImage(ruta, cv.toDataURL('image/jpeg', 0.9).split(',')[1], 'Mockup ' + col + ': ' + nombre).then(function () { (mapa[col] = mapa[col] || []).push(ruta); });
-              });
-            });
-            return sub;
-          });
-        });
-      });
-      return cad;
+      var vs = [(function () { var v = { nombre: o.nombre, colores: o.colores }; v[slot] = r.img; return v; })()];
+      aviso('Foto de portada…');
+      return subirPortadaVivo(nombre, vs, subPortadaDe(k, c), subAjuste(k), k.colores, stamp).then(function (pt) { mapa = pt.mapa; k.portadaReal = pt.color; });
     });
   }).then(function () {
     var p = parseInt(k.precio, 10), colec = parseColecciones(k.colecciones);
     var np = {
       id: stamp, nombre: nombre, categoria: c.categoria, subcategoria: c.subcategoria || null,
       imagenes: [], mockups: mapa, colores: k.colores.slice(), precio: p, enDescuento: c.enDescuento, precioDescuento: c.enDescuento ? c.precioDescuento : null,
-      portada: subPortadaDe(k, c), impresion: c.impresion, versiones: [o], prendas: k.prendas.slice(), ajuste: subAjuste(k), destacado: c.destacado, oculto: c.oculto
+      portada: k.portadaReal || subPortadaDe(k, c), impresion: c.impresion, versiones: [o], prendas: k.prendas.slice(), ajuste: subAjuste(k), destacado: c.destacado, oculto: c.oculto, vivo: true
     };
     if (colec.length) np.colecciones = colec;
     if (k.hasta) np.hasta = k.hasta;
@@ -4678,6 +4806,7 @@ function subSubir() {
         }).then(function () { return pausa(250); });
     });
   });
+  SUB.ultimo = { cat: c.categoria, sub: c.subcategoria };
   cad.then(function () { return subVolcar(); }).then(function () {
     var ok = SUB.cards.filter(function (k) { return k.estado === 'ok'; }).length, mal = SUB.cards.filter(function (k) { return k.estado === 'err'; }).length;
     statusDe('subStatus', mal ? 'err' : 'ok', '✓ ' + ok + ' subidos' + (mal ? ' · ' + mal + ' con error (están marcados, presioná Subir para reintentar)' : '') + (SUB.parar ? ' · detenido' : '') + '. Tardan 1–2 minutos en verse en la tienda.');
@@ -4693,7 +4822,40 @@ $('btnSubidaLote').addEventListener('click', abrirSubida);
 $('btnSubCerrar').addEventListener('click', cerrarSubida);
 $('btnSubSubir').addEventListener('click', subSubir);
 $('btnSubParar').addEventListener('click', function () { SUB.parar = true; statusDe('subStatus', 'loading', 'Deteniendo después del diseño actual…'); });
-$('btnSubLimpiar').addEventListener('click', function () { SUB.cards = SUB.cards.filter(function (k) { return k.estado !== 'ok'; }); subPropagar(); });
+$('btnSubLimpiar').addEventListener('click', function () {
+  if (SUB.corriendo) return;
+  var pend = SUB.cards.filter(function (k) { return k.estado !== 'ok'; }).length;
+  if (pend && !confirm('Hay ' + pend + ' diseño(s) sin subir en la lista. ¿Empezar un lote nuevo igual? (se quitan de la lista)')) return;
+  SUB.cards = []; SUB.prevIdx = 0; $('subStatus').className = 'status'; subPropagar(); subPrevGrande();
+  $('subCuerpo').querySelector('.sub-izq').scrollTop = 0;
+});
+function subMoverPrev(d) {
+  if (!SUB.cards.length) return;
+  SUB.prevIdx = (SUB.prevIdx + d + SUB.cards.length) % SUB.cards.length; subPrevGrande();
+}
+document.addEventListener('keydown', function (e) {
+  if (!$('modalSubida').classList.contains('abierto')) return;
+  var enCampo = /^(INPUT|SELECT|TEXTAREA)$/.test((e.target && e.target.tagName) || '');
+  if (e.key === 'Escape') { if (document.querySelector('.tf-modal.abierto, #modalTf.abierto')) return; cerrarSubida(); return; }
+  if (enCampo) return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); subMoverPrev(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); subMoverPrev(-1); }
+});
+// Esc cierra las demás ventanas (borrar en lote, diseños, editar en lote, elegir imagen)
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Escape') return;
+  var pick = document.querySelector('.ini-pick'); if (pick) { pick.remove(); return; }
+  var abiertos = Array.prototype.filter.call(document.querySelectorAll('.modal-fondo.abierto'), function (m) { return m.id !== 'modalSubida'; });
+  var m = abiertos[abiertos.length - 1]; if (!m) return;
+  var x = m.querySelector('.modal-cab button'); if (x) x.click();
+});
+// En la bandeja: Ctrl+Enter guarda el pedido pegado
+$('pedidoTexto').addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $('btnLeerPedido').click(); } });
+// Si estás subiendo y cerrás o recargás la pestaña por error, el navegador te pregunta antes
+window.addEventListener('beforeunload', function (e) { if (SUB.corriendo) { e.preventDefault(); e.returnValue = ''; } });
+// Soltar archivos en cualquier parte de la ventana, no solo en el recuadro
+$('modalSubida').addEventListener('dragover', function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') !== -1) e.preventDefault(); });
+$('modalSubida').addEventListener('drop', function (e) { if (e.target.closest('#subDrop')) return; if (e.dataTransfer && e.dataTransfer.files.length) { e.preventDefault(); subAgregar(e.dataTransfer.files); } });
 $('subDrop').addEventListener('click', function () { $('subArchivos').click(); });
 $('subArchivos').addEventListener('change', function () { subAgregar(this.files); this.value = ''; });
 $('subDrop').addEventListener('dragover', function (e) { e.preventDefault(); this.classList.add('encima'); });
@@ -4718,7 +4880,12 @@ $('subCuerpo').addEventListener('input', function (e) {
 });
 $('subCuerpo').addEventListener('click', function (e) {
   var th = e.target.closest('.sub-card .th');
-  if (th) { var ic = +th.closest('.sub-card').getAttribute('data-i'); if (SUB.cards[ic]) { SUB.prevIdx = ic; subRender(); subPrevGrande(); } return; }
+  if (th) { var ic = +th.closest('.sub-card').getAttribute('data-i'); if (SUB.cards[ic]) { SUB.prevIdx = ic; subPrevGrande(); } return; }
+  // Tocar cualquier parte de la tarjeta (que no sea un campo o botón) la muestra en la vista previa
+  var cardSel = e.target.closest('.sub-card');
+  if (cardSel && !e.target.closest('input, select, button, label, textarea')) { var is = +cardSel.getAttribute('data-i'); if (SUB.cards[is] && is !== SUB.prevIdx) { SUB.prevIdx = is; subPrevGrande(); } }
+  if (e.target.id === 'subDerToggle') { e.target.closest('.sub-der').classList.toggle('abierto'); return; }
+  if (e.target.id === 'subPrevAnt' || e.target.id === 'subPrevSig') { subMoverPrev(e.target.id === 'subPrevSig' ? 1 : -1); return; }
   if (e.target.id === 'btnSubPrecioTodos') { SUB.cards.forEach(function (x) { if (x.estado !== 'ok') x.ov.precio = false; }); subPropagar(); statusDe('subStatus', 'ok', 'Precio puesto en todos.'); return; }
   var b = e.target.closest('button'); if (!b) return;
   if (b.classList.contains('tela') && b.classList.contains('sub-c')) { b.classList.toggle('on'); subPropagar(); return; }
@@ -4792,22 +4959,12 @@ function loEjemploNombres() {
 function loRegenerar(p) {
   var vers = YuzuMockup.versionesDe(p);
   if (!vers.length || !vers.some(function (v) { return v.espalda || v.pecho || v.manga || v.costado; })) return Promise.resolve(false);
-  var cols = (p.colores || []).filter(function (c) { return YuzuMockup.disponible('boxy', c); }), stamp = Date.now(), nuevo = {}, n = 0, cad = Promise.resolve();
-  cols.forEach(function (c) {
-    cad = cad.then(function () {
-      return YuzuMockup.generarTodas('boxy', c, vers, YuzuMockup.recomendada(vers, c), p.ajuste).then(function (cvs) {
-        var sub = Promise.resolve();
-        cvs.forEach(function (cv) {
-          sub = sub.then(function () {
-            var ruta = 'images/' + slugify(p.nombre) + '-' + slugify(c) + '-' + stamp + '-' + (n++) + '.jpg';
-            return ghPutImage(ruta, cv.toDataURL('image/jpeg', 0.9).split(',')[1], 'Mockup ' + c + ': ' + p.nombre).then(function () { (nuevo[c] = nuevo[c] || []).push(ruta); });
-          });
-        });
-        return sub;
-      });
-    });
-  });
-  return cad.then(function () { if (!Object.keys(nuevo).length) return false; p.mockups = nuevo; return true; });
+  var viejos = rutasMockups(p);
+  return subirPortadaVivo(p.nombre, vers, p.portada, p.ajuste, p.colores).then(function (r) {
+    p.mockups = r.mapa; p.portada = r.color; p.vivo = true;
+    viejos.forEach(function (x) { if (x !== r.mapa[r.color][0]) ghBorrarArchivo(x, 'Mockup viejo (ahora en vivo)'); });
+    return true;
+  }).catch(function () { return false; });
 }
 function loAplicar() {
   var sel = PRODUCTOS.filter(function (p) { return LO.sel[p.id]; }).sort(function (a, b) { return a.id - b.id; });
