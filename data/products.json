@@ -47777,5 +47777,197 @@
     "destacado": false,
     "oculto": false,
     "vivo": true
+  },
+  {
+    "id": 1794044865737,
+    "nombre": "Ber 016",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ber-016-negro-1794044865737-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ber-016-1794044865737-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ber-016-1794044865737-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794044876357,
+    "nombre": "Ber 017",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ber-017-negro-1794044876357-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ber-017-1794044876357-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ber-017-1794044876357-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794044891571,
+    "nombre": "Ber 018",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ber-018-negro-1794044891571-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ber-018-1794044891571-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ber-018-1794044891571-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794044911488,
+    "nombre": "Ber 019",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ber-019-negro-1794044911488-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ber-019-1794044911488-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ber-019-1794044911488-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
   }
 ]
