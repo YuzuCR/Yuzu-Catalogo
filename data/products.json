@@ -46143,5 +46143,55 @@
     "colecciones": [
       "Manga"
     ]
+  },
+  {
+    "id": 1794040225408,
+    "nombre": "Bak 016",
+    "categoria": "Anime",
+    "subcategoria": "Bakemonogatari",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/bak-016-negro-1794040225408-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/bak-016-1794040225408-v1-espalda.png"
+        },
+        "espalda": "images/disenos/bak-016-1794040225408-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Manga"
+    ]
   }
 ]
