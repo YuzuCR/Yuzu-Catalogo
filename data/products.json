@@ -47297,5 +47297,245 @@
     "destacado": false,
     "oculto": false,
     "vivo": true
+  },
+  {
+    "id": 1794044717806,
+    "nombre": "Ber 006",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ber-006-negro-1794044717806-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ber-006-1794044717806-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ber-006-1794044717806-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794044725741,
+    "nombre": "Ber 007",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ber-007-negro-1794044725741-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ber-007-1794044725741-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ber-007-1794044725741-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794044735783,
+    "nombre": "Ber 008",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ber-008-negro-1794044735783-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ber-008-1794044735783-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ber-008-1794044735783-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794044744210,
+    "nombre": "Ber 009",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ber-009-negro-1794044744210-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ber-009-1794044744210-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ber-009-1794044744210-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
+  },
+  {
+    "id": 1794044756048,
+    "nombre": "Ber 010",
+    "categoria": "Anime",
+    "subcategoria": null,
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ber-010-negro-1794044756048-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ber-010-1794044756048-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ber-010-1794044756048-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true
   }
 ]
