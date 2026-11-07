@@ -43713,5 +43713,185 @@
     "colecciones": [
       "Manga"
     ]
+  },
+  {
+    "id": 1794021746140,
+    "nombre": "AsB 001",
+    "categoria": "Anime",
+    "subcategoria": "Astro Boy",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/asb-001-blanco-1794021746140-0.jpg",
+        "images/asb-001-blanco-1794021746140-1.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/asb-001-1794021746140-v1-espalda.png"
+        },
+        "espalda": "images/disenos/asb-001-1794021746140-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794021755004,
+    "nombre": "AsB 002",
+    "categoria": "Anime",
+    "subcategoria": "Astro Boy",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/asb-002-blanco-1794021755004-0.jpg",
+        "images/asb-002-blanco-1794021755004-1.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/asb-002-1794021755004-v1-espalda.png"
+        },
+        "espalda": "images/disenos/asb-002-1794021755004-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794021762179,
+    "nombre": "AsB 003",
+    "categoria": "Anime",
+    "subcategoria": "Astro Boy",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/asb-003-blanco-1794021762179-0.jpg",
+        "images/asb-003-blanco-1794021762179-1.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/asb-003-1794021762179-v1-espalda.png"
+        },
+        "espalda": "images/disenos/asb-003-1794021762179-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
+  },
+  {
+    "id": 1794021769012,
+    "nombre": "AsB 004",
+    "categoria": "Anime",
+    "subcategoria": "Astro Boy",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/asb-004-blanco-1794021769012-0.jpg",
+        "images/asb-004-blanco-1794021769012-1.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/asb-004-1794021769012-v1-espalda.png"
+        },
+        "espalda": "images/disenos/asb-004-1794021769012-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "colecciones": [
+      "Manga"
+    ]
   }
 ]
