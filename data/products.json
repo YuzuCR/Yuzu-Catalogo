@@ -43893,5 +43893,255 @@
     "colecciones": [
       "Manga"
     ]
+  },
+  {
+    "id": 1794026888779,
+    "nombre": "AoT 107",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-107-negro-1794026888779-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-107-1794026888779-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-107-1794026888779-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1794026898238,
+    "nombre": "AoT 108",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-108-negro-1794026898238-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-108-1794026898238-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-108-1794026898238-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1794026904157,
+    "nombre": "AoT 109",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-109-negro-1794026904157-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-109-1794026904157-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-109-1794026904157-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1794026910670,
+    "nombre": "AoT 110",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-110-negro-1794026910670-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-110-1794026910670-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-110-1794026910670-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1794026917123,
+    "nombre": "AoT 111",
+    "categoria": "Anime",
+    "subcategoria": "Attack on Titan",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/aot-111-negro-1794026917123-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/aot-111-1794026917123-v1-espalda.png"
+        },
+        "espalda": "images/disenos/aot-111-1794026917123-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
