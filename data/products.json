@@ -45243,5 +45243,155 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1794033050712,
+    "nombre": "Av 001",
+    "categoria": "Anime",
+    "subcategoria": "Avatar",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/av-001-negro-1794033050712-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/av-001-1794033050712-v1-espalda.png"
+        },
+        "espalda": "images/disenos/av-001-1794033050712-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1794033062573,
+    "nombre": "Av 002",
+    "categoria": "Anime",
+    "subcategoria": "Avatar",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/av-002-negro-1794033062573-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/av-002-1794033062573-v1-espalda.png"
+        },
+        "espalda": "images/disenos/av-002-1794033062573-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1794033073745,
+    "nombre": "Av 003",
+    "categoria": "Anime",
+    "subcategoria": "Avatar",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/av-003-negro-1794033073745-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/av-003-1794033073745-v1-espalda.png"
+        },
+        "espalda": "images/disenos/av-003-1794033073745-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
