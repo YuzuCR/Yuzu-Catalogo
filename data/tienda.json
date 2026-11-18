@@ -175,11 +175,13 @@
       },
       "hoodie": {
         "espalda": {
-          "x": 332,
-          "y": 518,
-          "w": 411,
-          "h": 516,
-          "alinear": "arriba"
+          "x": 320,
+          "y": 486,
+          "w": 448,
+          "h": 605,
+          "alinear": "arriba",
+          "kmin": 0.5,
+          "kmax": 1.15
         },
         "frente": {
           "x": 614,
