@@ -47,7 +47,9 @@
           "y": 476,
           "w": 421,
           "h": 529,
-          "alinear": "arriba"
+          "alinear": "arriba",
+          "kmin": 0.5,
+          "kmax": 1.15
         },
         "frente": {
           "x": 619,
