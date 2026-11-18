@@ -244,11 +244,24 @@ var YuzuMockup = (function () {
 
     (capas || []).forEach(function (capa) {
       if (!capa || !capa.img) return;
-      var r = capa.rect || encajar(capa.img, capa.zona);
-      if (r.w < 1 || r.h < 1) return;
+      var r0 = capa.rect || encajar(capa.img, capa.zona);
+      if (r0.w < 1 || r0.h < 1) return;
+      // Rotación (grados, + = horario). Gira alrededor del centro de la zona (o del diseño si no hay zona)
+      var rot = (capa.rot != null ? capa.rot : capa.zona && capa.zona.rot) || 0, ang = rot * Math.PI / 180, r = r0;
+      var ccx = r0.x + r0.w / 2, ccy = r0.y + r0.h / 2;
+      if (ang) {
+        if (capa.zona && !capa.rect) {
+          var pcx = capa.zona.x + capa.zona.w / 2, pcy = capa.zona.y + capa.zona.h / 2, ox = ccx - pcx, oy = ccy - pcy;
+          ccx = pcx + ox * Math.cos(ang) - oy * Math.sin(ang); ccy = pcy + ox * Math.sin(ang) + oy * Math.cos(ang);
+        }
+        var cs = Math.abs(Math.cos(ang)), sn = Math.abs(Math.sin(ang));
+        var bw = Math.ceil(r0.w * cs + r0.h * sn), bh = Math.ceil(r0.w * sn + r0.h * cs);
+        r = { x: Math.round(ccx - bw / 2), y: Math.round(ccy - bh / 2), w: bw, h: bh };
+      }
       var tv = document.createElement('canvas'); tv.width = r.w; tv.height = r.h;
       var tctx = tv.getContext('2d'); tctx.imageSmoothingQuality = 'high';
-      tctx.drawImage(capa.img, 0, 0, r.w, r.h);
+      if (ang) { tctx.translate(r.w / 2, r.h / 2); tctx.rotate(ang); tctx.drawImage(capa.img, -r0.w / 2, -r0.h / 2, r0.w, r0.h); }
+      else tctx.drawImage(capa.img, 0, 0, r.w, r.h);
       var dd = tctx.getImageData(0, 0, r.w, r.h).data;
 
       // Luz de referencia = mediana de la tela bajo el diseño
@@ -390,7 +403,7 @@ var YuzuMockup = (function () {
     return Promise.all([cargar(f.foto)].concat(piezas.map(function (it) {
       return typeof it.src === 'string' ? cargar(it.src) : Promise.resolve(it.src);
     }))).then(function (r) {
-      var capas = piezas.map(function (it, k) { return { pz: it.pz, img: r[k + 1], rect: rectPieza(prenda, color, it.pz, r[k + 1], ajuste, opc) }; });
+      var capas = piezas.map(function (it, k) { return { pz: it.pz, img: r[k + 1], rect: rectPieza(prenda, color, it.pz, r[k + 1], ajuste, opc), rot: ((ZONAS[prenda] || {})[it.pz] || {}).rot || 0 }; });
       // Si el logo va en la nuca y el diseño de la espalda quedaría encima, el diseño baja lo justo (siempre dentro de sus límites)
       var nu = capas.filter(function (c) { return c.pz === 'nuca'; })[0], es = capas.filter(function (c) { return c.pz === 'espalda'; })[0];
       if (nu && nu.rect && es && es.rect) {

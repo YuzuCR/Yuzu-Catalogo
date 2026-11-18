@@ -251,6 +251,11 @@
   .zona-escena img { width: 100%; height: 100%; display: block; pointer-events: none; }
   .zona-caja { position: absolute; border: 1.5px dashed var(--yuzu); background: rgba(195,194,77,.06); cursor: move; touch-action: none; }
   .zona-asa { position: absolute; right: -9px; bottom: -9px; width: 18px; height: 18px; background: var(--yuzu); border-radius: 50%; cursor: nwse-resize; touch-action: none; }
+  .zona-rot { position: absolute; left: 50%; top: -30px; width: 18px; height: 18px; margin-left: -9px; background: var(--sup); border: 2px solid var(--yuzu); border-radius: 50%; cursor: grab; touch-action: none; }
+  .zona-rot::after { content: ''; position: absolute; left: 50%; top: 16px; width: 1.5px; height: 12px; margin-left: -.75px; background: var(--yuzu); }
+  .zona-giro { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .zona-giro input[type=range] { flex: 1; margin: 0; }
+  .zona-giro input[type=text] { width: 64px; margin: 0; padding: 7px; text-align: center; }
   .zona-medida { text-align: center; font-family: var(--mono); font-size: 12px; color: var(--yuzu); margin-top: 8px; }
   .ver { border: 1px solid var(--linea); border-radius: 8px; padding: 10px; margin-top: 10px; background: var(--sup); }
   .ver-cab { display: flex; gap: 8px; align-items: center; }
@@ -794,10 +799,14 @@
         <div style="flex:1"><label>Vista</label><select id="zVista"></select></div>
         <div style="flex:1"><label>Color</label><select id="zColor"></select></div>
       </div>
-      <div class="zona-escena" id="zEscena"><img id="zImg" alt=""><div class="zona-caja" id="zCaja"><span class="zona-asa" id="zAsa"></span></div></div>
+      <div class="zona-escena" id="zEscena"><img id="zImg" alt=""><div class="zona-caja" id="zCaja"><span class="zona-rot" id="zRotAsa" title="Girar"></span><span class="zona-asa" id="zAsa"></span></div></div>
       <p class="zona-medida" id="zMedida"></p>
+      <label>Rotación (°) — girá desde el punto de arriba o acá. Para la manga, seguí la línea del brazo.</label>
+      <div class="zona-giro"><input type="range" id="zRot" min="-45" max="45" step="0.5" value="0"><input type="text" inputmode="decimal" id="zRotNum" value="0"><button type="button" class="btn btn-sec btn-sm" id="zRot0">0°</button></div>
       <div class="row"><div style="flex:1"><label>Mínimo que puede elegir el cliente (% del recuadro)</label><input type="text" inputmode="numeric" id="zKmin"></div><div style="flex:1"><label>Máximo (% del recuadro)</label><input type="text" inputmode="numeric" id="zKmax"></div></div>
       <p class="mini" style="margin-top:2px">Hasta dónde puede achicar o agrandar el cliente su diseño en esa zona. 100 % = el recuadro de arriba. Si el logo del pecho se ve grande, achicá el recuadro del «Pecho» y bajá el máximo.</p>
+      <label>Forma de prueba</label>
+      <select id="zForma"></select>
       <label>Probar con otro diseño (opcional)</label>
       <input type="file" id="zPrueba" accept="image/png">
       <div class="row" style="margin-top:14px">
@@ -3926,7 +3935,19 @@ $('btnGuardarColPrendas').addEventListener('click', function () {
 });
 
 // ---------- Zonas de impresión (editor) ----------
-var ZE = { prenda: 'boxy', vista: 'espalda', color: 'Negro', zona: null, prueba: null };
+var ZE = { prenda: 'boxy', vista: 'espalda', color: 'Negro', zona: null, prueba: null, forma: '' };
+// Cuadros sólidos de prueba (images/pruebas/prueba-AxB-clara|oscura.png). '' = el cuadro «DISEÑO» de siempre
+var FORMAS_PRUEBA = [['', 'Cuadro «DISEÑO» (el de siempre)'], ['1x1', 'Cuadrado 1:1'], ['1x2', 'Vertical 1:2'], ['1x3', 'Vertical 1:3'], ['1x4', 'Vertical 1:4 (manga)'], ['1x5', 'Vertical 1:5 (manga larga)'], ['1x6', 'Vertical 1:6 (manga completa)'], ['2x3', 'Vertical 2:3'], ['3x4', 'Vertical 3:4'], ['4x5', 'Vertical 4:5 (espalda)'], ['3x2', 'Horizontal 3:2'], ['2x1', 'Horizontal 2:1'], ['3x1', 'Horizontal 3:1 (franja)']];
+llenarSelect('zForma', FORMAS_PRUEBA, '');
+$('zForma').addEventListener('change', function () { ZE.forma = this.value; renderZona(); });
+function setRot(v) {
+  v = Math.round(Math.max(-45, Math.min(45, parseFloat(v) || 0)) * 2) / 2;
+  ZE.zona.rot = v; $('zRot').value = v; $('zRotNum').value = v; pintarCaja();
+}
+$('zRot').addEventListener('input', function () { setRot(this.value); });
+$('zRot').addEventListener('change', function () { renderZona(); });
+$('zRotNum').addEventListener('change', function () { setRot(this.value); renderZona(); });
+$('zRot0').addEventListener('click', function () { setRot(0); renderZona(); });
 function llenarSelect(id, pares, val) {
   $(id).innerHTML = pares.map(function (p) { return '<option value="' + esc(p[0]) + '"' + (p[0] === val ? ' selected' : '') + '>' + esc(p[1]) + '</option>'; }).join('');
 }
@@ -3942,7 +3963,8 @@ function cambiarZonaSel() {
   llenarSelect('zColor', cols.map(function (c) { return [c, c]; }), ZE.color);
   ZE.color = $('zColor').value;
   var z = YuzuMockup.ZONAS[ZE.prenda][ZE.vista];
-  ZE.zona = { x: z.x, y: z.y, w: z.w, h: z.h, alinear: z.alinear };
+  ZE.zona = { x: z.x, y: z.y, w: z.w, h: z.h, alinear: z.alinear, rot: z.rot || 0 };
+  $('zRot').value = ZE.zona.rot; $('zRotNum').value = ZE.zona.rot;
   var L = YuzuMockup.limitesPieza(ZE.prenda, ZE.vista);
   if (L) { $('zKmin').value = Math.round(L.kmin * 100); $('zKmax').value = Math.round(L.kmax * 100); }
   renderZona();
@@ -3960,6 +3982,7 @@ function placeholderZona() {
 }
 function pruebaZona() {
   if ((ZE.vista === 'frente' || ZE.vista === 'nuca') && YuzuMockup.logoPara(ZE.color)) return YuzuMockup.cargar(YuzuMockup.logoPara(ZE.color)); if (ZE.prueba) return Promise.resolve(ZE.prueba);
+  if (ZE.forma) return YuzuMockup.cargar('images/pruebas/prueba-' + ZE.forma + '-' + (YuzuMockup.esOscuro(ZE.color) ? 'clara' : 'oscura') + '.png').catch(function () { return placeholderZona(); });
   var src = YuzuMockup.RUTA + ((ZE.vista === 'espalda' || ZE.vista === 'pechoGrande') ? (YuzuMockup.esOscuro(ZE.color) ? 'prueba-espalda-oscura.png' : 'prueba-espalda-clara.png') : 'prueba-pecho.png');
   return YuzuMockup.cargar(src).catch(function () { return placeholderZona(); });
 }
@@ -3967,6 +3990,7 @@ function pintarCaja() {
   var esc2 = $('zEscena').clientWidth / 1080, z = ZE.zona, c = $('zCaja');
   c.style.left = z.x * esc2 + 'px'; c.style.top = z.y * esc2 + 'px';
   c.style.width = z.w * esc2 + 'px'; c.style.height = z.h * esc2 + 'px';
+  c.style.transform = z.rot ? 'rotate(' + z.rot + 'deg)' : '';
 }
 function renderZona() {
   pintarCaja();
@@ -3983,7 +4007,7 @@ function renderZona() {
   var modo = null, ini = null;
   function punto(e) { return { x: e.clientX, y: e.clientY }; }
   $('zCaja').addEventListener('pointerdown', function (e) {
-    modo = e.target === $('zAsa') ? 'estirar' : 'mover';
+    modo = e.target === $('zAsa') ? 'estirar' : e.target === $('zRotAsa') ? 'rotar' : 'mover';
     ini = { p: punto(e), z: JSON.parse(JSON.stringify(ZE.zona)) };
     this.setPointerCapture(e.pointerId); e.preventDefault();
   });
@@ -3991,6 +4015,11 @@ function renderZona() {
     if (!modo) return;
     var esc2 = $('zEscena').clientWidth / 1080, p = punto(e);
     var dx = (p.x - ini.p.x) / esc2, dy = (p.y - ini.p.y) / esc2, z = ZE.zona;
+    if (modo === 'rotar') {
+      var bx = $('zEscena').getBoundingClientRect(), mx = bx.left + (z.x + z.w / 2) * esc2, my = bx.top + (z.y + z.h / 2) * esc2;
+      setRot(Math.atan2(p.x - mx, my - p.y) * 180 / Math.PI); return;
+    }
+    if (modo === 'estirar' && z.rot) { var a = -z.rot * Math.PI / 180, lx = dx * Math.cos(a) - dy * Math.sin(a); dy = dx * Math.sin(a) + dy * Math.cos(a); dx = lx; }
     if (modo === 'mover') { z.x = Math.round(Math.max(0, Math.min(1080 - z.w, ini.z.x + dx))); z.y = Math.round(Math.max(0, Math.min(1440 - z.h, ini.z.y + dy))); }
     else { z.w = Math.round(Math.max(20, Math.min(1080 - z.x, ini.z.w + dx))); z.h = Math.round(Math.max(20, Math.min(1440 - z.y, ini.z.h + dy))); }
     pintarCaja();
@@ -4010,7 +4039,7 @@ $('btnZonaGuardar').addEventListener('click', function () {
   TIENDA.mockup.zonas[ZE.prenda] = TIENDA.mockup.zonas[ZE.prenda] || {};
   var kmin = Math.max(10, Math.min(100, parseInt($('zKmin').value, 10) || 0)) / 100, kmax = Math.max(50, Math.min(250, parseInt($('zKmax').value, 10) || 0)) / 100;
   if (kmin >= kmax) { statusDe('statusZona', 'err', 'El mínimo tiene que ser menor que el máximo.'); return; }
-  TIENDA.mockup.zonas[ZE.prenda][ZE.vista] = { x: ZE.zona.x, y: ZE.zona.y, w: ZE.zona.w, h: ZE.zona.h, alinear: ZE.zona.alinear, kmin: kmin, kmax: kmax };
+  TIENDA.mockup.zonas[ZE.prenda][ZE.vista] = { x: ZE.zona.x, y: ZE.zona.y, w: ZE.zona.w, h: ZE.zona.h, alinear: ZE.zona.alinear, rot: ZE.zona.rot || 0, kmin: kmin, kmax: kmax };
   aplicarCfgMockup();
   statusDe('statusZona', 'loading', 'Guardando...');
   guardarJSON('data/tienda.json', TIENDA, 'Zona ' + ZE.prenda + ' ' + ZE.vista).then(function () {
@@ -4020,7 +4049,8 @@ $('btnZonaGuardar').addEventListener('click', function () {
 });
 $('btnZonaReset').addEventListener('click', function () {
   var z = ZONAS_BASE[ZE.prenda][ZE.vista];
-  ZE.zona = { x: z.x, y: z.y, w: z.w, h: z.h, alinear: z.alinear };
+  ZE.zona = { x: z.x, y: z.y, w: z.w, h: z.h, alinear: z.alinear, rot: z.rot || 0 };
+  $('zRot').value = ZE.zona.rot; $('zRotNum').value = ZE.zona.rot;
   var zb = ZONAS_BASE[ZE.prenda][ZE.vista], pr = ZE.vista === 'pechoGrande' ? [0.35, 1] : ZE.vista === 'frente' ? [0.4, 1.5] : ZE.vista === 'nuca' ? [0.6, 1.5] : [0.5, 1.15];
   $('zKmin').value = Math.round((zb.kmin || pr[0]) * 100); $('zKmax').value = Math.round((zb.kmax || pr[1]) * 100);
   renderZona();
