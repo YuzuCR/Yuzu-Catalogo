@@ -111,11 +111,13 @@
           "alinear": "centro"
         },
         "lado": {
-          "x": 493,
-          "y": 698,
-          "w": 127,
-          "h": 146,
-          "alinear": "centro"
+          "x": 482,
+          "y": 712,
+          "w": 133,
+          "h": 518,
+          "alinear": "centro",
+          "kmin": 0.5,
+          "kmax": 1.15
         },
         "frente": {
           "x": 633,
