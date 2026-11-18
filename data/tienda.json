@@ -134,11 +134,13 @@
       },
       "mangalarga": {
         "espalda": {
-          "x": 338,
-          "y": 474,
-          "w": 424,
-          "h": 537,
-          "alinear": "arriba"
+          "x": 303,
+          "y": 353,
+          "w": 490,
+          "h": 726,
+          "alinear": "arriba",
+          "kmin": 0.5,
+          "kmax": 1.15
         },
         "frente": {
           "x": 638,
