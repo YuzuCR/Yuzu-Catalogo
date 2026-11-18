@@ -119,10 +119,12 @@
         },
         "frente": {
           "x": 633,
-          "y": 484,
-          "w": 96,
-          "h": 119,
-          "alinear": "centro"
+          "y": 519,
+          "w": 73,
+          "h": 82,
+          "alinear": "centro",
+          "kmin": 0.4,
+          "kmax": 1.5
         },
         "pechoGrande": {
           "x": 327,
