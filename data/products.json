@@ -48785,5 +48785,260 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1795144547878,
+    "nombre": "B 006",
+    "categoria": "Anime",
+    "subcategoria": "Bleach",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/b-006-negro-1795144547878-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/b-006-1795144547878-v1-espalda.png"
+        },
+        "espalda": "images/disenos/b-006-1795144547878-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1795144557165,
+    "nombre": "B 007",
+    "categoria": "Anime",
+    "subcategoria": "Bleach",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/b-007-negro-1795144557165-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/b-007-1795144557165-v1-espalda.png"
+        },
+        "espalda": "images/disenos/b-007-1795144557165-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1795144565532,
+    "nombre": "B 008",
+    "categoria": "Anime",
+    "subcategoria": "Bleach",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/b-008-negro-1795144565532-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/b-008-1795144565532-v1-espalda.png"
+        },
+        "espalda": "images/disenos/b-008-1795144565532-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1795144574474,
+    "nombre": "B 009",
+    "categoria": "Anime",
+    "subcategoria": "Bleach",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/b-009-negro-1795144574474-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/b-009-1795144574474-v1-espalda.png"
+        },
+        "espalda": "images/disenos/b-009-1795144574474-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1795144583258,
+    "nombre": "B 010",
+    "categoria": "Anime",
+    "subcategoria": "Bleach",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/b-010-negro-1795144583258-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/b-010-1795144583258-v1-espalda.png"
+        },
+        "espalda": "images/disenos/b-010-1795144583258-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
