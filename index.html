@@ -766,6 +766,27 @@
   .btn-hueco-claro:hover { color: #000; border-color: #fff; }
   .banda-principal { border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
   .banda-principal h2 { font-size: clamp(40px, 7vw, 84px); line-height: .9; }
+
+  /* Varita mágica */
+  .vt-fondo { position: fixed; inset: 0; z-index: 100000; background: rgba(0,0,0,.88); display: flex; align-items: center; justify-content: center; padding: 8px; }
+  .vt-caja { background: #1a1815; color: #ece7db; border: 1px solid #2f2b24; width: 100%; max-width: 1100px; max-height: 98vh; display: flex; flex-direction: column; overflow: hidden; font-size: 13px; }
+  .vt-cab, .vt-barra { display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; padding: 8px 12px; border-bottom: 1px solid #2f2b24; }
+  .vt-grupo { display: flex; gap: 6px; flex-wrap: wrap; }
+  .vt-b { background: #232019; color: #ece7db; border: 1px solid #3a352c; padding: 8px 12px; font: inherit; font-size: 12px; cursor: pointer; min-height: 36px; }
+  .vt-b:disabled { opacity: .4; cursor: default; }
+  .vt-pri, .vt-modo.on { background: #c3c24d; color: #111; border-color: #c3c24d; }
+  .vt-camp { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #9a9486; margin: 0; }
+  .vt-camp input[type=range] { width: 110px; padding: 0; accent-color: #c3c24d; }
+  .vt-camp select { width: auto; padding: 5px 6px; font-size: 12px; background: #232019; color: #ece7db; border: 1px solid #3a352c; }
+  .vt-camp b { color: #c3c24d; min-width: 26px; text-align: right; font-weight: 600; }
+  .vt-chk { display: flex; gap: 6px; align-items: center; font-size: 12px; color: #9a9486; cursor: pointer; }
+  .vt-chk input { accent-color: #c3c24d; }
+  .vt-mini { font-size: 12px; color: #9a9486; }
+  .vt-area { overflow: auto; flex: 1; min-height: 180px; background: #0b0a09; padding: 10px; text-align: center; -webkit-overflow-scrolling: touch; }
+  .vt-area canvas { cursor: crosshair; display: inline-block; max-width: none; vertical-align: top; }
+  .vt-gota { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+  .vt-gota i { width: 20px; height: 20px; border: 1px solid #3a352c; display: inline-block; }
+  .quitar-pers .btn-varita { width: 100%; margin-top: 10px; min-height: 42px; }
 </style>
 <script>
   (function () {
@@ -2889,10 +2910,221 @@ function ycRecortar(c) {
   o.getContext('2d').drawImage(c, x0, y0, o.width, o.height, 0, 0, o.width, o.height);
   return o;
 }
+// ---------- Varita mágica (cuentagotas) ----------
+// Misma idea que la varita de Photoshop: tocás un píxel, se toma su color y se selecciona lo que se le parece
+// (tolerancia = diferencia máxima por canal, 0-255; "contiguo" = solo lo que está pegado; muestra = promedio de 1, 3×3, 5×5 u 11×11 píxeles;
+// bordes suaves = anti-alias; Shift/＋ suma a lo quitado, Alt/− lo restaura). Lo seleccionado queda transparente.
+// El resultado se guarda como lista de toques (q.ops) con coordenadas relativas y el color tomado, así se repite igual a cualquier tamaño.
+function varitaPeso(d, i, col, tol, soft) {
+  if (d[i + 3] <= 8) return 1; // ya es transparente: la selección pasa por encima
+  var a = d[i] - col[0], b = d[i + 1] - col[1], g = d[i + 2] - col[2];
+  if (a < 0) a = -a; if (b < 0) b = -b; if (g < 0) g = -g;
+  var m = a > b ? (a > g ? a : g) : (b > g ? b : g);
+  if (m <= tol) return 1;
+  if (!soft || m >= tol + soft) return 0;
+  return 1 - (m - tol) / soft;
+}
+function varitaOp(d, W, H, op, mask) {
+  var n = W * H, p, i;
+  if (op.t === 'clr') { mask.fill(0); return; }
+  if (op.t === 'inv') { for (p = 0; p < n; p++) mask[p] = 255 - mask[p]; return; }
+  var col = op.c, tol = op.tol, soft = op.suave === false ? 0 : Math.max(4, Math.round(tol * 0.3)), nm = new Uint8Array(n), w;
+  if (!op.cont) {
+    for (p = 0; p < n; p++) { w = varitaPeso(d, p * 4, col, tol, soft); if (w > 0) nm[p] = Math.round(w * 255); }
+  } else {
+    var sx = Math.max(0, Math.min(W - 1, Math.floor(op.x * W))), sy = Math.max(0, Math.min(H - 1, Math.floor(op.y * H))), seed = -1, r, dx, dy, xx, yy;
+    for (r = 0; r <= 3 && seed < 0; r++) {
+      for (dy = -r; dy <= r && seed < 0; dy++) for (dx = -r; dx <= r; dx++) {
+        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
+        xx = sx + dx; yy = sy + dy; if (xx < 0 || yy < 0 || xx >= W || yy >= H) continue;
+        p = yy * W + xx; if (d[p * 4 + 3] > 8 && varitaPeso(d, p * 4, col, tol, soft) > 0) { seed = p; break; }
+      }
+    }
+    if (seed < 0) return;
+    var vis = new Uint8Array(n), pila = new Int32Array(n), top = 0;
+    vis[seed] = 1; pila[top++] = seed;
+    while (top) {
+      p = pila[--top]; w = varitaPeso(d, p * 4, col, tol, soft); if (w <= 0) continue;
+      nm[p] = Math.round(w * 255);
+      var x0 = p % W, y0 = (p - x0) / W, q2;
+      if (x0 > 0) { q2 = p - 1; if (!vis[q2]) { vis[q2] = 1; pila[top++] = q2; } }
+      if (x0 < W - 1) { q2 = p + 1; if (!vis[q2]) { vis[q2] = 1; pila[top++] = q2; } }
+      if (y0 > 0) { q2 = p - W; if (!vis[q2]) { vis[q2] = 1; pila[top++] = q2; } }
+      if (y0 < H - 1) { q2 = p + W; if (!vis[q2]) { vis[q2] = 1; pila[top++] = q2; } }
+    }
+  }
+  if (op.t === 'sub') { for (p = 0; p < n; p++) if (nm[p]) mask[p] = Math.round(mask[p] * (1 - nm[p] / 255)); }
+  else { for (p = 0; p < n; p++) if (nm[p] > mask[p]) mask[p] = nm[p]; }
+}
+function varitaMascara(d, W, H, ops) {
+  var mask = new Uint8Array(W * H);
+  (ops || []).forEach(function (op) { varitaOp(d, W, H, op, mask); });
+  return mask;
+}
+// Expande (n > 0) o contrae (n < 0) lo seleccionado n píxeles; sirve para comerse el halo de color del borde
+function varitaBorde(m, W, H, n) {
+  if (!n) return m;
+  var dil = n > 0, k = Math.abs(n), tmp = new Uint8Array(W * H), it, x, y, p, v, u;
+  for (it = 0; it < k; it++) {
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+      p = y * W + x; v = m[p];
+      if (x > 0) { u = m[p - 1]; v = dil ? (u > v ? u : v) : (u < v ? u : v); }
+      if (x < W - 1) { u = m[p + 1]; v = dil ? (u > v ? u : v) : (u < v ? u : v); }
+      tmp[p] = v;
+    }
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+      p = y * W + x; v = tmp[p];
+      if (y > 0) { u = tmp[p - W]; v = dil ? (u > v ? u : v) : (u < v ? u : v); }
+      if (y < H - 1) { u = tmp[p + W]; v = dil ? (u > v ? u : v) : (u < v ? u : v); }
+      m[p] = v;
+    }
+  }
+  return m;
+}
+function aplicarVarita(d, W, H, q) {
+  var m = varitaMascara(d, W, H, q.ops); if (q.borde) varitaBorde(m, W, H, q.borde);
+  for (var p = 0, n = W * H; p < n; p++) if (m[p]) { var i = p * 4; d[i + 3] = Math.round(d[i + 3] * (1 - m[p] / 255)); }
+}
+function cargarOriginalVarita(im) { return Promise.resolve(im); }
+function varitaResumen(q) { var n = q && q.ops ? q.ops.filter(function (o) { return o.t === 'add' || o.t === 'sub'; }).length : 0; return n + (n === 1 ? ' toque' : ' toques'); }
+
+var VT = null;
+function abrirVarita(fuente, qIni, alAplicar) {
+  if (VT) return;
+  cargarOriginalVarita(fuente).then(function (src) {
+    var SW = src.naturalWidth || src.width, SH = src.naturalHeight || src.height, e0 = Math.min(1, 1600 / Math.max(SW, SH)), ow = Math.round(SW * e0), oh = Math.round(SH * e0);
+    var oc = document.createElement('canvas'); oc.width = ow; oc.height = oh;
+    var octx = oc.getContext('2d'); octx.drawImage(src, 0, 0, ow, oh);
+    var od = octx.getImageData(0, 0, ow, oh), out = octx.createImageData(ow, oh);
+    var V = VT = {
+      ops: ((qIni && qIni.modo === 'varita' && qIni.ops) || []).map(function (o) { return JSON.parse(JSON.stringify(o)); }), redo: [],
+      modo: 'add', cont: true, muestra: 1, tol: 32, suave: true, borde: (qIni && qIni.modo === 'varita' && qIni.borde) || 0, ajustar: true, vista: 'res', fondo: 'cuadros', zoom: 1
+    };
+    V.mask = varitaMascara(od.data, ow, oh, V.ops);
+    var el = document.createElement('div'); el.className = 'vt-fondo';
+    el.innerHTML = '<div class="vt-caja"><div class="vt-cab"><b>🪄 Varita mágica</b><span class="vt-mini" style="margin:0" id="vtInfo"></span><span style="flex:1"></span><button type="button" class="vt-b" id="vtCancel">Cancelar</button><button type="button" class="vt-b vt-pri" id="vtOk">Aplicar</button></div>' +
+      '<div class="vt-barra">' +
+      '<div class="vt-grupo"><button type="button" class="vt-b vt-modo on" data-vt-modo="add" title="Shift + clic">＋ Quitar</button><button type="button" class="vt-b vt-modo" data-vt-modo="sub" title="Alt + clic">－ Restaurar</button></div>' +
+      '<label class="vt-camp">Tolerancia <b id="vtTolV">32</b><input type="range" id="vtTol" min="0" max="150" step="1" value="32"></label>' +
+      '<label class="vt-camp">Muestra <select id="vtMuestra"><option value="1">1 píxel</option><option value="3">Promedio 3×3</option><option value="5">Promedio 5×5</option><option value="11">Promedio 11×11</option></select></label>' +
+      '<label class="vt-camp">Borde <b id="vtBordeV">0</b><input type="range" id="vtBorde" min="-6" max="6" step="1" value="0" title="Expande (+) o contrae (−) lo quitado"></label>' +
+      '<label class="vt-chk"><input type="checkbox" id="vtCont" checked><span>Contiguo (solo lo pegado)</span></label>' +
+      '<label class="vt-chk"><input type="checkbox" id="vtSuave" checked><span>Bordes suaves</span></label>' +
+      '<label class="vt-chk"><input type="checkbox" id="vtAjustar" checked><span>La tolerancia ajusta el último toque</span></label>' +
+      '</div><div class="vt-barra">' +
+      '<div class="vt-grupo"><button type="button" class="vt-b" id="vtUndo">↶ Deshacer</button><button type="button" class="vt-b" id="vtRedo">↷ Rehacer</button><button type="button" class="vt-b" id="vtInv" title="Lo quitado pasa a conservarse y al revés">Invertir</button><button type="button" class="vt-b" id="vtClr">Borrar todo</button></div>' +
+      '<label class="vt-camp">Vista <select id="vtVista"><option value="res">Resultado</option><option value="sel">Resaltar lo quitado</option></select></label>' +
+      '<label class="vt-camp">Fondo <select id="vtFondo"><option value="cuadros">Cuadros</option><option value="negro">Negro</option><option value="blanco">Blanco</option><option value="verde">Verde</option><option value="rosa">Rosa</option></select></label>' +
+      '<label class="vt-camp">Zoom <b id="vtZoomV"></b><input type="range" id="vtZoom" min="10" max="800" step="5"></label>' +
+      '<span class="vt-gota"><i id="vtSw"></i><span id="vtHex" class="vt-mini" style="margin:0">—</span></span>' +
+      '</div><div class="vt-area" id="vtArea"><canvas id="vtCv"></canvas></div>' +
+      '<p class="vt-mini" >Tocá el color que querés quitar (cuentagotas). Con «＋ Quitar» sumás zonas y con «－ Restaurar» devolvés lo que no querías quitar. Si desmarcás «Contiguo», quita ese color en todo el diseño (también por dentro). Para ver mejor, subí el zoom.</p></div>';
+    document.body.appendChild(el);
+    var $v = function (id) { return el.querySelector('#' + id); }, cv = $v('vtCv'), area = $v('vtArea'), ctx = cv.getContext('2d');
+    cv.width = ow; cv.height = oh;
+    var rT = null;
+    function fondoCss() {
+      var f = V.fondo;
+      return f === 'negro' ? '#000' : f === 'blanco' ? '#fff' : f === 'verde' ? '#00d26a' : f === 'rosa' ? '#ff4fa3' : 'repeating-conic-gradient(#3a352c 0 25%, #28251f 0 50%) 0 0/16px 16px';
+    }
+    function aplicarZoom() {
+      cv.style.width = Math.round(ow * V.zoom) + 'px'; cv.style.height = Math.round(oh * V.zoom) + 'px';
+      cv.style.imageRendering = V.zoom >= 2 ? 'pixelated' : 'auto';
+      $v('vtZoom').value = Math.round(V.zoom * 100); $v('vtZoomV').textContent = Math.round(V.zoom * 100) + '%';
+    }
+    function pintar() {
+      var m = V.borde ? varitaBorde(V.mask.slice(), ow, oh, V.borde) : V.mask, s = od.data, o = out.data, n = ow * oh, p, i, k, quitado = 0, total = 0, sel = V.vista === 'sel';
+      for (p = 0; p < n; p++) {
+        i = p * 4; o[i] = s[i]; o[i + 1] = s[i + 1]; o[i + 2] = s[i + 2]; k = m[p] / 255;
+        if (s[i + 3] > 8) { total++; if (k > 0.5) quitado++; }
+        if (sel) { o[i + 3] = s[i + 3]; if (k > 0) { o[i] = Math.round(s[i] * (1 - k * 0.65) + 230 * k * 0.65); o[i + 1] = Math.round(s[i + 1] * (1 - k * 0.65) + 40 * k * 0.65); o[i + 2] = Math.round(s[i + 2] * (1 - k * 0.65) + 60 * k * 0.65); } }
+        else o[i + 3] = Math.round(s[i + 3] * (1 - k));
+      }
+      ctx.putImageData(out, 0, 0);
+      cv.style.background = sel ? '#111' : fondoCss();
+      $v('vtInfo').textContent = varitaResumen({ ops: V.ops }) + (total ? ' · ' + Math.round(quitado * 100 / total) + '% quitado' : '');
+      $v('vtUndo').disabled = !V.ops.length; $v('vtRedo').disabled = !V.redo.length;
+    }
+    function reconstruir() { V.mask = varitaMascara(od.data, ow, oh, V.ops); pintar(); }
+    function empujar(op) { V.ops.push(op); V.redo = []; varitaOp(od.data, ow, oh, op, V.mask); pintar(); }
+    function pixelDe(ev) {
+      var r = cv.getBoundingClientRect(), x = Math.floor((ev.clientX - r.left) / r.width * ow), y = Math.floor((ev.clientY - r.top) / r.height * oh);
+      return (x < 0 || y < 0 || x >= ow || y >= oh) ? null : [x, y];
+    }
+    function muestra(x, y) {
+      var rad = (V.muestra - 1) / 2, s = od.data, a = 0, b = 0, g = 0, c = 0, dx, dy, xx, yy, i;
+      for (dy = -rad; dy <= rad; dy++) for (dx = -rad; dx <= rad; dx++) {
+        xx = x + dx; yy = y + dy; if (xx < 0 || yy < 0 || xx >= ow || yy >= oh) continue;
+        i = (yy * ow + xx) * 4; if (s[i + 3] <= 8) continue; a += s[i]; b += s[i + 1]; g += s[i + 2]; c++;
+      }
+      return c ? [Math.round(a / c), Math.round(b / c), Math.round(g / c)] : null;
+    }
+    function cerrar() { document.removeEventListener('keydown', tecla, true); clearTimeout(rT); el.remove(); VT = null; }
+    function deshacer() { if (!V.ops.length) return; V.redo.push(V.ops.pop()); reconstruir(); }
+    function rehacer() { if (!V.redo.length) return; V.ops.push(V.redo.pop()); reconstruir(); }
+    function tecla(ev) {
+      if ((ev.ctrlKey || ev.metaKey) && /^z$/i.test(ev.key)) { ev.preventDefault(); ev.stopPropagation(); if (ev.shiftKey) rehacer(); else deshacer(); }
+      else if ((ev.ctrlKey || ev.metaKey) && /^y$/i.test(ev.key)) { ev.preventDefault(); ev.stopPropagation(); rehacer(); }
+      else if (ev.key === 'Escape') { ev.stopPropagation(); cerrar(); }
+    }
+    document.addEventListener('keydown', tecla, true);
+    // Zoom inicial: que entre completa en pantalla
+    V.zoom = Math.max(0.1, Math.min(1.5, (Math.min(window.innerWidth * 0.94, 1100) - 24) / ow, (window.innerHeight * 0.55) / oh));
+    aplicarZoom(); pintar();
+    $v('vtTol').value = V.tol; $v('vtBorde').value = V.borde; $v('vtBordeV').textContent = V.borde;
+    cv.addEventListener('mousemove', function (ev) {
+      var pt = pixelDe(ev); if (!pt) return; var i = (pt[1] * ow + pt[0]) * 4, s = od.data;
+      if (s[i + 3] <= 8) { $v('vtSw').style.background = 'transparent'; $v('vtHex').textContent = 'transparente'; return; }
+      $v('vtSw').style.background = 'rgb(' + s[i] + ',' + s[i + 1] + ',' + s[i + 2] + ')';
+      $v('vtHex').textContent = '#' + [s[i], s[i + 1], s[i + 2]].map(function (n) { return (n < 16 ? '0' : '') + n.toString(16); }).join('').toUpperCase();
+    });
+    cv.addEventListener('click', function (ev) {
+      var pt = pixelDe(ev); if (!pt) return;
+      var col = muestra(pt[0], pt[1]); if (!col) { $v('vtInfo').textContent = 'Ahí ya es transparente: tocá otro punto.'; return; }
+      var t = ev.altKey ? 'sub' : ev.shiftKey ? 'add' : V.modo;
+      empujar({ t: t, x: (pt[0] + 0.5) / ow, y: (pt[1] + 0.5) / oh, c: col, tol: V.tol, cont: V.cont, suave: V.suave });
+    });
+    area.addEventListener('wheel', function (ev) {
+      if (!ev.ctrlKey) return; ev.preventDefault();
+      V.zoom = Math.max(0.1, Math.min(8, V.zoom * (ev.deltaY < 0 ? 1.15 : 1 / 1.15))); aplicarZoom();
+    }, { passive: false });
+    el.addEventListener('click', function (ev) {
+      var b = ev.target.closest('button'); if (!b) return;
+      if (b.hasAttribute('data-vt-modo')) { V.modo = b.getAttribute('data-vt-modo'); Array.prototype.forEach.call(el.querySelectorAll('.vt-modo'), function (x) { var on = x === b; x.classList.toggle('on', on); x.classList.toggle('btn-sec', !on); }); return; }
+      if (b.id === 'vtUndo') deshacer(); else if (b.id === 'vtRedo') rehacer();
+      else if (b.id === 'vtInv') empujar({ t: 'inv' });
+      else if (b.id === 'vtClr') { if (V.ops.length) empujar({ t: 'clr' }); }
+      else if (b.id === 'vtCancel') cerrar();
+      else if (b.id === 'vtOk') {
+        var ops = V.ops.slice(), ultimoClr = -1; ops.forEach(function (o, j) { if (o.t === 'clr') ultimoClr = j; }); ops = ops.slice(ultimoClr + 1);
+        var q = ops.length ? { modo: 'varita', tol: V.tol, global: false, ops: ops, borde: V.borde } : { modo: 'ninguno', tol: 40, global: false };
+        cerrar(); alAplicar(q);
+      }
+    });
+    el.addEventListener('input', function (ev) {
+      var t = ev.target;
+      if (t.id === 'vtTol') {
+        V.tol = +t.value; $v('vtTolV').textContent = V.tol;
+        var u = V.ops[V.ops.length - 1];
+        if (V.ajustar && u && (u.t === 'add' || u.t === 'sub')) { u.tol = V.tol; clearTimeout(rT); rT = setTimeout(reconstruir, 70); }
+      } else if (t.id === 'vtBorde') { V.borde = +t.value; $v('vtBordeV').textContent = V.borde; clearTimeout(rT); rT = setTimeout(pintar, 70); }
+      else if (t.id === 'vtZoom') { V.zoom = +t.value / 100; aplicarZoom(); }
+    });
+    el.addEventListener('change', function (ev) {
+      var t = ev.target;
+      if (t.id === 'vtCont') V.cont = t.checked; else if (t.id === 'vtSuave') V.suave = t.checked; else if (t.id === 'vtAjustar') V.ajustar = t.checked;
+      else if (t.id === 'vtMuestra') V.muestra = +t.value;
+      else if (t.id === 'vtVista') { V.vista = t.value; pintar(); } else if (t.id === 'vtFondo') { V.fondo = t.value; pintar(); }
+    });
+  }).catch(function (e) { VT = null; alert('No pude abrir la varita: ' + e.message); });
+  VT = VT || { cargando: true };
+}
+
 // Quita un color de fondo (negro, blanco o el de las esquinas). Por defecto solo el que toca los bordes, para no comerse partes del diseño.
 function ycQuitarColor(im, q) {
   var c = ycCanvas(im, LADO_MAX), W = c.width, H = c.height, x = c.getContext('2d');
   var img = x.getImageData(0, 0, W, H), d = img.data, ob;
+  if (q.modo === 'varita') { aplicarVarita(d, W, H, q); x.putImageData(img, 0, 0); return c; }
   if (q.modo === 'negro') ob = [0, 0, 0]; else if (q.modo === 'blanco') ob = [255, 255, 255];
   else {
     var s = [0, 0, 0], n = 0;
@@ -2936,7 +3168,7 @@ function psFondoProbable(im) {
   var m = suma / opacos; return m > 238 ? 'blanco' : m < 18 ? 'negro' : 'ninguno';
 }
 function psProcesar(a) {
-  var q = PS.quitar, im = a.orig, W0 = im.naturalWidth || im.width, H0 = im.naturalHeight || im.height, e = Math.min(1, LADO_MAX / Math.max(W0, H0));
+  var q = a.quitar || PS.quitar, im = a.orig, W0 = im.naturalWidth || im.width, H0 = im.naturalHeight || im.height, e = Math.min(1, LADO_MAX / Math.max(W0, H0));
   var c = q.modo !== 'ninguno' ? ycQuitarColor(im, q) : ycCanvas(im, LADO_MAX), r = ycRecortar(c);
   a.full = r; a.pxOrig = r.width / e; a.img = ycCanvas(r, 1400);
   // ¿tiene transparencia? ¿quedó algo?
@@ -3045,7 +3277,14 @@ function quitarPersHTML() {
     '<select id="persQModo" class="campo-txt"><option value="ninguno"' + (q.modo === 'ninguno' ? ' selected' : '') + '>No quitar nada</option><option value="negro"' + (q.modo === 'negro' ? ' selected' : '') + '>Quitar el negro</option><option value="blanco"' + (q.modo === 'blanco' ? ' selected' : '') + '>Quitar el blanco</option><option value="esquina"' + (q.modo === 'esquina' ? ' selected' : '') + '>Quitar el color de las esquinas</option></select>' +
     (q.modo !== 'ninguno' ? '<label class="ep-fila" style="margin-top:10px"><span class="dato">Qué tanto</span><input type="range" id="persQTol" min="5" max="120" step="5" value="' + q.tol + '"><span class="ep-cm" id="persQTolV">' + q.tol + '</span></label>' +
       '<label class="check-pers"><input type="checkbox" id="persQGlobal"' + (q.global ? ' checked' : '') + '><span>También dentro del diseño (si no, solo el fondo que toca los bordes)</span></label>' : '') +
-    '<p class="nota-paso">Las imágenes JPG traen fondo. Si tu fondo es blanco o negro, quitalo acá y se ve en la prenda al instante.</p></div>';
+    '<p class="nota-paso">Las imágenes JPG traen fondo. Si tu fondo es blanco o negro, quitalo acá y se ve en la prenda al instante.</p>' +
+    [['grande', 'diseño grande'], ['pecho', 'detalle del pecho']].map(function (z) {
+      var a = PS.archivos[z[0]]; if (!a) return '';
+      var on = a.quitar && a.quitar.modo === 'varita';
+      return '<button type="button" class="btn btn-hueco btn-varita" data-p-varita="' + z[0] + '">🪄 Varita mágica: ' + z[1] + (on ? ' (' + varitaResumen(a.quitar) + ')' : '') + '</button>' +
+        (on ? '<button type="button" class="btn-link-pers" data-p-varita-off="' + z[0] + '" style="background:none;border:none;color:var(--tinta-2);text-decoration:underline;font-size:12px;margin-top:6px;cursor:pointer">Quitar la varita del ' + z[1] + '</button>' : '');
+    }).join('') +
+    '<p class="nota-paso">Con la varita elegís con el cuentagotas qué color quitar, por fuera o por dentro del diseño.</p></div>';
 }
 function unoPropioHTML() {
   var frente = PS.opc.layout === 'frente', tengoPecho = !!PS.archivos.pecho, hayLogo = !!YuzuMockup.logoPara(PS.color);
@@ -3233,6 +3472,15 @@ $('persCuerpo').addEventListener('change', function (e) {
     var y2 = $('persCuerpo').scrollTop; pintarPers(); $('persCuerpo').scrollTop = y2; persMockup(0);
     evento('quitar_color_pers', { modo: t.value });
   } else if (t.id === 'persQGlobal') { PS.quitar.global = t.checked; psReprocesar(); pintarSlotsPers(); persMockup(0); }
+});
+$('persCuerpo').addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('[data-p-varita],[data-p-varita-off]'); if (!b) return;
+  var off = b.hasAttribute('data-p-varita-off'), clave = b.getAttribute(off ? 'data-p-varita-off' : 'data-p-varita'), a = PS.archivos[clave]; if (!a) return;
+  var listo = function () { PS.aviso = ''; var y = $('persCuerpo').scrollTop; psProcesar(a); pintarPers(); $('persCuerpo').scrollTop = y; persMockup(0); };
+  if (off) { a.quitar = null; listo(); return; }
+  abrirVarita(a.orig, a.quitar && a.quitar.modo === 'varita' ? a.quitar : null, function (q) {
+    a.quitar = q.modo === 'varita' ? q : null; listo(); evento('varita_pers', { clave: clave });
+  });
 });
 $('persCuerpo').addEventListener('input', function (e) {
   if (e.target.id === 'persIdea') PS.idea = e.target.value;
