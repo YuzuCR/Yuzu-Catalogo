@@ -27,6 +27,14 @@ var YuzuMockup = (function () {
     hoodie: { nombre: 'Hoodie', cmPx: 0.1 }
   };
 
+  // Tamaño máximo físico de impresión (cm) por pieza, para que el cliente no pase del DTF (la hoja de producción es de 56 × 50 cm).
+  // Se puede cambiar en data/tienda.json → mockup.maxCm = { espalda: { w: 40, h: 50 } }
+  var MAX_CM = { espalda: { w: 40, h: 50 }, pechoGrande: { w: 36, h: 44 } };
+  function topeCm(prenda, pz) {
+    var m = MAX_CM[pz], c = (PRENDAS[prenda] || {}).cmPx || 0.1;
+    return m ? { w: m.w / c, h: m.h / c, cm: m } : null;
+  }
+
   // Colores con foto propia. Los que no estén se tiñen a partir de la foto blanca.
   var PLANTILLAS = {
     boxy: ['Blanco', 'Negro'],
@@ -107,6 +115,7 @@ var YuzuMockup = (function () {
       ZONAS[p] = ZONAS[p] || {};
       Object.keys(cfg.zonas[p]).forEach(function (v) { ZONAS[p][v] = cfg.zonas[p][v]; });
     });
+    if (cfg.maxCm) Object.keys(cfg.maxCm).forEach(function (k) { MAX_CM[k] = cfg.maxCm[k]; });
     if (cfg.plantillas) Object.keys(cfg.plantillas).forEach(function (p) { PLANTILLAS[p] = cfg.plantillas[p]; });
   }
 
@@ -368,7 +377,9 @@ var YuzuMockup = (function () {
     } else {
       reg = { x: z.x - z.w * 0.15, y: z.y - z.h * 0.12, w: z.w * 1.3, h: z.h * 1.25 }; kmin = z.kmin || 0.5; kmax = z.kmax || 1.15;
     }
-    return { region: reg, zona: z, kmin: kmin, kmax: kmax, wmin: z.w * kmin, wmax: z.w * kmax };
+    var tope = topeCm(prenda, pz), wmax = z.w * kmax;
+    if (tope) wmax = Math.min(wmax, tope.w);
+    return { region: reg, zona: z, kmin: kmin, kmax: kmax, wmin: Math.min(z.w * kmin, wmax), wmax: wmax, hmax: tope ? tope.h : Infinity, maxCm: tope ? tope.cm : null };
   }
   // Rectángulo base de una pieza (el que ya se ve sin ajuste del cliente)
   function rectBase(prenda, color, pz, img, ajuste) { return rectDiseno(prenda, color, pz, img, ajuste); }
@@ -382,7 +393,7 @@ var YuzuMockup = (function () {
     var L = limitesPieza(prenda, pz); if (!L || !img || !pos) return null;
     var z = L.zona, m = medidas(img), asp = m[1] / m[0], reg = L.region;
     var w = clamp(pos.k * z.w, L.wmin, L.wmax);
-    w = Math.min(w, reg.w, reg.h / asp);
+    w = Math.min(w, reg.w, reg.h / asp, L.hmax / asp);
     var h = w * asp, cx = z.x + pos.u * z.w, cy = z.y + pos.v * z.h;
     cx = clamp(cx, reg.x + w / 2, reg.x + reg.w - w / 2); cy = clamp(cy, reg.y + h / 2, reg.y + reg.h - h / 2);
     return { x: Math.round(cx - w / 2), y: Math.round(cy - h / 2), w: Math.round(w), h: Math.round(h) };
@@ -430,7 +441,7 @@ var YuzuMockup = (function () {
   }
 
   return {
-    RUTA: RUTA, VISTAS: VISTAS, NOMBRE_VISTA: NOMBRE_VISTA, PIEZAS: PIEZAS, NOMBRE_PIEZA: NOMBRE_PIEZA, FOTO_DE: FOTO_DE, PRENDAS: PRENDAS, PLANTILLAS: PLANTILLAS, ZONAS: ZONAS, HEX: HEX,
+    RUTA: RUTA, VISTAS: VISTAS, NOMBRE_VISTA: NOMBRE_VISTA, PIEZAS: PIEZAS, NOMBRE_PIEZA: NOMBRE_PIEZA, FOTO_DE: FOTO_DE, PRENDAS: PRENDAS, PLANTILLAS: PLANTILLAS, ZONAS: ZONAS, HEX: HEX, topeCm: topeCm,
     slug: slug, configurar: configurar, cargar: cargar, fuente: fuente, disponible: disponible, esOscuro: esOscuro,
     zonaAjustada: zonaAjustada, encajar: encajar, componer: componer, generar: generar, generarTodas: generarTodas, generarVistas: generarVistas,
     PIEZAS_ZONA: PIEZAS_ZONA, normOpc: normOpc, piezasActivas: piezasActivas, limitesPieza: limitesPieza, rectBase: rectBase, rectPieza: rectPieza, rectDePos: rectDePos, posDeRect: posDeRect, medidas: medidas,

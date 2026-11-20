@@ -2358,12 +2358,13 @@ function epCargar() {
     EP.L = YuzuMockup.limitesPieza(c.prenda, pz);
     EP.base = YuzuMockup.rectDiseno(c.prenda, c.color, pz, r[1], c.ajuste);
     EP.rect = YuzuMockup.rectPieza(c.prenda, c.color, pz, r[1], c.ajuste, c.opc);
+    (function () { var wm = epWMax(); if (EP.rect && EP.rect.w > wm) { var k = wm / EP.rect.w, cx = EP.rect.x + EP.rect.w / 2, cy = EP.rect.y + EP.rect.h / 2; EP.rect = { x: Math.round(cx - wm / 2), y: Math.round(cy - EP.rect.h * k / 2), w: Math.round(wm), h: Math.round(EP.rect.h * k) }; } })();
     var g = EP.L.region, rg = $('epRegion');
     rg.style.left = (g.x / 1080 * 100) + '%'; rg.style.top = (g.y / 1440 * 100) + '%'; rg.style.width = (g.w / 1080 * 100) + '%'; rg.style.height = (g.h / 1440 * 100) + '%';
     epPresets(); epPintar();
   }).catch(function () {});
 }
-function epWMax() { var L = EP.L, m = YuzuMockup.medidas(EP.img), asp = m[1] / m[0]; return Math.max(L.wmin + 1, Math.min(L.wmax, L.region.w, L.region.h / asp)); }
+function epWMax() { var L = EP.L, m = YuzuMockup.medidas(EP.img), asp = m[1] / m[0]; return Math.max(L.wmin + 1, Math.min(L.wmax, L.region.w, L.region.h / asp, L.hmax / asp)); }
 function epPintar() {
   var r = EP.rect, c = $('epCaja'), cmPx = (YuzuMockup.PRENDAS[EP.c.prenda] || {}).cmPx || 0.1;
   c.style.left = (r.x / 1080 * 100) + '%'; c.style.top = (r.y / 1440 * 100) + '%'; c.style.width = (r.w / 1080 * 100) + '%'; c.style.height = (r.h / 1440 * 100) + '%';

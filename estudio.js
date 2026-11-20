@@ -353,7 +353,7 @@ var YuzuEstudio = (function () {
       var orig = aCanvas(im), c = { id: uid++, tipo: 'img', nombre: nombre || 'Imagen', orig: orig, rot: 0, opac: 1, oculto: false, bloqueado: false, voltear: false, q: null, umbral: null, contorno: null };
       procesar(c); c.firma = firma(c);
       var L = YuzuMockup.limitesPieza(E.prenda, pz || E.pz), z = L.zona, a = asp(c);
-      c.w = Math.min(z.w, z.h / a); c.cx = z.x + z.w / 2; c.cy = (z.alinear === 'arriba' ? z.y + c.w * a / 2 : z.y + z.h / 2);
+      c.w = Math.min(z.w, z.h / a, L.wmax, L.hmax / a); c.cx = z.x + z.w / 2; c.cy = (z.alinear === 'arriba' ? z.y + c.w * a / 2 : z.y + z.h / 2);
       return c;
     });
   }
@@ -462,6 +462,7 @@ var YuzuEstudio = (function () {
     var dpi = dpiDe(c), q = calidad(dpi);
     h += '<div class="ye-sec"><div class="ye-tit">' + (c.tipo === 'texto' ? 'Texto' : 'Imagen') + '</div>';
     if (c.tipo !== 'texto') h += '<div class="ye-cal" style="--c:' + q.c + '"><i style="width:' + Math.min(100, dpi / 1.8) + '%"></i><span>Calidad: <b>' + q.t + '</b> · ' + dpi + ' dpi</span></div>';
+    var Lm = limites(), mc = Lm && Lm.maxCm; if (mc && (c.w * cmPx() > mc.w + 0.6 || c.h * cmPx() > mc.h + 0.6)) h += '<div class="ye-cal" style="--c:#f0a640"><span>Pasa del máximo de impresión (' + mc.w + ' × ' + mc.h + ' cm). Se recorta al producir.</span></div>';
     h += '<div class="ye-fila"><label>Ancho</label><input type="number" step="0.5" min="1" data-ye="anchoCm" value="' + (c.w * cmPx()).toFixed(1) + '"><span>cm</span><label>Giro</label><input type="number" step="1" data-ye="rot" value="' + Math.round(c.rot) + '"><span>°</span></div>';
     h += '<div class="ye-fila"><label>Opacidad</label><input type="range" min="10" max="100" data-ye="opac" value="' + Math.round(c.opac * 100) + '"></div>';
     h += '<div class="ye-btns"><button data-ye-a="centrarH" title="Centrar a lo ancho">⇔ Centrar</button><button data-ye-a="arriba" title="Pegar arriba del área">⤒ Arriba</button><button data-ye-a="llenar" title="Ocupar todo el ancho del área">↔ Llenar</button><button data-ye-a="voltear">⇋ Espejo</button><button data-ye-a="dup">⧉ Duplicar</button><button data-ye-a="borrar" class="ye-del">✕ Borrar</button></div></div>';
