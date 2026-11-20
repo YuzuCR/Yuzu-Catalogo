@@ -406,6 +406,7 @@
   }
   .png-slot .wand { position: absolute; top: 4px; left: 4px; display: none; background: rgba(0,0,0,.8); border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; cursor: pointer; padding: 0; line-height: 1; }
   .png-slot.lleno .wand { display: block; }
+  .png-slot .wand2 { left: 30px; }
   .png-slot .wand:hover { background: var(--yuzu2); }
   .png-slot .wandon { position: absolute; bottom: 3px; left: 3px; font-size: 8px; background: var(--yuzu); color: #111; border-radius: 6px; padding: 1px 5px; display: none; }
   .png-slot.conwand .wandon { display: block; }
@@ -978,6 +979,7 @@
     <div class="modal-lista sub-dos" id="subCuerpo">
      <div class="sub-izq">
       <div class="file-drop" id="subDrop">Tocá o arrastrá los PNG / PDF (todos los que quieras)</div>
+      <button type="button" class="btn btn-sec" id="subDesdeCero" style="width:100%;margin-top:8px">✏️ Diseñar uno desde cero en el Estudio</button>
       <input type="file" id="subArchivos" class="hidden-input" accept="image/png,application/pdf,.pdf" multiple>
       <p class="mini">Cada archivo es un diseño de espalda. El pecho lleva tu logo y el diseño queda en la zona de Tienda → Zonas de impresión. Lo que pongas en "Para todos" se copia a cada diseño; si cambiás algo en uno solo (⋯), ese ya no se toca.</p>
       <div class="sub-panel">
@@ -3410,7 +3412,7 @@ EditorDisenos.prototype.render = function () {
       (e.versiones.length > 1 ? '<button type="button" class="prod-btn del" data-v-quitar="' + i + '" title="Quitar versión">✕</button>' : '') + '</div>' +
       '<div class="png-grid" style="grid-template-columns:repeat(4,1fr)">' + CAMPOS_V.map(function (c) {
         var a = v.archivos[c[0]];
-        return '<label class="png-slot' + (a ? ' lleno' : '') + (v.qs && v.qs[c[0]] && v.qs[c[0]].modo === 'varita' ? ' conwand' : '') + '"><input type="file" accept="image/png,application/pdf,.pdf" data-v-archivo="' + i + ':' + c[0] + '"><img alt=""' + (a ? ' src="' + esc(a.preview) + '"' : '') + '><span>' + c[1] + (i > 0 && c[0] !== 'espalda' ? '<br><small>(opcional)</small>' : '') + '</span><button type="button" class="x" data-v-borrar="' + i + ':' + c[0] + '">✕</button>' + (a && a.file ? '<button type="button" class="wand" data-v-varita="' + i + ':' + c[0] + '" title="Varita mágica: elegir con cuentagotas qué quitar">🪄</button>' : '') + '<span class="wandon">🪄 varita</span></label>';
+        return '<label class="png-slot' + (a ? ' lleno' : '') + (v.qs && v.qs[c[0]] && v.qs[c[0]].modo === 'varita' ? ' conwand' : '') + '"><input type="file" accept="image/png,application/pdf,.pdf" data-v-archivo="' + i + ':' + c[0] + '"><img alt=""' + (a ? ' src="' + esc(a.preview) + '"' : '') + '><span>' + c[1] + (i > 0 && c[0] !== 'espalda' ? '<br><small>(opcional)</small>' : '') + '</span><button type="button" class="x" data-v-borrar="' + i + ':' + c[0] + '">✕</button>' + (a && a.file ? '<button type="button" class="wand" data-v-varita="' + i + ':' + c[0] + '" title="Varita mágica: elegir con cuentagotas qué quitar">🪄</button><button type="button" class="wand wand2" data-v-estudio="' + i + ':' + c[0] + '" title="Abrir en el Estudio (capas, texto, contorno, posición)">✏️</button>' : '') + '<span class="wandon">🪄 varita</span></label>';
       }).join('') + '</div>' +
       '<div class="mini">Se ve bien en: <span data-v-sug="' + i + '" style="color:var(--yuzu)"></span></div><div class="tela-chips">' + COLORES_TELA.map(function (c) {
         return '<button type="button" class="tela' + (v.colores.indexOf(c) !== -1 ? ' on' : '') + '" data-v-tela="' + i + '" data-c="' + esc(c) + '" title="' + esc(c) + '" style="background:' + (YuzuMockup.HEX[c] || '#888') + '"></button>';
@@ -3456,6 +3458,22 @@ EditorDisenos.prototype._reprocesar = function () {
 EditorDisenos.prototype._click = function (ev) {
   var b = ev.target.closest('button'); if (!b) return;
   if (b.hasAttribute('data-tf-abrir')) { abrirTf(this, b.getAttribute('data-tf-abrir')); return; }
+  if (b.hasAttribute('data-v-estudio')) {
+    ev.preventDefault(); var yo = this, cl = b.getAttribute('data-v-estudio'), pe = cl.split(':'), ve = this.e.versiones[+pe[0]], ar = ve && ve.archivos[pe[1]];
+    if (!ar || !ar.file) return;
+    var PZ = { espalda: 'espalda', pecho: 'frente', manga: 'lado', costado: 'costado' }[pe[1]];
+    YuzuEstudio.abrir({ titulo: 'Estudio · ' + (ve.nombre || 'Versión'), prenda: 'boxy', color: this.e.colorPrev || 'Negro', colores: COLORES_TELA.filter(function (c) { return YuzuMockup.disponible('boxy', c); }), piezas: [PZ],
+      capas: (function () { var o = {}; o[PZ] = [{ fuente: ar.file, nombre: ar.file.name || 'Diseño', q: ve.qs && ve.qs[pe[1]] }]; return o; })(), textoAplicar: 'Usar este diseño',
+      alAplicar: function (res) {
+        var r = res.piezas[PZ]; if (!r) return;
+        YuzuEstudio.aArchivo(r.canvas, String(ar.file.name || 'diseno').replace(/\.[a-z0-9]+$/i, '')).then(function (f) {
+          ve.qs = ve.qs || {}; ve.qs[pe[1]] = { modo: 'ninguno', tol: 40, global: false };
+          yo.e.ajuste = yo.e.ajuste && yo.e.ajuste.v === 2 ? yo.e.ajuste : { v: 2 }; yo.e.ajuste.boxy = yo.e.ajuste.boxy || {}; yo.e.ajuste.boxy[PZ] = r.centro;
+          yo.e.colorPrev = res.color; yo._archivo(cl, f);
+        });
+      } });
+    return;
+  }
   if (b.hasAttribute('data-v-varita')) {
     ev.preventDefault(); var self = this, clave = b.getAttribute('data-v-varita'), pv = clave.split(':'), ver = this.e.versiones[+pv[0]], arch = ver && ver.archivos[pv[1]];
     if (!arch || !arch.file) return;
@@ -4620,6 +4638,7 @@ function subCardHTML(k, i) {
     '<div class="row" style="gap:6px;margin-top:6px"><input type="text" inputmode="numeric" data-sk="precio" value="' + htmlAttr(k.precio) + '" style="max-width:110px">' +
     '<button type="button" class="prod-btn" data-sk-copiar="precio-abajo" title="Copiar este precio a los diseños de abajo">₡↓</button>' +
     '<button type="button" class="prod-btn" data-sk-pos title="Ubicar este diseño en la camiseta">◐</button>' +
+    '<button type="button" class="prod-btn" data-sk-estudio title="Abrir en el Estudio (capas, texto, contorno, posición)">✏️</button>' +
     '<button type="button" class="prod-btn" data-sk-varita title="Varita mágica: elegir con cuentagotas qué quitar"' + (k.ov.quitar && k.quitar && k.quitar.modo === 'varita' ? ' style="border-color:var(--yuzu);color:var(--yuzu)"' : '') + '>🪄</button>' +
     '<button type="button" class="prod-btn" data-sk-det title="Más opciones">⋯</button><button type="button" class="prod-btn del" data-sk-quitar title="Quitar de la lista">✕</button></div>' +
     '<div class="mini sub-est">' + esc(k.msg || k.file.name) + '</div>' + (k.abierto ? subDetalleHTML(k, i) : '') + '</div></div>';
@@ -4727,6 +4746,24 @@ function subPosicion(i) {
     };
     abrirTf(ed, subSlot(c) === 'pecho' ? 'frente' : 'espalda');
   }).catch(function (e) { statusDe('subStatus', 'err', 'No pude abrir el diseño: ' + e.message); });
+}
+// Abrir una tarjeta (o una nueva, sin archivo) en el Estudio; al aplicar, el resultado reemplaza el archivo y la posición
+function subEstudio(i, nuevo) {
+  var k = nuevo ? null : SUB.cards[i], c = subComun(), pz = subSlot(c) === 'pecho' ? 'frente' : 'espalda', capas = {};
+  if (k) capas[pz] = [{ fuente: k.file, nombre: k.file.name, q: k.ov.quitar && k.quitar && k.quitar.modo === 'varita' ? k.quitar : null }];
+  YuzuEstudio.abrir({ titulo: k ? 'Estudio · ' + (k.nombre || k.file.name) : 'Estudio · diseño nuevo', prenda: 'boxy', color: k ? subPortadaDe(k, c) : c.prev || 'Negro',
+    colores: COLORES_TELA.filter(function (x) { return YuzuMockup.disponible('boxy', x); }), piezas: [pz], capas: capas, textoAplicar: k ? 'Usar este diseño' : 'Agregar al lote',
+    alAplicar: function (res) {
+      var r = res.piezas[pz]; if (!r) return;
+      var base = k ? String(k.file.name).replace(/\.[a-z0-9]+$/i, '') : 'Estudio ' + new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '');
+      YuzuEstudio.aArchivo(r.canvas, base).then(function (f) {
+        var aj = { v: 2, boxy: {} }; aj.boxy[pz] = r.centro;
+        if (!k) { subAgregar([f]); k = SUB.cards[SUB.cards.length - 1]; if (!k) return; }
+        else k.file = f;
+        k.quitar = { modo: 'ninguno', tol: 40, global: false }; k.ov.quitar = true; k.ajuste = aj; k.tv = -1;
+        SUB.prevIdx = SUB.cards.indexOf(k); subRender(); subMiniaturas(); subPrevGrande();
+      });
+    } });
 }
 function subAgregar(files) {
   var lista = Array.prototype.filter.call(files, function (f) { return /\.(png|pdf)$/i.test(f.name) || f.type === 'image/png' || f.type === 'application/pdf'; });
@@ -4920,6 +4957,7 @@ window.addEventListener('beforeunload', function (e) { if (SUB.corriendo) { e.pr
 $('modalSubida').addEventListener('dragover', function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') !== -1) e.preventDefault(); });
 $('modalSubida').addEventListener('drop', function (e) { if (e.target.closest('#subDrop')) return; if (e.dataTransfer && e.dataTransfer.files.length) { e.preventDefault(); subAgregar(e.dataTransfer.files); } });
 $('subDrop').addEventListener('click', function () { $('subArchivos').click(); });
+$('subDesdeCero').addEventListener('click', function () { subEstudio(-1, true); });
 $('subArchivos').addEventListener('change', function () { subAgregar(this.files); this.value = ''; });
 $('subDrop').addEventListener('dragover', function (e) { e.preventDefault(); this.classList.add('encima'); });
 $('subDrop').addEventListener('dragleave', function () { this.classList.remove('encima'); });
@@ -4956,6 +4994,7 @@ $('subCuerpo').addEventListener('click', function (e) {
   if (!k) return;
   if (b.hasAttribute('data-sk-copiar')) subCopiar(i, b.getAttribute('data-sk-copiar'));
   else if (b.hasAttribute('data-sk-pos')) subPosicion(i);
+  else if (b.hasAttribute('data-sk-estudio')) subEstudio(i);
   else if (b.hasAttribute('data-sk-varita')) {
     abrirVarita(k.file, k.ov.quitar && k.quitar && k.quitar.modo === 'varita' ? k.quitar : null, function (q) {
       if (q.modo === 'varita') { k.quitar = q; k.ov.quitar = true; } else { k.quitar = null; k.ov.quitar = false; }
@@ -5146,6 +5185,98 @@ $('loAcciones').addEventListener('click', function (e) {
   var b = e.target.closest('.tela'); if (b) b.classList.toggle('on');
 });
 $('modalLote').addEventListener('click', function (e) { if (e.target === $('modalLote')) $('modalLote').classList.remove('abierto'); });
+
+// ============================================================
+// YuzuAPI · control del admin desde afuera (Somnia vía Playwright, o la consola)
+// Flujo de Somnia: YuzuAPI.listo() → YuzuAPI.prepararLote({...}) → set_input_files('#subArchivos', [...]) → YuzuAPI.subirPreparado()
+// → muestra las portadas al dueño → YuzuAPI.publicar(ids) cuando las aprueba. Por defecto todo se sube OCULTO.
+// ============================================================
+window.YuzuAPI = (function () {
+  function espera(cond, ms, paso) { var t0 = Date.now(); return new Promise(function (ok, mal) { (function mira() { var v; try { v = cond(); } catch (e) {} if (v) return ok(v); if (Date.now() - t0 > (ms || 60000)) return mal(new Error('Tiempo agotado')); setTimeout(mira, paso || 300); })(); }); }
+  function cfg() { return getConfig(); }
+  function urlPublica(ruta) {
+    if (!ruta || /^https?:|^data:/.test(ruta)) return ruta || '';
+    var c = cfg(); return 'https://raw.githubusercontent.com/' + c.owner + '/' + c.repo + '/main/' + String(ruta).replace(/^\/+/, '');
+  }
+  function resumen(p) {
+    return { id: p.id, ref: refDe(p), nombre: p.nombre, categoria: p.categoria, subcategoria: p.subcategoria || null, colecciones: p.colecciones || [], precio: p.precio, oculto: !!p.oculto, colores: p.colores || [], portada: urlPublica(portadaDe(p)) };
+  }
+  function ponerValor(id, v) { var x = $(id); if (!x || v == null) return; if (x.type === 'checkbox') x.checked = !!v; else x.value = v; }
+  var api = {
+    version: 1,
+    // Espera a que el admin tenga la configuración y los productos cargados
+    listo: function () {
+      var c = cfg(); if (!(c.owner && c.repo && c.token)) return Promise.reject(new Error('El admin no tiene configurado el token de GitHub en este navegador.'));
+      return espera(function () { return PRODUCTOS.length && Object.keys(CATEGORIAS).length && TIENDA.mockup && Object.keys(TIENDA.mockup).length; }, 90000, 300)
+        .then(function () { return { productos: PRODUCTOS.length, categorias: Object.keys(CATEGORIAS) }; });
+    },
+    categorias: function () { return JSON.parse(JSON.stringify(CATEGORIAS)); },
+    productos: function (f) {
+      f = f || {}; var q = String(f.buscar || '').toLowerCase();
+      return PRODUCTOS.filter(function (p) {
+        return (!f.categoria || p.categoria === f.categoria) && (!f.subcategoria || p.subcategoria === f.subcategoria) && (f.oculto == null || !!p.oculto === !!f.oculto) &&
+          (!f.coleccion || (p.colecciones || []).indexOf(f.coleccion) !== -1) && (!q || String(p.nombre).toLowerCase().indexOf(q) !== -1);
+      }).map(resumen);
+    },
+    /* opciones: { categoria (obligatoria), subcategoria, precio, colecciones: 'A, B', oculto (por defecto true), impresion: 'espalda'|'pecho',
+                   numerar (true), numModo: 'archivo'|'serie', prefijo, desde, digitos, quitar: { modo: 'ninguno'|'negro'|'blanco'|'esquina', tol, global },
+                   portada: 'Negro', destacado, hasta: 'AAAA-MM-DD', colores: ['Negro', ...] } */
+    prepararLote: function (o) {
+      o = o || {};
+      if (!o.categoria || !CATEGORIAS[o.categoria] && !o.crearCategoria) return Promise.reject(new Error('Categoría inexistente: ' + o.categoria + '. Hay: ' + Object.keys(CATEGORIAS).join(', ')));
+      if (SUB.corriendo) return Promise.reject(new Error('Ya hay una subida en curso.'));
+      abrirSubida();
+      if (!CATEGORIAS[o.categoria]) { CATEGORIAS[o.categoria] = []; abrirSubida(); }
+      $('subCat').value = o.categoria; subLlenarSubs();
+      if (o.subcategoria) { if ((CATEGORIAS[o.categoria] || []).indexOf(o.subcategoria) !== -1) $('subSub').value = o.subcategoria; else $('subSubNueva').value = o.subcategoria; }
+      subAutoNombre();
+      ponerValor('subImpresion', o.impresion); if (o.impresion && o.precio == null) $('subPrecio').value = precioDefecto(o.impresion);
+      ponerValor('subPrecio', o.precio != null ? String(o.precio) : null); ponerValor('subColecciones', o.colecciones);
+      ponerValor('subOculto', o.oculto == null ? true : o.oculto); ponerValor('subDest', o.destacado); ponerValor('subHasta', o.hasta);
+      ponerValor('subNumerar', o.numerar == null ? true : o.numerar);
+      if (o.numModo) { $('subNumModo').value = o.numModo; $('subDesdeCaja').style.display = o.numModo === 'archivo' ? 'none' : ''; }
+      ponerValor('subPrefijo', o.prefijo); ponerValor('subDesde', o.desde); ponerValor('subDigitos', o.digitos);
+      if (o.quitar) { ponerValor('subQModo', o.quitar.modo); ponerValor('subQTol', o.quitar.tol); ponerValor('subQGlobal', o.quitar.global); }
+      if (o.portada) ponerValor('subPrev', o.portada);
+      if (o.colores) Array.prototype.forEach.call(document.querySelectorAll('#subColGrid input'), function (i) { i.checked = o.colores.indexOf(i.value) !== -1; });
+      subPropagar();
+      return Promise.resolve({ listo: true, input: '#subArchivos', prefijo: $('subPrefijo').value, desde: $('subDesde').value });
+    },
+    // Archivos sin Playwright: [{ nombre: 'AoT (57).png', base64: '...' }]
+    agregarArchivos: function (lista) {
+      var fs = (lista || []).map(function (a) { var bin = atob(a.base64), u = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new File([u], a.nombre, { type: /\.pdf$/i.test(a.nombre) ? 'application/pdf' : 'image/png' }); });
+      subAgregar(fs); return SUB.cards.length;
+    },
+    tarjetas: function () { return SUB.cards.map(function (k) { return { archivo: k.file.name, nombre: k.nombre, precio: k.precio, estado: k.estado || 'pendiente', msg: k.msg || '', id: k.producto ? k.producto.id : null }; }); },
+    // Sube lo preparado sin pedir confirmación y espera a que termine
+    subirPreparado: function () {
+      if (!SUB.cards.length) return Promise.reject(new Error('No hay archivos en el lote.'));
+      var err = subValidar(subComun()); if (err) return Promise.reject(new Error(err));
+      var conf = window.confirm; window.confirm = function () { return true; };
+      try { subSubir(); } finally { window.confirm = conf; }
+      return espera(function () { return SUB.corriendo; }, 10000, 100).catch(function () {})
+        .then(function () { return espera(function () { return !SUB.corriendo; }, 60 * 60 * 1000, 1000); })
+        .then(function () {
+          var res = SUB.cards.map(function (k) { var p = k.producto; return { archivo: k.file.name, nombre: k.nombre, estado: k.estado, msg: k.msg || '', id: p ? p.id : null, ref: p ? refDe(p) : null, portada: p ? urlPublica(portadaDe(p)) : null, oculto: p ? !!p.oculto : null }; });
+          return { subidos: res.filter(function (r) { return r.estado === 'ok'; }).length, errores: res.filter(function (r) { return r.estado === 'err'; }).length, items: res };
+        });
+    },
+    // Mostrar u ocultar productos por id (lo que Somnia hace cuando el dueño aprueba)
+    publicar: function (ids, visible) {
+      visible = visible !== false; var set = {}; (ids || []).forEach(function (i) { set[String(i)] = 1; });
+      var intento = function (n) {
+        return ghLeerFresco('data/products.json').then(function (r) {
+          var cambios = 0; r.content.forEach(function (p) { if (set[String(p.id)] && !!p.oculto === visible) { p.oculto = !visible; cambios++; } });
+          if (!cambios) return 0;
+          return ghPut('data/products.json', r.content, r.sha, (visible ? 'Publica ' : 'Oculta ') + cambios + ' producto(s) (Somnia)').then(function () { PRODUCTOS = r.content; return cambios; });
+        }).catch(function (e) { if (n < 3 && /\(409\)/.test(e.message)) return pausa(1500 * (n + 1)).then(function () { return intento(n + 1); }); throw e; });
+      };
+      return intento(0).then(function (n) { try { renderLista(); } catch (e) {} return { cambiados: n }; });
+    },
+    cerrarLote: function () { if (!SUB.corriendo) $('modalSubida').classList.remove('abierto'); return true; }
+  };
+  return api;
+})();
 </script>
 </body>
 </html>
