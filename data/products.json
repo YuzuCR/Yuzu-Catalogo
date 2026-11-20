@@ -51182,5 +51182,260 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1795149328279,
+    "nombre": "Blu 006",
+    "categoria": "Anime",
+    "subcategoria": "Bluelock",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/blu-006-blanco-1795149328279-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/blu-006-1795149328279-v1-espalda.png"
+        },
+        "espalda": "images/disenos/blu-006-1795149328279-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1795149336360,
+    "nombre": "Blu 007",
+    "categoria": "Anime",
+    "subcategoria": "Bluelock",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/blu-007-blanco-1795149336360-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/blu-007-1795149336360-v1-espalda.png"
+        },
+        "espalda": "images/disenos/blu-007-1795149336360-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1795149343967,
+    "nombre": "Blu 008",
+    "categoria": "Anime",
+    "subcategoria": "Bluelock",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/blu-008-blanco-1795149343967-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/blu-008-1795149343967-v1-espalda.png"
+        },
+        "espalda": "images/disenos/blu-008-1795149343967-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1795149351606,
+    "nombre": "Blu 009",
+    "categoria": "Anime",
+    "subcategoria": "Bluelock",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/blu-009-blanco-1795149351606-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/blu-009-1795149351606-v1-espalda.png"
+        },
+        "espalda": "images/disenos/blu-009-1795149351606-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1795149359577,
+    "nombre": "Blu 010",
+    "categoria": "Anime",
+    "subcategoria": "Bluelock",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/blu-010-blanco-1795149359577-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/blu-010-1795149359577-v1-espalda.png"
+        },
+        "espalda": "images/disenos/blu-010-1795149359577-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
