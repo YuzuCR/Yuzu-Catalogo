@@ -51692,5 +51692,56 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1795149428750,
+    "nombre": "Blu 016",
+    "categoria": "Anime",
+    "subcategoria": "Bluelock",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/blu-016-blanco-1795149428750-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/blu-016-1795149428750-v1-espalda.png"
+        },
+        "espalda": "images/disenos/blu-016-1795149428750-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
