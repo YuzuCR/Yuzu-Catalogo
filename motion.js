@@ -18,8 +18,22 @@ var YuzuMotion = (function () {
   .mv .mv-r.mv-in { opacity: 1; transform: none; }
   .mv .card.mv-r { animation: none; }
   .mv .sec-cab h2.mv-in, .mv .banda-pers h2.mv-in { animation: mvTitulo 1.1s cubic-bezier(.7,0,.2,1) both var(--mvd, 0ms); }
+  /* Carruseles: en escritorio no se desplazan con la rueda/trackpad (eso trababa el scroll de la página); se mueven con flechas o arrastrando */
+  @media (hover: hover) and (pointer: fine) {
+    .carril, .mini-carril, .resenas, .gal-pista { overflow-x: hidden !important; scroll-snap-type: none !important; }
+    .subcarpetas, .ayuda-indice, .miniaturas { flex-wrap: wrap; overflow: visible !important; }
+    .mv-arrastra { cursor: grab; } .mv-arrastra.mv-agarrado { cursor: grabbing; user-select: none; }
+    .mv-arrastra.mv-agarrado * { pointer-events: none; }
+    .mv-flechas { display: flex; gap: 6px; justify-content: flex-end; margin: 10px 0 0; }
+    .mv-flechas button { width: 38px; height: 38px; border: 1px solid var(--linea, #333); display: grid; place-items: center; background: transparent; color: inherit; cursor: pointer; transition: background .25s, color .25s; }
+    .mv-flechas button:hover { background: var(--tinta, #111); color: var(--papel, #fff); }
+    .mv-flechas button[disabled] { opacity: .25; cursor: default; }
+    .mv-flechas svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+  }
+  /* En celular: el deslizamiento lateral no se encadena con la página */
+  .carril, .mini-carril, .resenas, .gal-pista, .subcarpetas, .ayuda-indice, .miniaturas { overflow-y: hidden !important; overscroll-behavior-x: contain; }
   .mv-barra { position: fixed; left: 0; top: 0; height: 2px; width: 100%; background: #c3c24d; transform-origin: 0 50%; transform: scaleX(0); z-index: 9999; pointer-events: none; }
-  .mv .hero img { will-change: transform; transform: translate3d(0, var(--hy, 0px), 0) scale(var(--hs, 1.06)); transition: transform .1s linear; }
+  .mv .hero img { will-change: transform; transform: translate3d(0, var(--hy, 0px), 0) scale(var(--hs, 1.06)); }
   .mv .hero-txt { transform: translate3d(0, var(--ty, 0px), 0); opacity: var(--to, 1); }
   .mv .hero h1 { animation: mvTitulo 1.3s cubic-bezier(.7,0,.2,1) both .15s; }
   .mv .hero-txt .dato, .mv .hero-botones { animation: mvSube .9s cubic-bezier(.2,.7,.2,1) both .7s; }
@@ -44,6 +58,7 @@ var YuzuMotion = (function () {
   @keyframes mvVtEntra { from { opacity: 0; transform: translateY(18px); } }
   ::view-transition-group(pieza) { animation-duration: .55s; animation-timing-function: cubic-bezier(.2,.7,.2,1); }
   /* Escaparate 3D */
+  .mv-esc3d { cursor: default; } .mv-esc3d .mv-esc-lugar { position: absolute; inset: 0; }
   .mv-esc { position: relative; height: 520px; perspective: 1300px; cursor: grab; user-select: none; touch-action: pan-y; }
   .mv-esc:active { cursor: grabbing; }
   .mv-esc-obj { position: absolute; left: 50%; top: 46%; width: 340px; height: 453px; margin: -226px 0 0 -170px; transform-style: preserve-3d; animation: mvFlota 5s ease-in-out infinite; }
@@ -115,6 +130,36 @@ var YuzuMotion = (function () {
     }
     addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(cuadro); } }, { passive: true });
     cuadro();
+  }
+
+  // ---------- Carruseles en escritorio: arrastrar con el mouse y flechas (la rueda queda para la página) ----------
+  function iniciarCarruseles() {
+    var SELC = '.carril, .mini-carril, .resenas';
+    function preparar(c) {
+      if (c.__mvc) return; c.__mvc = 1; c.classList.add('mv-arrastra');
+      var ini = null, movio = false;
+      c.addEventListener('pointerdown', function (e) { if (e.button !== 0 || e.pointerType !== 'mouse') return; ini = { x: e.clientX, l: c.scrollLeft }; movio = false; });
+      addEventListener('pointermove', function (e) {
+        if (!ini) return; var dx = e.clientX - ini.x;
+        if (!movio && Math.abs(dx) > 6) { movio = true; c.classList.add('mv-agarrado'); }
+        if (movio) c.scrollLeft = ini.l - dx;
+      });
+      addEventListener('pointerup', function () { if (!ini) return; ini = null; setTimeout(function () { c.classList.remove('mv-agarrado'); }, 0); });
+      c.addEventListener('click', function (e) { if (movio) { e.preventDefault(); e.stopPropagation(); movio = false; } }, true);
+      c.addEventListener('dragstart', function (e) { e.preventDefault(); });
+      // Flechas propias si la sección no trae
+      var sec = c.parentElement; if (!sec || (c.id && document.querySelector('[data-carril="' + c.id + '"]'))) return;
+      var f = document.createElement('div'); f.className = 'mv-flechas';
+      f.innerHTML = '<button type="button" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>';
+      c.insertAdjacentElement('afterend', f);
+      var b = f.querySelectorAll('button');
+      function estado() { b[0].disabled = c.scrollLeft < 4; b[1].disabled = c.scrollLeft + c.clientWidth >= c.scrollWidth - 4; f.style.display = c.scrollWidth > c.clientWidth + 4 ? '' : 'none'; }
+      b[0].onclick = function () { c.scrollBy({ left: -c.clientWidth * 0.8, behavior: 'smooth' }); };
+      b[1].onclick = function () { c.scrollBy({ left: c.clientWidth * 0.8, behavior: 'smooth' }); };
+      c.addEventListener('scroll', estado, { passive: true }); addEventListener('resize', estado); setTimeout(estado, 300); estado();
+    }
+    function todos() { Array.prototype.forEach.call(document.querySelectorAll(SELC), preparar); }
+    todos(); var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(todos, 120); }).observe(document.body, { childList: true, subtree: true });
   }
 
   // ---------- Puntero: tarjetas 3D, botones magnéticos, cursor ----------
@@ -202,6 +247,18 @@ var YuzuMotion = (function () {
     var dest = cand.filter(function (p) { return p.destacado; }); if (dest.length) cand = dest;
     var p = cand[Math.floor(Math.random() * cand.length)]; if (!p || typeof vivoFoto !== 'function') return;
     var color = p.portada || (p.colores || [])[0] || 'Negro';
+    if (window.YuzuPrenda3D && YuzuPrenda3D.soportado()) {
+      var e3 = document.createElement('div'); e3.className = 'mv-esc mv-esc3d mv-r mv-in'; e3.setAttribute('aria-label', 'Camiseta en 3D: arrastrá para girar, tocá para diseñar la tuya');
+      e3.innerHTML = '<div class="mv-esc-lugar"></div><div class="mv-esc-etq">' + (p.nombre || '') + ' · arrastrá para girar</div>';
+      banda.classList.add('mv-con-esc'); banda.appendChild(e3);
+      var vs3 = YuzuMockup.versionesDe(p);
+      YuzuPrenda3D.montar(e3.querySelector('.mv-esc-lugar'), { prenda: 'boxy', color: color, versiones: vs3, iVersion: YuzuMockup.recomendada(vs3, color), ajuste: p.ajuste }, { talla: 'L', angulo: Math.PI * 0.85, alTocar: function () { if (typeof abrirPers === 'function') abrirPers({ estilo: 'propio' }); } })
+        .catch(function () { e3.remove(); escaparatePlano(banda, p, color); });
+      return;
+    }
+    escaparatePlano(banda, p, color);
+  }
+  function escaparatePlano(banda, p, color) {
     Promise.all([vivoFoto(p, color, 'frente', 700), vivoFoto(p, color, 'espalda', 700)]).then(function (u) { return Promise.all(u.map(sinFondo)); }).then(function (u) {
       var esc = document.createElement('div'); esc.className = 'mv-esc mv-r mv-in'; esc.setAttribute('aria-hidden', 'true');
       esc.innerHTML = '<div class="mv-esc-piso"></div><div class="mv-esc-obj"><div class="mv-esc-giro"><div class="mv-esc-cara" style="background-image:url(' + u[0] + ')"><div class="mv-esc-brillo"></div></div><div class="mv-esc-cara atras" style="background-image:url(' + u[1] + ')"><div class="mv-esc-brillo"></div></div></div></div><div class="mv-esc-etq">' + (p.nombre || '') + ' · arrastrá para girar</div>';
@@ -256,7 +313,13 @@ var YuzuMotion = (function () {
     var g = document.getElementById('galPrincipal'); if (!g || g.querySelector('.mv-360-btn')) return;
     if (!fotos360()) return;
     var b = document.createElement('button'); b.type = 'button'; b.className = 'mv-360-btn'; b.innerHTML = '<i>↻</i> Ver en 360°';
-    b.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); abrir360(); });
+    var tres = window.YuzuPrenda3D && YuzuPrenda3D.soportado() && typeof PR !== 'undefined' && PR.p && (PR.vs || []).length;
+    if (tres) b.innerHTML = '<i>↻</i> Ver en 3D';
+    b.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      if (!tres) { abrir360(); return; }
+      YuzuPrenda3D.abrir({ prenda: PR.prenda || 'boxy', color: PR.color, versiones: PR.vs, iVersion: PR.version || 0, ajuste: PR.p.ajuste, opc: PR.opc }, { titulo: PR.p.nombre, talla: PR.talla || 'L', vista: 'espalda' });
+    });
     g.appendChild(b);
   }
   function abrir360() {
@@ -293,9 +356,9 @@ var YuzuMotion = (function () {
   function iniciar() {
     inyectarCSS();
     new MutationObserver(function () { boton360(); }).observe(document.body, { childList: true, subtree: true });
-    if (!activo) { html.classList.add('mv-quieto'); envolverAgregar(); return; }
+    if (!activo) { html.classList.add('mv-quieto'); if (finoPuntero) iniciarCarruseles(); envolverAgregar(); return; }
     html.classList.add('mv');
-    iniciarRevelado(); iniciarScroll(); if (finoPuntero) iniciarPuntero(); envolverAgregar();
+    iniciarRevelado(); iniciarScroll(); if (finoPuntero) { iniciarPuntero(); iniciarCarruseles(); } envolverAgregar();
     // Escaparate y visor 360 cuando haya datos / ficha
     var t = setInterval(function () { if (typeof PRODUCTOS !== 'undefined' && PRODUCTOS.length) { clearInterval(t); setTimeout(escaparate, 400); } }, 300);
   }

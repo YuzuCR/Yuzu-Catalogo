@@ -1109,6 +1109,7 @@
 
 <script src="mockup.js"></script>
 <script src="estudio.js"></script>
+<script src="prenda3d.js"></script>
 <script>
 // ============================================================
 // 1. UTILITARIOS Y CONFIG
@@ -1594,6 +1595,7 @@ function renderLista(abrirIdx) {
         '<div class="prod-meta">' + meta + '</div></div>' +
         '<button class="prod-btn" data-accion="visible" data-i="' + i + '" title="Mostrar u ocultar">' + (p.oculto ? '○' : '●') + '</button>' +
         '<button class="prod-btn" data-accion="disenos" data-i="' + i + '" title="Diseños PNG y versiones"' + (p.versiones || p.disenos ? ' style="color:var(--yuzu);border-color:var(--yuzu)"' : '') + '>◐</button>' +
+        ((p.versiones || p.disenos) && window.YuzuPrenda3D && YuzuPrenda3D.soportado() ? '<button class="prod-btn" data-accion="ver3d" data-i="' + i + '" title="Ver en 3D por talla">3D</button>' : '') +
         '<button class="prod-btn" data-accion="editar" data-i="' + i + '" title="Editar">✎</button>' +
         '<button class="prod-btn del" data-accion="borrar" data-i="' + i + '" title="Borrar">✕</button>' +
         '</div><div class="prod-edit" id="edit-' + i + '" style="display:none;"></div>';
@@ -1855,6 +1857,7 @@ $('listaProductos').addEventListener('click', function (e) {
   if (!btn) return;
   var i = parseInt(btn.getAttribute('data-i'), 10);
   var accion = btn.getAttribute('data-accion');
+  if (accion === 'ver3d') { var p3 = PRODUCTOS[i], vs3 = YuzuMockup.versionesDe(p3), c3 = p3.portada || (p3.colores || [])[0] || 'Negro'; YuzuPrenda3D.abrir({ prenda: 'boxy', color: c3, versiones: vs3, iVersion: YuzuMockup.recomendada(vs3, c3), ajuste: p3.ajuste }, { titulo: p3.nombre, vista: 'espalda' }); return; }
   if (accion === 'editar') abrirEdicion(i);
   else if (accion === 'disenos') abrirDisenosProducto(i);
   else if (accion === 'borrar') borrarProducto(i);

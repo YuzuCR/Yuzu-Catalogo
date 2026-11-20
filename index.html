@@ -1254,6 +1254,7 @@
 
 <script src="mockup.js"></script>
 <script src="estudio.js"></script>
+<script src="prenda3d.js"></script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN — lo único que deberías tocar a mano
@@ -3051,7 +3052,7 @@ function pintarPrevPers() {
   if (!PS.vistas.length) { c.innerHTML = '<p class="nota-paso">Armando tu mockup…</p>'; return; }
   c.innerHTML = '<div class="prev-grid">' + PS.vistas.map(function (v) { return '<figure><img src="' + v.url + '" alt="' + esc(YuzuMockup.NOMBRE_VISTA[v.vista]) + '"><figcaption class="dato">' + esc(YuzuMockup.NOMBRE_VISTA[v.vista]) + '</figcaption></figure>'; }).join('') + '</div>' +
     (PS.medTxt ? '<p class="dato nota-mini">' + esc(PS.medTxt) + '</p>' : '') +
-    '<div class="prev-acciones"><button class="btn btn-hueco" id="persAjustar" type="button" style="min-height:42px">Ajustar tamaño y posición</button><button class="btn btn-hueco" id="persDescMockup" type="button" style="min-height:42px">Descargar mi mockup</button></div>' +
+    '<div class="prev-acciones"><button class="btn btn-hueco" id="persAjustar" type="button" style="min-height:42px">Ajustar tamaño y posición</button><button class="btn btn-hueco" id="persDescMockup" type="button" style="min-height:42px">Descargar mi mockup</button>' + (window.YuzuPrenda3D && YuzuPrenda3D.soportado() ? '<button class="btn btn-hueco" id="pers3d" type="button" style="min-height:42px">Ver en 3D y por talla</button>' : '') + '</div>' +
     '<p class="nota-paso">Descargá tu mockup para mandarlo de referencia en el chat. Es una vista previa: antes de imprimir te confirmo la ubicación final.</p>';
 }
 function quitarPersHTML() {
@@ -3241,6 +3242,10 @@ function psEnviarArchivos(que) {
 
 $('persCuerpo').addEventListener('click', function (e) {
   var b;
+  if (e.target.closest('#pers3d')) {
+    YuzuPrenda3D.abrir({ prenda: PS.prenda, color: PS.color, versiones: psVersiones(), iVersion: 0, ajuste: { v: 2 }, opc: PS.opc }, { titulo: 'Tu diseño en 3D', talla: PS.talla || 'L', vista: 'espalda' });
+    return;
+  }
   if (e.target.closest('#persAjustar')) {
     epAbrir({ prenda: PS.prenda, color: PS.color, versiones: psVersiones(), iVersion: 0, ajuste: { v: 2 }, opc: PS.opc, piezas: psPiezas().map(function (x) { return x.pz; }).filter(function (v, i, a) { return a.indexOf(v) === i; }), titulo: 'Ajustá tu diseño', alCerrar: function () { persMockup(0); } });
     return;
