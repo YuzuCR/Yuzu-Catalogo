@@ -4575,6 +4575,15 @@ function subDetalleHTML(k, i) {
     '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-pos>Ubicar el diseño…</button>' +
     '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="pos-abajo">Esta posición → los de abajo</button>' +
     '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="pos-todos">Esta posición → todos</button></div>' +
+    '<div class="mini">Quitar fondo de este diseño</div>' + (function () {
+      var q = subQuitarDe(k, subComun()), ops = [['ninguno', 'No quitar nada'], ['negro', 'Quitar el negro'], ['blanco', 'Quitar el blanco'], ['esquina', 'Quitar el color de las esquinas']];
+      return '<div class="quitar-box" style="margin-top:4px"><select data-sk-qmodo>' + ops.map(function (o) { return '<option value="' + o[0] + '"' + (q.modo === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>' +
+        '<label class="mini" style="margin:8px 0 0">Tolerancia: <span data-sk-qtolv>' + q.tol + '</span><input type="range" min="5" max="120" step="5" value="' + q.tol + '" data-sk-qtol></label>' +
+        '<label class="check-row" style="margin-top:6px"><input type="checkbox" data-sk-qglobal' + (q.global ? ' checked' : '') + '><span>También dentro del diseño (si no, solo el fondo que toca los bordes)</span></label>' +
+        '<div class="row" style="gap:6px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="quitar-abajo">Esto → los de abajo</button>' +
+        '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="quitar-todos">Esto → todos</button>' +
+        (k.ov.quitar ? '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-qreset>Volver al de «Para todos»</button>' : '') + '</div></div>';
+    })() +
     '<div class="mini">¿Qué camiseta será la portada?</div><select data-sk-portada>' + (function () { var act = subPortadaDe(k, subComun()); return k.colores.filter(function (x) { return YuzuMockup.disponible('boxy', x); }).map(function (x) { return '<option value="' + htmlAttr(x) + '"' + (x === act ? ' selected' : '') + '>' + esc(x) + '</option>'; }).join(''); })() + '</select>' +
     '<div class="mini">Colores disponibles</div><div class="check-lista">' + COLORES.map(function (col) {
     return '<label class="check-row"><input type="checkbox" data-sk-col value="' + htmlAttr(col.name) + '"' + (k.colores.indexOf(col.name) !== -1 ? ' checked' : '') + '><span>' + esc(col.name) + '</span></label>';
@@ -4607,6 +4616,8 @@ function subActualizarThumb(k) {
   if (el && k.thumb) el.src = k.thumb;
 }
 function subClon(o) { return JSON.parse(JSON.stringify(o)); }
+// Quitar fondo: el propio del diseño si lo cambió en su ⋯, si no el de "Para todos"
+function subQuitarDe(k, c) { return k.ov && k.ov.quitar && k.quitar ? k.quitar : c.quitar; }
 function subSlot(c) { return c && c.impresion === 'pecho' ? 'pecho' : 'espalda'; }
 function subAjuste(k) { var a = k.ajuste ? subClon(k.ajuste) : {}; a.v = 2; return a; }
 // Camiseta de portada de un diseño: la suya si la cambió, si no la común; si no está entre sus colores, la negra o la primera
@@ -4618,7 +4629,7 @@ function subPortadaDe(k, c) {
 }
 function subMiniatura(k) {
   var c = subComun();
-  return leerPNG(k.file, RECORTAR_PNG(), c.quitar, true).then(function (r) {
+  return leerPNG(k.file, RECORTAR_PNG(), subQuitarDe(k, c), true).then(function (r) {
     var color = subPortadaDe(k, c);
     var v1 = { nombre: 'V1', colores: [] }; v1[subSlot(c)] = r.img;
     return YuzuMockup.generarTodas('boxy', color, [v1], 0, subAjuste(k)).then(function (cvs) {
@@ -4648,7 +4659,7 @@ function subPrevGrande() {
   var sel = $('subCards').querySelector('.sub-card[data-i="' + SUB.prevIdx + '"]');
   Array.prototype.forEach.call($('subCards').querySelectorAll('.sub-card.sel'), function (x) { if (x !== sel) x.classList.remove('sel'); });
   if (sel) { sel.classList.add('sel'); var izq = sel.closest('.sub-izq'), r1 = sel.getBoundingClientRect(), r2 = izq.getBoundingClientRect(); if (r1.top < r2.top || r1.bottom > r2.bottom) sel.scrollIntoView({ block: 'nearest' }); }
-  leerPNG(k.file, RECORTAR_PNG(), c.quitar, true).then(function (r) {
+  leerPNG(k.file, RECORTAR_PNG(), subQuitarDe(k, c), true).then(function (r) {
     if (tok !== SUB.pvTok) return;
     $('subPrevArte').src = r.preview; box.classList.add('on');
     var color = subPortadaDe(k, c);
@@ -4664,18 +4675,20 @@ function subPrevGrande() {
 function subCopiar(i, modo) {
   var k = SUB.cards[i], n = 0; if (!k) return;
   SUB.cards.forEach(function (x, j) {
-    if (x === k || x.estado === 'ok' || (modo !== 'precio-todos' && modo !== 'pos-todos' && j < i)) return;
+    if (x === k || x.estado === 'ok' || (modo !== 'precio-todos' && modo !== 'pos-todos' && modo !== 'quitar-todos' && j < i)) return;
     if (modo === 'todo-abajo') {
       x.colores = k.colores.slice(); x.prendas = k.prendas.slice(); x.telas = k.telas.slice(); x.colecciones = k.colecciones; x.hasta = k.hasta;
       x.portada = subPortadaDe(k, subComun()); x.ov.portada = true;
       x.ov.colores = x.ov.prendas = x.ov.telas = x.ov.colecciones = x.ov.hasta = true;
+    } else if (modo === 'quitar-abajo' || modo === 'quitar-todos') {
+      x.quitar = subClon(subQuitarDe(k, subComun())); x.ov.quitar = true; x.tv = -1;
     } else if (modo === 'pos-abajo' || modo === 'pos-todos') {
       x.ajuste = k.ajuste ? subClon(k.ajuste) : undefined; x.tv = -1;
     } else { x.precio = k.precio; x.ov.precio = true; }
     n++;
   });
   subRender();
-  if (/^pos-/.test(modo)) { SUB.tv++; subMiniaturas(); subPrevGrande(); }
+  if (/^(pos|quitar)-/.test(modo)) { SUB.tv++; subMiniaturas(); subPrevGrande(); }
   statusDe('subStatus', 'ok', n ? 'Copiado a ' + n + ' diseño' + (n === 1 ? '' : 's') + '.' : 'No hay otros diseños donde copiar.');
 }
 // Ubicar el diseño con el mismo editor de arrastrar (tamaño, posición, prenda a prenda)
@@ -4683,7 +4696,7 @@ function subPosicion(i) {
   var k = SUB.cards[i]; if (!k || k.estado === 'ok') return;
   var c = subComun();
   statusDe('subStatus', 'loading', 'Abriendo ' + (k.nombre || k.file.name) + '…');
-  leerPNG(k.file, RECORTAR_PNG(), c.quitar, true).then(function (r) {
+  leerPNG(k.file, RECORTAR_PNG(), subQuitarDe(k, c), true).then(function (r) {
     $('subStatus').className = 'status';
     k.ajuste = k.ajuste || { v: 2 }; k.ajuste.v = 2;
     var ed = {
@@ -4702,7 +4715,7 @@ function subAgregar(files) {
   var vistos = {}; SUB.cards.forEach(function (k) { vistos[k.file.name + '|' + k.file.size] = 1; });
   lista.forEach(function (f) {
     if (vistos[f.name + '|' + f.size]) return;
-    SUB.cards.push({ file: f, nombre: '', precio: '', colores: [], colecciones: '', prendas: [], telas: [], hasta: '', thumb: '', tv: -1, estado: '', msg: '', ov: {}, abierto: false, ajuste: null });
+    SUB.cards.push({ file: f, nombre: '', precio: '', colores: [], colecciones: '', prendas: [], telas: [], hasta: '', thumb: '', tv: -1, estado: '', msg: '', ov: {}, abierto: false, ajuste: null, quitar: null });
   });
   $('subStatus').className = 'status';
   subPropagar(); subMiniaturas(); subPrevGrande();
@@ -4773,7 +4786,7 @@ function subSubirUno(k, c, aviso) {
   if (k.producto) return Promise.resolve();
   var stamp = (SUB.sello = Math.max(Date.now(), SUB.sello + 1)), nombre = k.nombre.trim(), base = slugify(nombre) + '-' + stamp;
   var slot = subSlot(c), o = { nombre: 'Versión 1', colores: k.telas.slice(), print: {} }, mapa = {}, n = 0, rutaLiv = 'images/disenos/' + base + '-v1-' + slot + '.png', rutaPrint = 'images/disenos/print/' + base + '-v1-' + slot + '.png';
-  return leerPNG(k.file, RECORTAR_PNG(), c.quitar).then(function (r) {
+  return leerPNG(k.file, RECORTAR_PNG(), subQuitarDe(k, c)).then(function (r) {
     aviso('Subiendo el diseño…');
     return ghPutImage(rutaLiv, r.base64, 'Diseño ' + base).then(function () {
       o[slot] = rutaLiv;
@@ -4930,8 +4943,30 @@ $('subCuerpo').addEventListener('click', function (e) {
     k.ov.telas = true; b.classList.toggle('on');
   }
 });
+// Quitar fondo propio de un diseño
+function subQuitarCambio(k, card, redibujar) {
+  var q = { modo: card.querySelector('[data-sk-qmodo]').value, tol: parseInt(card.querySelector('[data-sk-qtol]').value, 10) || 40, global: card.querySelector('[data-sk-qglobal]').checked };
+  k.quitar = q; k.ov.quitar = true; k.tv = -1;
+  if (redibujar) subRender();
+  subMiniaturas();
+  if (SUB.cards[SUB.prevIdx] === k) subPrevGrande();
+}
+$('subCards').addEventListener('input', function (e) {
+  var t = e.target; if (!t.hasAttribute('data-sk-qtol')) return;
+  var card = t.closest('.sub-card'), k = card && SUB.cards[+card.getAttribute('data-i')]; if (!k) return;
+  card.querySelector('[data-sk-qtolv]').textContent = t.value;
+  clearTimeout(SUB.qT); SUB.qT = setTimeout(function () { subQuitarCambio(k, card, false); }, 160);
+});
+$('subCards').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-sk-qreset]'); if (!b) return;
+  var card = b.closest('.sub-card'), k = card && SUB.cards[+card.getAttribute('data-i')]; if (!k) return;
+  k.ov.quitar = false; k.quitar = null; k.tv = -1; subRender(); subMiniaturas();
+  if (SUB.cards[SUB.prevIdx] === k) subPrevGrande();
+});
 $('subCards').addEventListener('change', function (e) {
   var t = e.target, card = t.closest('.sub-card'), k = card && SUB.cards[+card.getAttribute('data-i')]; if (!k) return;
+  if (t.hasAttribute('data-sk-qmodo') || t.hasAttribute('data-sk-qglobal')) { subQuitarCambio(k, card, true); return; }
+  if (t.hasAttribute('data-sk-qtol')) return;
   if (t.hasAttribute('data-sk-col')) { k.colores = Array.prototype.map.call(card.querySelectorAll('[data-sk-col]:checked'), function (x) { return x.value; }); k.ov.colores = true; k.tv = -1; subRender(); subMiniaturas(); }
   else if (t.hasAttribute('data-sk-portada')) { k.portada = t.value; k.ov.portada = true; k.tv = -1; subMiniaturas(); if (SUB.cards[SUB.prevIdx] === k) subPrevGrande(); }
   else if (t.hasAttribute('data-sk-prenda')) { k.prendas = Array.prototype.map.call(card.querySelectorAll('[data-sk-prenda]:checked'), function (x) { return x.value; }); k.ov.prendas = true; }
