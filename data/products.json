@@ -50825,5 +50825,107 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1795147879727,
+    "nombre": "BE 011",
+    "categoria": "Anime",
+    "subcategoria": "Blue Exorcist",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/be-011-blanco-1795147879727-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/be-011-1795147879727-v1-espalda.png"
+        },
+        "espalda": "images/disenos/be-011-1795147879727-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1795147885386,
+    "nombre": "BE 012",
+    "categoria": "Anime",
+    "subcategoria": "Blue Exorcist",
+    "imagenes": [],
+    "mockups": {
+      "Blanco": [
+        "images/be-012-blanco-1795147885386-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 16500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Blanco",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/be-012-1795147885386-v1-espalda.png"
+        },
+        "espalda": "images/disenos/be-012-1795147885386-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
