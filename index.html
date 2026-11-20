@@ -3681,7 +3681,7 @@ function mostrarBusquedaCompleta(q) {
   pintarPanelFiltros();
   pintarColeccion();
 }
-window.addEventListener('hashchange', enrutar);
+window.addEventListener('hashchange', function () { if (window.YuzuMotion) YuzuMotion.transicion(enrutar); else enrutar(); });
 
 /* =====================================================================
    BOLETÍN (popup + formulario del pie)
@@ -3795,5 +3795,6 @@ actualizarBolsa();
 cargar();
 cargarBoletin();
 </script>
+<script src="motion.js"></script>
 </body>
 </html>
