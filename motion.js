@@ -242,6 +242,7 @@ var YuzuMotion = (function () {
 
   // ---------- Escaparate 3D (camiseta girando) ----------
   function escaparate() {
+    if (window.YuzuCinetico && YuzuCinetico.historia) return; // la historia con scroll ya muestra la prenda en 3D
     var banda = document.getElementById('bandaPers'); if (!banda || banda.querySelector('.mv-esc') || typeof PRODUCTOS === 'undefined' || !PRODUCTOS.length) return;
     var cand = PRODUCTOS.filter(function (p) { return !p.oculto && typeof esVivo === 'function' && esVivo(p) && YuzuMockup.disponible('boxy', p.portada || 'Negro'); });
     var dest = cand.filter(function (p) { return p.destacado; }); if (dest.length) cand = dest;

@@ -216,31 +216,43 @@ var YuzuPrenda3D = (function () {
       var mF = mat(), mB = mat();
       cuerpo.add(new THREE.Mesh(gF, mF), new THREE.Mesh(gB, mB));
       var altoCm = (S.abajo - S.cuello) * cmPx(prenda);
-      var estado = { talla: op.talla || REF, cfg: cfg, ang: op.angulo != null ? op.angulo : -0.5, vel: op.giro === false ? 0 : 0.006, arr: null, zoom: 1, vivo: true, visible: true, info: [], tok: 0 };
+      var estado = { talla: op.talla || REF, cfg: cfg, ang: op.angulo != null ? op.angulo : -0.5, vel: op.giro === false || op.externo ? 0 : 0.006, arr: null, zoom: 1, vivo: true, visible: true, info: [], tok: 0,
+        objAng: op.angulo || 0, objZoom: 1, objX: 0, inclX: 0.05, ladeo: 0 };
 
       function tamano() {
         var w = raiz.clientWidth || 300, h = raiz.clientHeight || 400;
-        ren.setSize(w, h, false); cam.aspect = w / h;
-        var dist = (altoCm * 1.32) / (2 * Math.tan(cam.fov * Math.PI / 360)) / Math.min(1, cam.aspect / 0.62);
-        cam.position.set(0, altoCm * 0.06, dist / estado.zoom); cam.lookAt(0, -altoCm * 0.02, 0); cam.updateProjectionMatrix();
+        ren.setSize(w, h, false); cam.aspect = w / h; camara();
       }
+      function camara() {
+        var dist = (altoCm * 1.32) / (2 * Math.tan(cam.fov * Math.PI / 360)) / Math.min(1, cam.aspect / 0.62);
+        var my = estado.mirar || 0; cam.position.set(0, altoCm * 0.06 + my, dist / estado.zoom); cam.lookAt(0, -altoCm * 0.02 + my, 0); cam.updateProjectionMatrix();
+      }
+      var cacheTex = {};   // talla → { f, b, info } (texturas ya armadas: cambiar de talla es instantáneo)
+      function texturasDe(talla) {
+        if (cacheTex[talla]) return cacheTex[talla];
+        return (cacheTex[talla] = Promise.all([textura(estado.cfg, 'frente', talla, S), textura(estado.cfg, 'espalda', talla, S)]).then(function (t) {
+          function tx(cv) { var x = new THREE.CanvasTexture(cv); x.colorSpace = THREE.SRGBColorSpace; x.anisotropy = Math.min(8, ren.capabilities.getMaxAnisotropy()); return x; }
+          return { f: tx(t[0].canvas), b: tx(t[1].canvas), info: t[0].info.concat(t[1].info) };
+        }).catch(function (e) { delete cacheTex[talla]; throw e; }));
+      }
+      function vaciarCache() { Object.keys(cacheTex).forEach(function (k) { cacheTex[k].then(function (t) { t.f.dispose(); t.b.dispose(); }).catch(function () {}); }); cacheTex = {}; }
       function aplicarTalla() {
-        var e = escalaTalla(prenda, estado.talla); cuerpo.scale.set(e.sx, e.sy, e.sx);
+        var e = escalaTalla(prenda, estado.talla); estado.escala = e;
+        if (!estado.objEscala) cuerpo.scale.set(e.sx, e.sy, e.sx);
+        estado.objEscala = e;
         var tok = ++estado.tok;
-        return Promise.all([textura(estado.cfg, 'frente', estado.talla, S), textura(estado.cfg, 'espalda', estado.talla, S)]).then(function (t) {
+        return texturasDe(estado.talla).then(function (t) {
           if (tok !== estado.tok || !estado.vivo) return;
-          [[mF, t[0].canvas], [mB, t[1].canvas]].forEach(function (p) {
-            var tx = new THREE.CanvasTexture(p[1]); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = Math.min(8, ren.capabilities.getMaxAnisotropy());
-            if (p[0].map) p[0].map.dispose(); p[0].map = tx; p[0].needsUpdate = true;
-          });
-          estado.info = t[0].info.concat(t[1].info);
+          mF.map = t.f; mB.map = t.b; mF.needsUpdate = mB.needsUpdate = true;
+          estado.info = t.info;
           var c = raiz.querySelector('.y3d-carga'); if (c) c.remove();
           if (op.alCambiar) op.alCambiar(visor);
         });
       }
       // Arrastre: solo horizontal; el vertical sigue siendo scroll de la página
       var ultimoX = 0, ultimoT = 0, movio = false;
-      raiz.addEventListener('pointerdown', function (e) { estado.arr = { x: e.clientX, y: e.clientY, a: estado.ang, id: e.pointerId }; ultimoX = e.clientX; ultimoT = performance.now(); movio = false; });
+      if (op.externo) raiz.style.cursor = 'default', raiz.style.touchAction = 'auto';
+      if (!op.externo) raiz.addEventListener('pointerdown', function (e) { estado.arr = { x: e.clientX, y: e.clientY, a: estado.ang, id: e.pointerId }; ultimoX = e.clientX; ultimoT = performance.now(); movio = false; });
       raiz.addEventListener('pointermove', function (e) {
         var A = estado.arr; if (!A || A.id !== e.pointerId) return;
         var dx = e.clientX - A.x, dy = e.clientY - A.y;
@@ -251,7 +263,7 @@ var YuzuPrenda3D = (function () {
       function soltar() { if (!estado.arr) return; estado.arr = null; raiz.classList.remove('agarrado'); if (Math.abs(estado.vel) < 0.002 && op.giro !== false) estado.vel = 0.006 * (estado.vel < 0 ? -1 : 1); }
       raiz.addEventListener('pointerup', soltar); raiz.addEventListener('pointercancel', soltar);
       raiz.addEventListener('click', function (e) { if (movio) { e.stopPropagation(); e.preventDefault(); movio = false; return; } if (op.alTocar) op.alTocar(); });
-      if (op.modal) raiz.addEventListener('wheel', function (e) { e.preventDefault(); estado.zoom = Math.max(0.8, Math.min(2.6, estado.zoom * (e.deltaY < 0 ? 1.08 : 1 / 1.08))); tamano(); }, { passive: false });
+      if (op.modal) raiz.addEventListener('wheel', function (e) { e.preventDefault(); estado.zoom = Math.max(0.8, Math.min(2.6, estado.zoom * (e.deltaY < 0 ? 1.08 : 1 / 1.08))); camara(); }, { passive: false });
 
       var io = new IntersectionObserver(function (es) { estado.visible = es[0].isIntersecting; if (estado.visible) bucle(); }, { rootMargin: '80px' });
       io.observe(raiz);
@@ -261,8 +273,11 @@ var YuzuPrenda3D = (function () {
         if (corriendo) return; corriendo = true;
         (function cuadro() {
           if (!estado.vivo || !estado.visible || document.hidden) { corriendo = false; return; }
-          if (!estado.arr) { estado.ang += estado.vel; if (op.giro !== false) estado.vel += ((estado.vel < 0 ? -0.006 : 0.006) - estado.vel) * 0.02; else estado.vel *= 0.95; }
-          grupo.rotation.y = estado.ang; grupo.rotation.x = 0.06 + Math.sin(performance.now() / 1800) * 0.015; grupo.position.y = Math.sin(performance.now() / 1400) * 0.8;
+          var tt = performance.now();
+          if (op.externo) { estado.ang += (estado.objAng - estado.ang) * 0.12; estado.zoom += (estado.objZoom - estado.zoom) * 0.1; estado.mirar = (estado.mirar || 0) + ((estado.objMirar || 0) - (estado.mirar || 0)) * 0.1; camara(); grupo.rotation.x = estado.inclX + Math.sin(tt / 1800) * 0.012; grupo.position.x += (estado.objX - grupo.position.x) * 0.1; }
+          else { if (!estado.arr) { estado.ang += estado.vel; if (op.giro !== false) estado.vel += ((estado.vel < 0 ? -0.006 : 0.006) - estado.vel) * 0.02; else estado.vel *= 0.95; } grupo.rotation.x = 0.06 + Math.sin(tt / 1800) * 0.015; }
+          var oe = estado.objEscala; if (oe) { cuerpo.scale.x += (oe.sx - cuerpo.scale.x) * 0.12; cuerpo.scale.y += (oe.sy - cuerpo.scale.y) * 0.12; cuerpo.scale.z = cuerpo.scale.x; }
+          grupo.rotation.y = estado.ang + (estado.ladeo || 0); grupo.position.y = Math.sin(tt / 1400) * 0.8;
           ren.render(escena, cam); requestAnimationFrame(cuadro);
         })();
       }
@@ -274,10 +289,18 @@ var YuzuPrenda3D = (function () {
         tallas: function () { return Object.keys(tablaDe(prenda)); },
         medida: function () { return escalaTalla(prenda, estado.talla).cm; },
         diseno: function () { return estado.info; },
-        config: function (c) { estado.cfg = c; c.prenda = prenda; return aplicarTalla(); },
+        config: function (c) { estado.cfg = c; c.prenda = prenda; vaciarCache(); return aplicarTalla(); },
+        precargar: function (lista) { return (lista || []).reduce(function (pr, t) { return pr.then(function () { return new Promise(function (ok) { setTimeout(ok, 60); }); }).then(function () { return texturasDe(t); }).catch(function () {}); }, Promise.resolve()); },
+        angulo: function (a) { estado.objAng = a; },
+        acercar: function (z) { estado.objZoom = z; },
+        correr: function (x) { estado.objX = x; },
+        mirar: function (y) { estado.objMirar = y; },
+        alto: function () { return altoCm; },
+        _dbg: function () { return { zoom: estado.zoom, objZoom: estado.objZoom, mirar: estado.mirar, cam: cam.position.toArray(), esc: cuerpo.scale.toArray(), w: raiz.clientWidth, h: raiz.clientHeight, aspect: cam.aspect }; },
+        ladear: function (a) { estado.ladeo = a; },
         girarA: function (vista) { estado.vel = 0; var obj = vista === 'espalda' ? Math.PI : 0, k = Math.round((estado.ang - obj) / (2 * Math.PI)); estado.ang = obj + k * 2 * Math.PI; },
         captura: function () { ren.render(escena, cam); return ren.domElement.toDataURL('image/png'); },
-        destruir: function () { estado.vivo = false; io.disconnect(); if (ro) ro.disconnect(); [gF, gB].forEach(function (g) { g.dispose(); }); [mF, mB].forEach(function (m) { if (m.map) m.map.dispose(); m.dispose(); }); ren.dispose(); raiz.remove(); },
+        destruir: function () { estado.vivo = false; io.disconnect(); if (ro) ro.disconnect(); [gF, gB].forEach(function (g) { g.dispose(); }); vaciarCache(); [mF, mB].forEach(function (m) { m.dispose(); }); ren.dispose(); raiz.remove(); },
         elemento: raiz
       };
       tamano();

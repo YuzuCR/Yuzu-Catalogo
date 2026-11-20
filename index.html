@@ -3481,8 +3481,10 @@ function iniciarCaptura() {
   $('capTxt2').textContent = 'Tu ' + CAPTURA.pctCorreo + '% sube a ' + CAPTURA.pctTel + '% si nos dejás tu WhatsApp. No se suman: te quedás con el mayor. Solo te escribimos cuando hay drop nuevo.';
   pintarTeaser();
   if (CAPTURA.activo && !almacen.leer('yuzu-cap-paso') && !almacen.leer('yuzu-cap-visto')) {
-    setTimeout(function () {
+    setTimeout(function intentar() {
       if ($('bolsa').classList.contains('abierta') || $('pers').classList.contains('abierta') || $('zoom').classList.contains('abierta')) return;
+      // No interrumpir la historia con scroll: esperar a que la persona salga de ella
+      var h = $('cnHistoria'); if (h) { var r = h.getBoundingClientRect(); if (r.top < innerHeight * 0.5 && r.bottom > innerHeight * 0.5) { setTimeout(intentar, 3000); return; } }
       almacen.guardar('yuzu-cap-visto', '1'); abrirCaptura();
     }, 15000);
   }
@@ -3803,5 +3805,6 @@ cargar();
 cargarBoletin();
 </script>
 <script src="motion.js"></script>
+<script src="cinetico.js"></script>
 </body>
 </html>
