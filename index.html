@@ -3243,6 +3243,7 @@ function psEnviarArchivos(que) {
 $('persCuerpo').addEventListener('click', function (e) {
   var b;
   if (e.target.closest('#pers3d')) {
+    evento('ver_3d', { origen: 'personalizada' });
     YuzuPrenda3D.abrir({ prenda: PS.prenda, color: PS.color, versiones: psVersiones(), iVersion: 0, ajuste: { v: 2 }, opc: PS.opc }, { titulo: 'Tu diseño en 3D', talla: PS.talla || 'L', vista: 'espalda' });
     return;
   }

@@ -318,6 +318,7 @@ var YuzuMotion = (function () {
     b.addEventListener('click', function (e) {
       e.preventDefault(); e.stopPropagation();
       if (!tres) { abrir360(); return; }
+      if (typeof evento === 'function') evento('ver_3d', { item_id: String(PR.p.id), origen: 'ficha' });
       YuzuPrenda3D.abrir({ prenda: PR.prenda || 'boxy', color: PR.color, versiones: PR.vs, iVersion: PR.version || 0, ajuste: PR.p.ajuste, opc: PR.opc }, { titulo: PR.p.nombre, talla: PR.talla || 'L', vista: 'espalda' });
     });
     g.appendChild(b);

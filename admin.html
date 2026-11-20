@@ -479,6 +479,16 @@
       <div id="bandeja"></div>
       <div id="bandejaStats"></div>
     </div></div>
+    <div class="sec" data-sec="Interesados"><div class="card"><h2>Interesados</h2>
+      <p class="mini" style="margin-top:0">Gente que preguntó pero todavía no hizo pedido: por WhatsApp, Instagram, TikTok o ManyChat. Seguí cada conversación hasta «Compró» o «Perdido». Somnia también los anota y te los resume.</p>
+      <div class="row"><div style="flex:1"><label>Nombre</label><input type="text" id="intNombre" placeholder="Juan"></div><div style="flex:1"><label>Contacto</label><input type="text" id="intContacto" placeholder="@usuario o 8888-8888"></div></div>
+      <div class="row"><div style="flex:1"><label>Canal</label><select id="intCanal"><option>WhatsApp</option><option>Instagram</option><option>TikTok</option><option>ManyChat</option><option>En persona</option><option>Otro</option></select></div><div style="flex:2"><label>Qué quiere</label><input type="text" id="intQue" placeholder="Personalizada boxy negra, diseño atrás"></div><div style="flex:1"><label>Valor (₡)</label><input type="text" id="intValor" inputmode="numeric" placeholder="19500"></div></div>
+      <div class="row"><button class="btn btn-sec" id="btnIntAgregar">＋ Anotar interesado</button><button class="btn btn-sec" id="btnIntManychat" title="Trae los contactos que ManyChat mandó al repo privado">⇣ Traer de ManyChat</button></div>
+      <div class="status" id="statusInt"></div>
+      <div class="bandeja-filtros" id="intFiltros"><button class="on" data-if="activos">Activos</button><button data-if="cerrado">Compraron</button><button data-if="perdido">Perdidos</button><button data-if="todos">Todos</button></div>
+      <div id="intEmbudo"></div>
+      <div id="intLista"></div>
+    </div></div>
     <div class="sec" data-sec="Producción">
       <p class="sec-nota">Todo lo que marcaste «Se vendió» y todavía no está hecho. Cuando lo entregues, marcalo como producido.</p>
       <div class="card"><h2>Por producir</h2><p class="mini" style="margin-top:0">Cada pieza vendida que falta hacer, agrupada por pedido.</p>
@@ -869,6 +879,17 @@
 
   <!-- ==================== MÁS ==================== -->
   <div class="panel" id="panel-mas">
+    <div class="sec" data-sec="ManyChat"><div class="card">
+      <h2>ManyChat → Interesados</h2>
+      <p class="mini" style="margin-top:0">Cada vez que alguien escriba por Instagram, Messenger o WhatsApp (vía ManyChat), ManyChat lo deja anotado en tu repo privado y aparece en <em>Pedidos › Interesados</em> (botón «Traer de ManyChat») y en el resumen de Somnia. No hace falta servidor.</p>
+      <ol class="mini" style="line-height:1.7">
+        <li>En GitHub creá un token fino <strong>aparte</strong> (no el del admin): solo el repo privado, permiso <em>Issues: Read and write</em>. Así, si alguien lo ve en ManyChat, no puede tocar tu tienda.</li>
+        <li>En el repo privado creá la etiqueta <code>lead</code> (Issues › Labels › New label).</li>
+        <li>En ManyChat, en el flujo que quieras (palabra clave, comentario, primer mensaje), agregá una acción <strong>External Request</strong>:
+          <div class="mini" style="background:var(--panel-2,#1b1b1b);padding:10px;margin:6px 0;font-family:ui-monospace,monospace;font-size:11px;white-space:pre-wrap;word-break:break-all" id="mcEjemplo"></div></li>
+        <li>Probalo con «Test the request». Después tocá «Traer de ManyChat» en Interesados.</li>
+      </ol>
+    </div></div>
     <div class="sec" data-sec="Portafolio"><div class="card">
       <h2>Editar portafolio</h2>
       <label>Título principal</label>
@@ -1131,6 +1152,7 @@ var COLORES = [
 var CATEGORIAS = {};
 var PRODUCTOS = [];
 var galeria = [], mockups = [];
+var INTERESADOS = [], CONOCIDOS = null, INT_FILTRO = 'activos';
 var PEDIDOS = [], VENTAS = [], COSTOS = { tela: 4500, dtf: 3000, empaque: 500, envio: 2500 };
 var BOLETINES = [], bolEditando = -1, bolImagenNueva = null;
 
@@ -2526,7 +2548,8 @@ function renderHoy() {
   var ingreso = delMes.reduce(function (s, v) { return s + (v.precio || 0); }, 0), costo = delMes.reduce(function (s, v) { return s + (v.costo || costoUnitario()); }, 0);
   var visibles = PRODUCTOS.filter(function (p) { return !p.oculto; }).length;
   var kpi = function (n, q, ir, clase) { return '<button type="button" class="kpi kpi-btn" data-ir="' + ir + '"><div class="n ' + (clase || '') + '">' + n + '</div><div class="q">' + q + '</div></button>'; };
-  $('hoyKpis').innerHTML = kpi(abiertos, 'Pedidos por cerrar', 'pedidos/Bandeja', abiertos ? 'malo' : '') + kpi(pend, 'Piezas por producir', 'pedidos/Producción', pend ? 'malo' : '') +
+  var hoyD = hoyLocal(), seguir = INTERESADOS.filter(function (x) { return intActivo(x) && (!x.seguir || x.seguir <= hoyD); }).length;
+  $('hoyKpis').innerHTML = kpi(abiertos, 'Pedidos por cerrar', 'pedidos/Bandeja', abiertos ? 'malo' : '') + kpi(seguir, 'Interesados por responder', 'pedidos/Interesados', seguir ? 'malo' : '') + kpi(pend, 'Piezas por producir', 'pedidos/Producción', pend ? 'malo' : '') +
     kpi(delMes.length, 'Vendidas este mes', 'numeros') + kpi(plata(ingreso), 'Ingreso del mes', 'numeros') + kpi(plata(ingreso - costo), 'Ganancia del mes', 'numeros', ingreso - costo >= 0 ? 'bueno' : 'malo') +
     kpi(visibles, 'Diseños publicados', 'productos/Productos');
 }
@@ -2548,14 +2571,14 @@ function limpiarFormBol(){ bolEditando=-1; bolImagenNueva=null; $('bolFormTitulo
 // 5. VENTAS
 // ============================================================
 function statusVenta(t,m){ var el=$('statusVenta'); el.className='status show '+t; el.textContent=m; }
-function cargarVentas(){ leerVentasDatos().then(function(x){ var d=x.d; VENTAS=d.ventas||[]; PEDIDOS=d.pedidos||[]; if(d.costos) COSTOS=d.costos; $('costoTela').value=COSTOS.tela; $('costoDtf').value=COSTOS.dtf; $('costoEmpaque').value=COSTOS.empaque; $('costoEnvio').value=COSTOS.envio; prepararFormVenta(); renderTablero(); renderListaVentas(); renderBandeja(); renderHoy(); renderMargen(); }).catch(function(){ VENTAS=[]; PEDIDOS=[]; prepararFormVenta(); renderTablero(); renderListaVentas(); renderBandeja(); renderHoy(); }); }
+function cargarVentas(){ leerVentasDatos().then(function(x){ var d=x.d; VENTAS=d.ventas||[]; PEDIDOS=d.pedidos||[]; INTERESADOS=d.interesados||[]; recordarConocidos(); setTimeout(renderInteresados,0); if(d.costos) COSTOS=d.costos; $('costoTela').value=COSTOS.tela; $('costoDtf').value=COSTOS.dtf; $('costoEmpaque').value=COSTOS.empaque; $('costoEnvio').value=COSTOS.envio; prepararFormVenta(); renderTablero(); renderListaVentas(); renderBandeja(); renderHoy(); renderMargen(); }).catch(function(){ VENTAS=[]; PEDIDOS=[]; prepararFormVenta(); renderTablero(); renderListaVentas(); renderBandeja(); renderHoy(); }); }
 function prepararFormVenta(){ $('ventaProducto').innerHTML=PRODUCTOS.map(function(p){ return '<option value="'+p.id+'">'+p.nombre+'</option>'; }).join(''); $('ventaColor').innerHTML=COLORES.map(function(c){ return '<option value="'+c.name+'">'+c.name+'</option>'; }).join(''); if(!$('ventaFecha').value) $('ventaFecha').value=hoyLocal(); sincronizarPrecioVenta(); }
 function sincronizarPrecioVenta(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p) return; $('ventaPrecio').value=(p.enDescuento&&p.precioDescuento)?p.precioDescuento:(p.precio||18900); }
 $('ventaProducto').addEventListener('change', sincronizarPrecioVenta);
 $('btnGuardarCostos').addEventListener('click', function(){ COSTOS={ tela:parseInt(($('costoTela').value||'0').replace(/\D/g,''),10)||0, dtf:parseInt(($('costoDtf').value||'0').replace(/\D/g,''),10)||0, empaque:parseInt(($('costoEmpaque').value||'0').replace(/\D/g,''),10)||0, envio:parseInt(($('costoEnvio').value||'0').replace(/\D/g,''),10)||0 }; guardarVentas('Actualizar costos', 'statusCostos'); });
 $('btnGuardarVenta').addEventListener('click', function(){ var id=parseInt($('ventaProducto').value,10); var p=PRODUCTOS.filter(function(x){ return x.id===id; })[0]; if(!p){ statusVenta('err','Elegí producto.'); return; } var precio=parseInt(($('ventaPrecio').value||'0').replace(/\D/g,''),10); if(!precio){ statusVenta('err','Poné precio.'); return; } VENTAS.unshift({ id:Date.now(), productoId:id, nombre:p.nombre, categoria:p.categoria||'', talla:$('ventaTalla').value, color:$('ventaColor').value, precio:precio, costo:costoUnitario(), canal:$('ventaCanal').value, fecha:$('ventaFecha').value, nota:$('ventaNota').value.trim(), estado:'pendiente' }); $('ventaNota').value=''; guardarVentas('Registrar venta','statusVenta'); });
 function costoUnitario(){ return (COSTOS.tela||0)+(COSTOS.dtf||0)+(COSTOS.empaque||0)+(COSTOS.envio||0); }
-function guardarVentas(msg,cajaStatus){ var caja=$(cajaStatus||'statusVenta'); caja.className='status show'; caja.textContent='Guardando...'; escribirVentasDatos({costos:COSTOS, ventas:VENTAS, pedidos:PEDIDOS}, msg).then(function(){ return escribirActividad(); }).then(function(){ caja.className='status show ok'; caja.textContent='Guardado.'+(repoPrivado()?'':' (Tip: configurá el repo privado en Tienda para que tus ventas no queden públicas.)'); renderTablero(); renderListaVentas(); renderBandeja(); }).catch(function(err){ caja.className='status show err'; caja.textContent='Error: '+err.message; }); }
+function guardarVentas(msg,cajaStatus){ var caja=$(cajaStatus||'statusVenta'); caja.className='status show'; caja.textContent='Guardando...'; fusionarRemoto().then(function(){ return escribirVentasDatos({costos:COSTOS, ventas:VENTAS, pedidos:PEDIDOS, interesados:INTERESADOS}, msg); }).then(function(){ recordarConocidos(); return escribirActividad(); }).then(function(){ caja.className='status show ok'; caja.textContent='Guardado.'+(repoPrivado()?'':' (Tip: configurá el repo privado en Tienda para que tus ventas no queden públicas.)'); renderTablero(); renderListaVentas(); renderBandeja(); renderInteresados(); renderHoy(); }).catch(function(err){ caja.className='status show err'; caja.textContent='Error: '+err.message; }); }
 $('listaVentas').addEventListener('click', function(e){ var b=e.target.closest('[data-borrar-venta]'); if(!b) return; var i=parseInt(b.getAttribute('data-borrar-venta'),10); if(!confirm('¿Borrar?')) return; VENTAS.splice(i,1); guardarVentas('Borrar venta'); });
 $('ventaRango').addEventListener('change', renderTablero);
 // ============================================================
@@ -2752,6 +2775,90 @@ $('bandeja').addEventListener('click', function (ev) {
     (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { b.textContent = 'Copiado'; setTimeout(function () { b.textContent = 'Copiar aviso al cliente'; }, 1600); }).catch(function () { prompt('Copiá el aviso:', t); });
   }
 });
+
+// ============================================================
+// 5b. INTERESADOS (embudo) + fusión segura con lo que anota Somnia
+// ============================================================
+var EST_INT = [['nuevo', 'Nuevo'], ['conversando', 'Conversando'], ['cotizado', 'Cotizado'], ['cerrado', 'Compró'], ['perdido', 'Perdido']];
+function recordarConocidos() { CONOCIDOS = {}; [['v', VENTAS], ['p', PEDIDOS], ['i', INTERESADOS]].forEach(function (x) { x[1].forEach(function (o) { CONOCIDOS[x[0] + o.id] = 1; }); }); }
+// Antes de guardar, suma lo que otro (Somnia u otro dispositivo) agregó mientras esta pestaña estaba abierta
+function fusionarRemoto() {
+  if (!CONOCIDOS) return Promise.resolve();
+  return leerVentasDatos().then(function (x) {
+    var d = x.d || {};
+    [['v', 'ventas'], ['p', 'pedidos'], ['i', 'interesados']].forEach(function (k) {
+      var loc = k[0] === 'v' ? VENTAS : k[0] === 'p' ? PEDIDOS : INTERESADOS, ids = {};
+      loc.forEach(function (o) { ids[o.id] = 1; });
+      (d[k[1]] || []).forEach(function (o) { if (!ids[o.id] && !CONOCIDOS[k[0] + o.id]) loc.unshift(o); });
+    });
+  }).catch(function () {});
+}
+function statusInt(t, m) { var el = $('statusInt'); el.className = 'status show ' + t; el.textContent = m; }
+function intActivo(x) { return x.estado !== 'cerrado' && x.estado !== 'perdido'; }
+function renderInteresados() {
+  var c = $('intLista'); if (!c) return;
+  var l = INTERESADOS.filter(function (x) { return INT_FILTRO === 'todos' ? true : INT_FILTRO === 'activos' ? intActivo(x) : x.estado === INT_FILTRO; });
+  var cuenta = {}; INTERESADOS.forEach(function (x) { cuenta[x.estado] = (cuenta[x.estado] || 0) + 1; });
+  var cerr = (cuenta.cerrado || 0) + (cuenta.perdido || 0);
+  $('intEmbudo').innerHTML = INTERESADOS.length ? '<div class="mini" style="margin:6px 0 10px">' + EST_INT.map(function (e) { return e[1] + ': <b>' + (cuenta[e[0]] || 0) + '</b>'; }).join(' · ') + (cerr ? ' · conversión <b>' + Math.round((cuenta.cerrado || 0) / cerr * 100) + '%</b>' : '') + '</div>' : '';
+  if (!l.length) { c.innerHTML = '<p class="mini">Nada por acá.</p>'; return; }
+  var hoy = hoyLocal();
+  c.innerHTML = l.slice(0, 80).map(function (x) {
+    var tarde = intActivo(x) && x.seguir && x.seguir <= hoy;
+    return '<div class="venta-fila" data-int="' + x.id + '"><div><strong>' + esc(x.nombre || 'Sin nombre') + '</strong> <span class="meta" style="display:inline">' + esc(x.canal || '') + (x.contacto ? ' · ' + esc(x.contacto) : '') + '</span>' +
+      '<div class="meta">' + esc(x.fecha || '') + (x.que ? ' · ' + esc(x.que) : '') + (x.valor ? ' · ' + plata(x.valor) : '') + (x.nota ? ' · ' + esc(x.nota) : '') + (x.seguir ? ' · <span style="' + (tarde ? 'color:#ff6b5f;font-weight:600' : '') + '">seguir ' + esc(x.seguir) + '</span>' : '') + (x.origen === 'somnia' ? ' · anotó Somnia' : x.origen === 'manychat' ? ' · ManyChat' : '') + '</div></div>' +
+      '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><select data-int-estado>' + EST_INT.map(function (e) { return '<option value="' + e[0] + '"' + (e[0] === x.estado ? ' selected' : '') + '>' + e[1] + '</option>'; }).join('') + '</select>' +
+      '<button data-int-acc="seguir" title="Fecha para volver a escribirle">⏰</button><button data-int-acc="nota" title="Nota">✎</button><button data-int-acc="borrar">✕</button></div></div>';
+  }).join('');
+}
+$('intFiltros').addEventListener('click', function (e) { var b = e.target.closest('[data-if]'); if (!b) return; INT_FILTRO = b.getAttribute('data-if'); Array.prototype.forEach.call(this.children, function (k) { k.classList.toggle('on', k === b); }); renderInteresados(); });
+$('btnIntAgregar').addEventListener('click', function () {
+  var n = $('intNombre').value.trim(), q = $('intQue').value.trim();
+  if (!n && !$('intContacto').value.trim()) { statusInt('err', 'Poné al menos el nombre o el contacto.'); return; }
+  INTERESADOS.unshift({ id: Date.now(), nombre: n, contacto: $('intContacto').value.trim(), canal: $('intCanal').value, que: q, valor: parseInt(($('intValor').value || '').replace(/\D/g, ''), 10) || 0, estado: 'nuevo', fecha: hoyLocal(), origen: 'admin' });
+  ['intNombre', 'intContacto', 'intQue', 'intValor'].forEach(function (k) { $(k).value = ''; });
+  guardarVentas('Interesado: ' + (n || 'nuevo'), 'statusInt');
+});
+$('intLista').addEventListener('change', function (e) {
+  var s = e.target.closest('[data-int-estado]'); if (!s) return;
+  var x = INTERESADOS.filter(function (o) { return o.id === Number(s.closest('[data-int]').getAttribute('data-int')); })[0]; if (!x) return;
+  x.estado = s.value; x.cambio = hoyLocal();
+  guardarVentas('Interesado ' + (x.nombre || '') + ': ' + x.estado, 'statusInt');
+});
+$('intLista').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-int-acc]'); if (!b) return;
+  var x = INTERESADOS.filter(function (o) { return o.id === Number(b.closest('[data-int]').getAttribute('data-int')); })[0]; if (!x) return;
+  var acc = b.getAttribute('data-int-acc');
+  if (acc === 'borrar') { if (!confirm('¿Borrar a ' + (x.nombre || 'este interesado') + '?')) return; INTERESADOS = INTERESADOS.filter(function (o) { return o !== x; }); }
+  else if (acc === 'nota') { var t = prompt('Nota', x.nota || ''); if (t === null) return; x.nota = t.trim().slice(0, 200); }
+  else if (acc === 'seguir') { var f = prompt('¿Cuándo volver a escribirle? (AAAA-MM-DD; vacío = quitar)', x.seguir || ''); if (f === null) return; x.seguir = /^\d{4}-\d{2}-\d{2}$/.test(f.trim()) ? f.trim() : ''; }
+  guardarVentas('Interesado ' + (x.nombre || ''), 'statusInt');
+});
+// ManyChat → GitHub: cada contacto nuevo llega como "issue" con etiqueta "lead" en el repo privado (ver Más › ManyChat)
+function traerManychat() {
+  var rp = repoPrivado(), cfg = getConfig(); if (!rp) return Promise.reject(new Error('Configurá el repo privado en Tienda › Archivos privados.'));
+  var H = { Authorization: 'token ' + cfg.token, Accept: 'application/vnd.github+json' }, base = 'https://api.github.com/repos/' + cfg.owner + '/' + rp + '/issues';
+  return fetch(base + '?labels=lead&state=open&per_page=100', { headers: H, cache: 'no-store' }).then(function (r) { if (!r.ok) return errorDeRespuesta(r, 'No pude leer los contactos de ManyChat'); return r.json(); }).then(function (l) {
+    var nuevos = 0;
+    l.forEach(function (is) {
+      var d = {}; try { d = JSON.parse(is.body || '{}'); } catch (e) { String(is.body || '').split(/\n/).forEach(function (ln) { var m = ln.match(/^\s*(nombre|contacto|usuario|canal|que|qué|mensaje)\s*:\s*(.*)$/i); if (m) d[m[1].toLowerCase().replace('qué', 'que')] = m[2].trim(); }); if (!d.que && !d.contacto) d.que = String(is.body || '').slice(0, 200); }
+      if (INTERESADOS.some(function (x) { return x.issue === is.number; })) return;
+      INTERESADOS.unshift({ id: Date.now() + nuevos, issue: is.number, nombre: d.nombre || is.title || '', contacto: d.contacto || d.usuario || '', canal: d.canal || 'ManyChat', que: d.que || d.mensaje || '', valor: 0, estado: 'nuevo', fecha: String(is.created_at || '').slice(0, 10) || hoyLocal(), origen: 'manychat' });
+      nuevos++;
+    });
+    return guardarVentasP('ManyChat: ' + nuevos + ' interesados').then(function () {
+      return Promise.all(l.map(function (is) { return fetch(base + '/' + is.number, { method: 'PATCH', headers: H, body: JSON.stringify({ state: 'closed' }) }).catch(function () {}); }));
+    }).then(function () { return nuevos; });
+  });
+}
+function guardarVentasP(msg) { return fusionarRemoto().then(function () { return escribirVentasDatos({ costos: COSTOS, ventas: VENTAS, pedidos: PEDIDOS, interesados: INTERESADOS }, msg); }).then(function () { recordarConocidos(); renderInteresados(); renderHoy(); }); }
+$('btnIntManychat').addEventListener('click', function () { statusInt('', 'Buscando…'); traerManychat().then(function (n) { statusInt('ok', n ? '✓ ' + n + ' nuevo(s) de ManyChat.' : 'No hay contactos nuevos.'); }).catch(function (e) { statusInt('err', e.message); }); });
+
+function pintarEjemploManychat() {
+  var el = $('mcEjemplo'); if (!el) return; var cfg = getConfig(), rp = repoPrivado() || 'Yuzu-Privado';
+  el.textContent = 'Método: POST\nURL: https://api.github.com/repos/' + (cfg.owner || 'YuzuCR') + '/' + rp + '/issues\nHeaders:\n  Authorization: Bearer TU_TOKEN_DE_ISSUES\n  Accept: application/vnd.github+json\nBody (JSON):\n{\n  "title": "{{full_name}}",\n  "labels": ["lead"],\n  "body": "nombre: {{full_name}}\\ncontacto: @{{ig_username}} {{phone}}\\ncanal: Instagram\\nque: {{last_input_text}}"\n}';
+}
+setTimeout(pintarEjemploManychat, 800);
 var ESTADOS = ['pendiente', 'producido', 'entregado'];
 function estadoDe(v) { return v.estado || 'entregado'; }
 $('listaVentas').addEventListener('click', function (e) {
@@ -2769,7 +2876,7 @@ $('listaVentas').addEventListener('click', function (e) {
 function pendientes() { return VENTAS.filter(function (v) { return estadoDe(v) === 'pendiente'; }); }
 function statusProd(id, t, m) { var el = $(id); el.className = 'status show ' + t; el.textContent = m; }
 function cargarProduccion() {
-  leerVentasDatos().then(function (x) { var d = x.d; VENTAS = d.ventas || []; PEDIDOS = d.pedidos || []; if (d.costos) COSTOS = d.costos; renderProduccion(); })
+  leerVentasDatos().then(function (x) { var d = x.d; VENTAS = d.ventas || []; PEDIDOS = d.pedidos || []; INTERESADOS = d.interesados || []; recordarConocidos(); if (d.costos) COSTOS = d.costos; renderProduccion(); })
     .catch(function () { VENTAS = []; renderProduccion(); });
 }
 function renderProduccion() {
