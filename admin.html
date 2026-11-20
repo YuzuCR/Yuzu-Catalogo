@@ -404,6 +404,25 @@
     .sub-der .quitar-box, .sub-der > label, .sub-der > select, .sub-der > p.mini:not(#subPrevVacio) { display: none; }
     .sub-der.abierto .quitar-box, .sub-der.abierto > label, .sub-der.abierto > select, .sub-der.abierto > p.mini { display: block; }
   }
+  .vt-fondo { position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,.85); display: flex; align-items: center; justify-content: center; padding: 10px; }
+  .vt-caja { background: var(--sup); border: 1px solid var(--linea); border-radius: 12px; width: 100%; max-width: 1150px; max-height: 96vh; display: flex; flex-direction: column; overflow: hidden; }
+  .vt-cab { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--linea); flex-wrap: wrap; }
+  .vt-barra { display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; padding: 8px 12px; border-bottom: 1px solid var(--linea); }
+  .vt-grupo { display: flex; gap: 6px; }
+  .vt-camp { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--mudo); margin: 0; }
+  .vt-camp input[type=range] { width: 110px; padding: 0; }
+  .vt-camp select { width: auto; padding: 4px 6px; font-size: 12px; }
+  .vt-camp b { color: var(--yuzu); min-width: 26px; text-align: right; font-weight: 600; }
+  .vt-area { overflow: auto; flex: 1; min-height: 200px; background: #0b0a09; padding: 12px; text-align: center; }
+  .vt-area canvas { cursor: crosshair; display: inline-block; max-width: none; vertical-align: top; }
+  .vt-gota { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+  .vt-gota i { width: 20px; height: 20px; border-radius: 4px; border: 1px solid var(--linea); display: inline-block; }
+  .vt-modo.on { outline: 2px solid var(--yuzu); }
+  .png-slot .wand { position: absolute; top: 4px; left: 4px; display: none; background: rgba(0,0,0,.8); border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; cursor: pointer; padding: 0; line-height: 1; }
+  .png-slot.lleno .wand { display: block; }
+  .png-slot .wand:hover { background: var(--yuzu2); }
+  .png-slot .wandon { position: absolute; bottom: 3px; left: 3px; font-size: 8px; background: var(--yuzu); color: #111; border-radius: 6px; padding: 1px 5px; display: none; }
+  .png-slot.conwand .wandon { display: block; }
 </style>
 </head>
 <body>
@@ -3250,6 +3269,7 @@ function quitarColor(im, q) {
   var c = document.createElement('canvas'); c.width = W; c.height = H;
   var x = c.getContext('2d'); x.drawImage(im, 0, 0, W, H);
   var img = x.getImageData(0, 0, W, H), d = img.data, ob;
+  if (q.modo === 'varita') { aplicarVarita(d, W, H, q); x.putImageData(img, 0, 0); return c; }
   if (q.modo === 'negro') ob = [0, 0, 0]; else if (q.modo === 'blanco') ob = [255, 255, 255];
   else {
     var s = [0, 0, 0], n = 0;
@@ -3332,11 +3352,11 @@ EditorDisenos.prototype._archivo = function (clave, file) {
   var self = this, par = clave.split(':'), v = this.e.versiones[+par[0]];
   var inp0 = this.cont.querySelector('[data-v-archivo="' + clave + '"]'), slot = inp0 && inp0.closest('.png-slot');
   if (slot) slot.classList.add('cargando');
-  leerPNG(file, this.e.recortar, this.e.quitar).then(function (r) {
+  leerPNG(file, this.e.recortar, (v.qs && v.qs[par[1]]) || this.e.quitar).then(function (r) {
     r.file = file; v.archivos[par[1]] = r;
     // Actualizar solo esa casilla (no redibujar todo, así no se pierde otro archivo que estés eligiendo)
     var inp = self.cont.querySelector('[data-v-archivo="' + clave + '"]'), sl = inp && inp.closest('.png-slot');
-    if (sl) { sl.classList.remove('cargando'); sl.classList.add('lleno'); sl.querySelector('img').src = r.preview; }
+    if (sl) { sl.classList.remove('cargando'); sl.classList.add('lleno'); sl.querySelector('img').src = r.preview; if (!sl.querySelector('.wand')) { var wb = document.createElement('button'); wb.type = 'button'; wb.className = 'wand'; wb.title = 'Varita mágica: elegir con cuentagotas qué quitar'; wb.setAttribute('data-v-varita', clave); wb.textContent = '🪄'; sl.insertBefore(wb, sl.querySelector('.wandon')); } sl.classList.toggle('conwand', !!(v.qs && v.qs[par[1]] && v.qs[par[1]].modo === 'varita')); }
     else self.render();
     if (par[1] === 'espalda') self._sugerirColores();
     if (self.op.alNombre) self.op.alNombre(nombreDesdeArchivo(file.name), file.name);
@@ -3403,7 +3423,7 @@ EditorDisenos.prototype.render = function () {
       (e.versiones.length > 1 ? '<button type="button" class="prod-btn del" data-v-quitar="' + i + '" title="Quitar versión">✕</button>' : '') + '</div>' +
       '<div class="png-grid" style="grid-template-columns:repeat(4,1fr)">' + CAMPOS_V.map(function (c) {
         var a = v.archivos[c[0]];
-        return '<label class="png-slot' + (a ? ' lleno' : '') + '"><input type="file" accept="image/png,application/pdf,.pdf" data-v-archivo="' + i + ':' + c[0] + '"><img alt=""' + (a ? ' src="' + esc(a.preview) + '"' : '') + '><span>' + c[1] + (i > 0 && c[0] !== 'espalda' ? '<br><small>(opcional)</small>' : '') + '</span><button type="button" class="x" data-v-borrar="' + i + ':' + c[0] + '">✕</button></label>';
+        return '<label class="png-slot' + (a ? ' lleno' : '') + (v.qs && v.qs[c[0]] && v.qs[c[0]].modo === 'varita' ? ' conwand' : '') + '"><input type="file" accept="image/png,application/pdf,.pdf" data-v-archivo="' + i + ':' + c[0] + '"><img alt=""' + (a ? ' src="' + esc(a.preview) + '"' : '') + '><span>' + c[1] + (i > 0 && c[0] !== 'espalda' ? '<br><small>(opcional)</small>' : '') + '</span><button type="button" class="x" data-v-borrar="' + i + ':' + c[0] + '">✕</button>' + (a && a.file ? '<button type="button" class="wand" data-v-varita="' + i + ':' + c[0] + '" title="Varita mágica: elegir con cuentagotas qué quitar">🪄</button>' : '') + '<span class="wandon">🪄 varita</span></label>';
       }).join('') + '</div>' +
       '<div class="mini">Se ve bien en: <span data-v-sug="' + i + '" style="color:var(--yuzu)"></span></div><div class="tela-chips">' + COLORES_TELA.map(function (c) {
         return '<button type="button" class="tela' + (v.colores.indexOf(c) !== -1 ? ' on' : '') + '" data-v-tela="' + i + '" data-c="' + esc(c) + '" title="' + esc(c) + '" style="background:' + (YuzuMockup.HEX[c] || '#888') + '"></button>';
@@ -3449,7 +3469,17 @@ EditorDisenos.prototype._reprocesar = function () {
 EditorDisenos.prototype._click = function (ev) {
   var b = ev.target.closest('button'); if (!b) return;
   if (b.hasAttribute('data-tf-abrir')) { abrirTf(this, b.getAttribute('data-tf-abrir')); return; }
-  if (b.hasAttribute('data-v-borrar')) { ev.preventDefault(); var p = b.getAttribute('data-v-borrar').split(':'); delete this.e.versiones[+p[0]].archivos[p[1]]; this.render(); }
+  if (b.hasAttribute('data-v-varita')) {
+    ev.preventDefault(); var self = this, clave = b.getAttribute('data-v-varita'), pv = clave.split(':'), ver = this.e.versiones[+pv[0]], arch = ver && ver.archivos[pv[1]];
+    if (!arch || !arch.file) return;
+    abrirVarita(arch.file, (ver.qs && ver.qs[pv[1]]) || null, function (q) {
+      ver.qs = ver.qs || {};
+      if (q.modo === 'varita') ver.qs[pv[1]] = q; else delete ver.qs[pv[1]];
+      self._archivo(clave, arch.file);
+    });
+    return;
+  }
+  if (b.hasAttribute('data-v-borrar')) { ev.preventDefault(); var p = b.getAttribute('data-v-borrar').split(':'); var vb = this.e.versiones[+p[0]]; delete vb.archivos[p[1]]; if (vb.qs) delete vb.qs[p[1]]; this.render(); }
   else if (b.hasAttribute('data-v-quitar')) { this.e.versiones.splice(+b.getAttribute('data-v-quitar'), 1); this.render(); }
   else if (b.hasAttribute('data-v-agregar')) { this.e.versiones.push({ nombre: 'Versión ' + (this.e.versiones.length + 1), colores: [], archivos: {} }); this.render(); }
   else if (b.hasAttribute('data-v-tela')) {
@@ -4490,7 +4520,225 @@ function quitarHTML(q) {
   return '<div class="quitar-box"><div class="mini" style="margin:0 0 6px">Quitar un color del diseño (por ejemplo un fondo negro o blanco)</div>' +
     '<select data-v-qmodo>' + ops.map(function (o) { return '<option value="' + o[0] + '"' + (q.modo === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>' +
     '<label class="mini" style="margin:8px 0 0">Tolerancia: <span data-v-qtolv>' + q.tol + '</span><input type="range" min="5" max="120" step="5" value="' + q.tol + '" data-v-qtol></label>' +
-    '<label class="check-row" style="margin-top:6px"><input type="checkbox" data-v-qglobal' + (q.global ? ' checked' : '') + '><span>También dentro del diseño (si no, solo el fondo que toca los bordes)</span></label></div>';
+    '<label class="check-row" style="margin-top:6px"><input type="checkbox" data-v-qglobal' + (q.global ? ' checked' : '') + '><span>También dentro del diseño (si no, solo el fondo que toca los bordes)</span></label>' +
+    '<p class="mini" style="margin:8px 0 0">¿Querés elegir el color con cuentagotas, por dentro o por fuera? Subí el archivo y tocá la 🪄 de su casilla (esa selección manda sobre esta opción).</p></div>';
+}
+
+// ---------- Varita mágica (cuentagotas) ----------
+// Misma idea que la varita de Photoshop: tocás un píxel, se toma su color y se selecciona lo que se le parece
+// (tolerancia = diferencia máxima por canal, 0-255; "contiguo" = solo lo que está pegado; muestra = promedio de 1, 3×3, 5×5 u 11×11 píxeles;
+// bordes suaves = anti-alias; Shift/＋ suma a lo quitado, Alt/− lo restaura). Lo seleccionado queda transparente.
+// El resultado se guarda como lista de toques (q.ops) con coordenadas relativas y el color tomado, así se repite igual a cualquier tamaño.
+function varitaPeso(d, i, col, tol, soft) {
+  if (d[i + 3] <= 8) return 1; // ya es transparente: la selección pasa por encima
+  var a = d[i] - col[0], b = d[i + 1] - col[1], g = d[i + 2] - col[2];
+  if (a < 0) a = -a; if (b < 0) b = -b; if (g < 0) g = -g;
+  var m = a > b ? (a > g ? a : g) : (b > g ? b : g);
+  if (m <= tol) return 1;
+  if (!soft || m >= tol + soft) return 0;
+  return 1 - (m - tol) / soft;
+}
+function varitaOp(d, W, H, op, mask) {
+  var n = W * H, p, i;
+  if (op.t === 'clr') { mask.fill(0); return; }
+  if (op.t === 'inv') { for (p = 0; p < n; p++) mask[p] = 255 - mask[p]; return; }
+  var col = op.c, tol = op.tol, soft = op.suave === false ? 0 : Math.max(4, Math.round(tol * 0.3)), nm = new Uint8Array(n), w;
+  if (!op.cont) {
+    for (p = 0; p < n; p++) { w = varitaPeso(d, p * 4, col, tol, soft); if (w > 0) nm[p] = Math.round(w * 255); }
+  } else {
+    var sx = Math.max(0, Math.min(W - 1, Math.floor(op.x * W))), sy = Math.max(0, Math.min(H - 1, Math.floor(op.y * H))), seed = -1, r, dx, dy, xx, yy;
+    for (r = 0; r <= 3 && seed < 0; r++) {
+      for (dy = -r; dy <= r && seed < 0; dy++) for (dx = -r; dx <= r; dx++) {
+        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
+        xx = sx + dx; yy = sy + dy; if (xx < 0 || yy < 0 || xx >= W || yy >= H) continue;
+        p = yy * W + xx; if (d[p * 4 + 3] > 8 && varitaPeso(d, p * 4, col, tol, soft) > 0) { seed = p; break; }
+      }
+    }
+    if (seed < 0) return;
+    var vis = new Uint8Array(n), pila = new Int32Array(n), top = 0;
+    vis[seed] = 1; pila[top++] = seed;
+    while (top) {
+      p = pila[--top]; w = varitaPeso(d, p * 4, col, tol, soft); if (w <= 0) continue;
+      nm[p] = Math.round(w * 255);
+      var x0 = p % W, y0 = (p - x0) / W, q2;
+      if (x0 > 0) { q2 = p - 1; if (!vis[q2]) { vis[q2] = 1; pila[top++] = q2; } }
+      if (x0 < W - 1) { q2 = p + 1; if (!vis[q2]) { vis[q2] = 1; pila[top++] = q2; } }
+      if (y0 > 0) { q2 = p - W; if (!vis[q2]) { vis[q2] = 1; pila[top++] = q2; } }
+      if (y0 < H - 1) { q2 = p + W; if (!vis[q2]) { vis[q2] = 1; pila[top++] = q2; } }
+    }
+  }
+  if (op.t === 'sub') { for (p = 0; p < n; p++) if (nm[p]) mask[p] = Math.round(mask[p] * (1 - nm[p] / 255)); }
+  else { for (p = 0; p < n; p++) if (nm[p] > mask[p]) mask[p] = nm[p]; }
+}
+function varitaMascara(d, W, H, ops) {
+  var mask = new Uint8Array(W * H);
+  (ops || []).forEach(function (op) { varitaOp(d, W, H, op, mask); });
+  return mask;
+}
+// Expande (n > 0) o contrae (n < 0) lo seleccionado n píxeles; sirve para comerse el halo de color del borde
+function varitaBorde(m, W, H, n) {
+  if (!n) return m;
+  var dil = n > 0, k = Math.abs(n), tmp = new Uint8Array(W * H), it, x, y, p, v, u;
+  for (it = 0; it < k; it++) {
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+      p = y * W + x; v = m[p];
+      if (x > 0) { u = m[p - 1]; v = dil ? (u > v ? u : v) : (u < v ? u : v); }
+      if (x < W - 1) { u = m[p + 1]; v = dil ? (u > v ? u : v) : (u < v ? u : v); }
+      tmp[p] = v;
+    }
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+      p = y * W + x; v = tmp[p];
+      if (y > 0) { u = tmp[p - W]; v = dil ? (u > v ? u : v) : (u < v ? u : v); }
+      if (y < H - 1) { u = tmp[p + W]; v = dil ? (u > v ? u : v) : (u < v ? u : v); }
+      m[p] = v;
+    }
+  }
+  return m;
+}
+function aplicarVarita(d, W, H, q) {
+  var m = varitaMascara(d, W, H, q.ops); if (q.borde) varitaBorde(m, W, H, q.borde);
+  for (var p = 0, n = W * H; p < n; p++) if (m[p]) { var i = p * 4; d[i + 3] = Math.round(d[i + 3] * (1 - m[p] / 255)); }
+}
+function cargarOriginalVarita(file) {
+  if (esPDF(file)) return pdfACanvas(file);
+  return new Promise(function (ok, mal) {
+    var rd = new FileReader();
+    rd.onload = function () { var im = new Image(); im.onload = function () { ok(im); }; im.onerror = function () { mal(new Error('No pude leer la imagen.')); }; im.src = rd.result; };
+    rd.readAsDataURL(file);
+  });
+}
+function varitaResumen(q) { var n = q && q.ops ? q.ops.filter(function (o) { return o.t === 'add' || o.t === 'sub'; }).length : 0; return n + (n === 1 ? ' toque' : ' toques'); }
+
+var VT = null;
+function abrirVarita(file, qIni, alAplicar) {
+  if (VT) return;
+  cargarOriginalVarita(file).then(function (src) {
+    var SW = src.naturalWidth || src.width, SH = src.naturalHeight || src.height, e0 = Math.min(1, 1600 / Math.max(SW, SH)), ow = Math.round(SW * e0), oh = Math.round(SH * e0);
+    var oc = document.createElement('canvas'); oc.width = ow; oc.height = oh;
+    var octx = oc.getContext('2d'); octx.drawImage(src, 0, 0, ow, oh);
+    var od = octx.getImageData(0, 0, ow, oh), out = octx.createImageData(ow, oh);
+    var V = VT = {
+      ops: ((qIni && qIni.modo === 'varita' && qIni.ops) || []).map(function (o) { return JSON.parse(JSON.stringify(o)); }), redo: [],
+      modo: 'add', cont: true, muestra: 1, tol: 32, suave: true, borde: (qIni && qIni.modo === 'varita' && qIni.borde) || 0, ajustar: true, vista: 'res', fondo: 'cuadros', zoom: 1
+    };
+    V.mask = varitaMascara(od.data, ow, oh, V.ops);
+    var el = document.createElement('div'); el.className = 'vt-fondo';
+    el.innerHTML = '<div class="vt-caja"><div class="vt-cab"><b>🪄 Varita mágica</b><span class="mini" style="margin:0" id="vtInfo"></span><span style="flex:1"></span><button type="button" class="btn btn-sec btn-sm" id="vtCancel">Cancelar</button><button type="button" class="btn btn-sm" id="vtOk">Aplicar</button></div>' +
+      '<div class="vt-barra">' +
+      '<div class="vt-grupo"><button type="button" class="btn btn-sm vt-modo on" data-vt-modo="add" title="Shift + clic">＋ Quitar</button><button type="button" class="btn btn-sec btn-sm vt-modo" data-vt-modo="sub" title="Alt + clic">－ Restaurar</button></div>' +
+      '<label class="vt-camp">Tolerancia <b id="vtTolV">32</b><input type="range" id="vtTol" min="0" max="150" step="1" value="32"></label>' +
+      '<label class="vt-camp">Muestra <select id="vtMuestra"><option value="1">1 píxel</option><option value="3">Promedio 3×3</option><option value="5">Promedio 5×5</option><option value="11">Promedio 11×11</option></select></label>' +
+      '<label class="vt-camp">Borde <b id="vtBordeV">0</b><input type="range" id="vtBorde" min="-6" max="6" step="1" value="0" title="Expande (+) o contrae (−) lo quitado"></label>' +
+      '<label class="check-row"><input type="checkbox" id="vtCont" checked><span>Contiguo (solo lo pegado)</span></label>' +
+      '<label class="check-row"><input type="checkbox" id="vtSuave" checked><span>Bordes suaves</span></label>' +
+      '<label class="check-row"><input type="checkbox" id="vtAjustar" checked><span>Tolerancia ajusta el último toque</span></label>' +
+      '</div><div class="vt-barra">' +
+      '<div class="vt-grupo"><button type="button" class="btn btn-sec btn-sm" id="vtUndo">↶ Deshacer</button><button type="button" class="btn btn-sec btn-sm" id="vtRedo">↷ Rehacer</button><button type="button" class="btn btn-sec btn-sm" id="vtInv" title="Lo quitado pasa a conservarse y al revés">Invertir</button><button type="button" class="btn btn-sec btn-sm" id="vtClr">Borrar todo</button></div>' +
+      '<label class="vt-camp">Vista <select id="vtVista"><option value="res">Resultado</option><option value="sel">Resaltar lo quitado</option></select></label>' +
+      '<label class="vt-camp">Fondo <select id="vtFondo"><option value="cuadros">Cuadros</option><option value="negro">Negro</option><option value="blanco">Blanco</option><option value="verde">Verde</option><option value="rosa">Rosa</option></select></label>' +
+      '<label class="vt-camp">Zoom <b id="vtZoomV"></b><input type="range" id="vtZoom" min="10" max="800" step="5"></label>' +
+      '<span class="vt-gota"><i id="vtSw"></i><span id="vtHex" class="mini" style="margin:0">—</span></span>' +
+      '</div><div class="vt-area" id="vtArea"><canvas id="vtCv"></canvas></div>' +
+      '<p class="mini" style="margin:8px 12px 10px">Tocá el color que querés quitar (cuentagotas). <b>Shift</b> + clic suma otra zona, <b>Alt</b> + clic restaura lo que no querías quitar. Sin «Contiguo» quita ese color en todo el diseño (también por dentro). Ctrl+Z deshace.</p></div>';
+    document.body.appendChild(el);
+    var $v = function (id) { return el.querySelector('#' + id); }, cv = $v('vtCv'), area = $v('vtArea'), ctx = cv.getContext('2d');
+    cv.width = ow; cv.height = oh;
+    var rT = null;
+    function fondoCss() {
+      var f = V.fondo;
+      return f === 'negro' ? '#000' : f === 'blanco' ? '#fff' : f === 'verde' ? '#00d26a' : f === 'rosa' ? '#ff4fa3' : 'repeating-conic-gradient(#3a352c 0 25%, #28251f 0 50%) 0 0/16px 16px';
+    }
+    function aplicarZoom() {
+      cv.style.width = Math.round(ow * V.zoom) + 'px'; cv.style.height = Math.round(oh * V.zoom) + 'px';
+      cv.style.imageRendering = V.zoom >= 2 ? 'pixelated' : 'auto';
+      $v('vtZoom').value = Math.round(V.zoom * 100); $v('vtZoomV').textContent = Math.round(V.zoom * 100) + '%';
+    }
+    function pintar() {
+      var m = V.borde ? varitaBorde(V.mask.slice(), ow, oh, V.borde) : V.mask, s = od.data, o = out.data, n = ow * oh, p, i, k, quitado = 0, total = 0, sel = V.vista === 'sel';
+      for (p = 0; p < n; p++) {
+        i = p * 4; o[i] = s[i]; o[i + 1] = s[i + 1]; o[i + 2] = s[i + 2]; k = m[p] / 255;
+        if (s[i + 3] > 8) { total++; if (k > 0.5) quitado++; }
+        if (sel) { o[i + 3] = s[i + 3]; if (k > 0) { o[i] = Math.round(s[i] * (1 - k * 0.65) + 230 * k * 0.65); o[i + 1] = Math.round(s[i + 1] * (1 - k * 0.65) + 40 * k * 0.65); o[i + 2] = Math.round(s[i + 2] * (1 - k * 0.65) + 60 * k * 0.65); } }
+        else o[i + 3] = Math.round(s[i + 3] * (1 - k));
+      }
+      ctx.putImageData(out, 0, 0);
+      cv.style.background = sel ? '#111' : fondoCss();
+      $v('vtInfo').textContent = varitaResumen({ ops: V.ops }) + (total ? ' · ' + Math.round(quitado * 100 / total) + '% quitado' : '');
+      $v('vtUndo').disabled = !V.ops.length; $v('vtRedo').disabled = !V.redo.length;
+    }
+    function reconstruir() { V.mask = varitaMascara(od.data, ow, oh, V.ops); pintar(); }
+    function empujar(op) { V.ops.push(op); V.redo = []; varitaOp(od.data, ow, oh, op, V.mask); pintar(); }
+    function pixelDe(ev) {
+      var r = cv.getBoundingClientRect(), x = Math.floor((ev.clientX - r.left) / r.width * ow), y = Math.floor((ev.clientY - r.top) / r.height * oh);
+      return (x < 0 || y < 0 || x >= ow || y >= oh) ? null : [x, y];
+    }
+    function muestra(x, y) {
+      var rad = (V.muestra - 1) / 2, s = od.data, a = 0, b = 0, g = 0, c = 0, dx, dy, xx, yy, i;
+      for (dy = -rad; dy <= rad; dy++) for (dx = -rad; dx <= rad; dx++) {
+        xx = x + dx; yy = y + dy; if (xx < 0 || yy < 0 || xx >= ow || yy >= oh) continue;
+        i = (yy * ow + xx) * 4; if (s[i + 3] <= 8) continue; a += s[i]; b += s[i + 1]; g += s[i + 2]; c++;
+      }
+      return c ? [Math.round(a / c), Math.round(b / c), Math.round(g / c)] : null;
+    }
+    function cerrar() { document.removeEventListener('keydown', tecla, true); clearTimeout(rT); el.remove(); VT = null; }
+    function deshacer() { if (!V.ops.length) return; V.redo.push(V.ops.pop()); reconstruir(); }
+    function rehacer() { if (!V.redo.length) return; V.ops.push(V.redo.pop()); reconstruir(); }
+    function tecla(ev) {
+      if ((ev.ctrlKey || ev.metaKey) && /^z$/i.test(ev.key)) { ev.preventDefault(); ev.stopPropagation(); if (ev.shiftKey) rehacer(); else deshacer(); }
+      else if ((ev.ctrlKey || ev.metaKey) && /^y$/i.test(ev.key)) { ev.preventDefault(); ev.stopPropagation(); rehacer(); }
+      else if (ev.key === 'Escape') { ev.stopPropagation(); cerrar(); }
+    }
+    document.addEventListener('keydown', tecla, true);
+    // Zoom inicial: que entre completa en pantalla
+    V.zoom = Math.max(0.1, Math.min(1.5, (Math.min(window.innerWidth * 0.94, 1100) - 24) / ow, (window.innerHeight * 0.55) / oh));
+    aplicarZoom(); pintar();
+    $v('vtTol').value = V.tol; $v('vtBorde').value = V.borde; $v('vtBordeV').textContent = V.borde;
+    cv.addEventListener('mousemove', function (ev) {
+      var pt = pixelDe(ev); if (!pt) return; var i = (pt[1] * ow + pt[0]) * 4, s = od.data;
+      if (s[i + 3] <= 8) { $v('vtSw').style.background = 'transparent'; $v('vtHex').textContent = 'transparente'; return; }
+      $v('vtSw').style.background = 'rgb(' + s[i] + ',' + s[i + 1] + ',' + s[i + 2] + ')';
+      $v('vtHex').textContent = '#' + [s[i], s[i + 1], s[i + 2]].map(function (n) { return (n < 16 ? '0' : '') + n.toString(16); }).join('').toUpperCase();
+    });
+    cv.addEventListener('click', function (ev) {
+      var pt = pixelDe(ev); if (!pt) return;
+      var col = muestra(pt[0], pt[1]); if (!col) { $v('vtInfo').textContent = 'Ahí ya es transparente: tocá otro punto.'; return; }
+      var t = ev.altKey ? 'sub' : ev.shiftKey ? 'add' : V.modo;
+      empujar({ t: t, x: (pt[0] + 0.5) / ow, y: (pt[1] + 0.5) / oh, c: col, tol: V.tol, cont: V.cont, suave: V.suave });
+    });
+    area.addEventListener('wheel', function (ev) {
+      if (!ev.ctrlKey) return; ev.preventDefault();
+      V.zoom = Math.max(0.1, Math.min(8, V.zoom * (ev.deltaY < 0 ? 1.15 : 1 / 1.15))); aplicarZoom();
+    }, { passive: false });
+    el.addEventListener('click', function (ev) {
+      var b = ev.target.closest('button'); if (!b) return;
+      if (b.hasAttribute('data-vt-modo')) { V.modo = b.getAttribute('data-vt-modo'); Array.prototype.forEach.call(el.querySelectorAll('.vt-modo'), function (x) { var on = x === b; x.classList.toggle('on', on); x.classList.toggle('btn-sec', !on); }); return; }
+      if (b.id === 'vtUndo') deshacer(); else if (b.id === 'vtRedo') rehacer();
+      else if (b.id === 'vtInv') empujar({ t: 'inv' });
+      else if (b.id === 'vtClr') { if (V.ops.length) empujar({ t: 'clr' }); }
+      else if (b.id === 'vtCancel') cerrar();
+      else if (b.id === 'vtOk') {
+        var ops = V.ops.slice(), ultimoClr = -1; ops.forEach(function (o, j) { if (o.t === 'clr') ultimoClr = j; }); ops = ops.slice(ultimoClr + 1);
+        var q = ops.length ? { modo: 'varita', tol: V.tol, global: false, ops: ops, borde: V.borde } : { modo: 'ninguno', tol: 40, global: false };
+        cerrar(); alAplicar(q);
+      }
+    });
+    el.addEventListener('input', function (ev) {
+      var t = ev.target;
+      if (t.id === 'vtTol') {
+        V.tol = +t.value; $v('vtTolV').textContent = V.tol;
+        var u = V.ops[V.ops.length - 1];
+        if (V.ajustar && u && (u.t === 'add' || u.t === 'sub')) { u.tol = V.tol; clearTimeout(rT); rT = setTimeout(reconstruir, 70); }
+      } else if (t.id === 'vtBorde') { V.borde = +t.value; $v('vtBordeV').textContent = V.borde; clearTimeout(rT); rT = setTimeout(pintar, 70); }
+      else if (t.id === 'vtZoom') { V.zoom = +t.value / 100; aplicarZoom(); }
+    });
+    el.addEventListener('change', function (ev) {
+      var t = ev.target;
+      if (t.id === 'vtCont') V.cont = t.checked; else if (t.id === 'vtSuave') V.suave = t.checked; else if (t.id === 'vtAjustar') V.ajustar = t.checked;
+      else if (t.id === 'vtMuestra') V.muestra = +t.value;
+      else if (t.id === 'vtVista') { V.vista = t.value; pintar(); } else if (t.id === 'vtFondo') { V.fondo = t.value; pintar(); }
+    });
+  }).catch(function (e) { VT = null; alert('No pude abrir la varita: ' + e.message); });
+  VT = VT || { cargando: true };
 }
 
 // ---------- Subida en lote ----------
@@ -4577,10 +4825,11 @@ function subDetalleHTML(k, i) {
     '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="pos-todos">Esta posición → todos</button></div>' +
     '<div class="mini">Quitar fondo de este diseño</div>' + (function () {
       var q = subQuitarDe(k, subComun()), ops = [['ninguno', 'No quitar nada'], ['negro', 'Quitar el negro'], ['blanco', 'Quitar el blanco'], ['esquina', 'Quitar el color de las esquinas']];
+      if (q.modo === 'varita') ops.push(['varita', 'Varita mágica (' + varitaResumen(q) + ')']);
       return '<div class="quitar-box" style="margin-top:4px"><select data-sk-qmodo>' + ops.map(function (o) { return '<option value="' + o[0] + '"' + (q.modo === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>' +
         '<label class="mini" style="margin:8px 0 0">Tolerancia: <span data-sk-qtolv>' + q.tol + '</span><input type="range" min="5" max="120" step="5" value="' + q.tol + '" data-sk-qtol></label>' +
         '<label class="check-row" style="margin-top:6px"><input type="checkbox" data-sk-qglobal' + (q.global ? ' checked' : '') + '><span>También dentro del diseño (si no, solo el fondo que toca los bordes)</span></label>' +
-        '<div class="row" style="gap:6px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="quitar-abajo">Esto → los de abajo</button>' +
+        '<div class="row" style="gap:6px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-varita>🪄 Varita mágica…</button><button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="quitar-abajo">Esto → los de abajo</button>' +
         '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-copiar="quitar-todos">Esto → todos</button>' +
         (k.ov.quitar ? '<button type="button" class="btn btn-sec" style="padding:6px 10px;font-size:12px;flex:none" data-sk-qreset>Volver al de «Para todos»</button>' : '') + '</div></div>';
     })() +
@@ -4601,6 +4850,7 @@ function subCardHTML(k, i) {
     '<div class="row" style="gap:6px;margin-top:6px"><input type="text" inputmode="numeric" data-sk="precio" value="' + htmlAttr(k.precio) + '" style="max-width:110px">' +
     '<button type="button" class="prod-btn" data-sk-copiar="precio-abajo" title="Copiar este precio a los diseños de abajo">₡↓</button>' +
     '<button type="button" class="prod-btn" data-sk-pos title="Ubicar este diseño en la camiseta">◐</button>' +
+    '<button type="button" class="prod-btn" data-sk-varita title="Varita mágica: elegir con cuentagotas qué quitar"' + (k.ov.quitar && k.quitar && k.quitar.modo === 'varita' ? ' style="border-color:var(--yuzu);color:var(--yuzu)"' : '') + '>🪄</button>' +
     '<button type="button" class="prod-btn" data-sk-det title="Más opciones">⋯</button><button type="button" class="prod-btn del" data-sk-quitar title="Quitar de la lista">✕</button></div>' +
     '<div class="mini sub-est">' + esc(k.msg || k.file.name) + '</div>' + (k.abierto ? subDetalleHTML(k, i) : '') + '</div></div>';
 }
@@ -4936,6 +5186,12 @@ $('subCuerpo').addEventListener('click', function (e) {
   if (!k) return;
   if (b.hasAttribute('data-sk-copiar')) subCopiar(i, b.getAttribute('data-sk-copiar'));
   else if (b.hasAttribute('data-sk-pos')) subPosicion(i);
+  else if (b.hasAttribute('data-sk-varita')) {
+    abrirVarita(k.file, k.ov.quitar && k.quitar && k.quitar.modo === 'varita' ? k.quitar : null, function (q) {
+      if (q.modo === 'varita') { k.quitar = q; k.ov.quitar = true; } else { k.quitar = null; k.ov.quitar = false; }
+      k.tv = -1; SUB.prevIdx = i; subRender(); subMiniaturas(); subPrevGrande();
+    });
+  }
   else if (b.hasAttribute('data-sk-det')) { k.abierto = !k.abierto; subRender(); }
   else if (b.hasAttribute('data-sk-quitar')) { SUB.cards.splice(i, 1); if (SUB.prevIdx >= SUB.cards.length) SUB.prevIdx = 0; subPropagar(); subPrevGrande(); }
   else if (b.hasAttribute('data-sk-tela')) {
@@ -4945,6 +5201,7 @@ $('subCuerpo').addEventListener('click', function (e) {
 });
 // Quitar fondo propio de un diseño
 function subQuitarCambio(k, card, redibujar) {
+  if (card.querySelector('[data-sk-qmodo]').value === 'varita') return;
   var q = { modo: card.querySelector('[data-sk-qmodo]').value, tol: parseInt(card.querySelector('[data-sk-qtol]').value, 10) || 40, global: card.querySelector('[data-sk-qglobal]').checked };
   k.quitar = q; k.ov.quitar = true; k.tv = -1;
   if (redibujar) subRender();
