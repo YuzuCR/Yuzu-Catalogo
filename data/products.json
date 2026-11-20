@@ -48275,5 +48275,107 @@
     "colecciones": [
       "Basics"
     ]
+  },
+  {
+    "id": 1795143276069,
+    "nombre": "BC 006",
+    "categoria": "Anime",
+    "subcategoria": "Black Clover",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/bc-006-negro-1795143276069-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/bc-006-1795143276069-v1-espalda.png"
+        },
+        "espalda": "images/disenos/bc-006-1795143276069-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
+  },
+  {
+    "id": 1795143287952,
+    "nombre": "BC 007",
+    "categoria": "Anime",
+    "subcategoria": "Black Clover",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/bc-007-negro-1795143287952-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/bc-007-1795143287952-v1-espalda.png"
+        },
+        "espalda": "images/disenos/bc-007-1795143287952-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": false,
+    "vivo": true,
+    "colecciones": [
+      "Basics"
+    ]
   }
 ]
