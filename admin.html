@@ -337,6 +337,11 @@
   details.carpeta > summary::-webkit-details-marker { display: none; }
   details.carpeta > summary .n { margin-left: auto; font-size: 12px; color: var(--mudo); font-weight: 400; }
   details.carpeta[open] > summary { border-bottom: 1px solid var(--linea); }
+  details.carpeta > summary .borrar-serie { background: none; border: 1px solid transparent; border-radius: 6px; color: var(--mudo); cursor: pointer; font-size: 12px; padding: 3px 8px; opacity: 0; transition: opacity .15s; }
+  details.carpeta > summary:hover .borrar-serie, details.carpeta[open] > summary .borrar-serie { opacity: 1; }
+  details.carpeta > summary .borrar-serie:hover { border-color: var(--rojo); color: var(--rojo); }
+  details.flujo-ayuda > summary { cursor: pointer; font-weight: 700; font-size: 15px; list-style: none; }
+  details.flujo-ayuda > summary::-webkit-details-marker { display: none; }
   details.carpeta > .prod-row, details.carpeta > .prod-edit { margin-left: 8px; margin-right: 8px; }
 
   .ini-muro { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
@@ -453,8 +458,8 @@
         <button class="btn btn-sec" data-ir="inicio/Portada y drop">Cambiar el drop</button>
       </div>
     </div>
-    <div class="card">
-      <h2>Cómo fluye un pedido</h2>
+    <details class="card flujo-ayuda">
+      <summary>¿Cómo fluye un pedido?</summary>
       <ol class="flujo">
         <li><strong>Llega el mensaje</strong> por WhatsApp (de la tienda o de «Armá tu personalizada»).</li>
         <li><strong>Pedidos › Bandeja:</strong> pegalo y tocá «Guardar en la bandeja». Queda «Por cerrar».</li>
@@ -463,7 +468,7 @@
         <li><strong>Números:</strong> ingresos, ganancia y lo más vendido salen solos de esas ventas.</li>
       </ol>
       <p class="mini">«Registrar venta a mano» (en Pedidos) es solo para ventas que no llegaron como mensaje: en persona, por Instagram, etc.</p>
-    </div>
+    </details>
   </div>
 
   <!-- ==================== PEDIDOS ==================== -->
@@ -547,7 +552,6 @@
         </div>
       </details>
       <div class="status" id="statusVivo"></div>
-      <p class="mini" style="margin-top:12px">En cada producto: ● visible/oculto · ◐ diseños PNG y versiones · ✎ editar datos · ✕ borrar.</p>
       <div id="limpieza" style="display:none;margin-top:12px;border:1px solid var(--linea);border-radius:8px;padding:12px;">
         <div class="status" id="statusLimp"></div>
         <div id="limpLista" style="max-height:340px;overflow:auto"></div>
@@ -1623,7 +1627,7 @@ function renderLista(abrirIdx) {
         '</div><div class="prod-edit" id="edit-' + i + '" style="display:none;"></div>';
     });
     var abierta = filtro || CARPETAS_ABIERTAS[k];
-    html += '<details class="carpeta" data-carpeta="' + htmlAttr(k) + '"' + (abierta ? ' open' : '') + '><summary>📁 ' + esc(k || 'Sin colección') + ' <span class="n">' + idxs.length + '</span></summary>' + (abierta ? filas : '<template>' + filas + '</template>') + '</details>';
+    html += '<details class="carpeta" data-carpeta="' + htmlAttr(k) + '"' + (abierta ? ' open' : '') + '><summary>📁 ' + esc(k || 'Sin colección') + ' <span class="n">' + idxs.length + '</span>' + (k ? '<button type="button" class="borrar-serie" data-borrar-serie="' + htmlAttr(k) + '" title="Borrar la serie entera con sus ' + grupos[k].length + ' productos">🗑 Borrar serie</button>' : '') + '</summary>' + (abierta ? filas : '<template>' + filas + '</template>') + '</details>';
   });
   $('listaProductos').innerHTML = html || '<div style="color:var(--mudo);font-size:13px;">Nada coincide con la búsqueda.</div>';
   if (typeof abrirIdx === 'number') abrirEdicion(abrirIdx);
@@ -1875,6 +1879,8 @@ $('gridMockups').addEventListener('change', function (e) {
   }
 });
 $('listaProductos').addEventListener('click', function (e) {
+  var bs = e.target.closest('[data-borrar-serie]');
+  if (bs) { e.preventDefault(); e.stopPropagation(); borrarSubcategoria(bs.getAttribute('data-borrar-serie')); return; }
   var btn = e.target.closest('[data-accion]');
   if (!btn) return;
   var i = parseInt(btn.getAttribute('data-i'), 10);
