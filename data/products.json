@@ -51745,54 +51745,6 @@
     ]
   },
   {
-    "id": 1795716910435,
-    "nombre": "NS 005",
-    "categoria": "Anime",
-    "subcategoria": "Naruto Shippuden",
-    "imagenes": [],
-    "mockups": {
-      "Negro": [
-        "images/ns-005-negro-1795716910435-portada.jpg"
-      ]
-    },
-    "colores": [
-      "Blanco",
-      "Negro",
-      "Crema",
-      "Café",
-      "Gris grafito",
-      "Azul marino",
-      "Verde musgo"
-    ],
-    "precio": 17500,
-    "enDescuento": false,
-    "precioDescuento": null,
-    "portada": "Negro",
-    "impresion": "espalda",
-    "versiones": [
-      {
-        "nombre": "Versión 1",
-        "colores": [],
-        "print": {
-          "espalda": "privado:images/disenos/print/ns-005-1795716910435-v1-espalda.png"
-        },
-        "espalda": "images/disenos/ns-005-1795716910435-v1-espalda.png"
-      }
-    ],
-    "prendas": [
-      "boxy",
-      "sinmangas",
-      "mangalarga",
-      "hoodie"
-    ],
-    "ajuste": {
-      "v": 2
-    },
-    "destacado": false,
-    "oculto": true,
-    "vivo": true
-  },
-  {
     "id": 1795716944642,
     "nombre": "NS 006",
     "categoria": "Anime",
