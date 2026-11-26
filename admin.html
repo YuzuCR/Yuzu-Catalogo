@@ -1989,6 +1989,7 @@ $('btnPrecioTodos').addEventListener('click', function () {
 
 // ========== BORRAR EN LOTE ==========
 function abrirModalBorrar() {
+  subTrasBorrar = null;
   $('listaBorrar').innerHTML = PRODUCTOS.length ? PRODUCTOS.map(function (p, idx) {
     return '<label class="modal-item">' +
       '<img src="' + portadaDe(p) + '" alt="">' +
@@ -2052,6 +2053,8 @@ function borrarEnLote() {
     });
     return cadena.then(function () {
       statusEdit('ok', '✓ ' + borrar.length + ' producto(s) borrados' + (imagenes.length ? ' y ' + hechas + ' imagen(es) quitadas' : '') + '. Tarda 1-2 min en verse en la tienda.');
+      var col = subTrasBorrar; subTrasBorrar = null;
+      if (col && !PRODUCTOS.some(function (p) { return p.subcategoria === col; })) borrarSubcategoria(col, true);
     });
   }).catch(function (e) { statusEdit('err', 'Error: ' + e.message + '. Recargá la lista antes de intentar de nuevo.'); });
 }
@@ -4415,12 +4418,19 @@ $('btnGuardarPrecios').addEventListener('click', function () {
 });
 
 // ---------- Borrar subcategoría ----------
-function borrarSubcategoria(sub) {
+var subTrasBorrar = null; // colección que se borra sola cuando terminan de borrarse sus productos
+function borrarSubcategoria(sub, sinPreguntar) {
   var usan = PRODUCTOS.filter(function (p) { return p.subcategoria === sub; });
-  if (usan.length) { alert('"' + sub + '" tiene ' + usan.length + ' producto(s) (incluyendo ocultos). Borralos o cambiales la subcategoría primero.'); return; }
+  if (usan.length) {
+    if (!confirm('«' + sub + '» tiene ' + usan.length + ' producto(s) (incluyendo ocultos).\n\n¿Borrar la colección entera con sus productos? Se abre la lista con esos ' + usan.length + ' ya marcados para que confirmes.')) return;
+    abrirModalBorrar();
+    marcarBorrar(function (p) { return p.subcategoria === sub; });
+    subTrasBorrar = sub;
+    return;
+  }
   var cat = null;
   Object.keys(CATEGORIAS).forEach(function (c) { if ((CATEGORIAS[c] || []).indexOf(sub) !== -1) cat = c; });
-  if (!confirm('¿Borrar la subcategoría "' + sub + '"' + (cat ? ' de ' + cat : '') + '?')) return;
+  if (!sinPreguntar && !confirm('¿Borrar la subcategoría "' + sub + '"' + (cat ? ' de ' + cat : '') + '?')) return;
   if (cat) {
     CATEGORIAS[cat] = CATEGORIAS[cat].filter(function (s) { return s !== sub; });
     var vacia = !CATEGORIAS[cat].filter(function (s) { return !/^\d+$/.test(s); }).length && !PRODUCTOS.some(function (p) { return p.categoria === cat; });
@@ -4454,7 +4464,7 @@ function renderNombres() {
     return '<div class="nombre-fila" data-sub="' + esc(s.nombre) + '">' +
       '<div class="cab"><span>' + esc(s.nombre) + ' <span class="mini" style="margin:0">· ' + esc(s.cat) + ' · ' + s.n + '</span></span><span style="display:flex;align-items:center;gap:10px"><em>' + esc(vistaNombre(s.nombre, n)) + '</em>' +
         '<button class="btn btn-sec mini-btn" data-ver-sub="' + htmlAttr(s.nombre) + '">Ver productos</button><button class="btn btn-sec mini-btn" data-renombrar-sub="' + htmlAttr(s.nombre) + '">Renombrar</button>' +
-        (s.total ? '' : '<button class="prod-btn del" data-borrar-sub="' + esc(s.nombre) + '" title="Borrar subcategoría">✕</button>') + '</span></div>' +
+        '<button class="prod-btn del" data-borrar-sub="' + esc(s.nombre) + '" title="' + (s.total ? 'Borrar la colección entera (' + s.total + ' producto' + (s.total === 1 ? '' : 's') + ')' : 'Borrar subcategoría') + '">✕</button>' + '</span></div>' +
       '<div class="grid">' +
         '<input type="text" data-campo="sigla" maxlength="6" placeholder="' + esc(siglaAuto(s.nombre) || 'Sigla') + '" value="' + esc(n.sigla || '') + '">' +
         '<input type="text" data-campo="titulo" placeholder="Título épico (ej: Más allá de los muros)" value="' + esc(n.titulo || '') + '">' +
