@@ -52223,5 +52223,245 @@
     "destacado": false,
     "oculto": true,
     "vivo": true
+  },
+  {
+    "id": 1795717011897,
+    "nombre": "NS 011",
+    "categoria": "Anime",
+    "subcategoria": "Naruto Shippuden",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ns-011-negro-1795717011897-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ns-011-1795717011897-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ns-011-1795717011897-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": true,
+    "vivo": true
+  },
+  {
+    "id": 1795717035946,
+    "nombre": "NS 012",
+    "categoria": "Anime",
+    "subcategoria": "Naruto Shippuden",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ns-012-negro-1795717035946-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ns-012-1795717035946-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ns-012-1795717035946-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": true,
+    "vivo": true
+  },
+  {
+    "id": 1795717042896,
+    "nombre": "NS 013",
+    "categoria": "Anime",
+    "subcategoria": "Naruto Shippuden",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ns-013-negro-1795717042896-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ns-013-1795717042896-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ns-013-1795717042896-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": true,
+    "vivo": true
+  },
+  {
+    "id": 1795717064981,
+    "nombre": "NS 014",
+    "categoria": "Anime",
+    "subcategoria": "Naruto Shippuden",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ns-014-negro-1795717064981-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ns-014-1795717064981-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ns-014-1795717064981-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": true,
+    "vivo": true
+  },
+  {
+    "id": 1795717084734,
+    "nombre": "NS 015",
+    "categoria": "Anime",
+    "subcategoria": "Naruto Shippuden",
+    "imagenes": [],
+    "mockups": {
+      "Negro": [
+        "images/ns-015-negro-1795717084734-portada.jpg"
+      ]
+    },
+    "colores": [
+      "Blanco",
+      "Negro",
+      "Crema",
+      "Café",
+      "Gris grafito",
+      "Azul marino",
+      "Verde musgo"
+    ],
+    "precio": 17500,
+    "enDescuento": false,
+    "precioDescuento": null,
+    "portada": "Negro",
+    "impresion": "espalda",
+    "versiones": [
+      {
+        "nombre": "Versión 1",
+        "colores": [],
+        "print": {
+          "espalda": "privado:images/disenos/print/ns-015-1795717084734-v1-espalda.png"
+        },
+        "espalda": "images/disenos/ns-015-1795717084734-v1-espalda.png"
+      }
+    ],
+    "prendas": [
+      "boxy",
+      "sinmangas",
+      "mangalarga",
+      "hoodie"
+    ],
+    "ajuste": {
+      "v": 2
+    },
+    "destacado": false,
+    "oculto": true,
+    "vivo": true
   }
 ]
