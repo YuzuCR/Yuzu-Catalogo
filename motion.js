@@ -192,9 +192,10 @@ var YuzuMotion = (function () {
     document.addEventListener('pointerover', function (e) {
       var t = e.target; if (!t.closest) return;
       if (t.closest('.ye-fondo, .vt-fondo, .mv-360, input, textarea, select')) { cur.classList.remove('on'); return; }
-      var card = t.closest('.card'), pers = t.closest('[data-abrir-pers], .estudio-card, .mv-esc'), link = t.closest('a, button, label, summary');
-      cur.classList.toggle('grande', !!(card || pers)); cur.classList.toggle('chico', !card && !pers && !!link);
-      cur.textContent = card ? 'Ver' : pers ? (t.closest('.mv-esc') ? 'Girá' : 'Diseñá') : '';
+      // Sin círculo «Diseñá» sobre la personalizada: ahí el cursor queda normal (pedido de Andre)
+      var card = t.closest('.card'), gira = t.closest('.mv-esc'), link = t.closest('a, button, label, summary');
+      cur.classList.toggle('grande', !!(card || gira)); cur.classList.toggle('chico', !card && !gira && !!link);
+      cur.textContent = card ? 'Ver' : gira ? 'Girá' : '';
     });
     (function bucle() { cx += (tx - cx) * 0.22; cy += (ty - cy) * 0.22; cur.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)'; requestAnimationFrame(bucle); })();
   }
