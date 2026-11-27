@@ -663,9 +663,14 @@
     .prod { gap: 18px; }
   }
   /* ================= CAPTURA / CUPONES / CORTE / TALLA ================= */
-  .cap-teaser { position: fixed; left: 16px; bottom: 76px; z-index: 86; display: none; align-items: center; gap: 10px; background: var(--yuzu); color: #0b0b0a; border-radius: 28px; padding: 11px 14px 11px 18px; font-family: var(--dato); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; box-shadow: 0 6px 20px rgba(0,0,0,.35); transition: transform .3s var(--lento); }
+  .cap-teaser { position: fixed; left: 16px; bottom: 16px; z-index: 86; display: none; align-items: center; gap: 10px; background: var(--yuzu); color: #0b0b0a; border-radius: 28px; padding: 11px 14px 11px 18px; font-family: var(--dato); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; box-shadow: 0 6px 20px rgba(0,0,0,.35); transition: transform .3s var(--lento); }
   .cap-teaser.ver { display: inline-flex; animation: surgir .6s var(--lento); }
   .cap-teaser:hover { transform: translateY(-2px); }
+  /* Flotantes: nunca sobre el hero ni sobre personalizador, bolsa, zoom, menú o buscador; y uno a la vez */
+  body.hero-visible .wa-flotante, body.hero-visible .cap-teaser,
+  body:has(#pers.abierta, #bolsa.abierta, #zoom.abierta, #cajon.abierta, #buscador.abierta) .wa-flotante,
+  body:has(#pers.abierta, #bolsa.abierta, #zoom.abierta, #cajon.abierta, #buscador.abierta) .cap-teaser,
+  body:has(.cap-teaser.ver) .wa-flotante { display: none !important; }
   .cap-teaser .x { width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,.15); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; }
   .cap-paso { display: none; }
   .cap-paso.ver { display: block; animation: surgir .5s var(--suave); }
@@ -3560,6 +3565,11 @@ $('tallaVelo').addEventListener('click', function (e) { if (e.target === $('tall
    BARRA FIJA DE COMPRA (celular)
    ===================================================================== */
 var BARRA_RAF = 0;
+// Hero en pantalla → se esconden los flotantes para no tapar los CTA del hero
+(function () {
+  var h = $('hero'); if (!h || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function (en) { document.body.classList.toggle('hero-visible', en[0].isIntersecting && en[0].intersectionRatio > 0.15); }, { threshold: [0, 0.15, 0.5] }).observe(h);
+})();
 function mostrarBarra(si) { $('barraCompra').classList.toggle('ver', !!si); document.body.classList.toggle('barra-on', !!si); }
 // Aparece cuando el botón "Agregar" quedó arriba, fuera de la pantalla (solo en celular)
 function revisarBarra() {
