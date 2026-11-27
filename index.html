@@ -1301,10 +1301,10 @@
   </div>
 </aside>
 
-<script src="alias.js"></script>
-<script src="mockup.js"></script>
-<script src="estudio.js"></script>
-<script src="prenda3d.js"></script>
+<script src="alias.js?v=5"></script>
+<script src="mockup.js?v=5"></script>
+<script src="estudio.js?v=5"></script>
+<script src="prenda3d.js?v=5"></script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN — lo único que deberías tocar a mano
@@ -1339,7 +1339,8 @@ var REDES = [
    'Attack on Titan': { sigla: 'AOT', titulo: 'Más allá de los muros', frase: 'La serie completa' }  */
 // Títulos legibles por defecto (alias.js → YUZU_TITULOS); el admin los cambia en Inicio → Nombres de colecciones (tienda.json → nombres)
 var NOMBRES = {};
-Object.keys(window.YUZU_TITULOS || {}).forEach(function (k) { NOMBRES[k] = { titulo: window.YUZU_TITULOS[k] }; });
+var TITULOS_DEF = window.YUZU_TITULOS || { 'Bluelock': 'Blue Lock', 'Pokemon': 'Pokémon', 'Akame Ga Kill!': 'Akame ga Kill!' };   // respaldo si alias.js viene viejo del caché
+Object.keys(TITULOS_DEF).forEach(function (k) { NOMBRES[k] = { titulo: TITULOS_DEF[k] }; });
 
 /* Búsqueda por personaje: serie → personajes y sinónimos (separados por coma).
    El admin los edita en Precios → Búsqueda (tienda.json → busqueda.alias). */
@@ -3966,7 +3967,7 @@ actualizarBolsa();
 cargar();
 cargarBoletin();
 </script>
-<script src="motion.js"></script>
-<script src="cinetico.js"></script>
+<script src="motion.js?v=5"></script>
+<script src="cinetico.js?v=5"></script>
 </body>
 </html>
