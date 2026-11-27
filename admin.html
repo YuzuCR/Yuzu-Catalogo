@@ -3113,6 +3113,21 @@ function comprimirCon(file, maxLado) {
     comprimirImagen(file, function (r) { MAX_LADO = antes; ok(r); });
   });
 }
+// Portada para celular: recorte vertical 3:4 del centro (la tienda la usa en pantallas angostas → pesa menos y se ve nítida)
+function recorteMovil(file) {
+  return new Promise(function (ok) {
+    var img = new Image(), u = URL.createObjectURL(file);
+    img.onload = function () {
+      var h = Math.min(img.height, 1600), esc = h / img.height, w = Math.min(img.width * esc, Math.round(h * 3 / 4));
+      var c = document.createElement('canvas'); c.width = Math.round(w); c.height = Math.round(h);
+      var sw = c.width / esc, sx = (img.width - sw) / 2;
+      c.getContext('2d').drawImage(img, sx, 0, sw, img.height, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(u); ok(c.toDataURL('image/jpeg', 0.8).split(',')[1]);
+    };
+    img.onerror = function () { ok(null); };
+    img.src = u;
+  });
+}
 function leerCrudo(file) {
   return new Promise(function (ok) {
     var rd = new FileReader();
@@ -3180,7 +3195,10 @@ document.addEventListener('change', function (e) {
   prep.then(function (b64) {
     if (!b64) throw new Error('No pude leer la imagen.');
     if (b64.length * 0.75 > 4 * 1024 * 1024) throw new Error('La imagen pesa más de 4 MB.');
-    return subirArchivoFijo(f.ruta, b64, f.nombre + ' de la tienda');
+    return subirArchivoFijo(f.ruta, b64, f.nombre + ' de la tienda').then(function () {
+      if (f.ruta !== 'images/portada.jpg') return;
+      return recorteMovil(file).then(function (m) { if (m) return subirArchivoFijo('images/portada-movil.jpg', m, 'Portada para celular'); });
+    });
   }).then(function () {
     statusDe(stF, 'ok', f.nombre + ' subida. GitHub Pages tarda 1–2 minutos en mostrarla.');
     var v = $('vistaFija' + IMGS_FIJAS.indexOf(f)); v.style.backgroundImage = 'url(' + URL.createObjectURL(file) + ')'; v.textContent = '';
@@ -3191,6 +3209,7 @@ document.addEventListener('click', function (e) {
   var b = e.target.closest('[data-quitar-fija]'); if (!b) return;
   var f = IMGS_FIJAS[Number(b.getAttribute('data-quitar-fija'))];
   if (!confirm('¿Quitar ' + f.nombre.toLowerCase() + '?')) return;
+  if (f.ruta === 'images/portada.jpg') ghBorrarArchivo('images/portada-movil.jpg', 'Quitar portada para celular').catch(function () {});
   ghBorrarArchivo(f.ruta, 'Quitar ' + f.nombre).then(function () { statusDe(f.ruta === 'images/portada.jpg' ? 'statusDrops' : 'statusImgs', 'ok', f.nombre + ' quitada.'); renderImgsFijas(); });
 });
 
@@ -3209,7 +3228,10 @@ function vistaImg(url) { return '<div class="vista" style="' + (url ? 'backgroun
 function inicioSlot(tipo, clave, titulo, url) {
   return '<div class="img-fija">' + vistaImg(url) + '<div><strong>' + esc(titulo) + '</strong><div class="row" style="flex-wrap:wrap">' + botonesImagen(tipo, clave, url) + '</div></div></div>';
 }
-var SECCIONES_INICIO = [['bandaPers', 'Armá tu personalizada (banda)'], ['secDestacados', 'Destacados'], ['secBanners', 'Cuadros de colecciones'], ['secDrop', 'Recién salidos del taller'], ['granBanner', 'Camisetas gráficas (banner grande)'], ['secResenas', 'Reseñas'], ['secMuro', 'Etiquétanos'], ['detras', 'El taller']];
+var SECCIONES_INICIO = [['secDestacados', 'Destacados'], ['secDrop', 'Recién salidos del taller'], ['bandaPers', 'Armá tu personalizada (banda)'], ['secSeries', 'Series populares'], ['secComo', 'Cómo funciona'], ['secBanners', 'Cuadros de colecciones (apagado por defecto)'], ['granBanner', 'Camisetas gráficas (apagado por defecto)'], ['marqBloque', 'Cinta de texto (apagada por defecto)'], ['secResenas', 'Reseñas'], ['secMuro', 'Etiquétanos'], ['detras', 'El taller']];
+// Igual que OCULTAS_DEF en index.html: apagadas si nunca las tocaste
+var OCULTAS_DEF = { secBanners: true, granBanner: true, marqBloque: true };
+function seccionOculta(I, k) { return I.ocultar[k] === true || (I.ocultar[k] === undefined && !!OCULTAS_DEF[k]); }
 function renderInicio() {
   var I = inicioDatos(), fijos = TIENDA.banners && TIENDA.banners.length, subs = fijos ? TIENDA.banners.slice() : bannersAuto(), todas = subsConPiezas();
   while (subs.length < 4) subs.push('');
@@ -3223,7 +3245,7 @@ function renderInicio() {
   var g = ''; for (var i = 0; i < 3; i++) g += inicioSlot('gran', String(i), 'Imagen ' + (i + 1), I.gran[i]);
   $('inicioGran').innerHTML = g;
   $('inicioMuro').innerHTML = I.muro.length ? I.muro.map(function (u, i) { return '<div class="im-item"><img src="' + htmlAttr(u) + '"><button class="im-rm" data-ini="muro-quitar" data-clave="' + i + '" title="Quitar">✕</button></div>'; }).join('') : '<p class="mini" style="margin:0">Sin fotos: la sección está oculta en la tienda.</p>';
-  $('inicioSecciones').innerHTML = SECCIONES_INICIO.map(function (x) { return '<label class="check-row"><input type="checkbox" data-sec-inicio="' + x[0] + '"' + (I.ocultar[x[0]] ? '' : ' checked') + '><span>' + esc(x[1]) + '</span></label>'; }).join('');
+  $('inicioSecciones').innerHTML = SECCIONES_INICIO.map(function (x) { return '<label class="check-row"><input type="checkbox" data-sec-inicio="' + x[0] + '"' + (seccionOculta(I, x[0]) ? '' : ' checked') + '><span>' + esc(x[1]) + '</span></label>'; }).join('');
   $('heroEtiq').value = I.heroEtiqueta || ''; $('heroTitulo').value = I.heroTitulo || '';
 }
 function inicioGuardar(msg, st) {
@@ -3280,7 +3302,7 @@ document.addEventListener('change', function (e) {
     inicioGuardar('Cuadros guardados.');
   } else if (inp.hasAttribute && inp.hasAttribute('data-sec-inicio')) {
     var I = inicioDatos(), k = inp.getAttribute('data-sec-inicio');
-    if (inp.checked) delete I.ocultar[k]; else I.ocultar[k] = true;
+    if (inp.checked) { if (OCULTAS_DEF[k]) I.ocultar[k] = false; else delete I.ocultar[k]; } else I.ocultar[k] = true;
     inicioGuardar(inp.checked ? 'Sección visible.' : 'Sección oculta.', 'statusSecciones');
   } else if (inp.hasAttribute && inp.hasAttribute('data-ini-file') && inp.files.length) {
     var t = inp.getAttribute('data-tipo'), c = inp.getAttribute('data-clave'), f = inp.files[0]; inp.value = '';
