@@ -1443,6 +1443,12 @@ function cargar() {
     CATEGORIAS = r[1] || {};
     RESENAS = Array.isArray(r[2]) ? r[2].filter(function (x) { return x && (x.texto || x.captura); }) : [];
     VISIBLES = PRODUCTOS.filter(function (p) { return !p.oculto && !vencido(p); }).sort(ordenDestacados);
+    // Sin destacados marcados en el admin: orden por defecto «Más nuevos» y sin fila de Destacados en la home (repetía «Recién salidos»)
+    if (!VISIBLES.some(function (p) { return p.destacado; })) {
+      ORDEN_DEF = 'nuevo'; COL.orden = 'nuevo';
+      var opD = document.querySelector('#colOrden option[value="dest"]'); if (opD) opD.remove();
+      if ($('secDestacados')) $('secDestacados').style.display = 'none';
+    }
     armarArbol();
     armarDrops();
     pintarMenus();
@@ -1833,6 +1839,7 @@ document.addEventListener('click', function (e) {
 /* =====================================================================
    COLECCIÓN
    ===================================================================== */
+var ORDEN_DEF = 'dest';
 var COL = { clave: '', lista: [], filtros: { colores: [], impresion: '', min: '', max: '', ofertas: false, tipo: '' }, orden: 'dest', pagina: 1 };
 
 function resolverColeccion(a, b) {
@@ -1874,7 +1881,7 @@ function mostrarColeccion(a, b, query) {
   if (!r) { location.replace('#/c/todo'); return; }
   var clave = location.hash;
   if (clave !== COL.clave) {
-    COL.clave = clave; COL.pagina = 1; COL.orden = 'dest';
+    COL.clave = clave; COL.pagina = 1; COL.orden = ORDEN_DEF;
     COL.filtros = { colores: [], impresion: '', min: '', max: '', ofertas: false, tipo: '' };
   }
   if (query && query.color) COL.filtros.colores = [query.color];
@@ -3684,7 +3691,7 @@ function enrutar() {
 }
 function mostrarBusquedaCompleta(q) {
   var r = buscar(q);
-  COL.clave = 'buscar/' + q; COL.pagina = 1; COL.orden = 'dest';
+  COL.clave = 'buscar/' + q; COL.pagina = 1; COL.orden = ORDEN_DEF;
   COL.filtros = { colores: [], impresion: '', min: '', max: '', ofertas: false };
   COL.r = { lista: r, titulo: 'Resultados' };
   document.title = 'Buscar «' + q + '» — Yuzu';
@@ -3695,7 +3702,7 @@ function mostrarBusquedaCompleta(q) {
   $('avisoManifiesto').classList.add('oculto');
   $('citaTxt').textContent = '«Cada diseño es un argumento antes de ser una prenda.»';
   $('citaImg').style.display = 'none';
-  $('colOrden').value = 'dest';
+  $('colOrden').value = ORDEN_DEF;
   $('buscaInput').value = q;
   pintarPanelFiltros();
   pintarColeccion();
