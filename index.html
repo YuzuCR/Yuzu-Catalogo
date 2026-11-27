@@ -1985,7 +1985,8 @@ function pintarColeccion(scroll) {
   $('colConteo').textContent = l.length + (l.length === 1 ? ' pieza' : ' piezas');
   $('colRejilla').innerHTML = trozo.length
     ? trozo.map(function (p, i) { return tarjeta(p, i, '', f.colores.filter(function (c) { return (p.colores || []).indexOf(c) !== -1; })[0]); }).join('')
-    : (VISIBLES.length ? '<p class="vacio">Nada coincide con esos filtros. <button class="quitar-todo" data-f-limpiar>Quitar filtros</button></p>'
+    : (COL.clave.indexOf('buscar/') === 0 ? sinResultadosHTML(decodeURIComponent(COL.clave.slice(7)))
+      : VISIBLES.length ? '<p class="vacio">Nada coincide con esos filtros. <button class="quitar-todo" data-f-limpiar>Quitar filtros</button></p>'
       : '<p class="vacio">Estamos preparando la próxima tanda. Seguinos en Instagram para enterarte primero.</p>');
 
   // Filtros activos
@@ -2823,7 +2824,15 @@ function pintarBusqueda() {
         return '<a class="busca-item" href="#/p/' + ref(p) + '"><img src="' + esc(fotoBase(p)) + '" alt="" loading="lazy"><div><div class="nom">' + esc(p.nombre) + '</div><div class="card-serie">' + esc(p.subcategoria || p.categoria) + '</div>' + precioHTML(p) + '</div></a>';
       }).join('') +
       (r.length > 6 ? '<a class="subrayado busca-todo" href="#/buscar/' + encodeURIComponent(q.trim()) + '">Ver los ' + r.length + ' resultados</a>' : '')
-    : '<p class="vacio" style="padding:40px 0">Nada con «' + esc(q) + '». Probá con el nombre de la serie.</p>';
+    : sinResultadosHTML(q);
+}
+// Búsqueda sin resultados: nunca un callejón sin salida → personalizada o WhatsApp con el término ya escrito
+function sinResultadosHTML(q) {
+  q = String(q || '').trim();
+  var wa = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent('Hola Yuzu, busco una camiseta de «' + q + '». ¿Me la pueden hacer?');
+  return '<div class="vacio" style="padding:40px 0">Nada con «' + esc(q) + '» todavía.<br><strong style="display:block;margin:14px 0 16px;color:var(--tinta)">¿No está tu personaje? Armá tu personalizada.</strong>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"><button class="btn" type="button" data-abrir-pers="propio">Armá tu personalizada</button>' +
+    '<a class="btn btn-hueco" href="' + wa + '" target="_blank" rel="noopener">Pedila por WhatsApp</a></div></div>';
 }
 $('btnBuscar').addEventListener('click', abrirBuscador);
 $('cerrarBuscar').addEventListener('click', cerrarBuscador);
@@ -3393,7 +3402,7 @@ document.addEventListener('click', function (e) {
   if (!b) return;
   e.preventDefault();
   var est = b.getAttribute('data-abrir-pers');
-  cerrarCajon();
+  cerrarCajon(); if ($('buscador').classList.contains('abierta')) cerrarBuscador();
   abrirPers({ estilo: est || null, base: b.hasAttribute('data-pers-base') && PR.p ? PR.p : null });
 });
 
