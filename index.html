@@ -2181,6 +2181,9 @@ function tablaTallas() {
 function faqHTML() { return FAQ.map(function (q) { var r = q[1].replace('{pago}', PAGO.corto).replace('{cambios}', PAGO.cambios); return '<p class="faq-q">' + esc(q[0]) + '</p><p>' + esc(r) + '</p>'; }).join(''); }
 
 function mostrarProducto(r) {
+  // Intención: a la segunda pieza vista en la sesión, ofrecer el cupón (una sola vez)
+  var vistas = (Number(sessionStorageLeer('yuzu-vistas')) || 0) + 1; sessionStorageGuardar('yuzu-vistas', String(vistas));
+  if (vistas === 2) setTimeout(function () { intentarCaptura('2_piezas'); }, 6000);
   var p = porRef(r);
   if (p && !p.oculto && vencido(p)) {
     $('vProducto').innerHTML = '<div class="envoltura" style="padding:90px 0;text-align:center"><p class="dato">Edición cerrada</p><h1 style="font-family:var(--display);font-size:48px;text-transform:uppercase;margin:12px 0 26px">' + esc(p.nombre) + ' ya salió del archivo</h1><p style="margin:-10px auto 26px;max-width:40ch;color:var(--tinta-2)">Estuvo disponible hasta el ' + fechaBonita(p.hasta) + '. Si querés algo parecido, lo hacemos personalizado.</p><a class="btn" href="#/c/todo">Ver el archivo</a></div>';
@@ -2818,7 +2821,7 @@ function mostrarAgregado(item, cant) {
 }
 function cerrarAgregado() { $('agregado').classList.remove('ver'); }
 $('cerrarAgregado').addEventListener('click', cerrarAgregado);
-$('agregadoSeguir').addEventListener('click', cerrarAgregado);
+$('agregadoSeguir').addEventListener('click', function () { cerrarAgregado(); setTimeout(function () { intentarCaptura('agrego'); }, 1500); });
 $('agregadoVer').addEventListener('click', function () { cerrarAgregado(); abrirBolsa(); });
 $('agregadoPedir').addEventListener('click', function () { cerrarAgregado(); pedirWhatsApp(bolsa); });
 
@@ -3618,9 +3621,16 @@ function abrirCaptura() {
   $('capVelo').classList.add('abierto');
 }
 function cerrarCaptura() { $('capVelo').classList.remove('abierto'); pintarTeaser(); }
-function pintarTeaser() {
-  var fin = almacen.leer('yuzu-cap-paso') === 'fin', oculto = sessionStorageLeer('yuzu-cap-x');
-  $('capTeaser').classList.toggle('ver', CAPTURA.activo && !fin && !oculto);
+// Un solo mecanismo de captura: la ventana del cupón, abierta por intención (2 piezas vistas o después de agregar a la bolsa).
+// Sin botón flotante «10% OFF» ni ventana por tiempo; el formulario del pie queda como opción pasiva.
+function pintarTeaser() { $('capTeaser').classList.remove('ver'); }
+function intentarCaptura(motivo) {
+  if (!CAPTURA.activo || almacen.leer('yuzu-cap-paso') || almacen.leer('yuzu-cap-visto')) return;
+  var ocupado = ['bolsa', 'pers', 'zoom', 'cajon', 'buscador'].some(function (id) { return $(id) && $(id).classList.contains('abierta'); }) ||
+    $('agregado').classList.contains('ver') || document.body.classList.contains('hero-visible') || $('capVelo').classList.contains('abierto');
+  if (ocupado) { if (!intentarCaptura.reintento) intentarCaptura.reintento = setTimeout(function () { intentarCaptura.reintento = null; intentarCaptura(motivo); }, 4000); return; }
+  almacen.guardar('yuzu-cap-visto', '1'); abrirCaptura();
+  evento('captura_mostrada', { motivo: motivo });
 }
 function sessionStorageLeer(k) { try { return window.sessionStorage.getItem(k); } catch (e) { return null; } }
 function sessionStorageGuardar(k, v) { try { window.sessionStorage.setItem(k, v); } catch (e) {} }
@@ -3635,16 +3645,8 @@ function iniciarCaptura() {
   $('capPct2').textContent = CAPTURA.pctTel + '% OFF';
   $('capBtn2').textContent = 'Desbloquear ' + CAPTURA.pctTel + '%';
   $('capTit2').textContent = 'Subí tu ' + CAPTURA.pctCorreo + '% a ' + CAPTURA.pctTel + '%';
-  $('capTxt2').textContent = 'Tu ' + CAPTURA.pctCorreo + '% sube a ' + CAPTURA.pctTel + '% si nos dejás tu WhatsApp. No se suman: te quedás con el mayor. Solo te escribimos cuando hay drop nuevo.';
+  $('capTxt2').textContent = 'Tu ' + CAPTURA.pctCorreo + '% sube a ' + CAPTURA.pctTel + '% si nos dejás tu WhatsApp. No se suman: te quedás con el mayor. Nada de spam.';
   pintarTeaser();
-  if (CAPTURA.activo && !almacen.leer('yuzu-cap-paso') && !almacen.leer('yuzu-cap-visto')) {
-    setTimeout(function intentar() {
-      if ($('bolsa').classList.contains('abierta') || $('pers').classList.contains('abierta') || $('zoom').classList.contains('abierta')) return;
-      // No interrumpir la historia con scroll: esperar a que la persona salga de ella
-      var h = $('cnHistoria'); if (h) { var r = h.getBoundingClientRect(); if (r.top < innerHeight * 0.5 && r.bottom > innerHeight * 0.5) { setTimeout(intentar, 3000); return; } }
-      almacen.guardar('yuzu-cap-visto', '1'); abrirCaptura();
-    }, 15000);
-  }
 }
 $('capTeaser').addEventListener('click', function (e) {
   if (e.target.closest('#capTeaserX')) { sessionStorageGuardar('yuzu-cap-x', '1'); pintarTeaser(); return; }
