@@ -1,0 +1,29 @@
+name: Índice liviano del catálogo
+on:
+  push:
+    branches: [main]
+    paths: ['data/products.json', 'data/tienda.json', 'scripts/indice.py']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: indice
+  cancel-in-progress: false
+jobs:
+  indice:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install pillow
+      - run: python scripts/indice.py
+      - name: Guardar si cambió
+        run: |
+          git config user.name "yuzu-bot"
+          git config user.email "yuzu-bot@users.noreply.github.com"
+          git add data/indice.json data/series images/mini || true
+          if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
+          git commit -m "Índice liviano y miniaturas (automático)"
+          for i in 1 2 3; do git pull --rebase origin main && git push && exit 0; sleep 5; done
+          exit 1

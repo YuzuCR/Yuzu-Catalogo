@@ -1301,10 +1301,10 @@
   </div>
 </aside>
 
-<script src="alias.js?v=5"></script>
-<script src="mockup.js?v=5"></script>
-<script src="estudio.js?v=5"></script>
-<script src="prenda3d.js?v=5"></script>
+<script src="alias.js?v=7"></script>
+<script src="mockup.js?v=7"></script>
+<script src="estudio.js?v=7"></script>
+<script src="prenda3d.js?v=7"></script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN — lo único que deberías tocar a mano
@@ -1494,10 +1494,28 @@ function porRef(r) { r = String(r).toUpperCase(); for (var i = 0; i < PRODUCTOS.
 /* =====================================================================
    CARGA DE DATOS
    ===================================================================== */
+var MODO_INDICE = false, SERIES_CARGADAS = {};
+// Trae el detalle completo de la serie de una pieza (versiones, mockups de todos los colores, ajustes) y lo mezcla en las piezas del índice
+function asegurarDetalle(p) {
+  if (!p || !p._ix || p._full) return Promise.resolve(p);
+  var sx = p._ix;
+  if (!SERIES_CARGADAS[sx]) SERIES_CARGADAS[sx] = fetch('data/series/' + sx + '.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (lista) {
+    lista.forEach(function (full) {
+      var q = porId(full.id); if (!q) return;
+      Object.keys(full).forEach(function (k) { if (k !== 'nombre') q[k] = full[k]; });   // el nombre legible se conserva
+      q._full = true;
+    });
+  }).catch(function () { delete SERIES_CARGADAS[sx]; });
+  return SERIES_CARGADAS[sx].then(function () { return p; });
+}
+window.yuzuAsegurarDetalle = asegurarDetalle;
 function cargar() {
   var t = '?t=' + Date.now();
   Promise.all([
-    fetch('data/products.json' + t).then(function (r) { return r.json(); }),
+    // Índice liviano (lo genera GitHub Actions desde products.json); si no está, el catálogo completo como antes
+    fetch('data/indice.json' + t).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (ix) { if (!ix || !Array.isArray(ix.productos) || !ix.productos.length) throw 0; MODO_INDICE = true; return ix.productos; })
+      .catch(function () { MODO_INDICE = false; return fetch('data/products.json' + t).then(function (r) { return r.json(); }); }),
     fetch('data/categorias.json' + t).then(function (r) { return r.json(); }).catch(function () { return {}; }),
     fetch('data/resenas.json' + t).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; }),
     fetch('data/tienda.json' + t).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }),
@@ -2181,10 +2199,15 @@ function tablaTallas() {
 function faqHTML() { return FAQ.map(function (q) { var r = q[1].replace('{pago}', PAGO.corto).replace('{cambios}', PAGO.cambios); return '<p class="faq-q">' + esc(q[0]) + '</p><p>' + esc(r) + '</p>'; }).join(''); }
 
 function mostrarProducto(r) {
+  var p = porRef(r);
+  if (p && p._ix && !p._full) {   // modo índice: primero el detalle de su serie
+    $('vProducto').innerHTML = '<div class="envoltura" style="padding:120px 0;text-align:center"><p class="dato">Cargando la pieza…</p></div>';
+    asegurarDetalle(p).then(function () { if (porRef(r) === p && $('vProducto').classList.contains('activa') && p._full) mostrarProducto(r); });
+    return;
+  }
   // Intención: a la segunda pieza vista en la sesión, ofrecer el cupón (una sola vez)
   var vistas = (Number(sessionStorageLeer('yuzu-vistas')) || 0) + 1; sessionStorageGuardar('yuzu-vistas', String(vistas));
   if (vistas === 2) setTimeout(function () { intentarCaptura('2_piezas'); }, 6000);
-  var p = porRef(r);
   if (p && !p.oculto && vencido(p)) {
     $('vProducto').innerHTML = '<div class="envoltura" style="padding:90px 0;text-align:center"><p class="dato">Edición cerrada</p><h1 style="font-family:var(--display);font-size:48px;text-transform:uppercase;margin:12px 0 26px">' + esc(p.nombre) + ' ya salió del archivo</h1><p style="margin:-10px auto 26px;max-width:40ch;color:var(--tinta-2)">Estuvo disponible hasta el ' + fechaBonita(p.hasta) + '. Si querés algo parecido, lo hacemos personalizado.</p><a class="btn" href="#/c/todo">Ver el archivo</a></div>';
     return;
@@ -3969,7 +3992,7 @@ actualizarBolsa();
 cargar();
 cargarBoletin();
 </script>
-<script src="motion.js?v=5"></script>
-<script src="cinetico.js?v=5"></script>
+<script src="motion.js?v=7"></script>
+<script src="cinetico.js?v=7"></script>
 </body>
 </html>
