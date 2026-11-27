@@ -1124,7 +1124,7 @@
         <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="colecciones"><span>Colecciones</span></label>
           <div class="lo-campo"><select id="loCoModo"><option value="agregar">Agregar estas</option><option value="quitar">Quitar estas</option><option value="reemplazar">Dejar exactamente estas (vacío = ninguna)</option></select><input type="text" id="loColecciones" placeholder="ej: Prediseñadas, Manga" style="margin-top:6px"><div class="col-sug" data-para="loColecciones"></div></div></div>
         <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="serie"><span>Mover a otra categoría / subcategoría</span></label>
-          <div class="lo-campo"><select id="loCat"></select><input type="text" id="loSub" list="loSubList" placeholder="subcategoría (vacío = ninguna)" style="margin-top:6px"><datalist id="loSubList"></datalist></div></div>
+          <div class="lo-campo"><select id="loCat"></select><div id="loSubCaja" style="margin-top:6px"></div></div></div>
         <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="impresion"><span>Tipo de impresión</span></label>
           <div class="lo-campo"><select id="loImpresion"><option value="espalda">Espalda grande + pecho pequeño</option><option value="pecho">Solo pecho</option></select></div></div>
         <div class="lo-bloque"><label class="check-row"><input type="checkbox" data-lo="visib"><span>Visibilidad / destacado</span></label>
@@ -1693,7 +1693,7 @@ function abrirEdicion(i) {
   }
   html += '</select>';
 
-  html += '<label>Subcategoría</label><input type="text" id="e-sub-' + i + '" value="' + (p.subcategoria || '') + '" placeholder="dejá vacío para ninguna">';
+  html += '<label>Serie (subcategoría)</label>' + selectorSerieHTML('e-sub-' + i, p.categoria, p.subcategoria || '');
 
   html += '<label>Colecciones (separadas por coma)</label><input type="text" id="e-col-' + i + '" value="' + esc((p.colecciones || []).join(', ')) + '" placeholder="ej: Prediseñadas, Manga">' +
     '<div class="col-sug" data-para="e-col-' + i + '">' + chipsColecciones('e-col-' + i) + '</div>';
@@ -5282,7 +5282,34 @@ function abrirLote() {
   loRender(); pintarSugColecciones();
   $('modalLote').classList.add('abierto');
 }
-function loSubLista() { $('loSubList').innerHTML = (CATEGORIAS[$('loCat').value] || []).map(function (s) { return '<option value="' + htmlAttr(s) + '">'; }).join(''); }
+
+// ---------- Selector de serie: lista de las existentes + «Nueva serie…» (evita duplicados por escribir distinto) ----------
+function opcionesSerie(cat, actual) {
+  var n = {}; PRODUCTOS.forEach(function (p) { if (p.categoria === cat && p.subcategoria) n[p.subcategoria] = (n[p.subcategoria] || 0) + 1; });
+  (CATEGORIAS[cat] || []).forEach(function (s) { if (!(s in n)) n[s] = 0; });
+  var lista = Object.keys(n).sort(function (a, b) { return a.localeCompare(b, 'es'); });
+  var existe = !actual || lista.indexOf(actual) !== -1;
+  return '<option value=""' + (!actual ? ' selected' : '') + '>— Sin serie —</option>' +
+    lista.map(function (s) { return '<option value="' + htmlAttr(s) + '"' + (s === actual ? ' selected' : '') + '>' + esc(s) + ' (' + n[s] + ')</option>'; }).join('') +
+    '<option value="__nueva"' + (!existe ? ' selected' : '') + '>+ Nueva serie…</option>';
+}
+function selectorSerieHTML(idInput, cat, actual) {
+  var existe = !actual || opcionesSerie(cat, actual).indexOf('value="__nueva" selected') === -1;
+  return '<select data-serie-para="' + idInput + '">' + opcionesSerie(cat, actual) + '</select>' +
+    '<input type="text" id="' + idInput + '" value="' + htmlAttr(actual || '') + '" placeholder="Nombre de la serie nueva" style="margin-top:6px' + (existe ? ';display:none' : '') + '">';
+}
+document.addEventListener('change', function (e) {
+  var m = /^e-cat-(\d+)$/.exec(e.target.id || ''); if (m) { refrescarSelectorSerie('e-sub-' + m[1], e.target.value); return; }
+  var s = e.target.closest && e.target.closest('[data-serie-para]'); if (!s) return;
+  var inp = $(s.getAttribute('data-serie-para')); if (!inp) return;
+  if (s.value === '__nueva') { inp.value = ''; inp.style.display = ''; inp.focus(); }
+  else { inp.value = s.value; inp.style.display = 'none'; }
+});
+function refrescarSelectorSerie(idInput, cat) {
+  var s = document.querySelector('[data-serie-para="' + idInput + '"]'), inp = $(idInput); if (!s || !inp) return;
+  s.innerHTML = opcionesSerie(cat, ''); inp.value = ''; inp.style.display = 'none';
+}
+function loSubLista() { $('loSubCaja').innerHTML = selectorSerieHTML('loSub', $('loCat').value, ''); }
 function loEjemploNombres() {
   var d = parseInt($('loDesde').value, 10) || 1, dig = Math.max(1, Math.min(6, parseInt($('loDig').value, 10) || 3)), pre = $('loPref').value.trim();
   var n = Object.keys(LO.sel).filter(function (k) { return LO.sel[k]; }).length;
