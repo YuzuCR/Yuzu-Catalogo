@@ -1691,7 +1691,7 @@ function tarjeta(p, i, clase, color) {
       sellos +
     '</div>' +
     '<h3 class="card-nom">' + esc(p.nombre) + '</h3>' +
-    (desdeDe(p) ? '<div class="precio"><span>Desde ' + plata(desdeDe(p)) + '</span></div>' : precioHTML(p)) +
+    precioHTML(p) +   // mismo precio que la ficha (boxy, prenda por defecto)
     ((p.colores || []).length > 1 ? '<div class="card-colores" aria-label="' + p.colores.length + ' colores">' + p.colores.slice(0, 8).map(function (c) { return '<i style="background:' + hexDe(c) + '" title="' + esc(c) + '"></i>'; }).join('') + '</div>' : '') +
   '</a>';
 }
