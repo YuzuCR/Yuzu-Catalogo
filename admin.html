@@ -781,6 +781,13 @@
       <button class="btn" id="btnGuardarDesc">Guardar descuentos</button>
       <div class="status" id="statusDesc"></div>
     </div></div>
+    <div class="sec" data-sec="Búsqueda"><div class="card">
+      <h2>Búsqueda por personaje</h2>
+      <p class="mini" style="margin-top:0">Una serie por línea: <code>Serie: personaje, personaje, apodo</code>. El nombre de la serie tiene que ser igual al de la colección. Así «goku» encuentra Dragon Ball Z. No importan tildes ni mayúsculas.</p>
+      <textarea id="aliasTxt" rows="14" style="font-family:monospace;font-size:12px"></textarea>
+      <button class="btn btn-sec" id="btnGuardarAlias">Guardar búsqueda</button>
+      <div class="status" id="statusAlias"></div>
+    </div></div>
     <div class="sec" data-sec="Urgencia"><div class="card">
       <h2>Fecha de corte</h2>
       <p class="mini">Se muestra en la tienda con cuenta regresiva: "Pedí antes del martes 11:59 p. m. → sale el miércoles".</p>
@@ -1140,6 +1147,7 @@
   </div>
 </div>
 
+<script src="alias.js"></script>
 <script src="mockup.js"></script>
 <script src="estudio.js"></script>
 <script src="prenda3d.js"></script>
@@ -3137,7 +3145,7 @@ function cargarTienda() {
     var t = r[0].content || {};
     var bolFs = (BOLETINES.filter(function (b) { return b.activo && b.formspree; })[0] || {}).formspree || '';
     TIENDA = t; ['nombres', 'precios', 'mockup'].forEach(function (k) { TIENDA[k] = TIENDA[k] || {}; }); TIENDA.banners = TIENDA.banners || []; TIENDA.drops = TIENDA.drops || null; TIENDA._formspreeBol = bolFs;
-    aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); initPriv(); renderDescuentos(); renderCorte(); renderPago(); renderActividad(); renderColPrendas();
+    aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); initPriv(); renderDescuentos(); renderCorte(); renderPago(); renderAlias(); renderActividad(); renderColPrendas();
     RESENAS = Array.isArray(r[1].content) ? r[1].content : [];
     renderImgsFijas(); renderInicio(); renderPrecios(); renderMargen(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
   });
@@ -4052,6 +4060,24 @@ $('btnGuardarDesc').addEventListener('click', function () {
   guardarJSON('data/tienda.json', TIENDA, 'Descuentos').then(function () {
     statusDe('statusDesc', 'ok', '✓ Guardado.' + (TIENDA.captura.formspree ? '' : ' Ojo: sin Formspree, los correos y teléfonos no te llegan.'));
   }).catch(function (err) { statusDe('statusDesc', 'err', err.message); });
+});
+
+// ---------- Búsqueda por personaje (tienda.json → busqueda.alias) ----------
+function renderAlias() {
+  var a = Object.assign({}, window.YUZU_ALIAS || {}, (TIENDA.busqueda && TIENDA.busqueda.alias) || {});
+  $('aliasTxt').value = Object.keys(a).sort().map(function (k) { return k + ': ' + a[k]; }).join('\n');
+}
+$('btnGuardarAlias').addEventListener('click', function () {
+  var al = {};
+  $('aliasTxt').value.split('\n').forEach(function (l) {
+    var i = l.indexOf(':'); if (i < 1) return;
+    var k = l.slice(0, i).trim(), v = l.slice(i + 1).split(',').map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean).join(', ');
+    if (k) al[k] = v;
+  });
+  TIENDA.busqueda = Object.assign({}, TIENDA.busqueda || {}, { alias: al });
+  statusDe('statusAlias', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Búsqueda por personaje').then(function () { statusDe('statusAlias', 'ok', '✓ Guardado. Se ve en la tienda en 1–2 minutos.'); })
+    .catch(function (err) { statusDe('statusAlias', 'err', err.message); });
 });
 
 // ---------- Pago y cambios (tienda.json → pago) ----------

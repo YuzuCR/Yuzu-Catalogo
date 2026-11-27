@@ -1257,6 +1257,7 @@
   </div>
 </aside>
 
+<script src="alias.js"></script>
 <script src="mockup.js"></script>
 <script src="estudio.js"></script>
 <script src="prenda3d.js"></script>
@@ -1293,7 +1294,41 @@ var REDES = [
    Ejemplo:
    'Attack on Titan': { sigla: 'AOT', titulo: 'Más allá de los muros', frase: 'La serie completa' }  */
 var NOMBRES = {
+  // Títulos legibles por defecto; el admin los cambia en Inicio → Nombres de colecciones (tienda.json → nombres)
+  'Bluelock': { titulo: 'Blue Lock' },
+  'Pokemon': { titulo: 'Pokémon' },
+  'Akame Ga Kill!': { titulo: 'Akame ga Kill!' }
 };
+
+/* Búsqueda por personaje: serie → personajes y sinónimos (separados por coma).
+   El admin los edita en Precios → Búsqueda (tienda.json → busqueda.alias). */
+var ALIAS = Object.assign({}, window.YUZU_ALIAS || {});   // valores iniciales en alias.js
+// Prefijos de nombre → serie (para piezas sin subcategoría, p. ej. «Ber 001»). Se completa solo con el catálogo.
+var PREFIJOS = { ber: 'Berserk' };
+function serieDe(p) {
+  if (p.subcategoria) return p.subcategoria;
+  var m = String(p.nombreArchivo || p.nombre || '').match(/^\s*([A-Za-zÁ-ú]{1,6})/);
+  return m ? PREFIJOS[m[1].toLowerCase()] || '' : '';
+}
+// «BLU 016» → «Blue Lock · 016». Solo en pantalla: products.json no cambia.
+function nombreLegible(p) {
+  var m = String(p.nombre || '').match(/^\s*[A-Za-zÁ-ú]{1,6}\s*[-_ ]?\s*\(?(\d{1,4})\)?\s*$/), serie = serieDe(p);
+  return m && serie ? tituloDe(serie) + ' · ' + m[1] : p.nombre;
+}
+function prepararNombres() {
+  PRODUCTOS.forEach(function (p) {
+    if (!p.subcategoria) return;
+    var m = String(p.nombre || '').match(/^\s*([A-Za-zÁ-ú]{1,6})/);
+    if (m && !PREFIJOS[m[1].toLowerCase()]) PREFIJOS[m[1].toLowerCase()] = p.subcategoria;
+  });
+  PRODUCTOS.forEach(function (p) {
+    if (p.nombreArchivo) return;
+    p.nombreArchivo = p.nombre;          // el original («BLU 016»), sigue sirviendo para buscar y para el taller
+    p.nombre = nombreLegible(p);
+    var serie = serieDe(p), al = ALIAS[serie] || '';
+    p._busca = normal([p.nombre, p.nombreArchivo, p.categoria, serie, tituloDe(serie), al, (p.colores || []).join(' '), ref(p)].join(' '));
+  });
+}
 
 /* Drops. null = automático (la subcategoría con la pieza más reciente
    es el drop actual; las tres siguientes, drops pasados).
@@ -1389,9 +1424,9 @@ function siglaDe(nombre) {
 }
 function tituloDe(sub) { return (NOMBRES[sub] && NOMBRES[sub].titulo) || sub; }
 function nombreColeccion(sub, html) {
-  var s = siglaDe(sub), t = tituloDe(sub);
-  if (!s) return html ? esc(t) : t;
-  return html ? esc(s) + ' <span class="sep">⊹</span> ' + esc(t) : s + ' ⊹ ' + t;
+  // Sin siglas visibles (confundían: «AB ⊹ Angel Beats» y «AB ⊹ Astro Boy»). La sigla sigue sirviendo para buscar.
+  var t = tituloDe(sub);
+  return html ? esc(t) : t;
 }
 
 function fotosDe(p, c) {
@@ -1439,7 +1474,8 @@ function cargar() {
     if (T.cupones) CUPONES_EXTRA = T.cupones;
     if (CORTE.activo) MARQUESINA = [textoCorte()].concat(MARQUESINA);
     pintarMarquesinas(); pintarCorte(); iniciarCaptura(); actualizarBolsa();
-    if (T.nombres) Object.keys(T.nombres).forEach(function (k) { NOMBRES[k] = T.nombres[k]; });
+    if (T.nombres) Object.keys(T.nombres).forEach(function (k) { NOMBRES[k] = Object.assign({}, NOMBRES[k], T.nombres[k]); });
+    if (T.busqueda && T.busqueda.alias) Object.keys(T.busqueda.alias).forEach(function (k) { ALIAS[k] = T.busqueda.alias[k]; });
     if (T.drops && T.drops.actual) DROPS = T.drops;
     if (T.banners && T.banners.length) BANNERS = T.banners;
     INICIO = T.inicio || {};
@@ -1448,6 +1484,7 @@ function cargar() {
     if (P.estilos) ESTILOS.forEach(function (e) { var v = P.estilos[e.id]; if (v !== undefined && v !== '' && v >= 0) e.precio = Number(v); });
     if (P.uniMinimo > 0) MINIMO_UNIFORMES = Number(P.uniMinimo);
     PRODUCTOS = Array.isArray(r[0]) ? r[0] : [];
+    prepararNombres();
     CATEGORIAS = r[1] || {};
     RESENAS = Array.isArray(r[2]) ? r[2].filter(function (x) { return x && (x.texto || x.captura); }) : [];
     VISIBLES = PRODUCTOS.filter(function (p) { return !p.oculto && !vencido(p); }).sort(ordenDestacados);
@@ -1526,14 +1563,19 @@ function listaProductosMenu() {
   return l;
 }
 
+// Menú: primero las series con más diseños; el resto vive en la página de la categoría («Todas las series»)
+var MENU_TOP = 6, MENU_MIN = 3;
+function subsMenu(c) { return c.subs.filter(function (s) { return s.n >= MENU_MIN; }).sort(function (a, b) { return b.n - a.n; }).slice(0, MENU_TOP); }
 function pintarMenus() {
   // ---------- Escritorio ----------
   var colCols = ARBOL.map(function (c) {
-    var items = c.subs.map(function (s) {
+    var top = subsMenu(c);
+    var items = top.map(function (s) {
       return '<li><a href="' + hrefSub(s) + '">' + esc(nombreColeccion(s.nombre)) + '<span class="n">' + s.n + '</span></a></li>';
     }).join('');
+    var todas = c.subs.length > top.length ? '<li><a href="#/c/' + c.slug + '"><strong>Todas las series (' + c.subs.length + ')</strong></a></li>' : '';
     return '<div class="mega-col"><h3 class="dato"><a href="#/c/' + c.slug + '">' + esc(c.nombre) + ' →</a></h3><ul>' +
-      (items || '<li><a href="#/c/' + c.slug + '">Ver todo<span class="n">' + c.n + '</span></a></li>') + '</ul></div>';
+      (items ? items + todas : '<li><a href="#/c/' + c.slug + '">Ver todo<span class="n">' + c.n + '</span></a></li>') + '</ul></div>';
   }).join('');
 
   var prodCol = '<div class="mega-col"><h3 class="dato">Camisetas oversized</h3><ul>' +
@@ -1553,7 +1595,7 @@ function pintarMenus() {
   var html =
     itemMega('Colecciones', colCols, '<a class="subrayado" href="#/c/todo">Todo el archivo (' + VISIBLES.length + ')</a>') +
     itemMega('Productos', prodCol, '<a class="subrayado" href="#/ayuda/tallas">Guía de tallas</a>') +
-    (dropCol ? itemMega('Drops', dropCol, '') : '') +
+    // «Drops» fuera del menú: el concepto no se entendía (H10). Lo nuevo = el catálogo ordenado por «Más nuevos».
     (nOf ? '<div class="nav-item"><a class="nav-top" href="#/c/ofertas" data-ruta="ofertas">Ofertas</a></div>' : '') +
     '<div class="nav-item"><a class="nav-top" href="#/personalizado" style="color:var(--yuzu)">Personalizado</a></div>';
   $('navDesk').innerHTML = html;
@@ -1563,13 +1605,14 @@ function pintarMenus() {
     ARBOL.map(function (c) {
       return '<details class="acordeon"><summary>' + esc(c.nombre) + '</summary><ul class="cajon-lista">' +
         '<li><a href="#/c/' + c.slug + '">Ver todo ' + esc(c.nombre) + ' (' + c.n + ')</a></li>' +
-        c.subs.map(function (s) { return '<li><a href="' + hrefSub(s) + '">' + esc(nombreColeccion(s.nombre)) + '</a></li>'; }).join('') +
+        subsMenu(c).map(function (s) { return '<li><a href="' + hrefSub(s) + '">' + esc(nombreColeccion(s.nombre)) + ' (' + s.n + ')</a></li>'; }).join('') +
+        (c.subs.length > subsMenu(c).length ? '<li><a href="#/c/' + c.slug + '"><strong>Todas las series (' + c.subs.length + ')</strong></a></li>' : '') +
         '</ul></details>';
     }).join('') +
     '<ul class="cajon-lista"><li><a href="#/c/todo">Todo el archivo (' + VISIBLES.length + ')</a></li></ul></details>';
   m += '<details class="acordeon"><summary>Productos</summary><ul class="cajon-lista">' +
     listaProductosMenu().map(function (x) { return '<li><a href="' + x[1] + '">' + esc(x[0]) + ' (' + x[2] + ')</a></li>'; }).join('') + '</ul></details>';
-  if (DROP_ACTUAL) {
+  if (false) {   // Drops fuera del menú (ver escritorio)
     m += '<details class="acordeon"><summary>Drops</summary>' +
       '<details class="acordeon" open><summary>Drop actual</summary><ul class="cajon-lista"><li><a href="' + hrefSub(DROP_ACTUAL) + '">' + esc(nombreColeccion(DROP_ACTUAL.nombre)) + '</a></li></ul></details>' +
       (DROPS_PASADOS.length ? '<details class="acordeon"><summary>Drops pasados</summary><ul class="cajon-lista">' +
@@ -1581,7 +1624,7 @@ function pintarMenus() {
   m += '<a class="cajon-link" href="#/ayuda">Ayuda</a><a class="cajon-link" href="#/taller">El taller</a><a class="cajon-link" href="estudio.html">Estudio</a>';
   $('cajonCuerpo').innerHTML = m;
 
-  if (DROP_ACTUAL) $('pieDrop').href = hrefSub(DROP_ACTUAL);
+  $('pieDrop').href = '#/c/todo'; $('pieDrop').textContent = 'Lo nuevo';
 }
 function itemMega(titulo, cols, pie) {
   return '<div class="nav-item"><button class="nav-top" aria-expanded="false">' + titulo + chevron + '</button>' +
@@ -1589,11 +1632,10 @@ function itemMega(titulo, cols, pie) {
 }
 // Vitrina en el menú: la pieza más nueva (del drop actual si hay)
 function megaDestacado() {
-  var lista = (DROP_ACTUAL ? VISIBLES.filter(function (p) { return p.subcategoria === DROP_ACTUAL.nombre; }) : []);
-  if (!lista.length) lista = VISIBLES;
+  var lista = VISIBLES;
   var p = lista.slice().sort(function (a, b) { return b.id - a.id; })[0], f = p && fotoBase(p);
   if (!f) return '';
-  return '<a class="mega-dest" href="#/p/' + ref(p) + '"><div class="card-media"><img src="' + esc(f) + '" alt="' + esc(p.nombre) + '" loading="lazy"></div><span class="dato">' + (DROP_ACTUAL && p.subcategoria === DROP_ACTUAL.nombre ? 'Drop actual' : 'Lo último') + '</span><strong>' + esc(p.nombre) + '</strong></a>';
+  return '<a class="mega-dest" href="#/p/' + ref(p) + '"><div class="card-media"><img src="' + esc(f) + '" alt="' + esc(p.nombre) + '" loading="lazy"></div><span class="dato">Lo último</span><strong>' + esc(p.nombre) + '</strong></a>';
 }
 function pintarRedes() {
   var h = REDES.map(function (r) {
@@ -1906,7 +1948,7 @@ function mostrarColeccion(a, b, query) {
   // Subcarpetas de la carpeta actual
   if (r.cat && r.cat.subs.length) {
     $('colSubs').innerHTML = '<a class="chip' + (!r.sub ? ' on' : '') + '" href="#/c/' + r.cat.slug + '">Todas</a>' +
-      r.cat.subs.map(function (s) { return '<a class="chip' + (r.sub === s ? ' on' : '') + '" href="' + hrefSub(s) + '">' + esc(nombreColeccion(s.nombre)) + '</a>'; }).join('');
+      r.cat.subs.slice().sort(function (a, b) { return b.n - a.n; }).map(function (s) { return '<a class="chip' + (r.sub === s ? ' on' : '') + '" href="' + hrefSub(s) + '">' + esc(nombreColeccion(s.nombre)) + ' <span class="n">' + s.n + '</span></a>'; }).join('');
     $('colSubs').classList.remove('oculto');
   } else $('colSubs').classList.add('oculto');
 
@@ -1941,6 +1983,7 @@ function aplicarFiltros(lista) {
     if (f.impresion && (p.impresion === 'pecho' ? 'pecho' : 'espalda') !== f.impresion) return false;
     if (f.ofertas && !enOferta(p)) return false;
     if (f.tipo && (p.colecciones || []).indexOf(f.tipo) === -1) return false;
+    if (f.serie && serieDe(p) !== f.serie) return false;
     var pv = precioVigente(p);
     if (f.min !== '' && pv < Number(f.min)) return false;
     if (f.max !== '' && pv > Number(f.max)) return false;
@@ -1964,6 +2007,11 @@ function pintarPanelFiltros() {
   var precios = base.map(precioVigente);
   var max = precios.length ? Math.max.apply(null, precios) : 0;
   var h = '';
+  // Serie: solo cuando la lista mezcla varias (todo el archivo, búsquedas, estampado…)
+  var nSer = {}; base.forEach(function (p) { var s = serieDe(p); if (s) nSer[s] = (nSer[s] || 0) + 1; });
+  var series = Object.keys(nSer).sort(function (a, b) { return nSer[b] - nSer[a]; });
+  if (series.length > 1) h += '<div class="grupo"><h4 class="dato">Serie</h4><div class="opciones">' +
+    series.map(function (s) { return '<button class="chip' + (f.serie === s ? ' on' : '') + '" data-f-serie="' + esc(s) + '">' + esc(tituloDe(s)) + ' <span class="n">' + nSer[s] + '</span></button>'; }).join('') + '</div></div>';
   if (cols.length) h += '<div class="grupo"><h4 class="dato">Color</h4><div class="opciones">' +
     cols.map(function (c) { return '<button class="muestra' + (f.colores.indexOf(c) !== -1 ? ' on' : '') + '" data-f-color="' + esc(c) + '" style="background:' + hexDe(c) + '" title="' + esc(c) + '" aria-label="' + esc(c) + '"></button>'; }).join('') + '</div></div>';
   if (hayEsp && hayPec) h += '<div class="grupo"><h4 class="dato">Estampado</h4><div class="opciones">' +
@@ -1994,6 +2042,7 @@ function pintarColeccion(scroll) {
   f.colores.forEach(function (c) { act.push('<button class="chip" data-f-color="' + esc(c) + '">' + esc(c) + ' <span class="x">×</span></button>'); });
   if (f.impresion) act.push('<button class="chip" data-f-imp="' + f.impresion + '">Estampado en ' + f.impresion + ' <span class="x">×</span></button>');
   if (f.ofertas) act.push('<button class="chip" data-f-of="1">Solo ofertas <span class="x">×</span></button>');
+  if (f.serie) act.push('<button class="chip" data-f-serie="' + esc(f.serie) + '">' + esc(tituloDe(f.serie)) + ' <span class="x">×</span></button>');
   if (f.tipo) act.push('<button class="chip" data-f-tipo="' + esc(f.tipo) + '">' + esc(f.tipo) + ' <span class="x">×</span></button>');
   if (f.min !== '' || f.max !== '') act.push('<button class="chip" data-f-precio>' + (f.min !== '' ? plata(f.min) : '₡0') + ' – ' + (f.max !== '' ? plata(f.max) : '∞') + ' <span class="x">×</span></button>');
   if (act.length) act.push('<button class="quitar-todo" data-f-limpiar>Quitar todo</button>');
@@ -2030,6 +2079,7 @@ $('vColeccion').addEventListener('click', function (e) {
   } else if ((b = e.target.closest('[data-f-of]'))) { f.ofertas = !f.ofertas; }
   else if ((b = e.target.closest('[data-f-precio]'))) { f.min = ''; f.max = ''; }
   else if ((b = e.target.closest('[data-f-limpiar]'))) { COL.filtros = { colores: [], impresion: '', min: '', max: '', ofertas: false, tipo: '' }; }
+  else if ((b = e.target.closest('[data-f-serie]'))) { var se = b.getAttribute('data-f-serie'); f.serie = f.serie === se ? '' : se; }
   else if ((b = e.target.closest('[data-f-tipo]'))) { f.tipo = b.getAttribute('data-f-tipo') === f.tipo ? '' : b.getAttribute('data-f-tipo'); }
   else if ((b = e.target.closest('[data-pag]'))) { COL.pagina = Number(b.getAttribute('data-pag')); pintarColeccion(true); return; }
   else return;
@@ -2804,10 +2854,11 @@ function normal(s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g,
 function buscar(q) {
   q = normal(q).trim();
   if (!q) return [];
-  var partes = q.split(/\s+/);
+  var partes = q.replace(/[·.,]/g, ' ').split(/\s+/).filter(Boolean);
   return VISIBLES.filter(function (p) {
-    var texto = normal([p.nombre, p.categoria, p.subcategoria, siglaDe(p.subcategoria || ''), (p.colores || []).join(' '), ref(p)].join(' '));
-    return partes.every(function (w) { return texto.indexOf(w) !== -1; });
+    // Coincide por inicio de palabra («goku» no debe encontrar «rengoku»)
+    var texto = ' ' + ((p._busca || normal(p.nombre)) + ' ' + normal(siglaDe(p.subcategoria || ''))).replace(/[·.,]/g, ' ');
+    return partes.every(function (w) { return texto.indexOf(' ' + w) !== -1; });
   });
 }
 function pintarBusqueda() {
