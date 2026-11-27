@@ -29,9 +29,18 @@ var YuzuMockup = (function () {
 
   // Tamaño máximo físico de impresión (cm) por pieza, para que el cliente no pase del DTF (la hoja de producción es de 56 × 50 cm).
   // Se puede cambiar en data/tienda.json → mockup.maxCm = { espalda: { w: 40, h: 50 } }
-  var MAX_CM = { espalda: { w: 40, h: 50 }, pechoGrande: { w: 36, h: 44 } };
+  var MAX_CM = { espalda: { w: 40, h: 50 }, pechoGrande: { w: 40, h: 50 } };
+  // Tope por prenda (lámina DTF de 50 × 56 cm): boxy y hoodie usan la lámina completa en la espalda;
+  // manga larga y sin mangas, unos 3 cm menos. Pecho grande: 40 × 50 en todas.
+  // Se edita en Admin → Mockups → Tamaño máximo de impresión (tienda.json → mockup.topes).
+  var TOPES = {
+    boxy: { espalda: { w: 50, h: 56 }, pechoGrande: { w: 40, h: 50 } },
+    hoodie: { espalda: { w: 50, h: 56 }, pechoGrande: { w: 40, h: 50 } },
+    mangalarga: { espalda: { w: 47, h: 53 }, pechoGrande: { w: 40, h: 50 } },
+    sinmangas: { espalda: { w: 47, h: 53 }, pechoGrande: { w: 40, h: 50 } }
+  };
   function topeCm(prenda, pz) {
-    var m = MAX_CM[pz], c = (PRENDAS[prenda] || {}).cmPx || 0.1;
+    var m = (TOPES[prenda] && TOPES[prenda][pz]) || MAX_CM[pz], c = (PRENDAS[prenda] || {}).cmPx || 0.1;
     return m ? { w: m.w / c, h: m.h / c, cm: m } : null;
   }
 
@@ -116,6 +125,10 @@ var YuzuMockup = (function () {
       Object.keys(cfg.zonas[p]).forEach(function (v) { ZONAS[p][v] = cfg.zonas[p][v]; });
     });
     if (cfg.maxCm) Object.keys(cfg.maxCm).forEach(function (k) { MAX_CM[k] = cfg.maxCm[k]; });
+    if (cfg.topes) Object.keys(cfg.topes).forEach(function (p) {
+      TOPES[p] = TOPES[p] || {};
+      Object.keys(cfg.topes[p] || {}).forEach(function (pz) { var t = cfg.topes[p][pz]; if (t && t.w > 0 && t.h > 0) TOPES[p][pz] = { w: +t.w, h: +t.h }; });
+    });
     if (cfg.plantillas) Object.keys(cfg.plantillas).forEach(function (p) { PLANTILLAS[p] = cfg.plantillas[p]; });
   }
 
@@ -193,7 +206,13 @@ var YuzuMockup = (function () {
     return 'inicial';
   }
   // Rectángulo final del diseño en la foto
+  // Diseños del cliente (personalizada): el encaje automático no pasa del tope imprimible, para que
+  // el mockup que aprueba y los cm del mensaje se puedan imprimir. El catálogo sigue llenando la zona.
   function rectDiseno(prenda, color, vista, img, ajuste, sinColor) {
+    var r = rectDisenoZona(prenda, color, vista, img, ajuste, sinColor);
+    return ajuste && ajuste.cliente ? alTope(prenda, vista, r) : r;
+  }
+  function rectDisenoZona(prenda, color, vista, img, ajuste, sinColor) {
     var z = (ZONAS[prenda] || {})[vista]; if (!z || !img) return null;
     if (ajuste && ajuste.v === 2) {
       var p = posGuardada(ajuste, prenda, color, vista, sinColor);
@@ -208,8 +227,7 @@ var YuzuMockup = (function () {
     // La zona de Tienda manda: el encaje automático llena la zona que Andre dibujó (sin recorte a MAX_CM)
     return encajar(img, zonaAjustada(z, ajusteDe(ajuste, prenda, vista)));
   }
-  // El encaje automático nunca pasa del máximo imprimible (MAX_CM): si la zona es más grande que el DTF, se achica
-  // centrado y pegado arriba. Las posiciones guardadas a mano en el admin no se tocan.
+  // Achica al tope imprimible, centrado y pegado arriba.
   function alTope(prenda, pz, r) {
     var t = topeCm(prenda, pz); if (!r || !t) return r;
     var k = Math.min(1, t.w / r.w, t.h / r.h); if (k >= 1) return r;
@@ -450,6 +468,7 @@ var YuzuMockup = (function () {
   }
 
   return {
+    TOPES: TOPES,
     RUTA: RUTA, VISTAS: VISTAS, NOMBRE_VISTA: NOMBRE_VISTA, PIEZAS: PIEZAS, NOMBRE_PIEZA: NOMBRE_PIEZA, FOTO_DE: FOTO_DE, PRENDAS: PRENDAS, PLANTILLAS: PLANTILLAS, ZONAS: ZONAS, HEX: HEX, topeCm: topeCm,
     slug: slug, configurar: configurar, cargar: cargar, fuente: fuente, disponible: disponible, esOscuro: esOscuro,
     zonaAjustada: zonaAjustada, encajar: encajar, componer: componer, generar: generar, generarTodas: generarTodas, generarVistas: generarVistas,
