@@ -793,6 +793,14 @@
       <button class="btn" id="btnGuardarCorte">Guardar fecha de corte</button>
       <div class="status" id="statusCorte"></div>
     </div><div class="card">
+      <h2>Pago y cambios</h2>
+      <p class="mini" style="margin-top:0">Se muestra en la ficha, la bolsa y la ayuda, y al final del mensaje de WhatsApp.</p>
+      <label>Línea corta (ficha y bolsa)</label><input type="text" id="pagoCorto">
+      <label>Pregunta al final del mensaje de WhatsApp</label><input type="text" id="pagoMensaje">
+      <label>Política de cambios</label><textarea id="pagoCambios" rows="3"></textarea>
+      <button class="btn btn-sec" id="btnGuardarPago">Guardar pago y cambios</button>
+      <div class="status" id="statusPago"></div>
+    </div><div class="card">
       <h2>Pedidos reales en la tienda</h2>
       <p class="mini" style="margin-top:0">Urgencia sin inventar nada: sale de las ventas que registrás. En cada producto: "Alguien la pidió hace 3 h" o "Pedida 4 veces este mes". En la marquesina: "12 pedidos esta semana", solo si llegás al mínimo. La tienda ve solo esos números, nunca nombres ni montos.</p>
       <label class="check-row"><input type="checkbox" id="actActivo"><span>Mostrar pedidos reales</span></label>
@@ -3129,7 +3137,7 @@ function cargarTienda() {
     var t = r[0].content || {};
     var bolFs = (BOLETINES.filter(function (b) { return b.activo && b.formspree; })[0] || {}).formspree || '';
     TIENDA = t; ['nombres', 'precios', 'mockup'].forEach(function (k) { TIENDA[k] = TIENDA[k] || {}; }); TIENDA.banners = TIENDA.banners || []; TIENDA.drops = TIENDA.drops || null; TIENDA._formspreeBol = bolFs;
-    aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); initPriv(); renderDescuentos(); renderCorte(); renderActividad(); renderColPrendas();
+    aplicarCfgMockup(); initZonas(); initPlantillas(); initLogo(); initPriv(); renderDescuentos(); renderCorte(); renderPago(); renderActividad(); renderColPrendas();
     RESENAS = Array.isArray(r[1].content) ? r[1].content : [];
     renderImgsFijas(); renderInicio(); renderPrecios(); renderMargen(); renderDrops(); renderNombres(); prepararFormResena(); renderResenas();
   });
@@ -4044,6 +4052,19 @@ $('btnGuardarDesc').addEventListener('click', function () {
   guardarJSON('data/tienda.json', TIENDA, 'Descuentos').then(function () {
     statusDe('statusDesc', 'ok', '✓ Guardado.' + (TIENDA.captura.formspree ? '' : ' Ojo: sin Formspree, los correos y teléfonos no te llegan.'));
   }).catch(function (err) { statusDe('statusDesc', 'err', err.message); });
+});
+
+// ---------- Pago y cambios (tienda.json → pago) ----------
+var PAGO_DEF = { corto: 'Pagás 50% por SINPE Móvil para producir y el resto antes del envío.', mensaje: '¿Me pasás los datos de SINPE Móvil para el adelanto del 50%?', cambios: 'Si la impresión sale con un defecto, la reponemos sin costo. Como se hace a pedido, no hay cambios por talla: usá la calculadora de talla antes de pedir.' };
+function renderPago() {
+  var c = Object.assign({}, PAGO_DEF, TIENDA.pago || {});
+  $('pagoCorto').value = c.corto; $('pagoMensaje').value = c.mensaje; $('pagoCambios').value = c.cambios;
+}
+$('btnGuardarPago').addEventListener('click', function () {
+  TIENDA.pago = { corto: $('pagoCorto').value.trim() || PAGO_DEF.corto, mensaje: $('pagoMensaje').value.trim() || PAGO_DEF.mensaje, cambios: $('pagoCambios').value.trim() || PAGO_DEF.cambios };
+  statusDe('statusPago', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Pago y cambios').then(function () { statusDe('statusPago', 'ok', '✓ Guardado.'); })
+    .catch(function (err) { statusDe('statusPago', 'err', err.message); });
 });
 
 // ---------- Fecha de corte ----------

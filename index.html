@@ -663,9 +663,14 @@
     .prod { gap: 18px; }
   }
   /* ================= CAPTURA / CUPONES / CORTE / TALLA ================= */
-  .cap-teaser { position: fixed; left: 16px; bottom: 76px; z-index: 86; display: none; align-items: center; gap: 10px; background: var(--yuzu); color: #0b0b0a; border-radius: 28px; padding: 11px 14px 11px 18px; font-family: var(--dato); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; box-shadow: 0 6px 20px rgba(0,0,0,.35); transition: transform .3s var(--lento); }
+  .cap-teaser { position: fixed; left: 16px; bottom: 16px; z-index: 86; display: none; align-items: center; gap: 10px; background: var(--yuzu); color: #0b0b0a; border-radius: 28px; padding: 11px 14px 11px 18px; font-family: var(--dato); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; box-shadow: 0 6px 20px rgba(0,0,0,.35); transition: transform .3s var(--lento); }
   .cap-teaser.ver { display: inline-flex; animation: surgir .6s var(--lento); }
   .cap-teaser:hover { transform: translateY(-2px); }
+  /* Flotantes: nunca sobre el hero ni sobre personalizador, bolsa, zoom, menú o buscador; y uno a la vez */
+  body.hero-visible .wa-flotante, body.hero-visible .cap-teaser,
+  body:has(#pers.abierta, #bolsa.abierta, #zoom.abierta, #cajon.abierta, #buscador.abierta) .wa-flotante,
+  body:has(#pers.abierta, #bolsa.abierta, #zoom.abierta, #cajon.abierta, #buscador.abierta) .cap-teaser,
+  body:has(.cap-teaser.ver) .wa-flotante { display: none !important; }
   .cap-teaser .x { width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,.15); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; }
   .cap-paso { display: none; }
   .cap-paso.ver { display: block; animation: surgir .5s var(--suave); }
@@ -1008,7 +1013,7 @@
             <li>Elegí la pieza, el <strong>color</strong> y la <strong>talla</strong>.</li>
             <li>Agregala a la bolsa. Podés sumar varias.</li>
             <li>Tocá <strong>Pedir por WhatsApp</strong>: el mensaje sale armado con todo tu pedido.</li>
-            <li>Te confirmamos por chat y coordinamos el pago.</li>
+            <li>Te confirmamos por chat. <span data-pago="corto">Pagás 50% por SINPE Móvil para producir y el resto antes del envío.</span></li>
           </ol>
         </section>
         <section class="ayuda-sec" id="ay-envios">
@@ -1059,7 +1064,7 @@
     </div>
     <div class="pie-col">
       <h4>Lista del taller</h4>
-      <p>Te avisamos por correo cada vez que sale una tanda nueva.</p>
+      <p>Dejá tu correo y tu descuento de bienvenida queda aplicado en la bolsa.</p>
       <form class="pie-form" id="pieForm">
         <label class="sr" for="pieCorreo">Correo electrónico</label>
         <input type="email" id="pieCorreo" placeholder="Correo electrónico" autocomplete="email" required>
@@ -1133,7 +1138,7 @@
         <span class="dato">Lista del taller</span>
         <div class="cap-grande" id="capPct1">10% OFF</div>
         <h3 style="margin-top:4px">En tu primer pedido</h3>
-        <p class="bol-texto">Dejá tu correo y el descuento se aplica solo en tu bolsa. Te avisamos de cada tanda nueva.</p>
+        <p class="bol-texto">Dejá tu correo y el descuento se aplica solo en tu bolsa.</p>
         <form id="capForm1"><input type="email" id="capCorreo" placeholder="Correo electrónico" autocomplete="email" required><button class="btn" type="submit" id="capBtn1">Quiero mi descuento</button></form>
         <p class="dato bol-legal">Podés salirte cuando querás.</p>
       </div>
@@ -1189,7 +1194,7 @@
         <input type="email" id="bolCorreo" placeholder="Correo electrónico" autocomplete="email">
         <input type="tel" id="bolTel" placeholder="Teléfono / WhatsApp" autocomplete="tel">
         <button class="btn" id="bolEnviar">Quiero entrar</button>
-        <p class="dato bol-legal">Solo lo usamos para avisarte de cada tanda. Podés salirte cuando querás.</p>
+        <p class="dato bol-legal">No lo compartimos con nadie.</p>
       </div>
     </div>
     <div class="bol-gracias" id="bolGracias">
@@ -1248,7 +1253,7 @@
     <div class="total"><span class="dato">Total</span><span class="total-n" id="bolsaTotal">&#8353;0</span></div>
     <p class="bolsa-corte oculto" data-corte="linea"></p>
     <button class="btn btn-ancho" id="btnPedir">Pedir por WhatsApp</button>
-    <p class="dato nota">Te confirmamos disponibilidad y coordinamos el pago por chat.</p>
+    <p class="dato nota">Te confirmamos el pedido por chat. <span data-pago="corto">Pagás 50% por SINPE Móvil para producir y el resto antes del envío.</span></p>
   </div>
 </aside>
 
@@ -1313,8 +1318,14 @@ var COLORES = [
   { name: 'Verde musgo', hex: '#4a6741' }
 ];
 
+// Pago y cambios: valores por defecto; el admin los cambia en Tienda → Urgencia → Pago y cambios (tienda.json → pago)
+var PAGO = { corto: 'Pagás 50% por SINPE Móvil para producir y el resto antes del envío.', mensaje: '¿Me pasás los datos de SINPE Móvil para el adelanto del 50%?', cambios: 'Si la impresión sale con un defecto, la reponemos sin costo. Como se hace a pedido, no hay cambios por talla: usá la calculadora de talla antes de pedir.' };
+function pintarPago() {
+  var n = document.querySelectorAll('[data-pago]'); for (var i = 0; i < n.length; i++) n[i].textContent = PAGO[n[i].getAttribute('data-pago')] || '';
+}
 var FAQ = [
-  ['¿Cómo hago un pedido?', 'Elegí talla y color, agregá la pieza a la bolsa y tocá «Pedir por WhatsApp». Te confirmamos por chat y coordinamos el pago.'],
+  ['¿Cómo hago un pedido?', 'Elegí talla y color, agregá la pieza a la bolsa y tocá «Pedir por WhatsApp». Te confirmamos por chat. {pago}'],
+  ['¿Cómo pago y qué pasa si hay un problema?', '{pago} {cambios}'],
   ['¿Por qué no hay stock?', 'Cada pieza se imprime cuando la pedís. Nada está guardado en bodega, por eso cualquier diseño está disponible en cualquier talla.'],
   ['¿Cuánto tarda en llegar?', 'Producimos los miércoles. La entrega toma una semana desde que se confirma el pedido.'],
   ['¿Cuánto cuesta el envío?', 'Nada extra: ya está incluido en el precio, a cualquier parte de Costa Rica.'],
@@ -1423,6 +1434,8 @@ function cargar() {
     if (T.coloresPrenda) COLORES_PRENDA = T.coloresPrenda;
     if (T.corte) CORTE = Object.assign(CORTE, T.corte);
     if (T.captura) CAPTURA = Object.assign(CAPTURA, T.captura);
+    if (T.pago) PAGO = Object.assign(PAGO, T.pago);
+    pintarPago();
     if (T.cupones) CUPONES_EXTRA = T.cupones;
     if (CORTE.activo) MARQUESINA = [textoCorte()].concat(MARQUESINA);
     pintarMarquesinas(); pintarCorte(); iniciarCaptura(); actualizarBolsa();
@@ -1438,6 +1451,12 @@ function cargar() {
     CATEGORIAS = r[1] || {};
     RESENAS = Array.isArray(r[2]) ? r[2].filter(function (x) { return x && (x.texto || x.captura); }) : [];
     VISIBLES = PRODUCTOS.filter(function (p) { return !p.oculto && !vencido(p); }).sort(ordenDestacados);
+    // Sin destacados marcados en el admin: orden por defecto «Más nuevos» y sin fila de Destacados en la home (repetía «Recién salidos»)
+    if (!VISIBLES.some(function (p) { return p.destacado; })) {
+      ORDEN_DEF = 'nuevo'; COL.orden = 'nuevo';
+      var opD = document.querySelector('#colOrden option[value="dest"]'); if (opD) opD.remove();
+      if ($('secDestacados')) $('secDestacados').style.display = 'none';
+    }
     armarArbol();
     armarDrops();
     pintarMenus();
@@ -1680,7 +1699,7 @@ function tarjeta(p, i, clase, color) {
       sellos +
     '</div>' +
     '<h3 class="card-nom">' + esc(p.nombre) + '</h3>' +
-    (desdeDe(p) ? '<div class="precio"><span>Desde ' + plata(desdeDe(p)) + '</span></div>' : precioHTML(p)) +
+    precioHTML(p) +   // mismo precio que la ficha (boxy, prenda por defecto)
     ((p.colores || []).length > 1 ? '<div class="card-colores" aria-label="' + p.colores.length + ' colores">' + p.colores.slice(0, 8).map(function (c) { return '<i style="background:' + hexDe(c) + '" title="' + esc(c) + '"></i>'; }).join('') + '</div>' : '') +
   '</a>';
 }
@@ -1828,6 +1847,7 @@ document.addEventListener('click', function (e) {
 /* =====================================================================
    COLECCIÓN
    ===================================================================== */
+var ORDEN_DEF = 'dest';
 var COL = { clave: '', lista: [], filtros: { colores: [], impresion: '', min: '', max: '', ofertas: false, tipo: '' }, orden: 'dest', pagina: 1 };
 
 function resolverColeccion(a, b) {
@@ -1869,7 +1889,7 @@ function mostrarColeccion(a, b, query) {
   if (!r) { location.replace('#/c/todo'); return; }
   var clave = location.hash;
   if (clave !== COL.clave) {
-    COL.clave = clave; COL.pagina = 1; COL.orden = 'dest';
+    COL.clave = clave; COL.pagina = 1; COL.orden = ORDEN_DEF;
     COL.filtros = { colores: [], impresion: '', min: '', max: '', ofertas: false, tipo: '' };
   }
   if (query && query.color) COL.filtros.colores = [query.color];
@@ -1965,7 +1985,8 @@ function pintarColeccion(scroll) {
   $('colConteo').textContent = l.length + (l.length === 1 ? ' pieza' : ' piezas');
   $('colRejilla').innerHTML = trozo.length
     ? trozo.map(function (p, i) { return tarjeta(p, i, '', f.colores.filter(function (c) { return (p.colores || []).indexOf(c) !== -1; })[0]); }).join('')
-    : (VISIBLES.length ? '<p class="vacio">Nada coincide con esos filtros. <button class="quitar-todo" data-f-limpiar>Quitar filtros</button></p>'
+    : (COL.clave.indexOf('buscar/') === 0 ? sinResultadosHTML(decodeURIComponent(COL.clave.slice(7)))
+      : VISIBLES.length ? '<p class="vacio">Nada coincide con esos filtros. <button class="quitar-todo" data-f-limpiar>Quitar filtros</button></p>'
       : '<p class="vacio">Estamos preparando la próxima tanda. Seguinos en Instagram para enterarte primero.</p>');
 
   // Filtros activos
@@ -2049,7 +2070,7 @@ function tablaTallas() {
   return '<table class="tabla"><tr><th>Talla</th><th>Ancho</th><th>Largo</th></tr>' +
     TALLAS.filter(function (t) { return MEDIDAS[t]; }).map(function (t) { var m = MEDIDAS[t]; return '<tr><td>' + t + '</td><td>' + m[0] + ' cm</td><td>' + m[1] + ' cm</td></tr>'; }).join('') + '</table>';
 }
-function faqHTML() { return FAQ.map(function (q) { return '<p class="faq-q">' + esc(q[0]) + '</p><p>' + esc(q[1]) + '</p>'; }).join(''); }
+function faqHTML() { return FAQ.map(function (q) { var r = q[1].replace('{pago}', PAGO.corto).replace('{cambios}', PAGO.cambios); return '<p class="faq-q">' + esc(q[0]) + '</p><p>' + esc(r) + '</p>'; }).join(''); }
 
 function mostrarProducto(r) {
   var p = porRef(r);
@@ -2117,7 +2138,7 @@ function mostrarProducto(r) {
         '<ul class="confianza">' +
           '<li>' + svg('envio') + 'Envío incluido a todo Costa Rica</li>' +
           '<li>' + svg('calendario') + 'Se produce el miércoles · llega en una semana</li>' +
-          '<li>' + svg('chat') + 'Pedido y pago coordinados por WhatsApp</li>' +
+          '<li>' + svg('chat') + esc(PAGO.corto) + '</li>' +
         '</ul>' +
         '<button class="btn btn-hueco btn-ancho pers-btn-ficha" data-abrir-pers data-pers-base>Personalizá este diseño · desde +' + plata(precioDisenoMinimo()) + '</button>' +
         '<div style="display:flex;gap:18px;flex-wrap:wrap"><button class="compartir" id="prCompartir"><span id="prCompartirTxt">' + (navigator.share ? 'Compartir esta pieza' : 'Copiar enlace de esta pieza') + '</span></button><button class="compartir" id="prDescargar">Descargar esta imagen</button></div>' +
@@ -2757,7 +2778,7 @@ function pedirWhatsApp(items) {
   msg += 'Total: ' + plata(total) + ' (envío incluido)\n';
   if (nMani) msg += 'Incluye ' + plata(nMani * MANIFIESTO.monto) + ' de aporte a ' + MANIFIESTO.destino + '.\n';
   if (items.some(function (i) { return i.opcKey && i.opcKey !== JSON.stringify(opcPorDefecto()); })) msg += '\nNota: elegí una versión distinta a la del catálogo; te mando mi mockup en el chat.\n';
-  msg += '\n¿Cómo coordinamos el pago?';
+  msg += '\n' + PAGO.mensaje;
   evento('begin_checkout', { currency: 'CRC', value: total, coupon: desc ? cupon.codigo : undefined, transaction_id: pedido, items: items.map(function (i) { return { item_id: i.ref, item_name: i.nombre, item_variant: (i.prenda || 'Boxy') + ' / ' + i.color + ' / ' + i.talla, quantity: i.cant || 1, price: i.precio }; }) });
   window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
 }
@@ -2803,7 +2824,15 @@ function pintarBusqueda() {
         return '<a class="busca-item" href="#/p/' + ref(p) + '"><img src="' + esc(fotoBase(p)) + '" alt="" loading="lazy"><div><div class="nom">' + esc(p.nombre) + '</div><div class="card-serie">' + esc(p.subcategoria || p.categoria) + '</div>' + precioHTML(p) + '</div></a>';
       }).join('') +
       (r.length > 6 ? '<a class="subrayado busca-todo" href="#/buscar/' + encodeURIComponent(q.trim()) + '">Ver los ' + r.length + ' resultados</a>' : '')
-    : '<p class="vacio" style="padding:40px 0">Nada con «' + esc(q) + '». Probá con el nombre de la serie.</p>';
+    : sinResultadosHTML(q);
+}
+// Búsqueda sin resultados: nunca un callejón sin salida → personalizada o WhatsApp con el término ya escrito
+function sinResultadosHTML(q) {
+  q = String(q || '').trim();
+  var wa = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent('Hola Yuzu, busco una camiseta de «' + q + '». ¿Me la pueden hacer?');
+  return '<div class="vacio" style="padding:40px 0">Nada con «' + esc(q) + '» todavía.<br><strong style="display:block;margin:14px 0 16px;color:var(--tinta)">¿No está tu personaje? Armá tu personalizada.</strong>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"><button class="btn" type="button" data-abrir-pers="propio">Armá tu personalizada</button>' +
+    '<a class="btn btn-hueco" href="' + wa + '" target="_blank" rel="noopener">Pedila por WhatsApp</a></div></div>';
 }
 $('btnBuscar').addEventListener('click', abrirBuscador);
 $('cerrarBuscar').addEventListener('click', cerrarBuscador);
@@ -3373,7 +3402,7 @@ document.addEventListener('click', function (e) {
   if (!b) return;
   e.preventDefault();
   var est = b.getAttribute('data-abrir-pers');
-  cerrarCajon();
+  cerrarCajon(); if ($('buscador').classList.contains('abierta')) cerrarBuscador();
   abrirPers({ estilo: est || null, base: b.hasAttribute('data-pers-base') && PR.p ? PR.p : null });
 });
 
@@ -3560,6 +3589,11 @@ $('tallaVelo').addEventListener('click', function (e) { if (e.target === $('tall
    BARRA FIJA DE COMPRA (celular)
    ===================================================================== */
 var BARRA_RAF = 0;
+// Hero en pantalla → se esconden los flotantes para no tapar los CTA del hero
+(function () {
+  var h = $('hero'); if (!h || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function (en) { document.body.classList.toggle('hero-visible', en[0].isIntersecting && en[0].intersectionRatio > 0.15); }, { threshold: [0, 0.15, 0.5] }).observe(h);
+})();
 function mostrarBarra(si) { $('barraCompra').classList.toggle('ver', !!si); document.body.classList.toggle('barra-on', !!si); }
 // Aparece cuando el botón "Agregar" quedó arriba, fuera de la pantalla (solo en celular)
 function revisarBarra() {
@@ -3674,7 +3708,7 @@ function enrutar() {
 }
 function mostrarBusquedaCompleta(q) {
   var r = buscar(q);
-  COL.clave = 'buscar/' + q; COL.pagina = 1; COL.orden = 'dest';
+  COL.clave = 'buscar/' + q; COL.pagina = 1; COL.orden = ORDEN_DEF;
   COL.filtros = { colores: [], impresion: '', min: '', max: '', ofertas: false };
   COL.r = { lista: r, titulo: 'Resultados' };
   document.title = 'Buscar «' + q + '» — Yuzu';
@@ -3685,7 +3719,7 @@ function mostrarBusquedaCompleta(q) {
   $('avisoManifiesto').classList.add('oculto');
   $('citaTxt').textContent = '«Cada diseño es un argumento antes de ser una prenda.»';
   $('citaImg').style.display = 'none';
-  $('colOrden').value = 'dest';
+  $('colOrden').value = ORDEN_DEF;
   $('buscaInput').value = q;
   pintarPanelFiltros();
   pintarColeccion();
@@ -3725,15 +3759,16 @@ $('bolX').addEventListener('click', cerrarBoletin);
 $('bolVelo').addEventListener('click', function (e) { if (e.target === $('bolVelo')) cerrarBoletin(); });
 
 function enviarSuscripcion(datos) {
-  if (BOL && BOL.formspree) {
-    fetch(BOL.formspree, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(datos) }).catch(function () {});
+  var url = (BOL && BOL.formspree) || CAPTURA.formspree;   // mismo destino que la captura de cupones
+  if (url) {
+    fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(datos) }).catch(function () {});
   } else {
     var msg = 'Hola Yuzu, me quiero apuntar a la lista.\n\n' + (datos.nombre ? 'Nombre: ' + datos.nombre + '\n' : '') + 'Correo: ' + datos.correo + (datos.telefono ? '\nTeléfono: ' + datos.telefono : '');
     window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
   }
   almacen.guardar('yuzu-suscrito', '1');
   if (BOL) almacen.guardar('yuzu-bol-' + BOL.id, 'visto');
-  evento('sign_up', { method: BOL && BOL.formspree ? 'formspree' : 'whatsapp' });
+  evento('sign_up', { method: url ? 'formspree' : 'whatsapp' });
 }
 $('bolEnviar').addEventListener('click', function () {
   var nombre = $('bolNombre').value.trim(), correo = $('bolCorreo').value.trim(), tel = $('bolTel').value.trim();
