@@ -170,11 +170,14 @@
           "alinear": "centro"
         },
         "lado": {
-          "x": 488,
+          "x": 490,
           "y": 520,
-          "w": 70,
-          "h": 240,
-          "alinear": "centro"
+          "w": 85,
+          "h": 671,
+          "alinear": "centro",
+          "rot": -5.5,
+          "kmin": 0.5,
+          "kmax": 1.15
         },
         "costado": {
           "x": 518,
