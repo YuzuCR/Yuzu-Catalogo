@@ -252,5 +252,14 @@
     "gran": [],
     "muro": [],
     "ocultar": {}
+  },
+  "captura": {
+    "activo": true,
+    "boton": "10% OFF",
+    "pctCorreo": 10,
+    "codCorreo": "BIENVENIDA10",
+    "pctTel": 15,
+    "codTel": "VIP15",
+    "formspree": "https://formspree.io/f/xkjreyby"
   }
 }
