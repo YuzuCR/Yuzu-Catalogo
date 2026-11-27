@@ -279,6 +279,11 @@ var YuzuCinetico = (function () {
   function historia() {
     if (!gl3d || $('cnHistoria') || typeof VISIBLES === 'undefined' || !VISIBLES.length) return;
     var cand = VISIBLES.filter(function (p) { return typeof esVivo === 'function' && esVivo(p) && YuzuMockup.disponible('boxy', p.portada || 'Negro'); });
+    // Modo índice: las piezas todavía no traen sus versiones → se pide el detalle de una pieza «vivo» y se reintenta
+    if (!cand.length && window.yuzuAsegurarDetalle && !historia.pidiendo) {
+      var v = VISIBLES.filter(function (p) { return p.vivo && !p._full; });
+      if (v.length) { historia.pidiendo = true; window.yuzuAsegurarDetalle(v[Math.floor(Math.random() * v.length)]).then(function () { historia.pidiendo = false; if (/^#\/taller\/historia/.test(location.hash)) { historia(); var hs = $('cnHistoria'); if (hs) hs.scrollIntoView({ block: 'start' }); } }); return; }
+    }
     var dest = cand.filter(function (p) { return p.destacado; }); if (dest.length) cand = dest;
     var p = cand[Math.floor(Math.random() * cand.length)]; if (!p) return;
     var color = p.portada || (p.colores || [])[0] || 'Negro', n = VISIBLES.length;
