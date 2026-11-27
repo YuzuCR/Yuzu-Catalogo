@@ -180,11 +180,14 @@
           "kmax": 1.15
         },
         "costado": {
-          "x": 518,
-          "y": 1069,
-          "w": 100,
-          "h": 160,
-          "alinear": "centro"
+          "x": 522,
+          "y": 1014,
+          "w": 77,
+          "h": 217,
+          "alinear": "centro",
+          "rot": 0,
+          "kmin": 0.5,
+          "kmax": 1.15
         },
         "pechoGrande": {
           "x": 325,
