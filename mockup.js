@@ -203,9 +203,10 @@ var YuzuMockup = (function () {
         var zo = ZONAS.boxy[vista], q = ajuste.boxy[vista];
         return limitar(aRect(img, { cx: z.x + (q.cx - zo.x) / zo.w * z.w, cy: z.y + (q.cy - zo.y) / zo.h * z.h, w: q.w / zo.w * z.w }), z);
       }
-      return alTope(prenda, vista, encajar(img, z));
+      return encajar(img, z);
     }
-    return alTope(prenda, vista, encajar(img, zonaAjustada(z, ajusteDe(ajuste, prenda, vista))));
+    // La zona de Tienda manda: el encaje automático llena la zona que Andre dibujó (sin recorte a MAX_CM)
+    return encajar(img, zonaAjustada(z, ajusteDe(ajuste, prenda, vista)));
   }
   // El encaje automático nunca pasa del máximo imprimible (MAX_CM): si la zona es más grande que el DTF, se achica
   // centrado y pegado arriba. Las posiciones guardadas a mano en el admin no se tocan.
