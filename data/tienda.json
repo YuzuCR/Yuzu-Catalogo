@@ -139,6 +139,16 @@
           "alinear": "arriba",
           "kmin": 0.35,
           "kmax": 1
+        },
+        "nuca": {
+          "x": 504,
+          "y": 224,
+          "w": 76,
+          "h": 56,
+          "alinear": "centro",
+          "rot": 0,
+          "kmin": 0.6,
+          "kmax": 1.5
         }
       },
       "mangalarga": {
