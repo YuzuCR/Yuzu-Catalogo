@@ -1013,7 +1013,7 @@
             <li>Elegí la pieza, el <strong>color</strong> y la <strong>talla</strong>.</li>
             <li>Agregala a la bolsa. Podés sumar varias.</li>
             <li>Tocá <strong>Pedir por WhatsApp</strong>: el mensaje sale armado con todo tu pedido.</li>
-            <li>Te confirmamos por chat y coordinamos el pago.</li>
+            <li>Te confirmamos por chat. <span data-pago="corto">Pagás 50% por SINPE Móvil para producir y el resto antes del envío.</span></li>
           </ol>
         </section>
         <section class="ayuda-sec" id="ay-envios">
@@ -1253,7 +1253,7 @@
     <div class="total"><span class="dato">Total</span><span class="total-n" id="bolsaTotal">&#8353;0</span></div>
     <p class="bolsa-corte oculto" data-corte="linea"></p>
     <button class="btn btn-ancho" id="btnPedir">Pedir por WhatsApp</button>
-    <p class="dato nota">Te confirmamos disponibilidad y coordinamos el pago por chat.</p>
+    <p class="dato nota">Te confirmamos el pedido por chat. <span data-pago="corto">Pagás 50% por SINPE Móvil para producir y el resto antes del envío.</span></p>
   </div>
 </aside>
 
@@ -1318,8 +1318,14 @@ var COLORES = [
   { name: 'Verde musgo', hex: '#4a6741' }
 ];
 
+// Pago y cambios: valores por defecto; el admin los cambia en Tienda → Urgencia → Pago y cambios (tienda.json → pago)
+var PAGO = { corto: 'Pagás 50% por SINPE Móvil para producir y el resto antes del envío.', mensaje: '¿Me pasás los datos de SINPE Móvil para el adelanto del 50%?', cambios: 'Si la impresión sale con un defecto, la reponemos sin costo. Como se hace a pedido, no hay cambios por talla: usá la calculadora de talla antes de pedir.' };
+function pintarPago() {
+  var n = document.querySelectorAll('[data-pago]'); for (var i = 0; i < n.length; i++) n[i].textContent = PAGO[n[i].getAttribute('data-pago')] || '';
+}
 var FAQ = [
-  ['¿Cómo hago un pedido?', 'Elegí talla y color, agregá la pieza a la bolsa y tocá «Pedir por WhatsApp». Te confirmamos por chat y coordinamos el pago.'],
+  ['¿Cómo hago un pedido?', 'Elegí talla y color, agregá la pieza a la bolsa y tocá «Pedir por WhatsApp». Te confirmamos por chat. {pago}'],
+  ['¿Cómo pago y qué pasa si hay un problema?', '{pago} {cambios}'],
   ['¿Por qué no hay stock?', 'Cada pieza se imprime cuando la pedís. Nada está guardado en bodega, por eso cualquier diseño está disponible en cualquier talla.'],
   ['¿Cuánto tarda en llegar?', 'Producimos los miércoles. La entrega toma una semana desde que se confirma el pedido.'],
   ['¿Cuánto cuesta el envío?', 'Nada extra: ya está incluido en el precio, a cualquier parte de Costa Rica.'],
@@ -1428,6 +1434,8 @@ function cargar() {
     if (T.coloresPrenda) COLORES_PRENDA = T.coloresPrenda;
     if (T.corte) CORTE = Object.assign(CORTE, T.corte);
     if (T.captura) CAPTURA = Object.assign(CAPTURA, T.captura);
+    if (T.pago) PAGO = Object.assign(PAGO, T.pago);
+    pintarPago();
     if (T.cupones) CUPONES_EXTRA = T.cupones;
     if (CORTE.activo) MARQUESINA = [textoCorte()].concat(MARQUESINA);
     pintarMarquesinas(); pintarCorte(); iniciarCaptura(); actualizarBolsa();
@@ -2061,7 +2069,7 @@ function tablaTallas() {
   return '<table class="tabla"><tr><th>Talla</th><th>Ancho</th><th>Largo</th></tr>' +
     TALLAS.filter(function (t) { return MEDIDAS[t]; }).map(function (t) { var m = MEDIDAS[t]; return '<tr><td>' + t + '</td><td>' + m[0] + ' cm</td><td>' + m[1] + ' cm</td></tr>'; }).join('') + '</table>';
 }
-function faqHTML() { return FAQ.map(function (q) { return '<p class="faq-q">' + esc(q[0]) + '</p><p>' + esc(q[1]) + '</p>'; }).join(''); }
+function faqHTML() { return FAQ.map(function (q) { var r = q[1].replace('{pago}', PAGO.corto).replace('{cambios}', PAGO.cambios); return '<p class="faq-q">' + esc(q[0]) + '</p><p>' + esc(r) + '</p>'; }).join(''); }
 
 function mostrarProducto(r) {
   var p = porRef(r);
@@ -2129,7 +2137,7 @@ function mostrarProducto(r) {
         '<ul class="confianza">' +
           '<li>' + svg('envio') + 'Envío incluido a todo Costa Rica</li>' +
           '<li>' + svg('calendario') + 'Se produce el miércoles · llega en una semana</li>' +
-          '<li>' + svg('chat') + 'Pedido y pago coordinados por WhatsApp</li>' +
+          '<li>' + svg('chat') + esc(PAGO.corto) + '</li>' +
         '</ul>' +
         '<button class="btn btn-hueco btn-ancho pers-btn-ficha" data-abrir-pers data-pers-base>Personalizá este diseño · desde +' + plata(precioDisenoMinimo()) + '</button>' +
         '<div style="display:flex;gap:18px;flex-wrap:wrap"><button class="compartir" id="prCompartir"><span id="prCompartirTxt">' + (navigator.share ? 'Compartir esta pieza' : 'Copiar enlace de esta pieza') + '</span></button><button class="compartir" id="prDescargar">Descargar esta imagen</button></div>' +
@@ -2769,7 +2777,7 @@ function pedirWhatsApp(items) {
   msg += 'Total: ' + plata(total) + ' (envío incluido)\n';
   if (nMani) msg += 'Incluye ' + plata(nMani * MANIFIESTO.monto) + ' de aporte a ' + MANIFIESTO.destino + '.\n';
   if (items.some(function (i) { return i.opcKey && i.opcKey !== JSON.stringify(opcPorDefecto()); })) msg += '\nNota: elegí una versión distinta a la del catálogo; te mando mi mockup en el chat.\n';
-  msg += '\n¿Cómo coordinamos el pago?';
+  msg += '\n' + PAGO.mensaje;
   evento('begin_checkout', { currency: 'CRC', value: total, coupon: desc ? cupon.codigo : undefined, transaction_id: pedido, items: items.map(function (i) { return { item_id: i.ref, item_name: i.nombre, item_variant: (i.prenda || 'Boxy') + ' / ' + i.color + ' / ' + i.talla, quantity: i.cant || 1, price: i.precio }; }) });
   window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
 }
