@@ -790,6 +790,8 @@
   .banda-principal h2 { font-size: clamp(40px, 7vw, 84px); line-height: .9; }
 
   .estudio-card { position: relative; overflow: hidden; display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; padding: 18px; margin: 0 0 14px; border: 1px solid var(--tinta); background: linear-gradient(120deg, #11100d, #26241b 55%, #3b3a17); color: #f3efe3; cursor: pointer; transition: transform .35s var(--suave), box-shadow .35s var(--suave); font: inherit; }
+  .link-estudio { background: none; border: 0; padding: 0; color: #c3c24d; font-family: var(--dato); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; text-align: left; text-decoration: underline; text-underline-offset: 4px; }
+  .estudio-sec { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--linea, rgba(255,255,255,.12)); }
   .estudio-card:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -14px rgba(0,0,0,.6); }
   .estudio-card .ec-ico { font-size: 26px; color: #c3c24d; animation: ecGiro 6s linear infinite; }
   .estudio-card .ec-txt { flex: 1; display: flex; flex-direction: column; gap: 4px; }
@@ -1299,10 +1301,10 @@
   </div>
 </aside>
 
-<script src="alias.js"></script>
-<script src="mockup.js"></script>
-<script src="estudio.js"></script>
-<script src="prenda3d.js"></script>
+<script src="alias.js?v=5"></script>
+<script src="mockup.js?v=5"></script>
+<script src="estudio.js?v=5"></script>
+<script src="prenda3d.js?v=5"></script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN — lo único que deberías tocar a mano
@@ -1337,7 +1339,8 @@ var REDES = [
    'Attack on Titan': { sigla: 'AOT', titulo: 'Más allá de los muros', frase: 'La serie completa' }  */
 // Títulos legibles por defecto (alias.js → YUZU_TITULOS); el admin los cambia en Inicio → Nombres de colecciones (tienda.json → nombres)
 var NOMBRES = {};
-Object.keys(window.YUZU_TITULOS || {}).forEach(function (k) { NOMBRES[k] = { titulo: window.YUZU_TITULOS[k] }; });
+var TITULOS_DEF = window.YUZU_TITULOS || { 'Bluelock': 'Blue Lock', 'Pokemon': 'Pokémon', 'Akame Ga Kill!': 'Akame ga Kill!' };   // respaldo si alias.js viene viejo del caché
+Object.keys(TITULOS_DEF).forEach(function (k) { NOMBRES[k] = { titulo: TITULOS_DEF[k] }; });
 
 /* Búsqueda por personaje: serie → personajes y sinónimos (separados por coma).
    El admin los edita en Precios → Búsqueda (tienda.json → busqueda.alias). */
@@ -2248,7 +2251,7 @@ function mostrarProducto(r) {
         // Opciones avanzadas: con valores por defecto, plegadas para no frenar la compra
         ((PR.vs && PR.vs.length > 1) || hayOpcionesFicha() ? '<details class="plegable opc-diseno" id="prOpcDiseno"><summary>Opciones del diseño <span class="dato" style="margin-left:6px">dónde va · logo · tamaño</span></summary><div class="cuerpo-det">' + versionesFichaHTML() + disenoFichaHTML() + '</div></details>' : versionesFichaHTML()) +
         (hayOpcionesFicha() ? '<div class="mi-mockup oculto" id="prMiMockup"><strong>Tu versión es distinta a la del catálogo.</strong> Descargá tu mockup (o compartilo desde el celular) y mandámelo en el chat junto con el pedido, así veo exactamente lo que elegiste.<br><button class="btn btn-hueco" id="prCompartirMockup" type="button">' + ((navigator.canShare && navigator.share) ? 'Compartir mi mockup' : 'Descargar mi mockup') + '</button><p class="dato nota-mini" id="prMiMockupEstado"></p></div>' : '') +
-        '<button class="btn btn-hueco btn-ancho pers-btn-ficha" data-abrir-pers data-pers-base>Personalizá este diseño · desde +' + plata(precioDisenoMinimo()) + '</button>' +
+        '<button class="btn btn-hueco btn-ancho pers-btn-ficha" data-abrir-pers data-pers-base>Personalizá este diseño · desde ' + plata(prendaPorId('boxy').precio + precioDisenoMinimo()) + '</button>' +
         '<div style="display:flex;gap:18px;flex-wrap:wrap"><button class="compartir" id="prCompartir"><span id="prCompartirTxt">' + (navigator.share ? 'Compartir esta pieza' : 'Copiar enlace de esta pieza') + '</span></button><button class="compartir" id="prDescargar">Descargar esta imagen</button></div>' +
         '<div class="plegables">' +
           '<details class="plegable" open><summary>Descripción</summary><div class="cuerpo-det">' +
@@ -2833,7 +2836,7 @@ function actualizarBolsa() {
   $('bolsaTotal').textContent = plata(sub - desc);
   $('filaSubtotal').classList.toggle('oculto', !desc); $('filaDescuento').classList.toggle('oculto', !desc);
   $('bolsaSubtotal').textContent = plata(sub); $('bolsaDescuento').textContent = '−' + plata(desc);
-  if (cupon) $('bolsaDescNom').textContent = 'Descuento ' + cupon.codigo + ' (' + cupon.pct + '%)';
+  if (cupon) $('bolsaDescNom').textContent = 'Descuento ' + cupon.codigo + ' (' + etiquetaPct(bolsa) + ')';
   pintarCuponBolsa();
   var nMani = manifiestosDe(bolsa);
   $('bolsaAporte').classList.toggle('oculto', !nMani);
@@ -2882,7 +2885,7 @@ function pedirWhatsApp(items) {
     var c = i.cant || 1, prenda = i.prenda || 'Boxy oversize', nombre = i.nombre.replace(' · ' + prenda, '');
     msg += (n + 1) + '. ' + nombre + ' (' + i.ref + ')\n   ' + prenda + ' · ' + i.color + ' · Talla ' + i.talla + (i.version ? ' · ' + i.version : '') + (i.det ? '\n   ' + i.det : '') + '\n   ' + c + ' × ' + plata(i.precio) + ' = ' + plata(i.precio * c) + '\n   ' + BASE_URL() + 'p/' + i.ref + '.html\n\n';
   });
-  if (desc) msg += 'Subtotal: ' + plata(sub) + '\nDescuento ' + cupon.codigo + ' (' + cupon.pct + '%): −' + plata(desc) + '\n';
+  if (desc) msg += 'Subtotal: ' + plata(sub) + '\nDescuento ' + cupon.codigo + ' (' + etiquetaPct(items) + '): −' + plata(desc) + '\n';
   msg += 'Total: ' + plata(total) + ' (envío incluido)\n';
   if (nMani) msg += 'Incluye ' + plata(nMani * MANIFIESTO.monto) + ' de aporte a ' + MANIFIESTO.destino + '.\n';
   if (items.some(function (i) { return i.opcKey && i.opcKey !== JSON.stringify(opcPorDefecto()); })) msg += '\nNota: elegí una versión distinta a la del catálogo; te mando mi mockup en el chat.\n';
@@ -3210,6 +3213,11 @@ function quitarPersHTML() {
     '<p class="nota-paso">Con la varita elegís con el cuentagotas qué color quitar, por fuera o por dentro del diseño.</p></div>';
 }
 // ---------- Estudio Yuzu (editor de capas) dentro de "Armá tu personalizada" ----------
+function estudioLinkHTML() {
+  var hay = PS.archivos.grande || PS.archivos.pecho;
+  return '<button type="button" class="link-estudio" data-p-estudio>✦ ' + (hay ? 'Seguir diseñando en el Estudio avanzado' : '¿Querés más control? Abrí el Estudio avanzado') + ' →</button>' +
+    '<p class="nota-paso" style="margin:2px 0 0">Capas, texto, quitar fondos y medidas en cm.</p>';
+}
 function estudioCardHTML() {
   var hay = PS.archivos.grande || PS.archivos.pecho;
   return '<button type="button" class="estudio-card" data-p-estudio><span class="ec-brillo"></span><span class="ec-ico">✦</span><span class="ec-txt"><strong>' + (hay ? 'Seguir diseñando en el Estudio' : 'Abrir el Estudio de diseño') + '</strong>' +
@@ -3250,17 +3258,17 @@ function abrirEstudioPers() {
 }
 function unoPropioHTML() {
   var frente = PS.opc.layout === 'frente', tengoPecho = !!PS.archivos.pecho, hayLogo = !!YuzuMockup.logoPara(PS.color);
-  var h = '<div class="chips-prenda" style="margin-bottom:14px">' + chipOpc('data-p-layout', 'espalda', !frente, 'Grande atrás + detalle adelante') + chipOpc('data-p-layout', 'frente', frente, 'Solo grande al frente') + '</div>';
-  h += estudioCardHTML();
-  h += '<div id="persSlots">' + slotsPersHTML() + '</div>';
+  var h = '<div id="persSlots">' + slotsPersHTML() + '</div>';
   h += '<p class="aviso-pers oculto" id="persAvisoFondo"></p>';
   h += '<div id="persQuitar">' + quitarPersHTML() + '</div>';
+  h += '<div class="campo" style="margin-top:16px"><div class="campo-tit"><span class="dato">Dónde va</span></div><div class="chips-prenda">' + chipOpc('data-p-layout', 'espalda', !frente, 'Grande atrás + detalle adelante') + chipOpc('data-p-layout', 'frente', frente, 'Solo grande al frente') + '</div></div>';
   if (hayLogo && !tengoPecho) {
     h += '<div class="campo" style="margin-top:16px"><div class="campo-tit"><span class="dato">Logo de Yuzu</span></div><div class="chips-prenda">' +
       chipOpc('data-p-logo', 'pecho', PS.opc.logo === 'pecho' && !frente, 'En el pecho', frente) + chipOpc('data-p-logo', 'nuca', PS.opc.logo === 'nuca', 'En la nuca') + chipOpc('data-p-logo', 'ninguno', PS.opc.logo === 'ninguno', 'Sin logo') + '</div></div>';
   } else if (tengoPecho) h += '<p class="nota-paso">Con tu detalle en el pecho no va el logo de Yuzu.</p>';
   h += '<div class="aviso-calidad"><strong>Importante.</strong> Si la imagen que subís es de baja calidad (borrosa, muy pequeña o con un fondo que no se puede quitar), hay que rehacerla desde cero y eso tiene un costo extra según la complejidad del diseño. Te lo cotizo por WhatsApp <u>antes</u> de producir y no se hace nada sin tu aprobación.</div>';
   h += '<div id="persPrev" style="margin-top:16px"></div>';
+  h += '<div class="estudio-sec">' + estudioLinkHTML() + '</div>';
   return h;
 }
 
@@ -3572,10 +3580,21 @@ function aplicarCupon(cod, silencioso) {
 }
 function quitarCupon() { cupon = null; almacen.guardar('yuzu-cupon', 'null'); actualizarBolsa(); }
 function mensajeCupon(t) { var m = $('cuponMsg'); if (!m) return; m.textContent = t; m.classList.toggle('oculto', !t); }
+function etiquetaPct(items) {
+  var tope = CAPTURA.pctOtras === undefined || CAPTURA.pctOtras === '' ? 10 : Number(CAPTURA.pctOtras);
+  var otras = items.some(function (i) { return i.prendaId && i.prendaId !== 'boxy' && !i.manifiesto; });
+  return otras && tope < cupon.pct ? cupon.pct + '% boxy · ' + tope + '% otras prendas' : cupon.pct + '%';
+}
 function descuentoDe(items) {
   if (!cupon || !buscarCupon(cupon.codigo)) return 0;
-  var base = items.reduce(function (s, i) { return s + (i.manifiesto ? 0 : i.precio * (i.cant || 1)); }, 0);
-  return Math.round(base * cupon.pct / 100 / 100) * 100;
+  // El % completo solo en la boxy; en las demás prendas, como máximo CAPTURA.pctOtras (Admin → Precios → Descuentos)
+  var tope = CAPTURA.pctOtras === undefined || CAPTURA.pctOtras === '' ? 10 : Number(CAPTURA.pctOtras);
+  var d = items.reduce(function (s, i) {
+    if (i.manifiesto) return s;
+    var pct = (i.prendaId && i.prendaId !== 'boxy') ? Math.min(cupon.pct, tope) : cupon.pct;
+    return s + i.precio * (i.cant || 1) * pct / 100;
+  }, 0);
+  return Math.round(d / 100) * 100;
 }
 function pintarCuponBolsa() {
   var caja = $('cuponCaja'); if (!caja) return;
@@ -3948,7 +3967,7 @@ actualizarBolsa();
 cargar();
 cargarBoletin();
 </script>
-<script src="motion.js"></script>
-<script src="cinetico.js"></script>
+<script src="motion.js?v=5"></script>
+<script src="cinetico.js?v=5"></script>
 </body>
 </html>
