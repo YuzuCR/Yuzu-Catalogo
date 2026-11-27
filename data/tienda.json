@@ -248,6 +248,16 @@
           "alinear": "arriba",
           "kmin": 0.35,
           "kmax": 1
+        },
+        "nuca": {
+          "x": 512,
+          "y": 446,
+          "w": 73,
+          "h": 62,
+          "alinear": "centro",
+          "rot": 0,
+          "kmin": 0.6,
+          "kmax": 1.5
         }
       }
     },
