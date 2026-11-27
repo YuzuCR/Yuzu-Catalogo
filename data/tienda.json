@@ -223,9 +223,12 @@
         "frente": {
           "x": 614,
           "y": 615,
-          "w": 85,
-          "h": 90,
-          "alinear": "centro"
+          "w": 74,
+          "h": 68,
+          "alinear": "centro",
+          "rot": 0,
+          "kmin": 0.4,
+          "kmax": 1.5
         },
         "lado": {
           "x": 481,
