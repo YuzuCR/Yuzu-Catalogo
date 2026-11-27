@@ -203,9 +203,17 @@ var YuzuMockup = (function () {
         var zo = ZONAS.boxy[vista], q = ajuste.boxy[vista];
         return limitar(aRect(img, { cx: z.x + (q.cx - zo.x) / zo.w * z.w, cy: z.y + (q.cy - zo.y) / zo.h * z.h, w: q.w / zo.w * z.w }), z);
       }
-      return encajar(img, z);
+      return alTope(prenda, vista, encajar(img, z));
     }
-    return encajar(img, zonaAjustada(z, ajusteDe(ajuste, prenda, vista)));
+    return alTope(prenda, vista, encajar(img, zonaAjustada(z, ajusteDe(ajuste, prenda, vista))));
+  }
+  // El encaje automático nunca pasa del máximo imprimible (MAX_CM): si la zona es más grande que el DTF, se achica
+  // centrado y pegado arriba. Las posiciones guardadas a mano en el admin no se tocan.
+  function alTope(prenda, pz, r) {
+    var t = topeCm(prenda, pz); if (!r || !t) return r;
+    var k = Math.min(1, t.w / r.w, t.h / r.h); if (k >= 1) return r;
+    var w = Math.round(r.w * k), h = Math.round(r.h * k);
+    return { x: Math.round(r.x + (r.w - w) / 2), y: r.y, w: w, h: h };
   }
 
   // Rectángulo que ocupa el diseño dentro de la zona (sin deformar)

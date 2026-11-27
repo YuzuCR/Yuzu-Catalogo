@@ -769,6 +769,8 @@
         <div style="flex:1"><label>% por teléfono</label><input type="text" inputmode="numeric" id="capPctTel"></div>
         <div style="flex:1"><label>Código por teléfono</label><input type="text" id="capCodTel"></div>
       </div>
+      <label>% máximo en sin mangas, manga larga y hoodie <span class="mini">(el % completo va solo en la boxy; protege el margen)</span></label>
+      <input type="text" inputmode="numeric" id="capPctOtras" placeholder="10" style="max-width:120px">
       <label>Formspree (adonde llegan correos y teléfonos)</label>
       <input type="text" id="capFormspree" placeholder="https://formspree.io/f/xxxxxxx">
       <label>Otros códigos (para Instagram, clientes, etc.)</label>
@@ -4046,7 +4048,7 @@ function renderDescuentos() {
   var c = Object.assign({}, CAP_BASE, TIENDA.captura || {});
   if (!TIENDA.captura && TIENDA._formspreeBol) c.formspree = TIENDA._formspreeBol;
   $('capActivo').checked = !!c.activo; $('capBoton').value = c.boton; $('capPctCorreo').value = c.pctCorreo; $('capCodCorreo').value = c.codCorreo;
-  $('capPctTel').value = c.pctTel; $('capCodTel').value = c.codTel; $('capFormspree').value = c.formspree || '';
+  $('capPctTel').value = c.pctTel; $('capCodTel').value = c.codTel; $('capFormspree').value = c.formspree || ''; $('capPctOtras').value = c.pctOtras === undefined ? 10 : c.pctOtras;
   renderCupones();
 }
 function renderCupones() {
@@ -4079,7 +4081,8 @@ $('btnGuardarDesc').addEventListener('click', function () {
     activo: $('capActivo').checked, boton: $('capBoton').value.trim() || CAP_BASE.boton,
     pctCorreo: n('capPctCorreo', 10), codCorreo: ($('capCodCorreo').value.trim() || CAP_BASE.codCorreo).toUpperCase(),
     pctTel: n('capPctTel', 15), codTel: ($('capCodTel').value.trim() || CAP_BASE.codTel).toUpperCase(),
-    formspree: $('capFormspree').value.trim()
+    formspree: $('capFormspree').value.trim(),
+    pctOtras: $('capPctOtras').value.trim() === '' ? 10 : Math.max(0, Math.min(100, Number($('capPctOtras').value) || 0))
   };
   statusDe('statusDesc', 'loading', 'Guardando...');
   guardarJSON('data/tienda.json', TIENDA, 'Descuentos').then(function () {
