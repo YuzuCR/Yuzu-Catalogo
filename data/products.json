@@ -814,8 +814,8 @@
       "Verde musgo"
     ],
     "precio": 17500,
-    "enDescuento": true,
-    "precioDescuento": 17000,
+    "enDescuento": false,
+    "precioDescuento": null,
     "impresion": "espalda",
     "versiones": [
       {
@@ -1288,8 +1288,8 @@
       "Verde musgo"
     ],
     "precio": 17500,
-    "enDescuento": true,
-    "precioDescuento": 17000,
+    "enDescuento": false,
+    "precioDescuento": null,
     "impresion": "espalda",
     "versiones": [
       {
@@ -1724,8 +1724,8 @@
       "Verde musgo"
     ],
     "precio": 17500,
-    "enDescuento": true,
-    "precioDescuento": 17000,
+    "enDescuento": false,
+    "precioDescuento": null,
     "impresion": "espalda",
     "versiones": [
       {
@@ -2847,8 +2847,8 @@
       "Verde musgo"
     ],
     "precio": 17500,
-    "enDescuento": true,
-    "precioDescuento": 17000,
+    "enDescuento": false,
+    "precioDescuento": null,
     "impresion": "espalda",
     "versiones": [
       {
