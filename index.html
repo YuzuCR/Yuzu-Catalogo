@@ -767,6 +767,22 @@
   .prev-acciones { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
   .paso.enviado { border: 1px solid var(--yuzu); padding: 14px; margin-bottom: 18px; }
   .hero-botones { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-promesa { font-size: 15px; line-height: 1.45; color: rgba(255,255,255,.85); margin: -10px 0 20px; max-width: 34ch; }
+  .hero-promesa strong { display: block; color: #c3c24d; font-family: var(--dato); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; margin-top: 8px; }
+  /* Móvil: las camisetas lo antes posible (primera pieza < 1,5 pantallas) */
+  @media (max-width: 899px) {
+    #secDrop #dropTexto, #secDrop #dropBtn { display: none; }
+    #secDrop h2 { margin-bottom: 14px; }
+    #secDrop { padding-top: 28px; }
+  }
+  .series-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .series-chips .n { opacity: .55; margin-left: 4px; }
+  .pasos { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; counter-reset: paso; }
+  @media (min-width: 900px) { .pasos { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+  .pasos li { counter-increment: paso; border: 1px solid var(--linea, rgba(255,255,255,.12)); border-radius: 14px; padding: 18px 18px 18px 58px; position: relative; }
+  .pasos li::before { content: counter(paso); position: absolute; left: 18px; top: 16px; width: 28px; height: 28px; border-radius: 50%; background: var(--yuzu); color: #0b0b0a; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .pasos strong { display: block; font-size: 16px; margin-bottom: 4px; }
+  .pasos span { font-size: 14px; line-height: 1.45; color: var(--tinta-2); }
   .btn-hueco-claro { background: transparent; color: #fff; border-color: rgba(255,255,255,.55); }
   .btn-hueco-claro:hover { color: #000; border-color: #fff; }
   .banda-principal { border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
@@ -855,23 +871,8 @@
     <div class="hero-txt">
       <span class="dato" id="heroEtiqueta">Drop actual</span>
       <h1 id="heroTit">Yuzu</h1>
+      <p class="hero-promesa" id="heroPromesa">Camisetas oversize de algodón, hechas a pedido. <strong id="heroDesde"></strong></p>
       <div class="hero-botones"><button class="btn btn-claro" id="heroPers" data-abrir-pers="propio" type="button">Armá tu personalizada</button><a class="btn btn-hueco-claro" id="heroBtn" href="#/c/todo">Ver el catálogo</a></div>
-    </div>
-  </section>
-
-  <section class="banda-pers banda-principal envoltura" id="bandaPers">
-    <div>
-      <span class="dato">Nuestro servicio principal</span>
-      <h2>Armá tu<br>personalizada</h2>
-    </div>
-    <div>
-      <p>Subí tu diseño, elegí la prenda y el color, y mirá cómo queda en el momento: atrás, al frente, con o sin logo de Yuzu. Te mando el mockup final antes de imprimir.</p>
-      <div class="chips" style="margin:18px 0 22px">
-        <button class="chip" data-abrir-pers="propio">Tengo mi diseño</button>
-        <button class="chip" data-abrir-pers="idea">Tengo una idea</button>
-        <button class="chip" data-abrir-pers="uniformes">Uniformes</button>
-      </div>
-      <button class="btn" data-abrir-pers="propio">Armá tu personalizada</button>
     </div>
   </section>
 
@@ -890,10 +891,6 @@
     <div style="margin-top:26px"><a class="subrayado" href="#/c/todo">Ver todo el archivo</a></div>
   </section>
 
-  <section class="seccion envoltura" id="secBanners">
-    <div class="banners" id="banners"></div>
-  </section>
-
   <section class="drop envoltura" id="secDrop">
     <div>
       <span class="dato">Novedades</span>
@@ -904,6 +901,43 @@
     <div class="mini-carril" id="dropCarril"></div>
   </section>
 
+  <section class="banda-pers banda-principal envoltura" id="bandaPers">
+    <div>
+      <span class="dato">Nuestro servicio principal</span>
+      <h2>Armá tu<br>personalizada</h2>
+    </div>
+    <div>
+      <p>Subí tu diseño, elegí la prenda y el color, y mirá cómo queda en el momento: atrás, al frente, con o sin logo de Yuzu. Te mando el mockup final antes de imprimir.</p>
+      <div class="chips" style="margin:18px 0 22px">
+        <button class="chip" data-abrir-pers="propio">Tengo mi diseño</button>
+        <button class="chip" data-abrir-pers="idea">Tengo una idea</button>
+        <button class="chip" data-abrir-pers="uniformes">Uniformes</button>
+      </div>
+      <button class="btn" data-abrir-pers="propio">Armá tu personalizada</button>
+    </div>
+  </section>
+
+  <section class="seccion envoltura" id="secSeries">
+    <div class="sec-cab"><div><span class="dato">Buscá por serie</span><h2>Series populares</h2></div></div>
+    <div class="chips series-chips" id="seriesChips"></div>
+  </section>
+
+  <section class="seccion envoltura" id="secComo">
+    <div class="sec-cab"><div><span class="dato">Así de simple</span><h2>Cómo funciona</h2></div></div>
+    <ol class="pasos">
+      <li><strong>Elegís</strong><span>Un diseño del archivo o el tuyo, con prenda, color y talla.</span></li>
+      <li><strong>Pedís por WhatsApp</strong><span>Te confirmamos el pedido. <span data-pago="corto">Pagás 50% por SINPE Móvil para producir y el resto antes del envío.</span></span></li>
+      <li><strong>Llega en una semana</strong><span>Producimos los miércoles. El envío ya está incluido a todo Costa Rica.</span></li>
+    </ol>
+  </section>
+
+
+
+  <section class="seccion envoltura" id="secBanners">
+    <div class="banners" id="banners"></div>
+  </section>
+
+
   <a class="gran-banner" href="#/c/todo" id="granBanner">
     <div class="mosaico" id="granMosaico"></div>
     <div class="txt">
@@ -913,7 +947,7 @@
     </div>
   </a>
 
-  <div class="marquesina bloque" aria-hidden="true"><div class="marquesina-pista" id="marquesinaBloque"></div></div>
+  <div class="marquesina bloque" id="marqBloque" aria-hidden="true"><div class="marquesina-pista" id="marquesinaBloque"></div></div>
 
   <section class="seccion envoltura oculto" id="secResenas" style="padding-top:60px">
     <div class="sec-cab"><div><span class="dato">Capturas reales de WhatsApp</span><h2>Lo que dicen</h2></div></div>
@@ -931,7 +965,7 @@
 
   <section class="detras envoltura" id="detras">
     <div class="detras-foto" id="detrasFoto">
-      <img src="images/detras.jpg" alt="El taller" onerror="this.parentElement.style.display='none'">
+      <img src="images/detras.jpg" alt="El taller" loading="lazy" decoding="async" onerror="this.parentElement.style.display='none'">
     </div>
     <div>
       <span class="dato">El taller</span>
@@ -939,6 +973,7 @@
       <p>El diseño, la impresión, el empaque y el envío ocurren en el mismo cuarto en San José. Entre el archivo que se dibuja y la camiseta que te llega no hay nadie más.</p>
       <p>Las referencias son las de siempre: el anime con el que crecí, los juegos que me formaron y la manera en que veo el país donde vivo. <strong>Cada diseño es un argumento antes de ser una prenda.</strong></p>
       <div class="enlaces">
+        <a class="enlace" href="#/taller/historia" id="enlaceHistoria"><span>La historia completa &middot; en 3D</span><span>&rarr;</span></a>
         <a class="enlace" href="estudio.html"><span>Estudio &middot; el trabajo detrás de la marca</span><span>&rarr;</span></a>
         <a class="enlace" href="https://instagram.com/yuzucr" target="_blank" rel="noopener"><span>Instagram &middot; @yuzucr</span><span>&rarr;</span></a>
       </div>
@@ -1772,6 +1807,7 @@ function pintarMarquesinas() {
   $('marquesinaBloque').innerHTML = pista;
 }
 
+var OCULTAS_DEF = { secBanners: true, granBanner: true, marqBloque: true };
 function pintarInicio() {
   // ----- Hero -----
   var heroImg = $('heroImg'), fallback = DROP_ACTUAL ? productosDeSub(DROP_ACTUAL.nombre)[0] : VISIBLES[0];
@@ -1783,14 +1819,24 @@ function pintarInicio() {
     if (fallback) heroImg.src = fotoBase(fallback);
   };
   heroImg.setAttribute('data-foto', '1');
-  heroImg.src = 'images/portada.jpg';
-  if (DROP_ACTUAL) {
-    $('heroTit').innerHTML = nombreColeccion(DROP_ACTUAL.nombre, true);
-    $('heroBtn').href = hrefSub(DROP_ACTUAL);
-  } else {
-    $('heroEtiqueta').textContent = 'Taller en San José · Costa Rica';
-    $('heroTit').textContent = 'Envío incluido';
-  }
+  // En celular, la versión recortada 3:4 (la genera el admin al subir la portada); si no existe, la grande
+  var movil = window.matchMedia && matchMedia('(max-width: 899px)').matches;
+  if (movil) { var err0 = heroImg.onerror; heroImg.onerror = function () { heroImg.onerror = err0; heroImg.src = 'images/portada.jpg'; }; }
+  heroImg.fetchPriority = 'high';
+  heroImg.src = movil ? 'images/portada-movil.jpg' : 'images/portada.jpg';
+  // Hero que vende: promesa + precio de entrada. Etiqueta y título se cambian en Admin → Inicio.
+  $('heroEtiqueta').textContent = 'Taller en San José · Costa Rica';
+  $('heroTit').textContent = 'Hecho a pedido';
+  $('heroBtn').href = '#/c/todo';
+  var minimo = Math.min.apply(null, VISIBLES.map(precioVigente).filter(Boolean));
+  $('heroDesde').textContent = isFinite(minimo) ? 'Desde ' + plata(minimo) + ' · envío incluido' : 'Envío incluido a todo Costa Rica';
+
+  // ----- Series populares (chips) -----
+  var nSer = {}; VISIBLES.forEach(function (p) { var s = p.subcategoria; if (s) nSer[s] = (nSer[s] || 0) + 1; });
+  var top = Object.keys(nSer).sort(function (a, b) { return nSer[b] - nSer[a]; }).slice(0, 8);
+  $('seriesChips').innerHTML = top.map(function (n) { var sb = buscarSub(n); return sb ? '<a class="chip" href="' + hrefSub(sb) + '">' + esc(tituloDe(n)) + '<span class="n">' + nSer[n] + '</span></a>' : ''; }).join('') +
+    '<a class="chip" href="#/c/' + (ARBOL[0] ? ARBOL[0].slug : 'todo') + '">Todas las series →</a>';
+  if (!top.length) $('secSeries').classList.add('oculto');
   if (INICIO.heroEtiqueta) $('heroEtiqueta').textContent = INICIO.heroEtiqueta;
   if (INICIO.heroTitulo) $('heroTit').textContent = INICIO.heroTitulo;
 
@@ -1819,7 +1865,7 @@ function pintarInicio() {
   // ----- Recién salidos (lo último subido, de cualquier colección; no repite el drop de arriba) -----
   var nuevos = VISIBLES.slice().sort(function (a, b) { return b.id - a.id; }).slice(0, 8);
   if (nuevos.length) {
-    $('dropTit').innerHTML = 'Recién salidos<br>del taller';
+    $('dropTit').innerHTML = 'Recién salidos';
     $('dropBtn').href = '#/c/todo'; $('dropBtn').textContent = 'Ver todo';
     $('dropCarril').innerHTML = nuevos.map(function (p, i) { return tarjeta(p, i, 'mini'); }).join('');
   } else $('secDrop').classList.add('oculto');
@@ -1845,8 +1891,13 @@ function pintarInicio() {
     return '<a href="#" onclick="return false" data-zoom-src="' + esc(u) + '" aria-label="Foto de un cliente"><img src="' + esc(u) + '" alt="Cliente de Yuzu" loading="lazy"></a>';
   }).join('');
   if (!muro.length) $('secMuro').classList.add('oculto');
-  // Secciones que el admin apagó
-  Object.keys(INICIO.ocultar || {}).forEach(function (id) { if (INICIO.ocultar[id] && $(id)) $(id).classList.add('oculto'); });
+  // Secciones que el admin apagó. Algunas vienen apagadas por defecto (alargaban la home sin vender);
+  // en Admin → Inicio → Secciones se vuelven a prender (ocultar[id] = false).
+  var oc = INICIO.ocultar || {};
+  Object.keys(OCULTAS_DEF).concat(Object.keys(oc)).forEach(function (id) {
+    var ocultar = oc[id] === true || (oc[id] === undefined && OCULTAS_DEF[id]);
+    if ($(id)) $(id).classList.toggle('oculto', !!ocultar);
+  });
 }
 function productosDeSub(nombre) { return VISIBLES.filter(function (p) { return p.subcategoria === nombre; }).sort(function (a, b) { return b.id - a.id; }); }
 

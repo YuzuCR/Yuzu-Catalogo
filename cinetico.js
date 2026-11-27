@@ -135,6 +135,7 @@ var YuzuCinetico = (function () {
     .cn-esquina { display: none; }
   }
 
+  .cn-historia { display: none; } html.cn-ver-historia .cn-historia { display: block; }
   html.cn-en-historia .arriba, html.cn-en-historia .wa-flotante, html.cn-en-historia .cap-teaser { opacity: 0 !important; transform: translateY(16px) !important; pointer-events: none !important; transition: opacity .35s, transform .35s; }
   /* bento */
   .cn-bento-sec { position: relative; overflow: hidden; }
@@ -301,8 +302,9 @@ var YuzuCinetico = (function () {
       [[8, 18, 0], [60, 12, 1.4], [88, 64, .7], [46, 84, 2.2]].map(function (q) { return '<i class="cn-destello" style="left:' + q[0] + '%;top:' + q[1] + '%;--d:' + q[2] + 's"></i>'; }).join('') +
       '<div class="cn-barra"></div></div>';
     sec.querySelectorAll('.cn-destello').forEach(function (d) { d.innerHTML = DESTELLO; });
-    var hero = $('hero'); hero.parentNode.insertBefore(sec, hero.nextSibling);
-    var banda = $('bandaPers'); if (banda) banda.classList.add('oculto');
+    // La historia vive en «El taller» (#/taller/historia), después de la sección del taller; ya no ocupa 6 pantallas de la home
+    var det = $('detras'); det.parentNode.insertBefore(sec, det.nextSibling);
+    var banda = null;
     sec.querySelectorAll('.cn-cap h3').forEach(function (h) { partir(h); h.classList.remove('cn-skew'); });
     var el = { pal: sec.querySelectorAll('.cn-palabra'), caps: sec.querySelectorAll('.cn-cap'), riel: sec.querySelectorAll('.cn-riel i'), pin: sec.querySelector('.cn-pin'),
       sig: sec.querySelector('.cn-gran-sig'), piso: sec.querySelector('.cn-piso'), talla: sec.querySelector('[data-cn-talla]'), dis: sec.querySelector('[data-cn-dis]') };
@@ -467,10 +469,14 @@ var YuzuCinetico = (function () {
   }
 
   function enInicio() { var v = $('vInicio'); return v && v.classList.contains('activa'); }
+  function enHistoria() { return /^#\/taller\/historia/.test(location.hash); }
   function montarInicio() {
+    html.classList.toggle('cn-ver-historia', enHistoria());
     if (!enInicio()) return;
-    if (activo) { hero(); historia(); cinta(); var t = $('heroTit'); if (t) descifrar(t); }
-    bento(); separadores(); titulos(); observarTitulos(); bucle();
+    // Home liviana: sin historia 3D, bento ni cinta (three.js solo se carga al pedir la historia o «Ver en 3D»)
+    if (activo) { hero(); var t = $('heroTit'); if (t) descifrar(t); }
+    if (activo && enHistoria()) { historia(); var hs = $('cnHistoria'); if (hs) setTimeout(function () { hs.scrollIntoView({ behavior: 'auto', block: 'start' }); }, 60); }
+    titulos(); observarTitulos(); bucle();
   }
 
   function iniciar() {
