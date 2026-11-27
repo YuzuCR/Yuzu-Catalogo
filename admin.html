@@ -4012,7 +4012,10 @@ function escribirPaginaProducto(p) {
   var r = refDeP(p), base = urlTienda();
   var foto = (function () { var m = p.mockups || {}, c = p.portada || (p.colores || [])[0]; var l = (c && m[c]) || m[Object.keys(m)[0]] || []; return l[0] || (p.imagenes || [])[0] || 'images/portada.jpg'; })();
   var precio = (p.enDescuento && p.precioDescuento) ? p.precioDescuento : p.precio;
-  var titulo = p.nombre + ' — Yuzu', desc = (p.subcategoria ? p.subcategoria + ' · ' : '') + plata(precio) + ' · Envío incluido a todo Costa Rica';
+  // Nombre legible igual que en la tienda («Blue Lock · 016»), con los títulos de Admin → Nombres de colecciones
+  var tit = {}; Object.keys((TIENDA && TIENDA.nombres) || {}).forEach(function (k) { if (TIENDA.nombres[k].titulo) tit[k] = TIENDA.nombres[k].titulo; });
+  var nom = window.yuzuNombreLegible ? yuzuNombreLegible(p, tit) : p.nombre, serieT = p.subcategoria ? (tit[p.subcategoria] || (window.YUZU_TITULOS || {})[p.subcategoria] || p.subcategoria) : '';
+  var titulo = nom + ' — Yuzu', desc = (serieT ? serieT + ' · ' : '') + plata(precio) + ' · Envío incluido a todo Costa Rica';
   var destino = '../index.html#/p/' + r;
   var html = '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">' +
     '<title>' + htmlAttr(titulo) + '</title>' +
@@ -4025,7 +4028,7 @@ function escribirPaginaProducto(p) {
     '<meta name="twitter:card" content="summary_large_image">' +
     '<meta http-equiv="refresh" content="0; url=' + htmlAttr(destino) + '">' +
     '<script>location.replace(' + JSON.stringify(destino) + ');<\/script></head>' +
-    '<body style="background:#0b0b0a;color:#ece7db;font-family:sans-serif;text-align:center;padding:40px"><a style="color:#c3c24d" href="' + htmlAttr(destino) + '">Ver ' + htmlAttr(p.nombre) + ' en Yuzu</a></body></html>';
+    '<body style="background:#0b0b0a;color:#ece7db;font-family:sans-serif;text-align:center;padding:40px"><a style="color:#c3c24d" href="' + htmlAttr(destino) + '">Ver ' + htmlAttr(nom) + ' en Yuzu</a></body></html>';
   var b64 = btoa(unescape(encodeURIComponent(html)));
   return subirArchivoFijo('p/' + r + '.html', b64, 'Vista previa: ' + p.nombre).catch(function () {});
 }
