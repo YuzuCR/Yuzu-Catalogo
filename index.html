@@ -1064,7 +1064,7 @@
     </div>
     <div class="pie-col">
       <h4>Lista del taller</h4>
-      <p>Te avisamos por correo cada vez que sale una tanda nueva.</p>
+      <p>Dejá tu correo y tu descuento de bienvenida queda aplicado en la bolsa.</p>
       <form class="pie-form" id="pieForm">
         <label class="sr" for="pieCorreo">Correo electrónico</label>
         <input type="email" id="pieCorreo" placeholder="Correo electrónico" autocomplete="email" required>
@@ -1138,7 +1138,7 @@
         <span class="dato">Lista del taller</span>
         <div class="cap-grande" id="capPct1">10% OFF</div>
         <h3 style="margin-top:4px">En tu primer pedido</h3>
-        <p class="bol-texto">Dejá tu correo y el descuento se aplica solo en tu bolsa. Te avisamos de cada tanda nueva.</p>
+        <p class="bol-texto">Dejá tu correo y el descuento se aplica solo en tu bolsa.</p>
         <form id="capForm1"><input type="email" id="capCorreo" placeholder="Correo electrónico" autocomplete="email" required><button class="btn" type="submit" id="capBtn1">Quiero mi descuento</button></form>
         <p class="dato bol-legal">Podés salirte cuando querás.</p>
       </div>
@@ -1194,7 +1194,7 @@
         <input type="email" id="bolCorreo" placeholder="Correo electrónico" autocomplete="email">
         <input type="tel" id="bolTel" placeholder="Teléfono / WhatsApp" autocomplete="tel">
         <button class="btn" id="bolEnviar">Quiero entrar</button>
-        <p class="dato bol-legal">Solo lo usamos para avisarte de cada tanda. Podés salirte cuando querás.</p>
+        <p class="dato bol-legal">No lo compartimos con nadie.</p>
       </div>
     </div>
     <div class="bol-gracias" id="bolGracias">
@@ -3750,15 +3750,16 @@ $('bolX').addEventListener('click', cerrarBoletin);
 $('bolVelo').addEventListener('click', function (e) { if (e.target === $('bolVelo')) cerrarBoletin(); });
 
 function enviarSuscripcion(datos) {
-  if (BOL && BOL.formspree) {
-    fetch(BOL.formspree, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(datos) }).catch(function () {});
+  var url = (BOL && BOL.formspree) || CAPTURA.formspree;   // mismo destino que la captura de cupones
+  if (url) {
+    fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(datos) }).catch(function () {});
   } else {
     var msg = 'Hola Yuzu, me quiero apuntar a la lista.\n\n' + (datos.nombre ? 'Nombre: ' + datos.nombre + '\n' : '') + 'Correo: ' + datos.correo + (datos.telefono ? '\nTeléfono: ' + datos.telefono : '');
     window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
   }
   almacen.guardar('yuzu-suscrito', '1');
   if (BOL) almacen.guardar('yuzu-bol-' + BOL.id, 'visto');
-  evento('sign_up', { method: BOL && BOL.formspree ? 'formspree' : 'whatsapp' });
+  evento('sign_up', { method: url ? 'formspree' : 'whatsapp' });
 }
 $('bolEnviar').addEventListener('click', function () {
   var nombre = $('bolNombre').value.trim(), correo = $('bolCorreo').value.trim(), tel = $('bolTel').value.trim();
