@@ -828,6 +828,13 @@
 
   <!-- ==================== MOCKUPS ==================== -->
   <div class="panel" id="panel-mockups">
+    <div class="sec" data-sec="Tamaño máximo"><div class="card">
+      <h2>Tamaño máximo de impresión (cm)</h2>
+      <p class="mini" style="margin-top:0">Lo que entra en tu lámina DTF. Solo limita la <strong>personalizada</strong>: hasta dónde puede agrandar el cliente su diseño y los cm que te llegan en el WhatsApp. El catálogo sigue usando las zonas de abajo.</p>
+      <div id="topesTabla"></div>
+      <button class="btn btn-sec" id="btnGuardarTopes">Guardar tamaños</button>
+      <div class="status" id="statusTopes"></div>
+    </div></div>
     <div class="sec" data-sec="Zonas"><div class="card">
       <h2>Zonas de impresión</h2>
       <p class="mini">Mové el recuadro y estiralo desde el punto amarillo. El diseño de prueba se encaja adentro sin deformarse. Lo que guardés se aplica a todos los colores de esa prenda.</p>
@@ -1149,10 +1156,10 @@
   </div>
 </div>
 
-<script src="alias.js?v=8"></script>
-<script src="mockup.js?v=8"></script>
-<script src="estudio.js?v=8"></script>
-<script src="prenda3d.js?v=8"></script>
+<script src="alias.js?v=9"></script>
+<script src="mockup.js?v=9"></script>
+<script src="estudio.js?v=9"></script>
+<script src="prenda3d.js?v=9"></script>
 <script>
 // ============================================================
 // 1. UTILITARIOS Y CONFIG
@@ -3343,12 +3350,41 @@ $('btnGuardarDrops').addEventListener('click', function () {
     .catch(function (err) { statusDe('statusDrops', 'err', err.message); });
 });
 
+// ---------- Tamaño máximo de impresión por prenda (tienda.json → mockup.topes) ----------
+var TOPES_PIEZAS = [['espalda', 'Espalda'], ['pechoGrande', 'Pecho grande']];
+function renderTopes() {
+  var T = YuzuMockup.TOPES || {}, P = YuzuMockup.PRENDAS || {};
+  $('topesTabla').innerHTML = Object.keys(P).map(function (pr) {
+    return '<div style="margin:10px 0 4px;font-weight:700">' + esc(P[pr].nombre || pr) + '</div><div class="row">' + TOPES_PIEZAS.map(function (x) {
+      var v = (T[pr] || {})[x[0]] || {};
+      return '<div style="flex:1"><label>' + x[1] + ' — ancho × alto</label><div class="row" style="gap:6px">' +
+        '<input type="text" inputmode="decimal" data-tope="' + pr + '|' + x[0] + '|w" value="' + (v.w || '') + '" style="max-width:80px"> × ' +
+        '<input type="text" inputmode="decimal" data-tope="' + pr + '|' + x[0] + '|h" value="' + (v.h || '') + '" style="max-width:80px"></div></div>';
+    }).join('') + '</div>';
+  }).join('');
+}
+$('btnGuardarTopes').addEventListener('click', function () {
+  var topes = {};
+  document.querySelectorAll('[data-tope]').forEach(function (inp) {
+    var k = inp.getAttribute('data-tope').split('|'), n = parseFloat(String(inp.value).replace(',', '.'));
+    if (!(n > 0)) return;
+    topes[k[0]] = topes[k[0]] || {}; topes[k[0]][k[1]] = topes[k[0]][k[1]] || {}; topes[k[0]][k[1]][k[2]] = n;
+  });
+  TIENDA.mockup = TIENDA.mockup || {}; TIENDA.mockup.topes = topes;
+  aplicarCfgMockup();
+  statusDe('statusTopes', 'loading', 'Guardando...');
+  guardarJSON('data/tienda.json', TIENDA, 'Tamaño máximo de impresión').then(function () { statusDe('statusTopes', 'ok', '✓ Guardado. La tienda lo usa en 1–2 minutos.'); })
+    .catch(function (err) { statusDe('statusTopes', 'err', err.message); });
+});
+renderTopes();
+
 // ---------- Mockup automático: configuración ----------
 var ZONAS_BASE = JSON.parse(JSON.stringify(YuzuMockup.ZONAS));
 var PLANTILLAS_BASE = JSON.parse(JSON.stringify(YuzuMockup.PLANTILLAS));
 function aplicarCfgMockup() {
   TIENDA.mockup = TIENDA.mockup || {};
   YuzuMockup.configurar(TIENDA.mockup);
+  if ($('topesTabla')) renderTopes();
 }
 var PRODUCTO_TOCADO = false;
 function cargarCfgMockup() {

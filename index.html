@@ -1301,10 +1301,10 @@
   </div>
 </aside>
 
-<script src="alias.js?v=8"></script>
-<script src="mockup.js?v=8"></script>
-<script src="estudio.js?v=8"></script>
-<script src="prenda3d.js?v=8"></script>
+<script src="alias.js?v=9"></script>
+<script src="mockup.js?v=9"></script>
+<script src="estudio.js?v=9"></script>
+<script src="prenda3d.js?v=9"></script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN — lo único que deberías tocar a mano
@@ -3154,7 +3154,7 @@ function psMedidas() {
   var cm = (YuzuMockup.PRENDAS[PS.prenda] || {}).cmPx || 0.1, vs = psVersiones();
   return Promise.all(psPiezas().map(function (it) {
     return (typeof it.src === 'string' ? YuzuMockup.cargar(it.src) : Promise.resolve(it.src)).then(function (img) {
-      var r = YuzuMockup.rectPieza(PS.prenda, PS.color, it.pz, img, { v: 2 }, PS.opc);
+      var r = YuzuMockup.rectPieza(PS.prenda, PS.color, it.pz, img, { v: 2, cliente: true }, PS.opc);
       return r ? { pz: it.pz, w: r.w * cm, h: r.h * cm } : null;
     }).catch(function () { return null; });
   })).then(function (l) { return l.filter(Boolean); });
@@ -3188,7 +3188,7 @@ function persMockup(demora) { PS.descargado = false;
     if (PS.modo !== 'propio' || !vs.length) { PS.vistas = []; PS.medidas = []; PS.calidad = []; PS.medTxt = ''; pintarPrevPers(); return; }
     if (!YuzuMockup.disponible(PS.prenda, PS.color)) { PS.vistas = []; PS.sinFoto = true; pintarPrevPers(); return; }
     PS.sinFoto = false;
-    YuzuMockup.generarVistas(PS.prenda, PS.color, vs, 0, { v: 2 }, PS.opc).then(function (lista) {
+    YuzuMockup.generarVistas(PS.prenda, PS.color, vs, 0, { v: 2, cliente: true }, PS.opc).then(function (lista) {
       if (tok !== PS_TOK) return;
       if (PS.opc.layout === 'frente') lista.sort(function (a, b) { return (a.vista === 'frente' ? 0 : 1) - (b.vista === 'frente' ? 0 : 1); });
       PS.canvases = lista;
@@ -3263,7 +3263,7 @@ function abrirEstudioPers() {
     op.capas = {};
     piezas.forEach(function (pz) {
       var a = PS.archivos[estudioClave(pz)]; if (!a || !a.orig) return;
-      op.capas[pz] = [{ fuente: a.orig, nombre: a.nombre || 'Tu diseño', q: a.quitar && a.quitar.modo === 'varita' ? a.quitar : null, rect: a.img ? YuzuMockup.rectPieza(PS.prenda, PS.color, pz, a.img, { v: 2 }, PS.opc) : null }];
+      op.capas[pz] = [{ fuente: a.orig, nombre: a.nombre || 'Tu diseño', q: a.quitar && a.quitar.modo === 'varita' ? a.quitar : null, rect: a.img ? YuzuMockup.rectPieza(PS.prenda, PS.color, pz, a.img, { v: 2, cliente: true }, PS.opc) : null }];
     });
   }
   evento('estudio_abrir', { prenda: PS.prenda });
@@ -3416,11 +3416,11 @@ $('persCuerpo').addEventListener('click', function (e) {
   var b;
   if (e.target.closest('#pers3d')) {
     evento('ver_3d', { origen: 'personalizada' });
-    YuzuPrenda3D.abrir({ prenda: PS.prenda, color: PS.color, versiones: psVersiones(), iVersion: 0, ajuste: { v: 2 }, opc: PS.opc }, { titulo: 'Tu diseño en 3D', talla: PS.talla || 'L', vista: 'espalda' });
+    YuzuPrenda3D.abrir({ prenda: PS.prenda, color: PS.color, versiones: psVersiones(), iVersion: 0, ajuste: { v: 2, cliente: true }, opc: PS.opc }, { titulo: 'Tu diseño en 3D', talla: PS.talla || 'L', vista: 'espalda' });
     return;
   }
   if (e.target.closest('#persAjustar')) {
-    epAbrir({ prenda: PS.prenda, color: PS.color, versiones: psVersiones(), iVersion: 0, ajuste: { v: 2 }, opc: PS.opc, piezas: psPiezas().map(function (x) { return x.pz; }).filter(function (v, i, a) { return a.indexOf(v) === i; }), titulo: 'Ajustá tu diseño', alCerrar: function () { persMockup(0); } });
+    epAbrir({ prenda: PS.prenda, color: PS.color, versiones: psVersiones(), iVersion: 0, ajuste: { v: 2, cliente: true }, opc: PS.opc, piezas: psPiezas().map(function (x) { return x.pz; }).filter(function (v, i, a) { return a.indexOf(v) === i; }), titulo: 'Ajustá tu diseño', alCerrar: function () { persMockup(0); } });
     return;
   }
   if (e.target.closest('#persDescMockup')) { psEnviarArchivos('mockup'); evento('descargar_mockup_pers', { prenda: PS.prenda }); return; }
@@ -3992,7 +3992,7 @@ actualizarBolsa();
 cargar();
 cargarBoletin();
 </script>
-<script src="motion.js?v=8"></script>
-<script src="cinetico.js?v=8"></script>
+<script src="motion.js?v=9"></script>
+<script src="cinetico.js?v=9"></script>
 </body>
 </html>
