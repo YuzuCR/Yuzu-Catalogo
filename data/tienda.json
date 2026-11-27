@@ -242,10 +242,13 @@
         },
         "costado": {
           "x": 499,
-          "y": 1101,
+          "y": 896,
           "w": 88,
-          "h": 101,
-          "alinear": "centro"
+          "h": 192,
+          "alinear": "centro",
+          "rot": 0,
+          "kmin": 0.5,
+          "kmax": 1.15
         },
         "pechoGrande": {
           "x": 317,
