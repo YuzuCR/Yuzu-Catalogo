@@ -1037,6 +1037,7 @@
     <div class="ayuda">
       <nav class="ayuda-indice">
         <a class="chip" href="#/ayuda/como-pedir">Cómo pedir</a>
+        <a class="chip" href="#/ayuda/pagos">Pagos y cambios</a>
         <a class="chip" href="#/ayuda/envios">Envíos</a>
         <a class="chip" href="#/ayuda/tallas">Tallas</a>
         <a class="chip" href="#/ayuda/cuidado">Cuidado</a>
@@ -1052,23 +1053,28 @@
             <li>Te confirmamos por chat. <span data-pago="corto">Pagás 50% por SINPE Móvil para producir y el resto antes del envío.</span></li>
           </ol>
         </section>
+        <section class="ayuda-sec" id="ay-pagos">
+          <span class="dato">02</span><h2>Pagos y cambios</h2>
+          <p><strong>Pago:</strong> <span data-pago="corto">Pagás 50% por SINPE Móvil para producir y el resto antes del envío.</span></p>
+          <p><strong>Cambios:</strong> <span data-pago="cambios">Si la impresión sale con un defecto, la reponemos sin costo. Como se hace a pedido, no hay cambios por talla: usá la calculadora de talla antes de pedir.</span></p>
+        </section>
         <section class="ayuda-sec" id="ay-envios">
-          <span class="dato">02</span><h2>Envíos y producción</h2>
+          <span class="dato">03</span><h2>Envíos y producción</h2>
           <p>Cada pieza se imprime cuando la pedís. <strong>Producimos los miércoles</strong> y la entrega toma una semana desde que se confirma el pedido.</p>
           <p>El envío <strong>ya está incluido</strong> en el precio, a cualquier parte de Costa Rica.</p>
         </section>
         <section class="ayuda-sec" id="ay-tallas">
-          <span class="dato">03</span><h2>Guía de tallas</h2>
+          <span class="dato">04</span><h2>Guía de tallas</h2>
           <div id="ayudaTabla"></div>
           <p style="margin-top:14px">Medidas de la prenda en plano. El corte es oversized: si querés algo más pegado, bajá una talla.</p>
         </section>
         <section class="ayuda-sec" id="ay-cuidado">
-          <span class="dato">04</span><h2>Cuidado de la prenda</h2>
+          <span class="dato">05</span><h2>Cuidado de la prenda</h2>
           <p>100% algodón de 190 g. La impresión es DTF: aguanta entre 100 y 120 lavadas sin agrietarse.</p>
           <p>Lavá al revés, con agua fría, y no le pases la plancha encima al diseño.</p>
         </section>
         <section class="ayuda-sec" id="ay-faq">
-          <span class="dato">05</span><h2>Preguntas frecuentes</h2>
+          <span class="dato">06</span><h2>Preguntas frecuentes</h2>
           <div id="ayudaFaq"></div>
         </section>
       </div>
@@ -1329,12 +1335,9 @@ var REDES = [
    se usa la sigla automática + el nombre tal cual.
    Ejemplo:
    'Attack on Titan': { sigla: 'AOT', titulo: 'Más allá de los muros', frase: 'La serie completa' }  */
-var NOMBRES = {
-  // Títulos legibles por defecto; el admin los cambia en Inicio → Nombres de colecciones (tienda.json → nombres)
-  'Bluelock': { titulo: 'Blue Lock' },
-  'Pokemon': { titulo: 'Pokémon' },
-  'Akame Ga Kill!': { titulo: 'Akame ga Kill!' }
-};
+// Títulos legibles por defecto (alias.js → YUZU_TITULOS); el admin los cambia en Inicio → Nombres de colecciones (tienda.json → nombres)
+var NOMBRES = {};
+Object.keys(window.YUZU_TITULOS || {}).forEach(function (k) { NOMBRES[k] = { titulo: window.YUZU_TITULOS[k] }; });
 
 /* Búsqueda por personaje: serie → personajes y sinónimos (separados por coma).
    El admin los edita en Precios → Búsqueda (tienda.json → busqueda.alias). */
@@ -2223,7 +2226,7 @@ function mostrarProducto(r) {
         (p.hasta ? '<p class="hasta-ficha">Disponible hasta el ' + fechaBonita(p.hasta) + (diasHasta(p) <= 7 ? ' · quedan ' + diasHasta(p) + (diasHasta(p) === 1 ? ' día' : ' días') : '') + '</p>' : '') +
         pruebaSocialHTML(p) +
         (esManifiesto(p) ? '<div class="ficha-manifiesto"><span class="dato">Manifiesto</span><p><strong>' + plata(MANIFIESTO.monto) + '</strong> de esta pieza se giran a <strong>' + MANIFIESTO.destino + '</strong>. Comprobante trimestral en @yuzucr.</p></div>' : '') +
-        prendasFichaHTML() + versionesFichaHTML() + disenoFichaHTML() +
+        prendasFichaHTML() +
         '<div class="campo"><div class="campo-tit"><span class="dato">Color · <span class="valor" id="prColorNom">' + esc(PR.color) + '</span></span></div>' +
           '<div class="colores" id="prColores">' + coloresFichaHTML() + '</div></div>' +
         '<div class="campo"><div class="campo-tit"><span class="dato">Talla · <span class="valor" id="prMedida">elegí una</span></span><span style="display:flex;gap:14px"><button class="guia-link" id="prTalla">¿Qué talla soy?</button><button class="guia-link" id="prGuia">Guía de tallas</button></span></div>' +
@@ -2236,12 +2239,15 @@ function mostrarProducto(r) {
           '<button class="btn btn-ancho" id="prAgregar">Agregar a la bolsa</button>' +
           '<button class="link-wa" id="prPedir">o pedila directo por WhatsApp →</button>' +
         '</div>' +
-        (hayOpcionesFicha() ? '<div class="mi-mockup oculto" id="prMiMockup"><strong>Tu versión es distinta a la del catálogo.</strong> Descargá tu mockup (o compartilo desde el celular) y mandámelo en el chat junto con el pedido, así veo exactamente lo que elegiste.<br><button class="btn btn-hueco" id="prCompartirMockup" type="button">' + ((navigator.canShare && navigator.share) ? 'Compartir mi mockup' : 'Descargar mi mockup') + '</button><p class="dato nota-mini" id="prMiMockupEstado"></p></div>' : '') +
         '<ul class="confianza">' +
-          '<li>' + svg('envio') + 'Envío incluido a todo Costa Rica</li>' +
-          '<li>' + svg('calendario') + 'Se produce el miércoles · llega en una semana</li>' +
           '<li>' + svg('chat') + esc(PAGO.corto) + '</li>' +
+          '<li>' + svg('envio') + 'Envío incluido · se produce el miércoles y llega en una semana</li>' +
+          '<li>' + svg('calendario') + esc(PAGO.cambios) + ' <a href="#/ayuda/pagos">Pagos y cambios</a></li>' +
+          (RESENAS.length ? '<li>★ ' + RESENAS.length + (RESENAS.length === 1 ? ' reseña real' : ' reseñas reales') + ' de clientes</li>' : '') +
         '</ul>' +
+        // Opciones avanzadas: con valores por defecto, plegadas para no frenar la compra
+        ((PR.vs && PR.vs.length > 1) || hayOpcionesFicha() ? '<details class="plegable opc-diseno" id="prOpcDiseno"><summary>Opciones del diseño <span class="dato" style="margin-left:6px">dónde va · logo · tamaño</span></summary><div class="cuerpo-det">' + versionesFichaHTML() + disenoFichaHTML() + '</div></details>' : versionesFichaHTML()) +
+        (hayOpcionesFicha() ? '<div class="mi-mockup oculto" id="prMiMockup"><strong>Tu versión es distinta a la del catálogo.</strong> Descargá tu mockup (o compartilo desde el celular) y mandámelo en el chat junto con el pedido, así veo exactamente lo que elegiste.<br><button class="btn btn-hueco" id="prCompartirMockup" type="button">' + ((navigator.canShare && navigator.share) ? 'Compartir mi mockup' : 'Descargar mi mockup') + '</button><p class="dato nota-mini" id="prMiMockupEstado"></p></div>' : '') +
         '<button class="btn btn-hueco btn-ancho pers-btn-ficha" data-abrir-pers data-pers-base>Personalizá este diseño · desde +' + plata(precioDisenoMinimo()) + '</button>' +
         '<div style="display:flex;gap:18px;flex-wrap:wrap"><button class="compartir" id="prCompartir"><span id="prCompartirTxt">' + (navigator.share ? 'Compartir esta pieza' : 'Copiar enlace de esta pieza') + '</span></button><button class="compartir" id="prDescargar">Descargar esta imagen</button></div>' +
         '<div class="plegables">' +

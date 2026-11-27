@@ -23,3 +23,14 @@ window.YUZU_ALIAS = {
   'Black Butler': 'ciel, sebastian, kuroshitsuji',
   'Berserk': 'guts, griffith, casca'
 };
+
+/* Títulos legibles por serie (la subcategoría guardada → cómo se muestra). Admin → Nombres de colecciones los reemplaza. */
+window.YUZU_TITULOS = { 'Bluelock': 'Blue Lock', 'Pokemon': 'Pokémon', 'Akame Ga Kill!': 'Akame ga Kill!' };
+
+/* «BLU 016» → «Blue Lock · 016». Lo usan la tienda (en pantalla) y el admin (páginas para compartir). */
+window.yuzuNombreLegible = function (p, titulos) {
+  var m = String(p.nombre || '').match(/^\s*[A-Za-zÁ-ú]{1,6}\s*[-_ ]?\s*\(?(\d{1,4})\)?\s*$/), serie = p.subcategoria;
+  if (!m || !serie) return p.nombre;
+  var t = (titulos && titulos[serie]) || window.YUZU_TITULOS[serie] || serie;
+  return t + ' · ' + m[1];
+};
