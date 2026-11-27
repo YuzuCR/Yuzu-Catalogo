@@ -29,7 +29,8 @@ var YuzuMockup = (function () {
 
   // Tamaño máximo físico de impresión (cm) por pieza, para que el cliente no pase del DTF (la hoja de producción es de 56 × 50 cm).
   // Se puede cambiar en data/tienda.json → mockup.maxCm = { espalda: { w: 40, h: 50 } }
-  var MAX_CM = { espalda: { w: 40, h: 50 }, pechoGrande: { w: 36, h: 44 } };
+  // Máximo imprimible con la lámina DTF de ₡6.000 (56 × 50 cm): espalda grande + detalle de pecho al lado
+  var MAX_CM = { espalda: { w: 45, h: 50 }, pechoGrande: { w: 45, h: 50 } };
   function topeCm(prenda, pz) {
     var m = MAX_CM[pz], c = (PRENDAS[prenda] || {}).cmPx || 0.1;
     return m ? { w: m.w / c, h: m.h / c, cm: m } : null;
@@ -410,7 +411,9 @@ var YuzuMockup = (function () {
   // Rectángulo final de una pieza para este cliente
   function rectPieza(prenda, color, pz, img, ajuste, opc) {
     var pos = opc && opc.pos && opc.pos[pz];
-    return (pos && rectDePos(prenda, pz, img, pos)) || rectDiseno(prenda, color, pz, img, ajuste);
+    var r = (pos && rectDePos(prenda, pz, img, pos)) || rectDiseno(prenda, color, pz, img, ajuste);
+    // Diseños que sube el cliente (personalizador): nunca más grandes de lo que cabe en la lámina
+    return opc && opc.tope ? alTope(prenda, pz, r) : r;
   }
 
   // Genera una vista → canvas (o null si no hay diseño para esa vista)
